@@ -1,0 +1,73 @@
+name: Java CI with Gradle
+
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
+
+jobs:
+    build:
+
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout repo
+                uses: actions/checkout@v2
+
+            -   name: Set up JDK 17
+                uses: actions/setup-java@v2
+                with:
+                    java-version: '17'
+                    distribution: 'temurin'
+
+            -   name: Build with Gradle
+                uses: gradle/gradle-build-action@v2
+                with:
+                    gradle-version: 7.3
+                    arguments: assemble
+
+
+    checkstyle:
+
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout repo
+                uses: actions/checkout@v2
+
+            -   name: Set up JDK 17
+                uses: actions/setup-java@v2
+                with:
+                    java-version: '17'
+                    distribution: 'temurin'
+
+            -   name: grand execute
+                run: chmod +x gradlew
+
+            -   name: Checkstyle for main with Gradle
+                run: ./gradlew checkstyleMain
+
+            -   name: Checkstyle for test with Gradle
+                run: ./gradlew checkstyleTest
+
+
+    test:
+
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout repo
+                uses: actions/checkout@v2
+
+            -   name: Set up JDK 17
+                uses: actions/setup-java@v2
+                with:
+                    java-version: '17'
+                    distribution: 'temurin'
+
+            -   name: grand execute
+                run: chmod +x gradlew
+
+            -   name: Test with Gradle
+                run: ./gradlew test
