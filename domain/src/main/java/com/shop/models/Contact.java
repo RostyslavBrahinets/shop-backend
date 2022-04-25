@@ -10,6 +10,15 @@ public class Contact implements Serializable {
     private String email;
     private String phone;
 
+    public Contact() {
+    }
+
+    public Contact(long id, String email, String phone) {
+        this.id = id;
+        this.email = email;
+        this.phone = phone;
+    }
+
     public long getId() {
         return id;
     }
