@@ -17,7 +17,7 @@ public class ProductRepository {
         return productDao.getProducts();
     }
 
-    public void addPerson(Product person) {
+    public void addProduct(Product person) {
         productDao.addProduct(person);
     }
 
