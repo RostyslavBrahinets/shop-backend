@@ -25,12 +25,12 @@ public class ValidatorConfig {
     }
 
     @Bean
-    public ProductValidator personValidator(ProductRepository productRepository) {
+    public ProductValidator productValidator(ProductRepository productRepository) {
         return new ProductValidator(productRepository);
     }
 
     @Bean
-    public WalletValidator personValidator(WalletRepository walletRepository) {
+    public WalletValidator walletValidator(WalletRepository walletRepository) {
         return new WalletValidator(walletRepository);
     }
 }
