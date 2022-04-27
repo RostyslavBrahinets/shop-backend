@@ -33,11 +33,12 @@ public class ContactDao {
     }
 
     public void updateContact(int id, Contact updatedContact) {
-        String sql = "UPDATE contact SET email=:email, phone=:phone WHERE id=?";
+        String sql = "UPDATE contact SET email=:email, phone=:phone WHERE id=:id";
 
         Map<String, Object> param = Map.of(
             "email", updatedContact.getEmail(),
-            "phone", updatedContact.getPhone()
+            "phone", updatedContact.getPhone(),
+            "id", id
         );
 
         jdbcTemplate.update(sql, param);
