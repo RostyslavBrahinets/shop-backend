@@ -30,6 +30,13 @@ public class ContactService {
         return contact;
     }
 
+    public Contact updateContact(int id, Contact contact) {
+        validator.validate(id);
+        validator.validate(contact);
+        contactRepository.updateContact(id, contact);
+        return contact;
+    }
+
     public void deleteContact(int id) {
         validator.validate(id);
         contactRepository.deleteContact(id);
