@@ -32,10 +32,11 @@ public class BasketDao {
     }
 
     public void updateBasket(int id, Basket updatedBasket) {
-        String sql = "UPDATE basket SET total_cost=:total_cost WHERE id=?";
+        String sql = "UPDATE basket SET total_cost=:total_cost WHERE id=:id";
 
         Map<String, Object> param = Map.of(
-            "total_cost", updatedBasket.getTotalCost()
+            "total_cost", updatedBasket.getTotalCost(),
+            "id", id
         );
 
         jdbcTemplate.update(sql, param);
@@ -50,13 +51,13 @@ public class BasketDao {
     public Optional<Basket> getBasket(int id) {
         Map<String, Integer> param = Map.of("id", id);
 
-        Basket b = jdbcTemplate.query(
+        Basket basket = jdbcTemplate.query(
                 "SELECT * FROM basket WHERE id=:id",
                 param,
                 new BeanPropertyRowMapper<>(Basket.class)
             )
             .stream().findAny().orElse(null);
 
-        return Optional.ofNullable(b);
+        return Optional.ofNullable(basket);
     }
 }
