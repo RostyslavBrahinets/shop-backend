@@ -5,6 +5,9 @@ import com.shop.exceptions.ValidationException;
 import com.shop.models.Contact;
 import com.shop.repositories.ContactRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContactValidator {
     private final ContactRepository contactRepository;
 
@@ -23,8 +26,14 @@ public class ContactValidator {
         }
     }
 
-    public void validate(int id) {
-        if (id < 1 || id > contactRepository.getContacts().size()) {
+    public void validate(long id) {
+        List<Long> ids = new ArrayList<>();
+
+        for (Contact contact : contactRepository.getContacts()) {
+            ids.add(contact.getId());
+        }
+
+        if (id < 1 || !ids.contains(id)) {
             throw new NotFoundException("Contact not found");
         }
     }

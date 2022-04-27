@@ -5,6 +5,9 @@ import com.shop.exceptions.ValidationException;
 import com.shop.models.*;
 import com.shop.repositories.PersonRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PersonValidator {
     private final PersonRepository personRepository;
 
@@ -35,8 +38,14 @@ public class PersonValidator {
         }
     }
 
-    public void validate(int id) {
-        if (id < 1 || id > personRepository.getPeople().size()) {
+    public void validate(long id) {
+        List<Long> ids = new ArrayList<>();
+
+        for (Person person : personRepository.getPeople()) {
+            ids.add(person.getId());
+        }
+
+        if (id < 1 || !ids.contains(id)) {
             throw new NotFoundException("Person not found");
         }
     }

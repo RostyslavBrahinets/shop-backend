@@ -5,6 +5,9 @@ import com.shop.exceptions.ValidationException;
 import com.shop.models.Basket;
 import com.shop.repositories.BasketRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BasketValidator {
     private final BasketRepository basketRepository;
 
@@ -20,8 +23,14 @@ public class BasketValidator {
         }
     }
 
-    public void validate(int id) {
-        if (id < 1 || id > basketRepository.getBaskets().size()) {
+    public void validate(long id) {
+        List<Long> ids = new ArrayList<>();
+
+        for (Basket basket : basketRepository.getBaskets()) {
+            ids.add(basket.getId());
+        }
+
+        if (id < 1 || !ids.contains(id)) {
             throw new NotFoundException("Basket not found");
         }
     }

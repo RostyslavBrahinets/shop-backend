@@ -6,6 +6,9 @@ import com.shop.models.Category;
 import com.shop.models.Product;
 import com.shop.repositories.ProductRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductValidator {
     private final ProductRepository productRepository;
 
@@ -30,8 +33,14 @@ public class ProductValidator {
         }
     }
 
-    public void validate(int id) {
-        if (id < 1 || id > productRepository.getProducts().size()) {
+    public void validate(long id) {
+        List<Long> ids = new ArrayList<>();
+
+        for (Product product : productRepository.getProducts()) {
+            ids.add(product.getId());
+        }
+
+        if (id < 1 || !ids.contains(id)) {
             throw new NotFoundException("Product not found");
         }
     }

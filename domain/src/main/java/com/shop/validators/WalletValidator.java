@@ -5,6 +5,9 @@ import com.shop.exceptions.ValidationException;
 import com.shop.models.Wallet;
 import com.shop.repositories.WalletRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WalletValidator {
     private final WalletRepository walletRepository;
 
@@ -23,9 +26,15 @@ public class WalletValidator {
         }
     }
 
-    public void validate(int id) {
-        if (id < 1 || id > walletRepository.getWallets().size()) {
-            throw new NotFoundException("Product not found");
+    public void validate(long id) {
+        List<Long> ids = new ArrayList<>();
+
+        for (Wallet wallet : walletRepository.getWallets()) {
+            ids.add(wallet.getId());
+        }
+
+        if (id < 1 || !ids.contains(id)) {
+            throw new NotFoundException("Wallet not found");
         }
     }
 }
