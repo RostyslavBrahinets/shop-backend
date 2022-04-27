@@ -1,5 +1,6 @@
 package com.shop.models;
 
+import javax.persistence.Lob;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ public class Product implements Serializable {
     private int price;
     private Category category;
     private boolean inStock;
-    //    @Lob
+    @Lob
     private byte[] image;
 
     public Product() {
@@ -93,7 +94,6 @@ public class Product implements Serializable {
     public void setImage(byte[] image) {
         this.image = image;
     }
-
 
     @Override
     public boolean equals(Object o) {
