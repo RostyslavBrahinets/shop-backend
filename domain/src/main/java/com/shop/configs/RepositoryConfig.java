@@ -33,4 +33,11 @@ public class RepositoryConfig {
     public WalletRepository walletRepository(WalletDao walletDao) {
         return new WalletRepository(walletDao);
     }
+
+    @Bean
+    public ProductsBasketsRepository productsBasketsRepository(
+        ProductsBasketsDao productsBasketsDao
+    ) {
+        return new ProductsBasketsRepository(productsBasketsDao);
+    }
 }
