@@ -3,9 +3,11 @@ package com.shop.configs;
 import com.shop.dao.BasketDao;
 import com.shop.dao.ContactDao;
 import com.shop.dao.PersonDao;
+import com.shop.dao.ProductDao;
 import com.shop.repositories.BasketRepository;
 import com.shop.repositories.ContactRepository;
 import com.shop.repositories.PersonRepository;
+import com.shop.repositories.ProductRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -26,5 +28,10 @@ public class RepositoryConfig {
     @Bean
     public PersonRepository personRepository(PersonDao personDao) {
         return new PersonRepository(personDao);
+    }
+
+    @Bean
+    public ProductRepository productRepository(ProductDao productDao) {
+        return new ProductRepository(productDao);
     }
 }
