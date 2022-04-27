@@ -1,8 +1,9 @@
 package com.shop.models;
 
-import java.awt.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class Product implements Serializable {
     @Serial
@@ -13,7 +14,29 @@ public class Product implements Serializable {
     private int price;
     private Category category;
     private boolean inStock;
-    private Image image;
+    //    @Lob
+    private byte[] image;
+
+    public Product() {
+    }
+
+    public Product(
+        long id,
+        String name,
+        String describe,
+        int price,
+        Category category,
+        boolean inStock,
+        byte[] image
+    ) {
+        this.id = id;
+        this.name = name;
+        this.describe = describe;
+        this.price = price;
+        this.category = category;
+        this.inStock = inStock;
+        this.image = image;
+    }
 
     public long getId() {
         return id;
@@ -63,11 +86,52 @@ public class Product implements Serializable {
         this.inStock = inStock;
     }
 
-    public Image getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(byte[] image) {
         this.image = image;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Product product = (Product) o;
+        return id == product.id
+            && price == product.price
+            && inStock == product.inStock
+            && Objects.equals(name, product.name)
+            && Objects.equals(describe, product.describe)
+            && category == product.category
+            && Arrays.equals(image, product.image);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(id, name, describe, price, category, inStock);
+        result = 31 * result + Arrays.hashCode(image);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{"
+            + "id=" + id
+            + ", name='" + name + '\''
+            + ", describe='" + describe + '\''
+            + ", price=" + price
+            + ", category=" + category
+            + ", inStock=" + inStock
+            + ", image=" + Arrays.toString(image)
+            + '}';
     }
 }

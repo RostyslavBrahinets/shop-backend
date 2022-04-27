@@ -2,6 +2,7 @@ package com.shop.models;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Person implements Serializable {
     @Serial
@@ -13,6 +14,27 @@ public class Person implements Serializable {
     private Role role;
     private Basket basket;
     private Wallet wallet;
+
+    public Person() {
+    }
+
+    public Person(
+        long id,
+        String firstName,
+        String lastName,
+        Contact contact,
+        Role role,
+        Basket basket,
+        Wallet wallet
+    ) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.contact = contact;
+        this.role = role;
+        this.basket = basket;
+        this.wallet = wallet;
+    }
 
     public long getId() {
         return id;
@@ -68,5 +90,43 @@ public class Person implements Serializable {
 
     public void setWallet(Wallet wallet) {
         this.wallet = wallet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Person person = (Person) o;
+        return id == person.id
+            && Objects.equals(firstName, person.firstName)
+            && Objects.equals(lastName, person.lastName)
+            && Objects.equals(contact, person.contact)
+            && role == person.role
+            && Objects.equals(basket, person.basket)
+            && Objects.equals(wallet, person.wallet);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, contact, role, basket, wallet);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{"
+            + "id=" + id
+            + ", firstName='" + firstName + '\''
+            + ", lastName='" + lastName + '\''
+            + ", contact=" + contact
+            + ", role=" + role
+            + ", basket=" + basket
+            + ", wallet=" + wallet
+            + '}';
     }
 }
