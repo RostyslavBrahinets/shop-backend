@@ -33,13 +33,12 @@ public class PersonDao {
     }
 
     public void updatePerson(long id, Person updatedPerson) {
-        String sql = "UPDATE person SET first_name=:first_name, last_name=:last_name, role=:role"
+        String sql = "UPDATE person SET first_name=:first_name, last_name=:last_name"
             + " WHERE id=:id";
 
         Map<String, Object> param = Map.of(
             "first_name", updatedPerson.getFirstName(),
             "last_name", updatedPerson.getLastName(),
-            "role", updatedPerson.getRole().toString(),
             "id", id
         );
 

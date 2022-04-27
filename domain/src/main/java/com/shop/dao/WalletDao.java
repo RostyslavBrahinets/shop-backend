@@ -33,11 +33,10 @@ public class WalletDao {
     }
 
     public void updateWallet(long id, Wallet updatedWallet) {
-        String sql = "UPDATE wallet SET number=:number, amount_of_money=:amount_of_money "
+        String sql = "UPDATE wallet SET amount_of_money=:amount_of_money "
             + "WHERE id=:id";
 
         Map<String, Object> param = Map.of(
-            "number", updatedWallet.getNumber(),
             "amount_of_money", updatedWallet.getAmountOfMoney(),
             "id", id
         );
