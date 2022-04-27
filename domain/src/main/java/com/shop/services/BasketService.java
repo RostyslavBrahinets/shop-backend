@@ -30,6 +30,13 @@ public class BasketService {
         return basket;
     }
 
+    public Basket updateBasket(int id, Basket basket) {
+        validator.validate(id);
+        validator.validate(basket);
+        basketRepository.updateBasket(id, basket);
+        return basket;
+    }
+
     public void deleteBasket(int id) {
         validator.validate(id);
         basketRepository.deleteBasket(id);
