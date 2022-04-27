@@ -21,15 +21,15 @@ public class ProductRepository {
         productDao.addProduct(person);
     }
 
-    public void updateProduct(int id, Product product) {
+    public void updateProduct(long id, Product product) {
         productDao.updateProduct(id, product);
     }
 
-    public void deleteProduct(int id) {
+    public void deleteProduct(long id) {
         productDao.deleteProduct(id);
     }
 
-    public Optional<Product> getProduct(int id) {
+    public Optional<Product> getProduct(long id) {
         return productDao.getProduct(id);
     }
 }

@@ -17,19 +17,19 @@ public class BasketRepository {
         return basketDao.getBaskets();
     }
 
-    public void addBasket(Basket basket, int personId) {
+    public void addBasket(Basket basket, long personId) {
         basketDao.addBasket(basket, personId);
     }
 
-    public void updateBasket(int id, Basket basket) {
+    public void updateBasket(long id, Basket basket) {
         basketDao.updateBasket(id, basket);
     }
 
-    public void deleteBasket(int id) {
+    public void deleteBasket(long id) {
         basketDao.deleteBasket(id);
     }
 
-    public Optional<Basket> getBasket(int id) {
+    public Optional<Basket> getBasket(long id) {
         return basketDao.getBasket(id);
     }
 }

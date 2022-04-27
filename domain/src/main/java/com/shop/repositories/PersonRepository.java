@@ -21,15 +21,15 @@ public class PersonRepository {
         personDao.addPerson(person);
     }
 
-    public void updatePerson(int id, Person person) {
+    public void updatePerson(long id, Person person) {
         personDao.updatePerson(id, person);
     }
 
-    public void deletePerson(int id) {
+    public void deletePerson(long id) {
         personDao.deletePerson(id);
     }
 
-    public Optional<Person> getPerson(int id) {
+    public Optional<Person> getPerson(long id) {
         return personDao.getPerson(id);
     }
 }

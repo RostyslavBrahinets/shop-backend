@@ -17,19 +17,19 @@ public class WalletRepository {
         return walletDao.getWallets();
     }
 
-    public void addWallet(Wallet wallet, int personId) {
+    public void addWallet(Wallet wallet, long personId) {
         walletDao.addWallet(wallet, personId);
     }
 
-    public void updateWallet(int id, Wallet wallet) {
+    public void updateWallet(long id, Wallet wallet) {
         walletDao.updateWallet(id, wallet);
     }
 
-    public void deleteWallet(int id) {
+    public void deleteWallet(long id) {
         walletDao.deleteWallet(id);
     }
 
-    public Optional<Wallet> getWallet(int id) {
+    public Optional<Wallet> getWallet(long id) {
         return walletDao.getWallet(id);
     }
 }

@@ -17,19 +17,19 @@ public class ContactRepository {
         return contactDao.getContacts();
     }
 
-    public void addContact(Contact contact, int personId) {
+    public void addContact(Contact contact, long personId) {
         contactDao.addContact(contact, personId);
     }
 
-    public void updateContact(int id, Contact contact) {
+    public void updateContact(long id, Contact contact) {
         contactDao.updateContact(id, contact);
     }
 
-    public void deleteContact(int id) {
+    public void deleteContact(long id) {
         contactDao.deleteContact(id);
     }
 
-    public Optional<Contact> getContact(int id) {
+    public Optional<Contact> getContact(long id) {
         return contactDao.getContact(id);
     }
 }
