@@ -21,6 +21,10 @@ public class BasketRepository {
         basketDao.addBasket(basket, personId);
     }
 
+    public void updateBasket(int id, Basket basket) {
+        basketDao.updateBasket(id, basket);
+    }
+
     public void deleteBasket(int id) {
         basketDao.deleteBasket(id);
     }
