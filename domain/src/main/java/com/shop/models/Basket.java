@@ -10,7 +10,7 @@ public class Basket implements Serializable {
     private static final long serialVersionUID = 4L;
     private long id;
     private List<Product> products;
-    private int totalCost;
+    private double totalCost;
 
     public Basket() {
     }
@@ -18,7 +18,7 @@ public class Basket implements Serializable {
     public Basket(
         long id,
         List<Product> products,
-        int totalCost
+        double totalCost
     ) {
         this.id = id;
         this.products = products;
@@ -41,11 +41,11 @@ public class Basket implements Serializable {
         this.products = products;
     }
 
-    public int getTotalCost() {
+    public double getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(int totalCost) {
+    public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
     }
 

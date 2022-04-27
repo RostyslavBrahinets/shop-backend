@@ -13,7 +13,7 @@ public class BasketValidator {
     }
 
     public void validate(Basket basket) {
-        int totalCost = basket.getTotalCost();
+        double totalCost = basket.getTotalCost();
 
         if (totalCost < 0) {
             throw new ValidationException("Total cost of products in basket is invalid");

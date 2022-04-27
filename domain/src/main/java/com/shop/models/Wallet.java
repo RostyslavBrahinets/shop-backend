@@ -8,16 +8,16 @@ public class Wallet implements Serializable {
     @Serial
     private static final long serialVersionUID = 3L;
     private long id;
-    private long number;
-    private int amountOfMoney;
+    private String number;
+    private double amountOfMoney;
 
     public Wallet() {
     }
 
     public Wallet(
         long id,
-        long number,
-        int amountOfMoney
+        String number,
+        double amountOfMoney
     ) {
         this.id = id;
         this.number = number;
@@ -32,19 +32,19 @@ public class Wallet implements Serializable {
         this.id = id;
     }
 
-    public long getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(long number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
-    public int getAmountOfMoney() {
+    public double getAmountOfMoney() {
         return amountOfMoney;
     }
 
-    public void setAmountOfMoney(int amountOfMoney) {
+    public void setAmountOfMoney(double amountOfMoney) {
         this.amountOfMoney = amountOfMoney;
     }
 
@@ -60,8 +60,8 @@ public class Wallet implements Serializable {
 
         Wallet wallet = (Wallet) o;
         return id == wallet.id
-            && number == wallet.number
-            && amountOfMoney == wallet.amountOfMoney;
+            && Double.compare(wallet.amountOfMoney, amountOfMoney) == 0
+            && Objects.equals(number, wallet.number);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class Wallet implements Serializable {
     public String toString() {
         return "Wallet{"
             + "id=" + id
-            + ", number=" + number
+            + ", number='" + number + '\''
             + ", amountOfMoney=" + amountOfMoney
             + '}';
     }

@@ -12,7 +12,7 @@ public class Product implements Serializable {
     private long id;
     private String name;
     private String describe;
-    private int price;
+    private double price;
     private Category category;
     private boolean inStock;
     @Lob
@@ -25,7 +25,7 @@ public class Product implements Serializable {
         long id,
         String name,
         String describe,
-        int price,
+        double price,
         Category category,
         boolean inStock,
         byte[] image
@@ -63,11 +63,11 @@ public class Product implements Serializable {
         this.describe = describe;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
