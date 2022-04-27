@@ -1,13 +1,7 @@
 package com.shop.configs;
 
-import com.shop.repositories.BasketRepository;
-import com.shop.repositories.ContactRepository;
-import com.shop.repositories.PersonRepository;
-import com.shop.repositories.ProductRepository;
-import com.shop.validators.BasketValidator;
-import com.shop.validators.ContactValidator;
-import com.shop.validators.PersonValidator;
-import com.shop.validators.ProductValidator;
+import com.shop.repositories.*;
+import com.shop.validators.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -33,5 +27,10 @@ public class ValidatorConfig {
     @Bean
     public ProductValidator personValidator(ProductRepository productRepository) {
         return new ProductValidator(productRepository);
+    }
+
+    @Bean
+    public WalletValidator personValidator(WalletRepository walletRepository) {
+        return new WalletValidator(walletRepository);
     }
 }
