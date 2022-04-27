@@ -24,25 +24,25 @@ public class WalletService {
         return walletRepository.getWallets();
     }
 
-    public Wallet addWallet(Wallet wallet, int personId) {
+    public Wallet addWallet(Wallet wallet, long personId) {
         validator.validate(wallet);
         walletRepository.addWallet(wallet, personId);
         return wallet;
     }
 
-    public Wallet updateWallet(int id, Wallet wallet) {
+    public Wallet updateWallet(long id, Wallet wallet) {
         validator.validate(id);
         validator.validate(wallet);
         walletRepository.updateWallet(id, wallet);
         return wallet;
     }
 
-    public void deleteWallet(int id) {
+    public void deleteWallet(long id) {
         validator.validate(id);
         walletRepository.deleteWallet(id);
     }
 
-    public Wallet getWallet(int id) {
+    public Wallet getWallet(long id) {
         validator.validate(id);
         Optional<Wallet> wallet = walletRepository.getWallet(id);
         if (wallet.isEmpty()) {

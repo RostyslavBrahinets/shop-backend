@@ -24,25 +24,25 @@ public class BasketService {
         return basketRepository.getBaskets();
     }
 
-    public Basket addBasket(Basket basket, int personId) {
+    public Basket addBasket(Basket basket, long personId) {
         validator.validate(basket);
         basketRepository.addBasket(basket, personId);
         return basket;
     }
 
-    public Basket updateBasket(int id, Basket basket) {
+    public Basket updateBasket(long id, Basket basket) {
         validator.validate(id);
         validator.validate(basket);
         basketRepository.updateBasket(id, basket);
         return basket;
     }
 
-    public void deleteBasket(int id) {
+    public void deleteBasket(long id) {
         validator.validate(id);
         basketRepository.deleteBasket(id);
     }
 
-    public Basket getBasket(int id) {
+    public Basket getBasket(long id) {
         validator.validate(id);
         Optional<Basket> basket = basketRepository.getBasket(id);
         if (basket.isEmpty()) {

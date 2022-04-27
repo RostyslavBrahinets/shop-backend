@@ -30,19 +30,19 @@ public class ProductService {
         return product;
     }
 
-    public Product updateProduct(int id, Product product) {
+    public Product updateProduct(long id, Product product) {
         validator.validate(id);
         validator.validate(product);
         productRepository.updateProduct(id, product);
         return product;
     }
 
-    public void deleteProduct(int id) {
+    public void deleteProduct(long id) {
         validator.validate(id);
         productRepository.deleteProduct(id);
     }
 
-    public Product getProduct(int id) {
+    public Product getProduct(long id) {
         validator.validate(id);
         Optional<Product> product = productRepository.getProduct(id);
         if (product.isEmpty()) {

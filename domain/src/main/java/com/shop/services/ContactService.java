@@ -24,25 +24,25 @@ public class ContactService {
         return contactRepository.getContacts();
     }
 
-    public Contact addContact(Contact contact, int personId) {
+    public Contact addContact(Contact contact, long personId) {
         validator.validate(contact);
         contactRepository.addContact(contact, personId);
         return contact;
     }
 
-    public Contact updateContact(int id, Contact contact) {
+    public Contact updateContact(long id, Contact contact) {
         validator.validate(id);
         validator.validate(contact);
         contactRepository.updateContact(id, contact);
         return contact;
     }
 
-    public void deleteContact(int id) {
+    public void deleteContact(long id) {
         validator.validate(id);
         contactRepository.deleteContact(id);
     }
 
-    public Contact getContact(int id) {
+    public Contact getContact(long id) {
         validator.validate(id);
         Optional<Contact> contact = contactRepository.getContact(id);
         if (contact.isEmpty()) {

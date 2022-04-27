@@ -30,19 +30,19 @@ public class PersonService {
         return person;
     }
 
-    public Person updatePerson(int id, Person person) {
+    public Person updatePerson(long id, Person person) {
         validator.validate(id);
         validator.validate(person);
         personRepository.updatePerson(id, person);
         return person;
     }
 
-    public void deletePerson(int id) {
+    public void deletePerson(long id) {
         validator.validate(id);
         personRepository.deletePerson(id);
     }
 
-    public Person getPerson(int id) {
+    public Person getPerson(long id) {
         validator.validate(id);
         Optional<Person> person = personRepository.getPerson(id);
         if (person.isEmpty()) {
