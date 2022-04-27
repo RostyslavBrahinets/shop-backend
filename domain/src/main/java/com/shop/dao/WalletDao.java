@@ -19,7 +19,7 @@ public class WalletDao {
         );
     }
 
-    public void addWallet(Wallet wallet, int personId) {
+    public void addWallet(Wallet wallet, long personId) {
         String sql = "INSERT INTO wallet (number, amount_of_money, person_id)"
             + " VALUES (:number, :amount_of_money, :person_id)";
 
@@ -32,7 +32,7 @@ public class WalletDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public void updateWallet(int id, Wallet updatedWallet) {
+    public void updateWallet(long id, Wallet updatedWallet) {
         String sql = "UPDATE wallet SET number=:number, amount_of_money=:amount_of_money "
             + "WHERE id=:id";
 
@@ -45,14 +45,14 @@ public class WalletDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public void deleteWallet(int id) {
+    public void deleteWallet(long id) {
         String sql = "DELETE FROM wallet WHERE id=:id";
-        Map<String, Integer> param = Map.of("id", id);
+        Map<String, Long> param = Map.of("id", id);
         jdbcTemplate.update(sql, param);
     }
 
-    public Optional<Wallet> getWallet(int id) {
-        Map<String, Integer> param = Map.of("id", id);
+    public Optional<Wallet> getWallet(long id) {
+        Map<String, Long> param = Map.of("id", id);
 
         Wallet wallet = jdbcTemplate.query(
                 "SELECT * FROM wallet WHERE id=:id",

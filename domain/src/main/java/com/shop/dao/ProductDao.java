@@ -35,7 +35,7 @@ public class ProductDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public void updateProduct(int id, Product updatedProduct) {
+    public void updateProduct(long id, Product updatedProduct) {
         String sql = "UPDATE product SET name=:name, describe=:describe, price=:price, "
             + "category=:category, in_stock=:in_stock, image=:image "
             + "WHERE id=:id";
@@ -53,14 +53,14 @@ public class ProductDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public void deleteProduct(int id) {
+    public void deleteProduct(long id) {
         String sql = "DELETE FROM product WHERE id=:id";
-        Map<String, Integer> param = Map.of("id", id);
+        Map<String, Long> param = Map.of("id", id);
         jdbcTemplate.update(sql, param);
     }
 
-    public Optional<Product> getProduct(int id) {
-        Map<String, Integer> param = Map.of("id", id);
+    public Optional<Product> getProduct(long id) {
+        Map<String, Long> param = Map.of("id", id);
 
         Product product = jdbcTemplate.query(
                 "SELECT * FROM product WHERE id=:id",

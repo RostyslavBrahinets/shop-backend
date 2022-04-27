@@ -32,7 +32,7 @@ public class PersonDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public void updatePerson(int id, Person updatedPerson) {
+    public void updatePerson(long id, Person updatedPerson) {
         String sql = "UPDATE person SET first_name=:first_name, last_name=:last_name, role=:role"
             + " WHERE id=:id";
 
@@ -46,14 +46,14 @@ public class PersonDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public void deletePerson(int id) {
+    public void deletePerson(long id) {
         String sql = "DELETE FROM person WHERE id=:id";
-        Map<String, Integer> param = Map.of("id", id);
+        Map<String, Long> param = Map.of("id", id);
         jdbcTemplate.update(sql, param);
     }
 
-    public Optional<Person> getPerson(int id) {
-        Map<String, Integer> param = Map.of("id", id);
+    public Optional<Person> getPerson(long id) {
+        Map<String, Long> param = Map.of("id", id);
 
         Person person = jdbcTemplate.query(
                 "SELECT * FROM person WHERE id=:id",

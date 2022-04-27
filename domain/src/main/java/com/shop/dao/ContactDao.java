@@ -19,7 +19,7 @@ public class ContactDao {
         );
     }
 
-    public void addContact(Contact contact, int personId) {
+    public void addContact(Contact contact, long personId) {
         String sql = "INSERT INTO contact (email, phone, person_id)"
             + " VALUES (:email, :phone, :person_id)";
 
@@ -32,7 +32,7 @@ public class ContactDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public void updateContact(int id, Contact updatedContact) {
+    public void updateContact(long id, Contact updatedContact) {
         String sql = "UPDATE contact SET email=:email, phone=:phone WHERE id=:id";
 
         Map<String, Object> param = Map.of(
@@ -44,14 +44,14 @@ public class ContactDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public void deleteContact(int id) {
+    public void deleteContact(long id) {
         String sql = "DELETE FROM contact WHERE id=:id";
-        Map<String, Integer> param = Map.of("id", id);
+        Map<String, Long> param = Map.of("id", id);
         jdbcTemplate.update(sql, param);
     }
 
-    public Optional<Contact> getContact(int id) {
-        Map<String, Integer> param = Map.of("id", id);
+    public Optional<Contact> getContact(long id) {
+        Map<String, Long> param = Map.of("id", id);
 
         Contact contact = jdbcTemplate.query(
                 "SELECT * FROM contact WHERE id=:id",

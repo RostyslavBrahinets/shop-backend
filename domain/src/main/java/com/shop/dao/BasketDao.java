@@ -19,7 +19,7 @@ public class BasketDao {
         );
     }
 
-    public void addBasket(Basket basket, int personId) {
+    public void addBasket(Basket basket, long personId) {
         String sql = "INSERT INTO basket (total_cost, person_id)"
             + " VALUES (:total_cost, :person_id)";
 
@@ -31,7 +31,7 @@ public class BasketDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public void updateBasket(int id, Basket updatedBasket) {
+    public void updateBasket(long id, Basket updatedBasket) {
         String sql = "UPDATE basket SET total_cost=:total_cost WHERE id=:id";
 
         Map<String, Object> param = Map.of(
@@ -42,14 +42,14 @@ public class BasketDao {
         jdbcTemplate.update(sql, param);
     }
 
-    public void deleteBasket(int id) {
+    public void deleteBasket(long id) {
         String sql = "DELETE FROM contact WHERE id=:id";
-        Map<String, Integer> param = Map.of("id", id);
+        Map<String, Long> param = Map.of("id", id);
         jdbcTemplate.update(sql, param);
     }
 
-    public Optional<Basket> getBasket(int id) {
-        Map<String, Integer> param = Map.of("id", id);
+    public Optional<Basket> getBasket(long id) {
+        Map<String, Long> param = Map.of("id", id);
 
         Basket basket = jdbcTemplate.query(
                 "SELECT * FROM basket WHERE id=:id",
