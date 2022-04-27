@@ -30,4 +30,9 @@ public class DaoConfig {
     public WalletDao walletDao() {
         return new WalletDao();
     }
+
+    @Bean
+    public ProductsBasketsDao productsBasketsDao() {
+        return new ProductsBasketsDao();
+    }
 }
