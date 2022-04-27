@@ -21,6 +21,10 @@ public class ContactRepository {
         contactDao.addContact(contact, personId);
     }
 
+    public void updateContact(int id, Contact contact) {
+        contactDao.updateContact(id, contact);
+    }
+
     public void deleteContact(int id) {
         contactDao.deleteContact(id);
     }
