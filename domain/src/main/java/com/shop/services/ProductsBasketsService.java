@@ -60,6 +60,16 @@ public class ProductsBasketsService {
         productValidator.validate(idProduct);
         basketValidator.validate(idBasket);
         productsBasketsRepository.deleteProduct(idProduct, idProduct);
+
+        Optional<Basket> basketOptional = basketRepository.getBasket(idBasket);
+
+        if (basketOptional.isPresent()) {
+            Basket basket = basketOptional.get();
+            List<Product> products = basket.getProducts();
+            products.remove((int) idProduct);
+            basket.setProducts(products);
+        }
+
     }
 
     public Product getProductFromBasket(long idProduct, long idBasket) {
