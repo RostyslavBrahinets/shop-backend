@@ -35,7 +35,7 @@ public class ServiceConfig {
     }
 
     @Bean
-    public ProductService personService(
+    public ProductService productService(
         ProductRepository productRepository,
         ProductValidator productValidator
     ) {
@@ -43,10 +43,27 @@ public class ServiceConfig {
     }
 
     @Bean
-    public WalletService personService(
+    public WalletService walletService(
         WalletRepository walletRepository,
         WalletValidator walletValidator
     ) {
         return new WalletService(walletRepository, walletValidator);
+    }
+
+    @Bean
+    public ProductsBasketsService productsBasketsService(
+        ProductsBasketsRepository productsBasketsRepository,
+        BasketRepository basketRepository,
+        ProductRepository productRepository,
+        ProductValidator productValidator,
+        BasketValidator basketValidator
+    ) {
+        return new ProductsBasketsService(
+            productsBasketsRepository,
+            basketRepository,
+            productRepository,
+            productValidator,
+            basketValidator
+        );
     }
 }
