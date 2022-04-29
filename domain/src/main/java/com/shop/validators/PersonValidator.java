@@ -29,12 +29,6 @@ public class PersonValidator {
             throw new ValidationException("Last name is invalid");
         } else if (role == null || role.toString().isBlank()) {
             throw new ValidationException("Role is invalid");
-        } else if (basket == null) {
-            throw new ValidationException("Basket is invalid");
-        } else if (contact == null) {
-            throw new ValidationException("Contact is invalid");
-        } else if (wallet == null) {
-            throw new ValidationException("Wallet is invalid");
         }
     }
 
