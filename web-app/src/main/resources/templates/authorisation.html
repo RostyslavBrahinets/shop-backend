@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Authorisation</title>
+</head>
+<body>
+
+<h1>Authorisation</h1>
+
+<form th:action="@{/authorisation}" method="post">
+    <label for="userRole">User Role: </label>
+    <input id="userRole" type="text" name="userRole" value="admin">
+    <input type="submit" value="Log in">
+</form>
+
+</body>
+</html>
