@@ -11,7 +11,7 @@ public class DatabaseTemplate {
         );
 
     private static final NamedParameterJdbcTemplate jdbcTemplate =
-        (NamedParameterJdbcTemplate) context.getBean("jdbcTemplate");
+        (NamedParameterJdbcTemplate) context.getBean("namedParameterJdbcTemplate");
 
     public static NamedParameterJdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;

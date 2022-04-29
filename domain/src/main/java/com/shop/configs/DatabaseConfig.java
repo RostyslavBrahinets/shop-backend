@@ -40,7 +40,7 @@ public class DatabaseConfig {
     }
 
     @Bean
-    public NamedParameterJdbcTemplate jdbcTemplate(DataSource dataSource) {
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
         return new NamedParameterJdbcTemplate(dataSource);
     }
 }

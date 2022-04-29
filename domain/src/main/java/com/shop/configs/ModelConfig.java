@@ -2,9 +2,9 @@ package com.shop.configs;
 
 import com.shop.models.*;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
-@ComponentScan
+@Configuration
 public class ModelConfig {
     @Bean
     public Basket basket() {

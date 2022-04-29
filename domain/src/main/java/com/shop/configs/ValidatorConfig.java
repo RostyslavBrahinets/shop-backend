@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 @Import(RepositoryConfig.class)
 public class ValidatorConfig {
     @Bean
-    public BasketValidator contactValidator(BasketRepository basketRepository) {
+    public BasketValidator basketValidator(BasketRepository basketRepository) {
         return new BasketValidator(basketRepository);
     }
 
