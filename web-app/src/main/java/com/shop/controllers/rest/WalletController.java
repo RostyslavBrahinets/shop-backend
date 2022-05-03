@@ -1,4 +1,4 @@
-package com.shop.controllers;
+package com.shop.controllers.rest;
 
 import com.shop.configs.AppConfig;
 import com.shop.models.Wallet;
