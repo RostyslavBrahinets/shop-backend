@@ -6,34 +6,37 @@
 </head>
 <body>
 <h1>Main</h1>
+<div class="contact-container"></div>
+<!--<script th:src="@{/js/index.js}" type="text/javascript"></script>-->
+<script>
+    fetch('http://localhost:8080/', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        method: 'GET'
+    })
+        .then(response => response.ok ? response.json() : alert(error))
+        .then(data => {
+            const links = data.map(({id}) => `http://localhost:8080/products/${id}`);
 
-<form th:action="@{/baskets}" method="get">
-    <input type="submit" value="Baskets">
-</form>
+            let formattedData = data.map(({name}) => `${name}`);
+            formattedData = formattedData.join('-').split('-');
 
-<br/>
+            let i = 0;
+            formattedData.forEach(element => {
+                const a = document.createElement('a');
+                const link = document.createTextNode(element);
+                const node = document.createElement('div');
 
-<form th:action="@{/contacts}" method="get">
-    <input type="submit" value="Contacts">
-</form>
-
-<br/>
-
-<form th:action="@{/people}" method="get">
-    <input type="submit" value="People">
-</form>
-
-<br/>
-
-<form th:action="@{/products}" method="get">
-    <input type="submit" value="Products">
-</form>
-
-<br/>
-
-<form th:action="@{/wallets}" method="get">
-    <input type="submit" value="Wallets">
-</form>
-
+                a.appendChild(link);
+                a.title = element.toString();
+                a.href = links[i];
+                node.appendChild(a)
+                document.querySelector('.contact-container').append(node);
+                i++;
+            });
+        });
+</script>
 </body>
 </html>
