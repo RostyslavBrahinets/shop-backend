@@ -1,9 +1,12 @@
 package com.shop.models;
 
+import org.springframework.stereotype.Component;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Component
 public class Role implements Serializable {
     @Serial
     private static final long serialVersionUID = 6L;

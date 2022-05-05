@@ -4,10 +4,12 @@ import com.shop.exceptions.NotFoundException;
 import com.shop.models.Wallet;
 import com.shop.repositories.WalletRepository;
 import com.shop.validators.WalletValidator;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class WalletService {
     private final WalletRepository walletRepository;
     private final WalletValidator validator;

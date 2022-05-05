@@ -4,12 +4,14 @@ import com.shop.db.DatabaseTemplate;
 import com.shop.models.Product;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Component
 public class ProductsBasketsDao {
     private final NamedParameterJdbcTemplate jdbcTemplate = DatabaseTemplate.getJdbcTemplate();
 
@@ -19,7 +21,7 @@ public class ProductsBasketsDao {
         );
 
         List<Long> idProducts = jdbcTemplate.query(
-            "SELECT * FROM product_basket WHERE id_basket=:id_basket",
+            "SELECT * FROM products_baskets WHERE id_basket=:id_basket",
             param,
             new BeanPropertyRowMapper<>(Long.class)
         );
@@ -45,7 +47,7 @@ public class ProductsBasketsDao {
     }
 
     public void addProductToBasket(long idProduct, long idBasket) {
-        String sql = "INSERT INTO product_basket (id_product, id_basket)"
+        String sql = "INSERT INTO products_baskets (id_product, id_basket)"
             + " VALUES (:id_product, :id_basket)";
 
         Map<String, Long> param = Map.of(
@@ -57,7 +59,7 @@ public class ProductsBasketsDao {
     }
 
     public void deleteProductFromBasket(long idProduct, long idBasket) {
-        String sql = "DELETE FROM product_basket "
+        String sql = "DELETE FROM products_baskets "
             + "WHERE id_product=:id_product AND id_basket=:id_basket";
 
         Map<String, Long> param = Map.of(
@@ -75,7 +77,7 @@ public class ProductsBasketsDao {
         );
 
         Product product = jdbcTemplate.query(
-                "SELECT * FROM product_basket "
+                "SELECT * FROM products_baskets "
                     + "WHERE id_product=:id_product AND id_basket=:id_basket",
                 param,
                 new BeanPropertyRowMapper<>(Product.class)

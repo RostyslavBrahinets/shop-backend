@@ -8,10 +8,12 @@ import com.shop.repositories.ProductRepository;
 import com.shop.repositories.ProductsBasketsRepository;
 import com.shop.validators.BasketValidator;
 import com.shop.validators.ProductValidator;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ProductsBasketsService {
     private final ProductsBasketsRepository productsBasketsRepository;
     private final BasketRepository basketRepository;

@@ -2,9 +2,11 @@ package com.shop.repositories;
 
 import com.shop.dao.RoleDao;
 import com.shop.models.Role;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public class RoleRepository {
     private final RoleDao roleDao;
 

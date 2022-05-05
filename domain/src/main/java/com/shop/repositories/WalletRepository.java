@@ -2,10 +2,12 @@ package com.shop.repositories;
 
 import com.shop.dao.WalletDao;
 import com.shop.models.Wallet;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class WalletRepository {
     private final WalletDao walletDao;
 

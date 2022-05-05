@@ -5,10 +5,12 @@ import com.shop.exceptions.ValidationException;
 import com.shop.models.Category;
 import com.shop.models.Product;
 import com.shop.repositories.ProductRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ProductValidator {
     private final ProductRepository productRepository;
 

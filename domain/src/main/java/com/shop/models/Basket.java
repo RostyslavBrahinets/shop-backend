@@ -1,10 +1,13 @@
 package com.shop.models;
 
+import org.springframework.stereotype.Component;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+@Component
 public class Basket implements Serializable {
     @Serial
     private static final long serialVersionUID = 4L;

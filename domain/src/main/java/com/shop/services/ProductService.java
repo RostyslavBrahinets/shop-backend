@@ -4,12 +4,14 @@ import com.shop.exceptions.NotFoundException;
 import com.shop.models.Product;
 import com.shop.repositories.ProductRepository;
 import com.shop.validators.ProductValidator;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+@Service
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductValidator validator;

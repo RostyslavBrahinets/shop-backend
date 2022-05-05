@@ -2,10 +2,12 @@ package com.shop.repositories;
 
 import com.shop.dao.BasketDao;
 import com.shop.models.Basket;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class BasketRepository {
     private final BasketDao basketDao;
 

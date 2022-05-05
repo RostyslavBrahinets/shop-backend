@@ -4,10 +4,12 @@ import com.shop.exceptions.NotFoundException;
 import com.shop.models.Basket;
 import com.shop.repositories.BasketRepository;
 import com.shop.validators.BasketValidator;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class BasketService {
     private final BasketRepository basketRepository;
     private final BasketValidator validator;

@@ -1,11 +1,14 @@
 package com.shop.models;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.Lob;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
+@Component
 public class Product implements Serializable {
     @Serial
     private static final long serialVersionUID = 5L;

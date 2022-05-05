@@ -2,10 +2,12 @@ package com.shop.repositories;
 
 import com.shop.dao.PersonDao;
 import com.shop.models.Person;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class PersonRepository {
     private final PersonDao personDao;
 

@@ -4,10 +4,12 @@ import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
 import com.shop.models.Contact;
 import com.shop.repositories.ContactRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ContactValidator {
     private final ContactRepository contactRepository;
 

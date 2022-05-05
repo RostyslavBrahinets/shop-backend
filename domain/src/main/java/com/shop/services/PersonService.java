@@ -4,10 +4,12 @@ import com.shop.exceptions.NotFoundException;
 import com.shop.models.Person;
 import com.shop.repositories.PersonRepository;
 import com.shop.validators.PersonValidator;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class PersonService {
     private final PersonRepository personRepository;
     private final PersonValidator validator;

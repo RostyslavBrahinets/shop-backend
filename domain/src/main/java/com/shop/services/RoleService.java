@@ -3,9 +3,11 @@ package com.shop.services;
 import com.shop.exceptions.NotFoundException;
 import com.shop.models.Role;
 import com.shop.repositories.RoleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class RoleService {
     private final RoleRepository roleRepository;
 
