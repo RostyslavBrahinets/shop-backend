@@ -1,4 +1,4 @@
-package com.shop.controllers.rest;
+package com.shop.controllers;
 
 import com.shop.configs.AppConfig;
 import com.shop.models.Contact;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = ContactController.CONTACTS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ContactController {
-    public static final String CONTACTS_URL = "/contacts";
+    public static final String CONTACTS_URL = "/web-api/contacts";
     public static final AnnotationConfigApplicationContext applicationContext =
         new AnnotationConfigApplicationContext(AppConfig.class);
     public static final ContactService contactService =

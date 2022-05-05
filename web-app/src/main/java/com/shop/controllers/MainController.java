@@ -1,4 +1,4 @@
-package com.shop.controllers.rest;
+package com.shop.controllers;
 
 import com.shop.configs.AppConfig;
 import com.shop.models.Product;
@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = MainController.MAIN_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MainController {
+    public static final String MAIN_URL = "/web-api";
     public static final AnnotationConfigApplicationContext applicationContext =
         new AnnotationConfigApplicationContext(AppConfig.class);
     public static final ProductService productService =

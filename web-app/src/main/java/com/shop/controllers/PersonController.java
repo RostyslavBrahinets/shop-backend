@@ -1,4 +1,4 @@
-package com.shop.controllers.rest;
+package com.shop.controllers;
 
 import com.shop.configs.AppConfig;
 import com.shop.models.Person;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = PersonController.PEOPLE_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class PersonController {
-    public static final String PEOPLE_URL = "/people";
+    public static final String PEOPLE_URL = "/web-api/people";
     public static final AnnotationConfigApplicationContext applicationContext =
             new AnnotationConfigApplicationContext(AppConfig.class);
     public static final PersonService personService =

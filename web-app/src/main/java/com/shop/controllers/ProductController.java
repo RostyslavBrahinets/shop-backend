@@ -1,4 +1,4 @@
-package com.shop.controllers.rest;
+package com.shop.controllers;
 
 import com.shop.configs.AppConfig;
 import com.shop.models.Product;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = ProductController.PRODUCTS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
-    public static final String PRODUCTS_URL = "/products";
+    public static final String PRODUCTS_URL = "/web-api/products";
     public static final AnnotationConfigApplicationContext applicationContext =
         new AnnotationConfigApplicationContext(AppConfig.class);
     public static final ProductService productService =

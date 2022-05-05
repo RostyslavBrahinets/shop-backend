@@ -1,4 +1,4 @@
-package com.shop.controllers.rest;
+package com.shop.controllers;
 
 import com.shop.configs.AppConfig;
 import com.shop.models.Basket;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = BasketController.BASKETS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class BasketController {
-    public static final String BASKETS_URL = "/baskets";
+    public static final String BASKETS_URL = "/web-api/baskets";
     public static final AnnotationConfigApplicationContext applicationContext =
         new AnnotationConfigApplicationContext(AppConfig.class);
     public static final BasketService basketService =

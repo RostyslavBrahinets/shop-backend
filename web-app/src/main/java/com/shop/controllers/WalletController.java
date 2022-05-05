@@ -1,4 +1,4 @@
-package com.shop.controllers.rest;
+package com.shop.controllers;
 
 import com.shop.configs.AppConfig;
 import com.shop.models.Wallet;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = WalletController.WALLETS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class WalletController {
-    public static final String WALLETS_URL = "/wallets";
+    public static final String WALLETS_URL = "/web-api/wallets";
     public static final AnnotationConfigApplicationContext applicationContext =
         new AnnotationConfigApplicationContext(AppConfig.class);
     public static final WalletService walletService =
