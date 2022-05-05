@@ -4,24 +4,35 @@
 </head>
 <body>
 <div>
+    <h1>Login</h1>
+
     <form name="login" th:action="@{/login}" method="post">
+        <div th:if="${param.error}">
+            Invalid email or password.
+        </div>
+
+        <div th:if="${param.logout}">
+            You have been logged out.
+        </div>
+
         <div>
-            <h1>Login</h1>
-            <div th:if="${param.error}">
-                Invalid email or password.
-            </div>
-            <div th:if="${param.logout}">
-                You have been logged out.
-            </div>
             <label for="email">Email</label>
             <input type="text" id="email" name="email"/>
-            <br/>
+        </div>
+
+        <div>
             <label for="password">Password</label>
             <input type="password" id="password" name="password"/>
-            <br/>
+        </div>
+
+        <div>
             <button type="submit">Log in</button>
         </div>
     </form>
+
+    <div>
+        <a th:href="@{/registration}">Registration</a>
+    </div>
 </div>
 </body>
 </html>
