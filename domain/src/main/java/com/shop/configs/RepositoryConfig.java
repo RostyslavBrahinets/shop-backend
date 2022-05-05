@@ -30,6 +30,11 @@ public class RepositoryConfig {
     }
 
     @Bean
+    public RoleRepository roleRepository(RoleDao roleDao) {
+        return new RoleRepository(roleDao);
+    }
+
+    @Bean
     public WalletRepository walletRepository(WalletDao walletDao) {
         return new WalletRepository(walletDao);
     }

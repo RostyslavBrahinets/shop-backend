@@ -27,6 +27,11 @@ public class DaoConfig {
     }
 
     @Bean
+    public RoleDao roleDao() {
+        return new RoleDao();
+    }
+
+    @Bean
     public WalletDao walletDao() {
         return new WalletDao();
     }

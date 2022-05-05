@@ -43,6 +43,13 @@ public class ServiceConfig {
     }
 
     @Bean
+    public RoleService roleService(
+        RoleRepository roleRepository
+    ) {
+        return new RoleService(roleRepository);
+    }
+
+    @Bean
     public WalletService walletService(
         WalletRepository walletRepository,
         WalletValidator walletValidator
