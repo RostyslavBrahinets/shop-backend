@@ -18,11 +18,14 @@ public class ContactValidator {
     public void validate(Contact contact) {
         String email = contact.getEmail();
         String phone = contact.getPhone();
+        String password = contact.getPassword();
 
         if (email == null || email.isBlank()) {
             throw new ValidationException("E-mail of contact is invalid");
         } else if (phone == null || phone.isBlank()) {
             throw new ValidationException("Phone of contact is invalid");
+        } else if (password == null || password.isBlank()) {
+            throw new ValidationException("Password of contact is invalid");
         }
     }
 

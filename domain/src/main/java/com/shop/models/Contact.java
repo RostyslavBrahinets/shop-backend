@@ -10,6 +10,7 @@ public class Contact implements Serializable {
     private long id;
     private String email;
     private String phone;
+    private String password;
 
     public Contact() {
     }
@@ -17,11 +18,13 @@ public class Contact implements Serializable {
     public Contact(
         long id,
         String email,
-        String phone
+        String phone,
+        String password
     ) {
         this.id = id;
         this.email = email;
         this.phone = phone;
+        this.password = password;
     }
 
     public long getId() {
@@ -48,6 +51,14 @@ public class Contact implements Serializable {
         this.phone = phone;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -61,12 +72,13 @@ public class Contact implements Serializable {
         Contact contact = (Contact) o;
         return id == contact.id
             && Objects.equals(email, contact.email)
-            && Objects.equals(phone, contact.phone);
+            && Objects.equals(phone, contact.phone)
+            && Objects.equals(password, contact.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, phone);
+        return Objects.hash(id, email, phone, password);
     }
 
     @Override
@@ -75,6 +87,7 @@ public class Contact implements Serializable {
             + "id=" + id
             + ", email='" + email + '\''
             + ", phone='" + phone + '\''
+            + ", password='" + password + '\''
             + '}';
     }
 }

@@ -20,12 +20,13 @@ public class ContactDao {
     }
 
     public void addContact(Contact contact, long personId) {
-        String sql = "INSERT INTO contact (email, phone, person_id)"
-            + " VALUES (:email, :phone, :person_id)";
+        String sql = "INSERT INTO contact (email, phone, password, person_id)"
+            + " VALUES (:email, :phone, :password, :person_id)";
 
         Map<String, Object> param = Map.of(
             "email", contact.getEmail(),
             "phone", contact.getPhone(),
+            "password", contact.getPassword(),
             "person_id", personId
         );
 
