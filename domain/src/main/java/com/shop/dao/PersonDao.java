@@ -62,4 +62,18 @@ public class PersonDao {
 
         return Optional.ofNullable(person);
     }
+
+    public Optional<Person> getPersonByEmail(String email) {
+        Map<String, String> param = Map.of("email", email);
+
+        Person person = jdbcTemplate.query(
+                "SELECT * FROM person p, contact c "
+                    + "WHERE p.id=c.person_id and c.email=:email",
+                param,
+                new BeanPropertyRowMapper<>(Person.class)
+            )
+            .stream().findAny().orElse(null);
+
+        return Optional.ofNullable(person);
+    }
 }

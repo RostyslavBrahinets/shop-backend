@@ -32,4 +32,8 @@ public class PersonRepository {
     public Optional<Person> getPerson(long id) {
         return personDao.getPerson(id);
     }
+
+    public Optional<Person> getPersonByEmail(String email) {
+        return personDao.getPersonByEmail(email);
+    }
 }
