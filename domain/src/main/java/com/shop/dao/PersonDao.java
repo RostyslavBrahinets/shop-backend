@@ -20,13 +20,12 @@ public class PersonDao {
     }
 
     public void addPerson(Person person) {
-        String sql = "INSERT INTO person (first_name, last_name, role)"
-            + " VALUES (:first_name, :last_name, :role)";
+        String sql = "INSERT INTO person (first_name, last_name)"
+            + " VALUES (:first_name, :last_name)";
 
         Map<String, Object> param = Map.of(
             "first_name", person.getFirstName(),
-            "last_name", person.getLastName(),
-            "role", person.getRole().toString()
+            "last_name", person.getLastName()
         );
 
         jdbcTemplate.update(sql, param);

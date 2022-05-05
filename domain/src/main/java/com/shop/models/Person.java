@@ -11,7 +11,6 @@ public class Person implements Serializable {
     private String firstName;
     private String lastName;
     private Contact contact;
-    private Role role;
     private Basket basket;
     private Wallet wallet;
 
@@ -23,7 +22,6 @@ public class Person implements Serializable {
         String firstName,
         String lastName,
         Contact contact,
-        Role role,
         Basket basket,
         Wallet wallet
     ) {
@@ -31,7 +29,6 @@ public class Person implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.contact = contact;
-        this.role = role;
         this.basket = basket;
         this.wallet = wallet;
     }
@@ -68,14 +65,6 @@ public class Person implements Serializable {
         this.contact = contact;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public Basket getBasket() {
         return basket;
     }
@@ -107,14 +96,13 @@ public class Person implements Serializable {
             && Objects.equals(firstName, person.firstName)
             && Objects.equals(lastName, person.lastName)
             && Objects.equals(contact, person.contact)
-            && role == person.role
             && Objects.equals(basket, person.basket)
             && Objects.equals(wallet, person.wallet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, contact, role, basket, wallet);
+        return Objects.hash(id, firstName, lastName, contact, basket, wallet);
     }
 
     @Override
@@ -124,7 +112,6 @@ public class Person implements Serializable {
             + ", firstName='" + firstName + '\''
             + ", lastName='" + lastName + '\''
             + ", contact=" + contact
-            + ", role=" + role
             + ", basket=" + basket
             + ", wallet=" + wallet
             + '}';

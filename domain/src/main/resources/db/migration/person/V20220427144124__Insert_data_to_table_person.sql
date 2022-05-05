@@ -1,3 +1,3 @@
-INSERT INTO person (first_name, last_name, role)
-VALUES ('Rostyslav', 'Brahinets', 'ADMIN'),
-       ('John', 'Smith', 'USER');
+INSERT INTO person (first_name, last_name)
+VALUES ('Rostyslav', 'Brahinets'),
+       ('John', 'Smith');
