@@ -1,9 +1,7 @@
 package com.shop.controllers;
 
-import com.shop.configs.AppConfig;
 import com.shop.models.Product;
 import com.shop.services.ProductService;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +12,11 @@ import java.util.List;
 @RequestMapping(value = ProductController.PRODUCTS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
     public static final String PRODUCTS_URL = "/web-api/products";
-    public static final AnnotationConfigApplicationContext applicationContext =
-        new AnnotationConfigApplicationContext(AppConfig.class);
-    public static final ProductService productService =
-        applicationContext.getBean(ProductService.class);
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping
     public List<Product> findAllProducts() {

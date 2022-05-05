@@ -1,9 +1,7 @@
 package com.shop.controllers;
 
-import com.shop.configs.AppConfig;
 import com.shop.models.Basket;
 import com.shop.services.BasketService;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +12,11 @@ import java.util.List;
 @RequestMapping(value = BasketController.BASKETS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class BasketController {
     public static final String BASKETS_URL = "/web-api/baskets";
-    public static final AnnotationConfigApplicationContext applicationContext =
-        new AnnotationConfigApplicationContext(AppConfig.class);
-    public static final BasketService basketService =
-        applicationContext.getBean(BasketService.class);
+    private final BasketService basketService;
+
+    public BasketController(BasketService basketService) {
+        this.basketService = basketService;
+    }
 
     @GetMapping
     public List<Basket> findAllBaskets() {
