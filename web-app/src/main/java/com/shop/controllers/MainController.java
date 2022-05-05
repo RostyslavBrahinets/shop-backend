@@ -22,9 +22,7 @@ public class MainController {
 
     @GetMapping
     public List<Product> index() {
-        List<Product> randomProducts = productService.getRandomProducts(10);
-        System.out.println(randomProducts);
-        return randomProducts;
+        return productService.getRandomProducts(10);
     }
 }
 
