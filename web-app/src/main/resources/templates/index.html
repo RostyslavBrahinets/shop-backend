@@ -5,9 +5,18 @@
     <title>Main</title>
 </head>
 <body>
+<form name="logout" th:action="@{/logout}" method="post">
+    <div>
+        <button type="submit">Log Out</button>
+    </div>
+</form>
+
 <h1>Main</h1>
+
 <div class="contact-container"></div>
+
 <!--<script th:src="@{/js/index.js}" type="text/javascript"></script>-->
+
 <script>
     fetch('http://localhost:8080/web-api/', {
         headers: {
