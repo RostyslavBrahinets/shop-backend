@@ -9,7 +9,7 @@
 <div class="contact-container"></div>
 <!--<script th:src="@{/js/index.js}" type="text/javascript"></script>-->
 <script>
-    fetch('http://localhost:8080/', {
+    fetch('http://localhost:8080/web-api/', {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -18,7 +18,7 @@
     })
         .then(response => response.ok ? response.json() : alert(error))
         .then(data => {
-            const links = data.map(({id}) => `http://localhost:8080/products/${id}`);
+            const links = data.map(({id}) => `http://localhost:8080/web-api/products/${id}`);
 
             let formattedData = data.map(({name}) => `${name}`);
             formattedData = formattedData.join('-').split('-');
