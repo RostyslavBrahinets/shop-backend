@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Basket</title>
+</head>
+<body>
+<h1>Basket</h1>
+<div class="basket-container"></div>
+<div class="products-container"></div>
+
+<br/>
+<form name="buy" th:action="@{/buy}" method="post">
+    <button type="submit">Buy</button>
+</form>
+
+<script th:inline="javascript">
+    function displayBasketInfo(id) {
+        fetch(`http://localhost:8080/web-api/baskets/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'GET'
+        })
+            .then(response => response.ok ? response.json() : alert(error))
+            .then(data => {
+                const node = document.createElement('div');
+                const text = document.createTextNode(`Total cost: ${data.totalCost}`);
+                node.appendChild(text);
+                document.querySelector('.basket-container').append(node);
+            });
+    }
+
+    function displayProductsInBasket(id) {
+        fetch('http://localhost:8080/web-api/products-baskets', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'GET'
+        })
+            .then(response => response.ok ? response.json() : alert(error))
+            .then(data => {
+                let formattedData = data.map(({name, price}) => `${name} (${price})`);
+                formattedData = formattedData.join('-').split('-');
+                formattedData.forEach(element => {
+                    const node = document.createElement('div');
+                    const text = document.createTextNode(element);
+                    node.appendChild(text)
+                    document.querySelector('.products-container').append(node);
+                });
+            });
+    }
+
+    /*<![CDATA[*/
+    let id = /*[[${id}]]*/ '0';
+    /*]]>*/
+
+    displayBasketInfo(id);
+    displayProductsInBasket(id);
+</script>
+
+
+</body>
+</html>
