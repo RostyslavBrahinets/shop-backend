@@ -22,13 +22,29 @@ public class ContactValidator {
         String phone = contact.getPhone();
         String password = contact.getPassword();
 
-        if (email == null || email.isBlank()) {
-            throw new ValidationException("E-mail of contact is invalid");
-        } else if (phone == null || phone.isBlank()) {
-            throw new ValidationException("Phone of contact is invalid");
+        if (isInValidEmail(email)) {
+            throw new ValidationException("E-mail is invalid");
+        } else if (isInvalidPhone(phone)) {
+            throw new ValidationException("Phone is invalid");
         } else if (password == null || password.isBlank()) {
-            throw new ValidationException("Password of contact is invalid");
+            throw new ValidationException("Password is invalid");
         }
+    }
+
+    private boolean isInValidEmail(String email) {
+        return email == null
+            || email.isBlank()
+            || email.startsWith("@")
+            || !email.contains("@")
+            || !email.endsWith(".com")
+            || email.endsWith("@.com");
+    }
+
+    private boolean isInvalidPhone(String phone) {
+        return phone == null
+            || phone.isBlank()
+            || !phone.startsWith("+")
+            || phone.length() < 12;
     }
 
     public void validate(long id) {
