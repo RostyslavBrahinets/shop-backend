@@ -35,7 +35,7 @@ public class PersonRepository {
         return personDao.getPerson(id);
     }
 
-    public Optional<Person> getPersonByEmail(String email) {
-        return personDao.getPersonByEmail(email);
+    public Optional<Person> getPerson(String email) {
+        return personDao.getPerson(email);
     }
 }

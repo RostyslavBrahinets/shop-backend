@@ -65,7 +65,7 @@ public class PersonDao {
         return Optional.ofNullable(person);
     }
 
-    public Optional<Person> getPersonByEmail(String email) {
+    public Optional<Person> getPerson(String email) {
         Map<String, String> param = Map.of("email", email);
 
         Person person = jdbcTemplate.query(
