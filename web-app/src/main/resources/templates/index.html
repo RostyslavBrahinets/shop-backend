@@ -7,8 +7,9 @@
 <body>
 <form name="logout" th:action="@{/logout}" method="post">
     <div>
-        <a th:href="@{/wallets/{id}(id=${id})}">Wallet</a>
-        <a th:href="@{/baskets/{id}(id=${id})}">Basket</a>
+        <a th:href="@{/profile}">Profile</a>
+        <a th:href="@{/wallet}">Wallet</a>
+        <a th:href="@{/basket}">Basket</a>
         <button type="submit">Log Out</button>
     </div>
 </form>
