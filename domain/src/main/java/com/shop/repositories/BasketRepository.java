@@ -34,4 +34,8 @@ public class BasketRepository {
     public Optional<Basket> getBasket(long id) {
         return basketDao.getBasket(id);
     }
+
+    public Optional<Basket> getBasketByPerson(long personId) {
+        return basketDao.getBasketByPerson(personId);
+    }
 }

@@ -62,4 +62,17 @@ public class BasketDao {
 
         return Optional.ofNullable(basket);
     }
+
+    public Optional<Basket> getBasketByPerson(long personId) {
+        Map<String, Long> param = Map.of("person_id", personId);
+
+        Basket basket = jdbcTemplate.query(
+                "SELECT * FROM basket WHERE person_id=:person_id",
+                param,
+                new BeanPropertyRowMapper<>(Basket.class)
+            )
+            .stream().findAny().orElse(null);
+
+        return Optional.ofNullable(basket);
+    }
 }
