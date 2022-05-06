@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -32,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            .mvcMatchers("/registration")
+            .mvcMatchers("/registration**", "/error")
             .permitAll()
             .anyRequest().authenticated()
             .and()
@@ -43,6 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll()
             .and()
             .logout()
+            .invalidateHttpSession(true)
+            .clearAuthentication(true)
+            .deleteCookies("JSESSIONID")
             .logoutUrl("/logout")
             .logoutSuccessUrl("/login?logout")
             .permitAll();
