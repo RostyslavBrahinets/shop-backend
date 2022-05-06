@@ -7,10 +7,14 @@
 <body>
 <form name="logout" th:action="@{/logout}" method="post">
     <div>
+        <a th:href="@{/wallets/{id}(id=${id})}">Wallet</a>
+        <a th:href="@{/baskets/{id}(id=${id})}">Basket</a>
         <button type="submit">Log Out</button>
     </div>
 </form>
-<h1>Main</h1>
+
+<h2>Shop</h2>
+
 <div class="container"></div>
 <script th:src="@{../js/index.js}" type="text/javascript"></script>
 </body>
