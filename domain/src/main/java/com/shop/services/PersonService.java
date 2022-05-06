@@ -54,7 +54,7 @@ public class PersonService {
         }
     }
 
-     public Person getPerson(String email) {
+    public Person getPerson(String email) {
         Optional<Person> person = personRepository.getPerson(email);
         if (person.isEmpty()) {
             throw new NotFoundException("Person not found");
