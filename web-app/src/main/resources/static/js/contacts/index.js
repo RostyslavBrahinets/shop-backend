@@ -1,4 +1,4 @@
-fetch('http://localhost:8080/contacts/', {
+fetch('http://localhost:8080/web-api/contacts/', {
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -7,7 +7,7 @@ fetch('http://localhost:8080/contacts/', {
 })
     .then(response => response.ok ? response.json() : alert(error))
     .then(data => {
-        const links = data.map(({id}) => `http://localhost:8080/contacts/${id}`);
+        const links = data.map(({id}) => `http://localhost:8080/web-api/contacts/${id}`);
 
         let formattedData = data.map(({email}) => `${email}`);
         formattedData = formattedData.join('-').split('-');
@@ -22,7 +22,7 @@ fetch('http://localhost:8080/contacts/', {
             a.title = element.toString();
             a.href = links[i];
             node.appendChild(a)
-            document.querySelector('.contact-container').append(node);
+            document.querySelector('.container').append(node);
             i++;
         });
     });
