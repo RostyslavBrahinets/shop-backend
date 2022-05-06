@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<h1>Profile</h1>
+<div class="container"></div>
+
+<script th:inline="javascript">
+    function displayPersonInfo(id) {
+        fetch(`http://localhost:8080/web-api/people/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'GET'
+        })
+            .then(response => response.ok ? response.json() : alert(error))
+            .then(data => {
+                const node = document.createElement('div');
+
+                const divs = [];
+                for (let i = 0; i < 2; i++) {
+                    divs.push(document.createElement('div'))
+                }
+
+                const texts = [];
+                texts.push(document.createTextNode(`First Name: ${data.firstName}`));
+                texts.push(document.createTextNode(`Last Name: ${data.lastName}`));
+
+                for (let i = 0; i < 2; i++) {
+                    divs[i].appendChild(texts[i]);
+                    node.appendChild(divs[i]);
+                }
+
+                document.querySelector('.container').append(node);
+            });
+    }
+
+    function displayContactInfo(id) {
+        fetch(`http://localhost:8080/web-api/contacts/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'GET'
+        })
+            .then(response => response.ok ? response.json() : alert(error))
+            .then(data => {
+                const node = document.createElement('div');
+
+                const divs = [];
+                for (let i = 0; i < 3; i++) {
+                    divs.push(document.createElement('div'))
+                }
+
+                const texts = [];
+                texts.push(document.createTextNode(`Email: ${data.email}`));
+                texts.push(document.createTextNode(`Phone: ${data.phone}`));
+
+                for (let i = 0; i < 2; i++) {
+                    divs[i].appendChild(texts[i]);
+                    node.appendChild(divs[i]);
+                }
+
+                document.querySelector('.container').append(node);
+            });
+    }
+
+    /*<![CDATA[*/
+    let id = /*[[${id}]]*/ '0';
+    /*]]>*/
+
+    displayPersonInfo(id)
+    displayContactInfo(id);
+</script>
+</body>
+</html>
