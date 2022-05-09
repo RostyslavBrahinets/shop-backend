@@ -14,52 +14,52 @@ import java.util.Optional;
 public class ProductsBasketsDao {
     private final NamedParameterJdbcTemplate jdbcTemplate = DatabaseTemplate.getJdbcTemplate();
 
-    public List<Product> getProductsFromBasket(long idBasket) {
+    public List<Product> getProductsFromBasket(long basketId) {
         Map<String, Long> param = Map.of(
-            "id_basket", idBasket
+            "basket_id", basketId
         );
 
         return jdbcTemplate.query(
             "SELECT * FROM product p, products_baskets pb "
-                + "WHERE pb.id_product = p.id AND pb.id_basket=:id_basket",
+                + "WHERE pb.product_id = p.id AND pb.basket_id=:basket_id",
             param,
             new BeanPropertyRowMapper<>(Product.class)
         );
     }
 
-    public void addProductToBasket(long idProduct, long idBasket) {
-        String sql = "INSERT INTO products_baskets (id_product, id_basket)"
-            + " VALUES (:id_product, :id_basket)";
+    public void addProductToBasket(long productId, long basketId) {
+        String sql = "INSERT INTO products_baskets (product_id, basket_id)"
+            + " VALUES (:product_id, :basket_id)";
 
         Map<String, Long> param = Map.of(
-            "id_product", idProduct,
-            "id_basket", idBasket
+            "product_id", productId,
+            "basket_id", basketId
         );
 
         jdbcTemplate.update(sql, param);
     }
 
-    public void deleteProductFromBasket(long idProduct, long idBasket) {
+    public void deleteProductFromBasket(long productId, long basketId) {
         String sql = "DELETE FROM products_baskets "
-            + "WHERE id_product=:id_product AND id_basket=:id_basket";
+            + "WHERE product_id=:product_id AND basket_id=:basket_id";
 
         Map<String, Long> param = Map.of(
-            "id_product", idProduct,
-            "id_basket", idBasket
+            "product_id", productId,
+            "basket_id", basketId
         );
 
         jdbcTemplate.update(sql, param);
     }
 
-    public Optional<Product> getProductFromBasket(long idProduct, long idBasket) {
+    public Optional<Product> getProductFromBasket(long productId, long basketId) {
         Map<String, Long> param = Map.of(
-            "id_product", idProduct,
-            "id_basket", idBasket
+            "product_id", productId,
+            "basket_id", basketId
         );
 
         Product product = jdbcTemplate.query(
                 "SELECT * FROM products_baskets "
-                    + "WHERE id_product=:id_product AND id_basket=:id_basket",
+                    + "WHERE product_id=:product_id AND basket_id=:basket_id",
                 param,
                 new BeanPropertyRowMapper<>(Product.class)
             )
