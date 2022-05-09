@@ -15,19 +15,19 @@ public class ProductsBasketsRepository {
         this.productsBasketsDao = productsBasketsDao;
     }
 
-    public List<Product> getProductsFromBasket(long idBasket) {
-        return productsBasketsDao.getProductsFromBasket(idBasket);
+    public List<Product> getProductsFromBasket(long basketId) {
+        return productsBasketsDao.getProductsFromBasket(basketId);
     }
 
-    public void addProduct(long idProduct, long idBasket) {
-        productsBasketsDao.addProductToBasket(idProduct, idBasket);
+    public void addProductToBasket(long productId, long basketId) {
+        productsBasketsDao.addProductToBasket(productId, basketId);
     }
 
-    public void deleteProduct(long idProduct, long idBasket) {
-        productsBasketsDao.deleteProductFromBasket(idProduct, idBasket);
+    public void deleteProductFromBasket(long productId, long basketId) {
+        productsBasketsDao.deleteProductFromBasket(productId, basketId);
     }
 
-    public Optional<Product> getProduct(long idProduct, long idBasket) {
-        return productsBasketsDao.getProductFromBasket(idProduct, idBasket);
+    public Optional<Product> getProductFromBasket(long productId, long basketId) {
+        return productsBasketsDao.getProductFromBasket(productId, basketId);
     }
 }
