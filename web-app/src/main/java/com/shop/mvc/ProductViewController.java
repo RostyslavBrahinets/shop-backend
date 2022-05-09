@@ -16,7 +16,7 @@ public class ProductViewController {
 
     @GetMapping("/{id}")
     public String get(
-        @PathVariable String id,
+        @PathVariable long id,
         Model model
     ) {
         model.addAttribute("id", id);
