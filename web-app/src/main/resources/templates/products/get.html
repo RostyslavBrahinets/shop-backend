@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+</head>
+<body>
+<h1>Product</h1>
+<div class="product-container"></div>
+<script th:inline="javascript">
+    function displayProductInfo(id) {
+        fetch(`http://localhost:8080/web-api/products/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'GET'
+        })
+            .then(response => response.ok ? response.json() : alert(error))
+            .then(data => {
+                const node = document.createElement('div');
+                const divImage = document.createElement('div');
+                const divName = document.createElement('div');
+                const divCategory = document.createElement('div');
+                const divDescribe = document.createElement('div');
+                const divPrice = document.createElement('div');
+                const divInStock = document.createElement('div');
+
+                divImage.appendChild(document.createTextNode('image'));
+                divName.appendChild(document.createTextNode(`Name: ${data.name}`));
+                divCategory.appendChild(document.createTextNode(`Category: ${data.category}`));
+                divDescribe.appendChild(document.createTextNode(`Describe: ${data.describe}`));
+                divPrice.appendChild(document.createTextNode(`Price: ${data.price}`));
+
+                if (data.inStock) {
+                    divInStock.appendChild(document.createTextNode(`${data.name} is in stock`));
+                } else {
+                    divInStock.appendChild(document.createTextNode(`Sorry! ${data.name} isn't in stock`));
+                }
+
+
+                node.appendChild(divImage);
+                node.appendChild(divName);
+                node.appendChild(divCategory);
+                node.appendChild(divDescribe);
+                node.appendChild(divPrice);
+                node.appendChild(divInStock);
+                document.querySelector('.product-container').append(node);
+            });
+    }
+
+    /*<![CDATA[*/
+    let id = /*[[${id}]]*/ '0';
+    /*]]>*/
+
+    displayProductInfo(id);
+</script>
+</body>
+</html>

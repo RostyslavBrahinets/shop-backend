@@ -7,7 +7,7 @@ fetch('http://localhost:8080/web-api/', {
 })
     .then(response => response.ok ? response.json() : alert(error))
     .then(data => {
-        const links = data.map(({id}) => `http://localhost:8080/web-api/products/${id}`);
+        const links = data.map(({id}) => `http://localhost:8080/products/${id}`);
 
         let formattedData = data.map(({name}) => `${name}`);
         formattedData = formattedData.join('-').split('-');
