@@ -32,6 +32,7 @@ public class BasketService {
 
     public Basket addBasket(Basket basket, long personId) {
         basketValidator.validate(basket);
+        personValidator.validate(personId);
         basketRepository.addBasket(basket, personId);
         return basket;
     }
