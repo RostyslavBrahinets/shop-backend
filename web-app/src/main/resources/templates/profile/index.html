@@ -6,6 +6,19 @@
 </head>
 <body>
 <h1>Profile</h1>
+
+<form name="logout" th:action="@{/logout}" method="post">
+    <div>
+        <a th:href="@{/}">Main</a>
+        <a th:href="@{/products}">Products</a>
+        <a th:href="@{/wallet}">Wallet</a>
+        <a th:href="@{/basket}">Basket</a>
+        <button type="submit">Log Out</button>
+    </div>
+</form>
+
+<hr/>
+
 <div class="person-container"></div>
 <div class="contact-container"></div>
 

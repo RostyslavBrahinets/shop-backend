@@ -6,6 +6,19 @@
 </head>
 <body>
 <h1>Basket</h1>
+
+<form name="logout" th:action="@{/logout}" method="post">
+    <div>
+        <a th:href="@{/}">Main</a>
+        <a th:href="@{/profile}">Profile</a>
+        <a th:href="@{/products}">Products</a>
+        <a th:href="@{/wallet}">Wallet</a>
+        <button type="submit">Log Out</button>
+    </div>
+</form>
+
+<hr/>
+
 <div class="products-container"></div>
 <div class="basket-container"></div>
 <form name="buy" th:action="@{/buy}" method="post">
@@ -13,7 +26,7 @@
 </form>
 
 <script th:inline="javascript">
-    function displayProductsInBasket(id) {
+    function displayProductsInBasket() {
         fetch('http://localhost:8080/web-api/products-baskets', {
             headers: {
                 'Content-Type': 'application/json',
@@ -62,7 +75,7 @@
     let id = /*[[${id}]]*/ '0';
     /*]]>*/
 
-    displayProductsInBasket(id);
+    displayProductsInBasket();
     displayBasketInfo(id);
 </script>
 
