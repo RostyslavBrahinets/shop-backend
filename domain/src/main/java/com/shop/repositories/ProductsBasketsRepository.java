@@ -30,4 +30,8 @@ public class ProductsBasketsRepository {
     public Optional<Product> getProductFromBasket(long productId, long basketId) {
         return productsBasketsDao.getProductFromBasket(productId, basketId);
     }
+
+    public void deleteProductsFromBasket(long basketId) {
+        productsBasketsDao.deleteProductsFromBasket(basketId);
+    }
 }

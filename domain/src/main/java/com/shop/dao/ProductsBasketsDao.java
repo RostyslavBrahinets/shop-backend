@@ -67,4 +67,15 @@ public class ProductsBasketsDao {
 
         return Optional.ofNullable(product);
     }
+
+    public void deleteProductsFromBasket(long basketId) {
+        String sql = "DELETE FROM products_baskets "
+            + "WHERE basket_id=:basket_id";
+
+        Map<String, Long> param = Map.of(
+            "basket_id", basketId
+        );
+
+        jdbcTemplate.update(sql, param);
+    }
 }

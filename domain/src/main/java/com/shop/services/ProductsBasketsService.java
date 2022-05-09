@@ -3,34 +3,43 @@ package com.shop.services;
 import com.shop.exceptions.NotFoundException;
 import com.shop.models.Basket;
 import com.shop.models.Product;
+import com.shop.models.Wallet;
 import com.shop.repositories.ProductsBasketsRepository;
 import com.shop.validators.BasketValidator;
+import com.shop.validators.PersonValidator;
 import com.shop.validators.ProductValidator;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ProductsBasketsService {
     private final ProductsBasketsRepository productsBasketsRepository;
-    private final BasketService basketService;
-    private final ProductService productService;
     private final ProductValidator productValidator;
     private final BasketValidator basketValidator;
+    private final PersonValidator personValidator;
+    private final BasketService basketService;
+    private final ProductService productService;
+    private final WalletService walletService;
 
     public ProductsBasketsService(
         ProductsBasketsRepository productsBasketsRepository,
+        ProductValidator productValidator,
+        BasketValidator basketValidator,
+        PersonValidator personValidator,
         BasketService basketService,
         ProductService productService,
-        ProductValidator productValidator,
-        BasketValidator basketValidator
+        WalletService walletService
     ) {
         this.productsBasketsRepository = productsBasketsRepository;
-        this.basketService = basketService;
-        this.productService = productService;
         this.productValidator = productValidator;
         this.basketValidator = basketValidator;
+        this.personValidator = personValidator;
+        this.basketService = basketService;
+        this.productService = productService;
+        this.walletService = walletService;
     }
 
     public List<Product> getProductsFromBasket(long basketId) {
@@ -87,5 +96,33 @@ public class ProductsBasketsService {
         } else {
             return product.get();
         }
+    }
+
+    public void deleteProductsFromBasket(long basketId) {
+        basketValidator.validate(basketId);
+        productsBasketsRepository.deleteProductsFromBasket(basketId);
+    }
+
+    public void buy(long personId) {
+        personValidator.validate(personId);
+
+        Wallet wallet = walletService.getWalletByPerson(personId);
+        Basket basket = basketService.getBasketByPerson(personId);
+
+        double newAmountOfMoney = wallet.getAmountOfMoney();
+        newAmountOfMoney -= basket.getTotalCost();
+
+        if (newAmountOfMoney < 0) {
+            throw new NotFoundException("Not enough money to buy");
+        }
+
+        wallet.setAmountOfMoney(newAmountOfMoney);
+        walletService.updateWallet(wallet.getId(), wallet);
+
+        basket.setTotalCost(0);
+        basket.setProducts(new ArrayList<>());
+        basketService.updateBasket(basket.getId(), basket);
+
+        deleteProductsFromBasket(basket.getId());
     }
 }
