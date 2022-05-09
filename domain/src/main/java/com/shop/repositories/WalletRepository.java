@@ -34,4 +34,8 @@ public class WalletRepository {
     public Optional<Wallet> getWallet(long id) {
         return walletDao.getWallet(id);
     }
+
+    public Optional<Wallet> getWalletByPerson(long personId) {
+        return walletDao.getWalletByPerson(personId);
+    }
 }

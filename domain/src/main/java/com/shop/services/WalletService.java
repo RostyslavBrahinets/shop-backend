@@ -53,4 +53,14 @@ public class WalletService {
             return wallet.get();
         }
     }
+
+    public Wallet getWalletByPerson(long personId) {
+        validator.validate(personId);
+        Optional<Wallet> wallet = walletRepository.getWalletByPerson(personId);
+        if (wallet.isEmpty()) {
+            throw new NotFoundException("Wallet not found");
+        } else {
+            return wallet.get();
+        }
+    }
 }

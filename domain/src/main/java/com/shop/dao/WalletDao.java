@@ -64,4 +64,17 @@ public class WalletDao {
 
         return Optional.ofNullable(wallet);
     }
+
+    public Optional<Wallet> getWalletByPerson(long personId) {
+        Map<String, Long> param = Map.of("person_id", personId);
+
+        Wallet wallet = jdbcTemplate.query(
+                "SELECT * FROM wallet WHERE person_id=:person_id",
+                param,
+                new BeanPropertyRowMapper<>(Wallet.class)
+            )
+            .stream().findAny().orElse(null);
+
+        return Optional.ofNullable(wallet);
+    }
 }
