@@ -21,6 +21,11 @@
 <hr/>
 
 <div class="product-container"></div>
+
+<form name="add" th:action="@{/web-api/products-baskets/{id}(id=${id})}" method="post">
+    <button type="submit">Add To Basket</button>
+</form>
+
 <script th:inline="javascript">
     function displayProductInfo(id) {
         fetch(`http://localhost:8080/web-api/products/${id}`, {
