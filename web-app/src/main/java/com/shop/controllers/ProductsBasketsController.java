@@ -51,4 +51,14 @@ public class ProductsBasketsController {
         response.sendRedirect("/products");
         return productsBasketsService.addProductToBasket(id, basket.getId());
     }
+
+    @PostMapping("/buy")
+    public void buy(
+        @AuthenticationPrincipal UserDetails userDetail,
+        HttpServletResponse response
+    ) throws IOException {
+        Person person = personService.getPerson(userDetail.getUsername());
+        productsBasketsService.buy(person.getId());
+        response.sendRedirect("/basket");
+    }
 }
