@@ -22,60 +22,49 @@ public class PersonDao {
     }
 
     public void addPerson(Person person) {
-        String sql = "INSERT INTO person (first_name, last_name)"
-            + " VALUES (:first_name, :last_name)";
-
-        Map<String, Object> param = Map.of(
-            "first_name", person.getFirstName(),
-            "last_name", person.getLastName()
+        jdbcTemplate.update(
+            "INSERT INTO person (first_name, last_name) VALUES (:first_name, :last_name)",
+            Map.of(
+                "first_name", person.getFirstName(),
+                "last_name", person.getLastName()
+            )
         );
-
-        jdbcTemplate.update(sql, param);
     }
 
     public void updatePerson(long id, Person updatedPerson) {
-        String sql = "UPDATE person SET first_name=:first_name, last_name=:last_name"
-            + " WHERE id=:id";
-
-        Map<String, Object> param = Map.of(
-            "first_name", updatedPerson.getFirstName(),
-            "last_name", updatedPerson.getLastName(),
-            "id", id
+        jdbcTemplate.update(
+            "UPDATE person SET first_name=:first_name, last_name=:last_name WHERE id=:id",
+            Map.of(
+                "first_name", updatedPerson.getFirstName(),
+                "last_name", updatedPerson.getLastName(),
+                "id", id
+            )
         );
-
-        jdbcTemplate.update(sql, param);
     }
 
     public void deletePerson(long id) {
-        String sql = "DELETE FROM person WHERE id=:id";
-        Map<String, Long> param = Map.of("id", id);
-        jdbcTemplate.update(sql, param);
+        jdbcTemplate.update(
+            "DELETE FROM person WHERE id=:id",
+            Map.of("id", id)
+        );
     }
 
     public Optional<Person> getPerson(long id) {
-        Map<String, Long> param = Map.of("id", id);
-
-        Person person = jdbcTemplate.query(
+        return jdbcTemplate.query(
                 "SELECT * FROM person WHERE id=:id",
-                param,
+                Map.of("id", id),
                 new BeanPropertyRowMapper<>(Person.class)
             )
-            .stream().findAny().orElse(null);
-
-        return Optional.ofNullable(person);
+            .stream().findAny();
     }
 
     public Optional<Person> getPerson(String email) {
-        Map<String, String> param = Map.of("email", email);
-
-        Person person = jdbcTemplate.query(
+        return jdbcTemplate.query(
                 "SELECT * FROM person p, contact c "
                     + "WHERE p.id=c.person_id and c.email=:email",
-                param,
+                Map.of("email", email),
                 new BeanPropertyRowMapper<>(Person.class)
             )
-            .stream().findAny().orElse(null);
-
-        return Optional.ofNullable(person);
+            .stream().findAny();
     }
 }

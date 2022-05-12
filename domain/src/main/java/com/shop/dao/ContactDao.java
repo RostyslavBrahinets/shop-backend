@@ -22,47 +22,41 @@ public class ContactDao {
     }
 
     public void addContact(Contact contact, long personId) {
-        String sql = "INSERT INTO contact (email, phone, password, person_id)"
-            + " VALUES (:email, :phone, :password, :person_id)";
-
-        Map<String, Object> param = Map.of(
-            "email", contact.getEmail(),
-            "phone", contact.getPhone(),
-            "password", contact.getPassword(),
-            "person_id", personId
+        jdbcTemplate.update(
+            "INSERT INTO contact (email, phone, password, person_id) "
+                + "VALUES (:email, :phone, :password, :person_id)",
+            Map.of(
+                "email", contact.getEmail(),
+                "phone", contact.getPhone(),
+                "password", contact.getPassword(),
+                "person_id", personId
+            )
         );
-
-        jdbcTemplate.update(sql, param);
     }
 
     public void updateContact(long id, Contact updatedContact) {
-        String sql = "UPDATE contact SET email=:email, phone=:phone WHERE id=:id";
-
-        Map<String, Object> param = Map.of(
-            "email", updatedContact.getEmail(),
-            "phone", updatedContact.getPhone(),
-            "id", id
-        );
-
-        jdbcTemplate.update(sql, param);
+        jdbcTemplate.update(
+            "UPDATE contact SET email=:email, phone=:phone WHERE id=:id",
+            Map.of(
+                "email", updatedContact.getEmail(),
+                "phone", updatedContact.getPhone(),
+                "id", id
+            ));
     }
 
     public void deleteContact(long id) {
-        String sql = "DELETE FROM contact WHERE id=:id";
-        Map<String, Long> param = Map.of("id", id);
-        jdbcTemplate.update(sql, param);
+        jdbcTemplate.update(
+            "DELETE FROM contact WHERE id=:id",
+            Map.of("id", id)
+        );
     }
 
     public Optional<Contact> getContact(long id) {
-        Map<String, Long> param = Map.of("id", id);
-
-        Contact contact = jdbcTemplate.query(
+        return jdbcTemplate.query(
                 "SELECT * FROM contact WHERE id=:id",
-                param,
+                Map.of("id", id),
                 new BeanPropertyRowMapper<>(Contact.class)
             )
-            .stream().findAny().orElse(null);
-
-        return Optional.ofNullable(contact);
+            .stream().findAny();
     }
 }

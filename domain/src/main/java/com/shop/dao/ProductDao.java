@@ -22,55 +22,49 @@ public class ProductDao {
     }
 
     public void addProduct(Product product) {
-        String sql = "INSERT INTO product (name, describe, price, category, in_stock, image)"
-            + " VALUES (:name, :describe, :price, :category, :in_stock, :image)";
-
-        Map<String, Object> param = Map.of(
-            "name", product.getName(),
-            "describe", product.getDescribe(),
-            "price", product.getPrice(),
-            "category", product.getCategory().toString(),
-            "in_stock", product.isInStock(),
-            "image", product.getImage()
+        jdbcTemplate.update(
+            "INSERT INTO product (name, describe, price, category, in_stock, image) "
+                + "VALUES (:name, :describe, :price, :category, :in_stock, :image)",
+            Map.of(
+                "name", product.getName(),
+                "describe", product.getDescribe(),
+                "price", product.getPrice(),
+                "category", product.getCategory().toString(),
+                "in_stock", product.isInStock(),
+                "image", product.getImage()
+            )
         );
-
-        jdbcTemplate.update(sql, param);
     }
 
     public void updateProduct(long id, Product updatedProduct) {
-        String sql = "UPDATE product SET name=:name, describe=:describe, price=:price, "
-            + "category=:category, in_stock=:in_stock, image=:image "
-            + "WHERE id=:id";
-
-        Map<String, Object> param = Map.of(
-            "name", updatedProduct.getName(),
-            "describe", updatedProduct.getDescribe(),
-            "price", updatedProduct.getPrice(),
-            "category", updatedProduct.getCategory().toString(),
-            "in_stock", updatedProduct.isInStock(),
-            "image", updatedProduct.getImage(),
-            "id", id
+        jdbcTemplate.update(
+            "UPDATE product SET name=:name, describe=:describe, price=:price, "
+                + "category=:category, in_stock=:in_stock, image=:image WHERE id=:id",
+            Map.of(
+                "name", updatedProduct.getName(),
+                "describe", updatedProduct.getDescribe(),
+                "price", updatedProduct.getPrice(),
+                "category", updatedProduct.getCategory().toString(),
+                "in_stock", updatedProduct.isInStock(),
+                "image", updatedProduct.getImage(),
+                "id", id
+            )
         );
-
-        jdbcTemplate.update(sql, param);
     }
 
     public void deleteProduct(long id) {
-        String sql = "DELETE FROM product WHERE id=:id";
-        Map<String, Long> param = Map.of("id", id);
-        jdbcTemplate.update(sql, param);
+        jdbcTemplate.update(
+            "DELETE FROM product WHERE id=:id",
+            Map.of("id", id)
+        );
     }
 
     public Optional<Product> getProduct(long id) {
-        Map<String, Long> param = Map.of("id", id);
-
-        Product product = jdbcTemplate.query(
+        return jdbcTemplate.query(
                 "SELECT * FROM product WHERE id=:id",
-                param,
+                Map.of("id", id),
                 new BeanPropertyRowMapper<>(Product.class)
             )
-            .stream().findAny().orElse(null);
-
-        return Optional.ofNullable(product);
+            .stream().findAny();
     }
 }
