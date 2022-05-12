@@ -2,20 +2,30 @@ package com.shop.controllers;
 
 import com.shop.models.Wallet;
 import com.shop.services.WalletService;
+import com.shop.stripe.StripePayment;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Customer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = WalletController.WALLETS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class WalletController {
     public static final String WALLETS_URL = "/web-api/wallets";
+    private static final Logger logger = LoggerFactory
+        .getLogger(WalletController.class);
     private final WalletService walletService;
+    private final StripePayment stripePayment;
 
-    public WalletController(WalletService walletService) {
+    public WalletController(WalletService walletService, StripePayment stripePayment) {
         this.walletService = walletService;
+        this.stripePayment = stripePayment;
     }
 
     @GetMapping
@@ -25,7 +35,15 @@ public class WalletController {
 
     @GetMapping("/{id}")
     public Wallet findByIdWallet(@PathVariable int id) {
-        return walletService.getWallet(id);
+        Wallet wallet = walletService.getWallet(id);
+        try {
+            Optional<Customer> customer = stripePayment
+                .findByIdCustomer(walletService.getWallet(id).getNumber());
+            customer.ifPresent(value -> wallet.setAmountOfMoney(value.getBalance() / -100.0));
+        } catch (StripeException e) {
+            logger.error(e.getMessage(), e);
+        }
+        return wallet;
     }
 
     @PostMapping

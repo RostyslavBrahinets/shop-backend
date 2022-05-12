@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class StripePayment {
@@ -32,5 +33,10 @@ public class StripePayment {
         params.put("email", contact.getEmail());
 
         return Customer.create(params);
+    }
+
+    public Optional<Customer> findByIdCustomer(String id) throws StripeException {
+        Stripe.apiKey = stripeKey;
+        return Optional.ofNullable(Customer.retrieve(id));
     }
 }
