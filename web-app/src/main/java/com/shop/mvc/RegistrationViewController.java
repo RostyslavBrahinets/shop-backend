@@ -1,5 +1,6 @@
 package com.shop.mvc;
 
+import com.shop.exceptions.ValidationException;
 import com.shop.models.Basket;
 import com.shop.models.Contact;
 import com.shop.models.Person;
@@ -63,9 +64,10 @@ public class RegistrationViewController {
         @RequestParam("lastName") String lastName,
         @RequestParam("email") String email,
         @RequestParam("phone") String phone,
-        @RequestParam("password") String password
+        @RequestParam("password") String password,
+        @RequestParam("confirm-password") String confirmPassword
     ) {
-        if (isValidData(firstName, lastName, email, phone, password)) {
+        if (isValidData(firstName, lastName, email, phone, password, confirmPassword)) {
             addPerson(firstName, lastName);
             long personId = getPersonId();
             addContactForPerson(email, phone, password, personId);
@@ -81,8 +83,13 @@ public class RegistrationViewController {
         String lastName,
         String email,
         String phone,
-        String password
-    ) {
+        String password,
+        String confirmPassword
+    ) throws ValidationException {
+        if (!password.equals(confirmPassword)) {
+            throw new ValidationException("Password don't equals confirm password");
+        }
+
         Person person = getPerson(firstName, lastName);
         personValidator.validate(person);
         Contact contact = getContact(email, phone, password);
@@ -112,7 +119,11 @@ public class RegistrationViewController {
         contactService.addContact(contact, personId);
     }
 
-    private Contact getContact(String email, String phone, String password) {
+    private Contact getContact(
+        String email,
+        String phone,
+        String password
+    ) {
         Contact contact = new Contact();
         contact.setEmail(email);
         contact.setPhone(phone);
