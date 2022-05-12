@@ -5,7 +5,8 @@ import com.shop.models.Contact;
 import com.shop.models.Person;
 import com.shop.models.Wallet;
 import com.shop.services.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.shop.validators.ContactValidator;
+import com.shop.validators.PersonValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,8 @@ public class RegistrationViewController {
     private final PersonRoleService personRoleService;
     private final BasketService basketService;
     private final WalletService walletService;
-    private final PasswordEncoder passwordEncoder;
+    private final PersonValidator personValidator;
+    private final ContactValidator contactValidator;
 
     public RegistrationViewController(
         PersonService personService,
@@ -30,14 +32,16 @@ public class RegistrationViewController {
         PersonRoleService personRoleService,
         BasketService basketService,
         WalletService walletService,
-        PasswordEncoder passwordEncoder
+        PersonValidator personValidator,
+        ContactValidator contactValidator
     ) {
         this.personService = personService;
         this.contactService = contactService;
         this.personRoleService = personRoleService;
         this.basketService = basketService;
         this.walletService = walletService;
-        this.passwordEncoder = passwordEncoder;
+        this.personValidator = personValidator;
+        this.contactValidator = contactValidator;
     }
 
     @GetMapping("/registration")
@@ -53,20 +57,41 @@ public class RegistrationViewController {
         @RequestParam("phone") String phone,
         @RequestParam("password") String password
     ) {
-        addPerson(firstName, lastName);
-        long personId = getPersonId();
-        addContactForPerson(email, phone, password, personId);
-        addRoleForPerson(personId);
-        addBasketForPerson(personId);
-        addWalletForPerson(personId);
+        if (isValidData(firstName, lastName, email, phone, password)) {
+            addPerson(firstName, lastName);
+            long personId = getPersonId();
+            addContactForPerson(email, phone, password, personId);
+            addRoleForPerson(personId);
+            addBasketForPerson(personId);
+            addWalletForPerson(personId);
+        }
         return "redirect:/login";
     }
 
+    private boolean isValidData(
+        String firstName,
+        String lastName,
+        String email,
+        String phone,
+        String password
+    ) {
+        Person person = getPerson(firstName, lastName);
+        personValidator.validate(person);
+        Contact contact = getContact(email, phone, password);
+        contactValidator.validate(contact);
+        return true;
+    }
+
     private void addPerson(String firstName, String lastName) {
+        Person person = getPerson(firstName, lastName);
+        personService.addPerson(person);
+    }
+
+    private Person getPerson(String firstName, String lastName) {
         Person person = new Person();
         person.setFirstName(firstName);
         person.setLastName(lastName);
-        personService.addPerson(person);
+        return person;
     }
 
     private long getPersonId() {
@@ -75,11 +100,16 @@ public class RegistrationViewController {
     }
 
     private void addContactForPerson(String email, String phone, String password, long personId) {
+        Contact contact = getContact(email, phone, password);
+        contactService.addContact(contact, personId);
+    }
+
+    private Contact getContact(String email, String phone, String password) {
         Contact contact = new Contact();
         contact.setEmail(email);
         contact.setPhone(phone);
-        contact.setPassword(passwordEncoder.encode(password));
-        contactService.addContact(contact, personId);
+        contact.setPassword(password);
+        return contact;
     }
 
     private void addRoleForPerson(long personId) {

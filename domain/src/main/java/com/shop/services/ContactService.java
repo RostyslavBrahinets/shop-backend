@@ -4,6 +4,7 @@ import com.shop.exceptions.NotFoundException;
 import com.shop.models.Contact;
 import com.shop.repositories.ContactRepository;
 import com.shop.validators.ContactValidator;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,13 +14,16 @@ import java.util.Optional;
 public class ContactService {
     private final ContactRepository contactRepository;
     private final ContactValidator validator;
+    private final PasswordEncoder passwordEncoder;
 
     public ContactService(
         ContactRepository contactRepository,
-        ContactValidator validator
+        ContactValidator validator,
+        PasswordEncoder passwordEncoder
     ) {
         this.contactRepository = contactRepository;
         this.validator = validator;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Contact> getContacts() {
@@ -28,6 +32,7 @@ public class ContactService {
 
     public Contact addContact(Contact contact, long personId) {
         validator.validate(contact);
+        contact.setPassword(passwordEncoder.encode(contact.getPassword()));
         contactRepository.addContact(contact, personId);
         return contact;
     }

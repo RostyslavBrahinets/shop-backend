@@ -24,8 +24,12 @@ public class ContactValidator {
 
         if (isInValidEmail(email)) {
             throw new ValidationException("E-mail is invalid");
+        } else if (isEmailAlreadyInUse(email)) {
+            throw new ValidationException("E-mail is already in use");
         } else if (isInvalidPhone(phone)) {
             throw new ValidationException("Phone is invalid");
+        } else if (isPhoneAlreadyInUse(phone)) {
+            throw new ValidationException("Phone is already in use");
         } else if (password == null || password.isBlank()) {
             throw new ValidationException("Password is invalid");
         }
@@ -58,10 +62,26 @@ public class ContactValidator {
             || email.endsWith("@.com");
     }
 
+    private boolean isEmailAlreadyInUse(String email) {
+        List<String> emails = new ArrayList<>();
+        for (Contact contact : contactRepository.getContacts()) {
+            emails.add(contact.getEmail());
+        }
+        return emails.contains(email);
+    }
+
     private boolean isInvalidPhone(String phone) {
         return phone == null
             || phone.isBlank()
             || !phone.startsWith("+")
             || phone.length() < 12;
+    }
+
+    private boolean isPhoneAlreadyInUse(String phone) {
+        List<String> phones = new ArrayList<>();
+        for (Contact contact : contactRepository.getContacts()) {
+            phones.add(contact.getPhone());
+        }
+        return phones.contains(phone);
     }
 }

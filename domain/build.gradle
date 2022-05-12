@@ -16,6 +16,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-core:8.5.5'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.6'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:2.6.6'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.7'
 }
 
 test {
