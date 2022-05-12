@@ -59,4 +59,13 @@ public class ContactDao {
             )
             .stream().findAny();
     }
+
+    public Optional<Contact> getContactByPerson(long personId) {
+        return jdbcTemplate.query(
+                "SELECT * FROM contact WHERE person_id=:person_id",
+                Map.of("person_id", personId),
+                new BeanPropertyRowMapper<>(Contact.class)
+            )
+            .stream().findAny();
+    }
 }

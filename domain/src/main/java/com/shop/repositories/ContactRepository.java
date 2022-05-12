@@ -34,4 +34,8 @@ public class ContactRepository {
     public Optional<Contact> getContact(long id) {
         return contactDao.getContact(id);
     }
+
+    public Optional<Contact> getContactByPerson(long personId) {
+        return contactDao.getContactByPerson(personId);
+    }
 }

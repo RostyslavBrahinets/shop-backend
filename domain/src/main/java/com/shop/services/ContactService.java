@@ -4,6 +4,7 @@ import com.shop.exceptions.NotFoundException;
 import com.shop.models.Contact;
 import com.shop.repositories.ContactRepository;
 import com.shop.validators.ContactValidator;
+import com.shop.validators.PersonValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +14,19 @@ import java.util.Optional;
 @Service
 public class ContactService {
     private final ContactRepository contactRepository;
-    private final ContactValidator validator;
+    private final ContactValidator contactValidator;
+    private final PersonValidator personValidator;
     private final PasswordEncoder passwordEncoder;
 
     public ContactService(
         ContactRepository contactRepository,
-        ContactValidator validator,
+        ContactValidator contactValidator,
+        PersonValidator personValidator,
         PasswordEncoder passwordEncoder
     ) {
         this.contactRepository = contactRepository;
-        this.validator = validator;
+        this.contactValidator = contactValidator;
+        this.personValidator = personValidator;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -31,27 +35,37 @@ public class ContactService {
     }
 
     public Contact addContact(Contact contact, long personId) {
-        validator.validate(contact);
+        contactValidator.validate(contact);
         contact.setPassword(passwordEncoder.encode(contact.getPassword()));
         contactRepository.addContact(contact, personId);
         return contact;
     }
 
     public Contact updateContact(long id, Contact contact) {
-        validator.validate(id);
-        validator.validate(contact);
+        contactValidator.validate(id);
+        contactValidator.validate(contact);
         contactRepository.updateContact(id, contact);
         return contact;
     }
 
     public void deleteContact(long id) {
-        validator.validate(id);
+        contactValidator.validate(id);
         contactRepository.deleteContact(id);
     }
 
     public Contact getContact(long id) {
-        validator.validate(id);
+        contactValidator.validate(id);
         Optional<Contact> contact = contactRepository.getContact(id);
+        if (contact.isEmpty()) {
+            throw new NotFoundException("Contact not found");
+        } else {
+            return contact.get();
+        }
+    }
+
+    public Contact getContactByPerson(long personId) {
+        personValidator.validate(personId);
+        Optional<Contact> contact = contactRepository.getContactByPerson(personId);
         if (contact.isEmpty()) {
             throw new NotFoundException("Contact not found");
         } else {
