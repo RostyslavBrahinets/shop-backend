@@ -23,7 +23,7 @@ public class StripePayment {
         this.contactService = contactService;
     }
 
-    public Customer saveCustomer(Person person) throws StripeException {
+    public Optional<Customer> saveCustomer(Person person) throws StripeException {
         Stripe.apiKey = stripeKey;
 
         Contact contact = contactService.getContactByPerson(person.getId());
@@ -32,7 +32,7 @@ public class StripePayment {
         params.put("name", person.getFirstName() + " " + person.getLastName());
         params.put("email", contact.getEmail());
 
-        return Customer.create(params);
+        return Optional.ofNullable(Customer.create(params));
     }
 
     public Optional<Customer> findByIdCustomer(String id) throws StripeException {

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class RegistrationViewController {
@@ -131,11 +132,14 @@ public class RegistrationViewController {
 
     private void addWalletForPerson(long personId) {
         try {
-            Customer customer = stripePayment.saveCustomer(personService.getPerson(personId));
-            Wallet wallet = new Wallet();
-            wallet.setNumber(customer.getId());
-            wallet.setAmountOfMoney(customer.getBalance());
-            walletService.addWallet(wallet, personId);
+            Optional<Customer> customer = stripePayment
+                .saveCustomer(personService.getPerson(personId));
+            if (customer.isPresent()) {
+                Wallet wallet = new Wallet();
+                wallet.setNumber(customer.get().getId());
+                wallet.setAmountOfMoney(customer.get().getBalance());
+                walletService.addWallet(wallet, personId);
+            }
         } catch (StripeException e) {
             logger.error(e.getMessage(), e);
         }

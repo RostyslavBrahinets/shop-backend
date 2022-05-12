@@ -33,15 +33,7 @@
             .then(response => response.ok ? response.json() : alert(error))
             .then(data => {
                 const node = document.createElement('div');
-                const divNumber = document.createElement('div');
-                const divAmountOfMoney = document.createElement('div');
-
-                divNumber.appendChild(document.createTextNode(`Number: ${data.number}`));
-                divAmountOfMoney.appendChild(document.createTextNode(`Amount Of Money: ${data.amountOfMoney}`));
-
-                node.appendChild(divNumber);
-                node.appendChild(divAmountOfMoney);
-
+                node.appendChild(document.createTextNode(`Amount Of Money: ${data.amountOfMoney}`));
                 document.querySelector('.wallet-container').append(node);
             });
     }
