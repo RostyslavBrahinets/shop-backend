@@ -5,19 +5,23 @@ import com.shop.models.Contact;
 import com.shop.models.Person;
 import com.shop.models.Wallet;
 import com.shop.services.*;
+import com.shop.stripe.StripePayment;
 import com.shop.validators.ContactValidator;
 import com.shop.validators.PersonValidator;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Customer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Controller
 public class RegistrationViewController {
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationViewController.class);
     private final PersonService personService;
     private final ContactService contactService;
     private final PersonRoleService personRoleService;
@@ -25,6 +29,7 @@ public class RegistrationViewController {
     private final WalletService walletService;
     private final PersonValidator personValidator;
     private final ContactValidator contactValidator;
+    private final StripePayment stripePayment;
 
     public RegistrationViewController(
         PersonService personService,
@@ -33,7 +38,8 @@ public class RegistrationViewController {
         BasketService basketService,
         WalletService walletService,
         PersonValidator personValidator,
-        ContactValidator contactValidator
+        ContactValidator contactValidator,
+        StripePayment stripePayment
     ) {
         this.personService = personService;
         this.contactService = contactService;
@@ -42,6 +48,7 @@ public class RegistrationViewController {
         this.walletService = walletService;
         this.personValidator = personValidator;
         this.contactValidator = contactValidator;
+        this.stripePayment = stripePayment;
     }
 
     @GetMapping("/registration")
@@ -113,7 +120,7 @@ public class RegistrationViewController {
     }
 
     private void addRoleForPerson(long personId) {
-        personRoleService.addRoleForPerson(personId, 1);
+        personRoleService.addRoleForPerson(personId, 2);
     }
 
     private void addBasketForPerson(long personId) {
@@ -123,31 +130,14 @@ public class RegistrationViewController {
     }
 
     private void addWalletForPerson(long personId) {
-        Wallet wallet = new Wallet();
-        wallet.setNumber(getNumberOfWallet());
-        wallet.setAmountOfMoney(0);
-        walletService.addWallet(wallet, personId);
-    }
-
-    private String getNumberOfWallet() {
-        List<String> numbers = getWalletsId();
-        String number;
-        Random random = new Random();
-
-        do {
-            number = String.valueOf(random.nextLong(1000000000000000L, 9999999999999999L));
-        } while (numbers.contains(number));
-
-        return number;
-    }
-
-    private List<String> getWalletsId() {
-        List<String> numbers = new ArrayList<>();
-
-        for (Wallet wallet : walletService.getWallets()) {
-            numbers.add(wallet.getNumber());
+        try {
+            Customer customer = stripePayment.saveCustomer(personService.getPerson(personId));
+            Wallet wallet = new Wallet();
+            wallet.setNumber(customer.getId());
+            wallet.setAmountOfMoney(customer.getBalance());
+            walletService.addWallet(wallet, personId);
+        } catch (StripeException e) {
+            logger.error(e.getMessage(), e);
         }
-
-        return numbers;
     }
 }
