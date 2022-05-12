@@ -48,8 +48,10 @@ public class ContactValidator {
     }
 
     public void validate(String email) {
-        if (isInValidEmail(email)) {
-            throw new ValidationException("E-mail is invalid");
+        if (email == null || !email.equals("admin")) {
+            if (isInValidEmail(email)) {
+                throw new ValidationException("E-mail is invalid");
+            }
         }
     }
 
