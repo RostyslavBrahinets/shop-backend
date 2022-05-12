@@ -39,4 +39,15 @@ public class StripePayment {
         Stripe.apiKey = stripeKey;
         return Optional.ofNullable(Customer.retrieve(id));
     }
+
+    public Optional<Customer> updateCustomer(
+        String id,
+        long newBalance
+    ) throws StripeException {
+        Stripe.apiKey = stripeKey;
+        Customer customer = Customer.retrieve(id);
+        Map<String, Object> params = new HashMap<>();
+        params.put("balance", newBalance);
+        return Optional.ofNullable(customer.update(params));
+    }
 }

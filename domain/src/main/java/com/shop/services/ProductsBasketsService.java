@@ -5,9 +5,11 @@ import com.shop.models.Basket;
 import com.shop.models.Product;
 import com.shop.models.Wallet;
 import com.shop.repositories.ProductsBasketsRepository;
+import com.shop.stripe.StripePayment;
 import com.shop.validators.BasketValidator;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.ProductValidator;
+import com.stripe.exception.StripeException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class ProductsBasketsService {
     private final BasketService basketService;
     private final ProductService productService;
     private final WalletService walletService;
+    private final StripePayment stripePayment;
 
     public ProductsBasketsService(
         ProductsBasketsRepository productsBasketsRepository,
@@ -31,7 +34,8 @@ public class ProductsBasketsService {
         PersonValidator personValidator,
         BasketService basketService,
         ProductService productService,
-        WalletService walletService
+        WalletService walletService,
+        StripePayment stripePayment
     ) {
         this.productsBasketsRepository = productsBasketsRepository;
         this.productValidator = productValidator;
@@ -40,6 +44,7 @@ public class ProductsBasketsService {
         this.basketService = basketService;
         this.productService = productService;
         this.walletService = walletService;
+        this.stripePayment = stripePayment;
     }
 
     public List<Product> getProductsFromBasket(long basketId) {
@@ -103,7 +108,7 @@ public class ProductsBasketsService {
         productsBasketsRepository.deleteProductsFromBasket(basketId);
     }
 
-    public void buy(long personId) {
+    public void buy(long personId) throws StripeException {
         personValidator.validate(personId);
 
         Wallet wallet = walletService.getWalletByPerson(personId);
@@ -118,6 +123,7 @@ public class ProductsBasketsService {
 
         wallet.setAmountOfMoney(newAmountOfMoney);
         walletService.updateWallet(wallet.getId(), wallet);
+        stripePayment.updateCustomer(wallet.getNumber(), (long) newAmountOfMoney * -100);
 
         basket.setTotalCost(0);
         basket.setProducts(new ArrayList<>());
