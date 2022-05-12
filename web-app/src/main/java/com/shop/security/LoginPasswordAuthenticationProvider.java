@@ -18,7 +18,8 @@ import java.util.Objects;
 @Primary
 @Component
 public class LoginPasswordAuthenticationProvider implements AuthenticationProvider {
-    private static final Logger logger = LoggerFactory.getLogger(LoginPasswordAuthenticationProvider.class);
+    private static final Logger logger = LoggerFactory
+        .getLogger(LoginPasswordAuthenticationProvider.class);
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
