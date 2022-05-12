@@ -60,7 +60,7 @@ public class BasketService {
     }
 
     public Basket getBasketByPerson(long personId) {
-        basketValidator.validate(personId);
+        personValidator.validate(personId);
         Optional<Basket> basket = basketRepository.getBasketByPerson(personId);
         if (basket.isEmpty()) {
             throw new NotFoundException("Basket not found");
