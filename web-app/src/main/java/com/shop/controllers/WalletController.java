@@ -39,7 +39,10 @@ public class WalletController {
         try {
             Optional<Customer> customer = stripePayment
                 .findByIdCustomer(walletService.getWallet(id).getNumber());
-            customer.ifPresent(value -> wallet.setAmountOfMoney(value.getBalance() / -100.0));
+            customer.ifPresent(value -> {
+                wallet.setAmountOfMoney(value.getBalance() / -100.0);
+                walletService.updateWallet(wallet.getId(), wallet);
+            });
         } catch (StripeException e) {
             logger.error(e.getMessage(), e);
         }
