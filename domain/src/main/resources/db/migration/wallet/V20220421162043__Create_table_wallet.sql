@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS wallet
 (
     id                  SERIAL PRIMARY KEY,
-    number              CHAR(16) NOT NULL,
+    number              VARCHAR NOT NULL,
     amount_of_money     REAL NOT NULL,
     person_id           INTEGER NOT NULL UNIQUE,
     CONSTRAINT fk_person
