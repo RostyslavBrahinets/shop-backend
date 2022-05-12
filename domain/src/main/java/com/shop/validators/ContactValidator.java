@@ -31,6 +31,24 @@ public class ContactValidator {
         }
     }
 
+    public void validate(long id) {
+        List<Long> ids = new ArrayList<>();
+
+        for (Contact contact : contactRepository.getContacts()) {
+            ids.add(contact.getId());
+        }
+
+        if (id < 1 || !ids.contains(id)) {
+            throw new NotFoundException("Contact not found");
+        }
+    }
+
+    public void validate(String email) {
+        if (isInValidEmail(email)) {
+            throw new ValidationException("E-mail is invalid");
+        }
+    }
+
     private boolean isInValidEmail(String email) {
         return email == null
             || email.isBlank()
@@ -45,17 +63,5 @@ public class ContactValidator {
             || phone.isBlank()
             || !phone.startsWith("+")
             || phone.length() < 12;
-    }
-
-    public void validate(long id) {
-        List<Long> ids = new ArrayList<>();
-
-        for (Contact contact : contactRepository.getContacts()) {
-            ids.add(contact.getId());
-        }
-
-        if (id < 1 || !ids.contains(id)) {
-            throw new NotFoundException("Contact not found");
-        }
     }
 }
