@@ -21,10 +21,10 @@ public class WalletValidator {
         String number = wallet.getNumber();
         double amountOfMoney = wallet.getAmountOfMoney();
 
-        if (number == null || number.isBlank() || number.length() != 16) {
-            throw new ValidationException("Name is invalid");
+        if (number == null || number.isBlank()) {
+            throw new ValidationException("Number is invalid");
         } else if (amountOfMoney < 0) {
-            throw new ValidationException("Describe is invalid");
+            throw new ValidationException("Amount of money is invalid");
         }
     }
 
