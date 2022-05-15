@@ -9,6 +9,10 @@
 
 <form name="logout" th:action="@{/logout}" method="post">
     <div>
+        <span th:if="${role == 'ROLE_ADMIN'}">
+            <a th:href="@{/admin}">Admin</a>
+        </span>
+
         <a th:href="@{/products}">Products</a>
 
         <span th:if="${role == 'ROLE_USER'}">

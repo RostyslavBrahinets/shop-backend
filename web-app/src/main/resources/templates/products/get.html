@@ -10,6 +10,11 @@
 <form name="logout" th:action="@{/logout}" method="post">
     <div>
         <a th:href="@{/}">Main</a>
+
+        <span th:if="${role == 'ROLE_ADMIN'}">
+            <a th:href="@{/admin}">Admin</a>
+        </span>
+
         <a th:href="@{/products}">Products</a>
 
         <span th:if="${role == 'ROLE_USER'}">
@@ -25,10 +30,13 @@
 <hr/>
 
 <div class="product-container"></div>
+<div class="product-edit" th:if="${role == 'ROLE_ADMIN'}"></div>
 
-<form name="add" th:action="@{/web-api/products-baskets/{id}(id=${id})}" method="post">
-    <button type="submit">Add To Basket</button>
-</form>
+<div th:if="${role == 'ROLE_USER'}">
+    <form name="add" th:action="@{/web-api/products-baskets/{id}(id=${id})}" method="post">
+        <button type="submit">Add To Basket</button>
+    </form>
+</div>
 
 <script th:inline="javascript">
     function displayProductInfo(id) {
@@ -53,8 +61,8 @@
                 divName.appendChild(document.createTextNode(`Name: ${data.name}`));
                 divCategory.appendChild(document.createTextNode(`Category: ${data.category}`));
                 divDescribe.appendChild(document.createTextNode(`Describe: ${data.describe}`));
-                divPrice.appendChild(document.createTextNode(`Price: ${data.price}`));
 
+                divPrice.appendChild(document.createTextNode(`Price: ${data.price}`));
                 if (data.inStock) {
                     divInStock.appendChild(document.createTextNode(`${data.name} is in stock`));
                 } else {
@@ -71,11 +79,30 @@
             });
     }
 
+    function displayEditLink(id) {
+        const node = document.createElement('div');
+        const formEdit = document.createElement('form');
+        const buttonEdit = document.createElement('button');
+
+        formEdit.name = 'edit';
+        formEdit.action = `/admin/products/${id}/edit`;
+        formEdit.method = 'get';
+
+        buttonEdit.type = 'submit';
+        buttonEdit.textContent = 'Edit';
+
+        formEdit.appendChild(buttonEdit);
+        node.appendChild(formEdit);
+        document.querySelector('.product-edit').append(node);
+    }
+
     /*<![CDATA[*/
     let id = /*[[${id}]]*/ '0';
     /*]]>*/
 
     displayProductInfo(id);
+
+    displayEditLink(id);
 </script>
 </body>
 </html>
