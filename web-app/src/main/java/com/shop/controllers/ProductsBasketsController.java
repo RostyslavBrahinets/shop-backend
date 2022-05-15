@@ -53,8 +53,20 @@ public class ProductsBasketsController {
     ) throws IOException {
         Person person = personService.getPerson(userDetail.getUsername());
         Basket basket = basketService.getBasketByPerson(person.getId());
-        response.sendRedirect("/products");
+        response.sendRedirect("/basket");
         return productsBasketsService.addProductToBasket(id, basket.getId());
+    }
+
+    @PostMapping("/{id}/delete")
+    public void deleteProductFromBasket(
+        @AuthenticationPrincipal UserDetails userDetail,
+        @PathVariable long id,
+        HttpServletResponse response
+    ) throws IOException {
+        Person person = personService.getPerson(userDetail.getUsername());
+        Basket basket = basketService.getBasketByPerson(person.getId());
+        response.sendRedirect("/basket");
+        productsBasketsService.deleteProductFromBasket(id, basket.getId());
     }
 
     @PostMapping("/buy")

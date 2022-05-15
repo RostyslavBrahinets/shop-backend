@@ -38,12 +38,30 @@
             .then(data => {
                 if (data.length > 0) {
                     let formattedData = data.map(({name, price}) => `${name} (${price})`);
+                    let ids = data.map(({id}) => id);
+                    let i = 0;
+
                     formattedData = formattedData.join('-').split('-');
+
                     formattedData.forEach(element => {
                         const node = document.createElement('div');
+                        const form = document.createElement('form');
+                        const button = document.createElement('button');
                         const text = document.createTextNode(element);
-                        node.appendChild(text)
+
+                        form.name = 'remove';
+                        form.action = `/web-api/products-baskets/${ids[i]}/delete`;
+                        form.method = 'post';
+
+                        button.type = 'submit';
+                        button.textContent = 'Remove';
+
+                        form.appendChild(text);
+                        form.appendChild(button);
+                        node.appendChild(form);
                         document.querySelector('.products-container').append(node);
+
+                        i++;
                     });
                 } else {
                     const node = document.createElement('div');
