@@ -6,5 +6,21 @@
 </head>
 <body>
 <h1>Delete product</h1>
+<label for="id">Id:</label>
+<input type="text" id="id"/>
+<button id="button-delete" onclick="deleteProduct()">Delete</button>
+
+<script>
+    async function deleteProduct() {
+        const id = document.querySelector('#id').value;
+        await fetch(`http://localhost:8080/web-api/products/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'POST'
+        });
+    }
+</script>
 </body>
 </html>
