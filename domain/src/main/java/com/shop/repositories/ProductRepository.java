@@ -23,10 +23,6 @@ public class ProductRepository {
         productDao.addProduct(person);
     }
 
-    public void updateProduct(long id, Product product) {
-        productDao.updateProduct(id, product);
-    }
-
     public void deleteProduct(long id) {
         productDao.deleteProduct(id);
     }

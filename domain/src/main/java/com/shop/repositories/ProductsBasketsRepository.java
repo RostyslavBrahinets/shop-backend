@@ -5,7 +5,6 @@ import com.shop.models.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class ProductsBasketsRepository {
@@ -25,10 +24,6 @@ public class ProductsBasketsRepository {
 
     public void deleteProductFromBasket(long productId, long basketId) {
         productsBasketsDao.deleteProductFromBasket(productId, basketId);
-    }
-
-    public Optional<Product> getProductFromBasket(long productId, long basketId) {
-        return productsBasketsDao.getProductFromBasket(productId, basketId);
     }
 
     public void deleteProductsFromBasket(long basketId) {

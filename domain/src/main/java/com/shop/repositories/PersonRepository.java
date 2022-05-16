@@ -23,10 +23,6 @@ public class PersonRepository {
         personDao.addPerson(person);
     }
 
-    public void updatePerson(long id, Person person) {
-        personDao.updatePerson(id, person);
-    }
-
     public void deletePerson(long id) {
         personDao.deletePerson(id);
     }
