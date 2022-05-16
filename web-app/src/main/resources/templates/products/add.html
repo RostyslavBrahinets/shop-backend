@@ -6,5 +6,97 @@
 </head>
 <body>
 <h1>Add product</h1>
+
+<div>
+    <a th:href="@{/}">Main</a>
+    <a th:href="@{/admin}">Admin</a>
+    <a th:href="@{/products}">Products</a>
+</div>
+
+<div>
+    <label for="name">Name:</label>
+    <input type="text" id="name"/>
+    <br/>
+
+    <label for="describe">Describe:</label>
+    <textarea id="describe"></textarea>
+    <br/>
+
+    <label for="price">Price:</label>
+    <input type="number" min="0" id="price"/>
+    <br/>
+
+    <label for="category">Category:</label>
+    <select id="category"></select>
+    <br/>
+
+    <label for="in-stock">In stock:</label>
+    <select id="in-stock">
+        <option>True</option>
+        <option>False</option>
+    </select>
+    <br/>
+
+    <label for="image">Image:</label>
+    <input type="file" id="image"/>
+    <br/>
+
+    <button id="button-add" onclick="addProduct()">Add</button>
+</div>
+
+<script th:inline="javascript">
+    function addProduct() {
+        const name = document.querySelector('#name').value;
+        const describe = document.querySelector('#describe').value;
+        const price = document.querySelector('#price').value;
+        const category = document.querySelector('#category').value;
+        const inStock = document.querySelector('#in-stock').value;
+
+        const bodyProduct = {
+            "name": name,
+            "describe": describe,
+            "price": price,
+            "category": category,
+            "in-stock": inStock,
+            "image": imageByteArray.length === 0 ? -1 : imageByteArray
+        };
+
+        fetch(`http://localhost:8080/web-api/products/`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(bodyProduct)
+        });
+    }
+
+    /*<![CDATA[*/
+    let categories = /*[[${categories}]]*/ '';
+    /*]]>*/
+
+    for (let i = 0; i < categories.length; i++) {
+        const option = document.createElement('option');
+        option.textContent = categories[i];
+        document.querySelector('#category').appendChild(option);
+    }
+
+    const image = document.querySelector('#image')
+    const reader = new FileReader();
+    const imageByteArray = [];
+
+    image.addEventListener('change', (e) => {
+        reader.readAsArrayBuffer(e.target.files[0]);
+        reader.onloadend = (evt) => {
+            if (evt.target.readyState === FileReader.DONE) {
+                const arrayBuffer = evt.target.result,
+                    array = new Uint8Array(arrayBuffer);
+                for (const a of array) {
+                    imageByteArray.push(a);
+                }
+            }
+        }
+    });
+</script>
 </body>
 </html>
