@@ -30,7 +30,6 @@
 <hr/>
 
 <div class="product-container"></div>
-<div class="product-edit" th:if="${role == 'ROLE_ADMIN'}"></div>
 
 <div th:if="${role == 'ROLE_USER'}">
     <form name="add" th:action="@{/web-api/products-baskets/{id}(id=${id})}" method="post">
@@ -81,30 +80,11 @@
             });
     }
 
-    function displayEditLink(id) {
-        const node = document.createElement('div');
-        const formEdit = document.createElement('form');
-        const buttonEdit = document.createElement('button');
-
-        formEdit.name = 'edit';
-        formEdit.action = `/admin/products/${id}/edit`;
-        formEdit.method = 'get';
-
-        buttonEdit.type = 'submit';
-        buttonEdit.textContent = 'Edit';
-
-        formEdit.appendChild(buttonEdit);
-        node.appendChild(formEdit);
-        document.querySelector('.product-edit').append(node);
-    }
-
     /*<![CDATA[*/
     let id = /*[[${id}]]*/ '0';
     /*]]>*/
 
     displayProductInfo(id);
-
-    displayEditLink(id);
 </script>
 </body>
 </html>

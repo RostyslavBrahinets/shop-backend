@@ -68,7 +68,7 @@
             },
             method: 'POST',
             body: JSON.stringify(bodyProduct)
-        });
+        }).then(response => response.ok ? response.json() : alert(error));
     }
 
     /*<![CDATA[*/

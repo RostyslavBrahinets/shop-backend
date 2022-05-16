@@ -28,7 +28,7 @@
                 'Accept': 'application/json'
             },
             method: 'POST'
-        });
+        }).then(response => response.ok ? response.json() : alert(error));
     }
 </script>
 </body>
