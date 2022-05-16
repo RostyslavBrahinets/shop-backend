@@ -41,13 +41,6 @@ public class ContactService {
         return contact;
     }
 
-    public Contact updateContact(long id, Contact contact) {
-        contactValidator.validate(id);
-        contactValidator.validate(contact);
-        contactRepository.updateContact(id, contact);
-        return contact;
-    }
-
     public void deleteContact(long id) {
         contactValidator.validate(id);
         contactRepository.deleteContact(id);

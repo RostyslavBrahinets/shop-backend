@@ -34,13 +34,6 @@ public class ProductService {
         return product;
     }
 
-    public Product updateProduct(long id, Product product) {
-        validator.validate(id);
-        validator.validate(product);
-        productRepository.updateProduct(id, product);
-        return product;
-    }
-
     public void deleteProduct(long id) {
         validator.validate(id);
         productRepository.deleteProduct(id);

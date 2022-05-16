@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductsBasketsService {
@@ -88,19 +87,6 @@ public class ProductsBasketsService {
         newTotalCost -= product.getPrice();
         basket.setTotalCost(newTotalCost);
         basketService.updateBasket(basketId, basket);
-    }
-
-    public Product getProductFromBasket(long productId, long basketId) {
-        productValidator.validate(productId);
-        basketValidator.validate(basketId);
-
-        Optional<Product> product = productsBasketsRepository
-            .getProductFromBasket(productId, basketId);
-        if (product.isEmpty()) {
-            throw new NotFoundException("Product not found");
-        } else {
-            return product.get();
-        }
     }
 
     public void deleteProductsFromBasket(long basketId) {

@@ -36,13 +36,6 @@ public class PersonService {
         return person;
     }
 
-    public Person updatePerson(long id, Person person) {
-        personValidator.validate(id);
-        personValidator.validate(person);
-        personRepository.updatePerson(id, person);
-        return person;
-    }
-
     public void deletePerson(long id) {
         personValidator.validate(id);
         personRepository.deletePerson(id);
