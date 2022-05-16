@@ -1,11 +1,15 @@
 package com.shop.controllers;
 
+import com.shop.PdfUtility;
+import com.shop.dto.ReportDto;
 import com.shop.models.Basket;
 import com.shop.models.Person;
 import com.shop.models.Product;
+import com.shop.models.Wallet;
 import com.shop.services.BasketService;
 import com.shop.services.PersonService;
 import com.shop.services.ProductsBasketsService;
+import com.shop.services.WalletService;
 import com.stripe.exception.StripeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -27,15 +34,18 @@ public class ProductsBasketsController {
     private final ProductsBasketsService productsBasketsService;
     private final BasketService basketService;
     private final PersonService personService;
+    private final WalletService walletService;
 
     public ProductsBasketsController(
         ProductsBasketsService productsBasketsService,
         BasketService basketService,
-        PersonService personService
+        PersonService personService,
+        WalletService walletService
     ) {
         this.productsBasketsService = productsBasketsService;
         this.basketService = basketService;
         this.personService = personService;
+        this.walletService = walletService;
     }
 
     @GetMapping
@@ -75,11 +85,32 @@ public class ProductsBasketsController {
         HttpServletResponse response
     ) throws IOException {
         try {
+            response.setContentType("application/pdf");
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+            String currentDateTime = dateFormatter.format(new Date());
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=report_" + currentDateTime + ".pdf";
+            response.setHeader(headerKey, headerValue);
+
             Person person = personService.getPerson(userDetail.getUsername());
+            Basket basket = basketService.getBasketByPerson(person.getId());
+
+            List<Product> productsInBasket = productsBasketsService
+                .getProductsFromBasket(basket.getId());
+
+            ReportDto reportDto = new ReportDto();
+            reportDto.setProducts(productsInBasket);
+            reportDto.setTotalCost(basket.getTotalCost());
+
             productsBasketsService.buy(person.getId());
+
+            Wallet wallet = walletService.getWalletByPerson(person.getId());
+            reportDto.setAmountOfMoney(wallet.getAmountOfMoney());
+
+            PdfUtility pdfUtility = new PdfUtility(reportDto);
+            pdfUtility.export(response);
         } catch (StripeException e) {
             logger.error(e.getMessage(), e);
         }
-        response.sendRedirect("/basket");
     }
 }
