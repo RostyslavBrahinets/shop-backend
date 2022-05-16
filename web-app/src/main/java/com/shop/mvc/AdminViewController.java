@@ -20,13 +20,4 @@ public class AdminViewController {
     public String delete() {
         return "products/delete";
     }
-
-    @GetMapping("/products/{id}/edit")
-    public String edit(
-        @PathVariable String id,
-        Model model
-    ) {
-        model.addAttribute("id", id);
-        return "products/edit";
-    }
 }
