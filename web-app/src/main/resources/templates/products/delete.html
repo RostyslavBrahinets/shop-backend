@@ -6,9 +6,18 @@
 </head>
 <body>
 <h1>Delete product</h1>
-<label for="id">Id:</label>
-<input type="text" id="id"/>
-<button id="button-delete" onclick="deleteProduct()">Delete</button>
+
+<div>
+    <a th:href="@{/}">Main</a>
+    <a th:href="@{/admin}">Admin</a>
+    <a th:href="@{/products}">Products</a>
+</div>
+
+<div>
+    <label for="id">Id:</label>
+    <input type="text" id="id"/>
+    <button id="button-delete" onclick="deleteProduct()">Delete</button>
+</div>
 
 <script>
     async function deleteProduct() {
