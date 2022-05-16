@@ -57,7 +57,9 @@
                 const divPrice = document.createElement('div');
                 const divInStock = document.createElement('div');
 
-                divImage.appendChild(document.createTextNode('image'));
+                let image = new Image();
+                image.src = data.image;
+                divImage.appendChild(image);
                 divName.appendChild(document.createTextNode(`Name: ${data.name}`));
                 divCategory.appendChild(document.createTextNode(`Category: ${data.category}`));
                 divDescribe.appendChild(document.createTextNode(`Describe: ${data.describe}`));
