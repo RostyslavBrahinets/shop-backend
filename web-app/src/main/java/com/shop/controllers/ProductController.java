@@ -5,7 +5,11 @@ import com.shop.services.ProductService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -35,6 +39,16 @@ public class ProductController {
         HttpServletResponse response
     ) throws IOException {
         response.sendRedirect("/products");
+
+        if (product.getImage().length == 0) {
+            String imagePath = "images/empty.jpg";
+            BufferedImage image = ImageIO.read(new File(imagePath));
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(image, "jpg", byteArrayOutputStream);
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+            product.setImage(bytes);
+        }
+
         return productService.addProduct(product);
     }
 
