@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/registration", "/error", "/", "/products/**",
                 "/web-api**", "/web-api/products/**", "/js/**", "/images/**"
             ).permitAll()
-            .mvcMatchers("/web-api/**", "/admin/**").hasRole("ADMIN")
+            .mvcMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
             .and()
             .formLogin()
