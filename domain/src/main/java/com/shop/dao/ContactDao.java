@@ -34,16 +34,6 @@ public class ContactDao {
         );
     }
 
-    public void updateContact(long id, Contact updatedContact) {
-        jdbcTemplate.update(
-            "UPDATE contact SET email=:email, phone=:phone WHERE id=:id",
-            Map.of(
-                "email", updatedContact.getEmail(),
-                "phone", updatedContact.getPhone(),
-                "id", id
-            ));
-    }
-
     public void deleteContact(long id) {
         jdbcTemplate.update(
             "DELETE FROM contact WHERE id=:id",

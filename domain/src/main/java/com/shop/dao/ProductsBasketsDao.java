@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Component
 public class ProductsBasketsDao {
@@ -43,19 +42,6 @@ public class ProductsBasketsDao {
                 "basket_id", basketId
             )
         );
-    }
-
-    public Optional<Product> getProductFromBasket(long productId, long basketId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM products_baskets "
-                    + "WHERE product_id=:product_id AND basket_id=:basket_id",
-                Map.of(
-                    "product_id", productId,
-                    "basket_id", basketId
-                ),
-                new BeanPropertyRowMapper<>(Product.class)
-            )
-            .stream().findAny();
     }
 
     public void deleteProductsFromBasket(long basketId) {

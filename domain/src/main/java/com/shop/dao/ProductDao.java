@@ -36,22 +36,6 @@ public class ProductDao {
         );
     }
 
-    public void updateProduct(long id, Product updatedProduct) {
-        jdbcTemplate.update(
-            "UPDATE product SET name=:name, describe=:describe, price=:price, "
-                + "category=:category, in_stock=:in_stock, image=:image WHERE id=:id",
-            Map.of(
-                "name", updatedProduct.getName(),
-                "describe", updatedProduct.getDescribe(),
-                "price", updatedProduct.getPrice(),
-                "category", updatedProduct.getCategory().toString(),
-                "in_stock", updatedProduct.isInStock(),
-                "image", updatedProduct.getImage(),
-                "id", id
-            )
-        );
-    }
-
     public void deleteProduct(long id) {
         jdbcTemplate.update(
             "DELETE FROM product WHERE id=:id",
