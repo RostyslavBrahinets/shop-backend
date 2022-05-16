@@ -1,6 +1,5 @@
 package com.shop.controllers;
 
-import com.shop.PdfUtility;
 import com.shop.dto.ReportDto;
 import com.shop.models.Basket;
 import com.shop.models.Person;
@@ -10,9 +9,8 @@ import com.shop.services.BasketService;
 import com.shop.services.PersonService;
 import com.shop.services.ProductsBasketsService;
 import com.shop.services.WalletService;
+import com.shop.utilities.PdfUtility;
 import com.stripe.exception.StripeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,8 +27,6 @@ import java.util.List;
 @RequestMapping(value = ProductsBasketsController.PRODUCTS_BASKETS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductsBasketsController {
     public static final String PRODUCTS_BASKETS_URL = "/web-api/products-baskets";
-    private static final Logger logger = LoggerFactory
-        .getLogger(ProductsBasketsController.class);
     private final ProductsBasketsService productsBasketsService;
     private final BasketService basketService;
     private final PersonService personService;
@@ -83,34 +79,30 @@ public class ProductsBasketsController {
     public void buy(
         @AuthenticationPrincipal UserDetails userDetail,
         HttpServletResponse response
-    ) throws IOException {
-        try {
-            response.setContentType("application/pdf");
-            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-            String currentDateTime = dateFormatter.format(new Date());
-            String headerKey = "Content-Disposition";
-            String headerValue = "attachment; filename=report_" + currentDateTime + ".pdf";
-            response.setHeader(headerKey, headerValue);
+    ) throws IOException, StripeException {
+        response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=report_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
 
-            Person person = personService.getPerson(userDetail.getUsername());
-            Basket basket = basketService.getBasketByPerson(person.getId());
+        Person person = personService.getPerson(userDetail.getUsername());
+        Basket basket = basketService.getBasketByPerson(person.getId());
 
-            List<Product> productsInBasket = productsBasketsService
-                .getProductsFromBasket(basket.getId());
+        List<Product> productsInBasket = productsBasketsService
+            .getProductsFromBasket(basket.getId());
 
-            ReportDto reportDto = new ReportDto();
-            reportDto.setProducts(productsInBasket);
-            reportDto.setTotalCost(basket.getTotalCost());
+        ReportDto reportDto = new ReportDto();
+        reportDto.setProducts(productsInBasket);
+        reportDto.setTotalCost(basket.getTotalCost());
 
-            productsBasketsService.buy(person.getId());
+        productsBasketsService.buy(person.getId());
 
-            Wallet wallet = walletService.getWalletByPerson(person.getId());
-            reportDto.setAmountOfMoney(wallet.getAmountOfMoney());
+        Wallet wallet = walletService.getWalletByPerson(person.getId());
+        reportDto.setAmountOfMoney(wallet.getAmountOfMoney());
 
-            PdfUtility pdfUtility = new PdfUtility(reportDto);
-            pdfUtility.export(response);
-        } catch (StripeException e) {
-            logger.error(e.getMessage(), e);
-        }
+        PdfUtility pdfUtility = new PdfUtility(reportDto);
+        pdfUtility.export(response);
     }
 }

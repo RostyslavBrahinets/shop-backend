@@ -11,8 +11,6 @@ import com.shop.validators.ContactValidator;
 import com.shop.validators.PersonValidator;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +21,6 @@ import java.util.Optional;
 
 @Controller
 public class RegistrationViewController {
-    private static final Logger logger = LoggerFactory.getLogger(RegistrationViewController.class);
     private final PersonService personService;
     private final ContactService contactService;
     private final PersonRoleService personRoleService;
@@ -66,7 +63,7 @@ public class RegistrationViewController {
         @RequestParam("phone") String phone,
         @RequestParam("password") String password,
         @RequestParam("confirm-password") String confirmPassword
-    ) {
+    ) throws StripeException {
         if (isValidData(firstName, lastName, email, phone, password, confirmPassword)) {
             addPerson(firstName, lastName);
             long personId = getPersonId();
@@ -141,18 +138,14 @@ public class RegistrationViewController {
         basketService.addBasket(basket, personId);
     }
 
-    private void addWalletForPerson(long personId) {
-        try {
-            Optional<Customer> customer = stripePayment
-                .saveCustomer(personService.getPerson(personId));
-            if (customer.isPresent()) {
-                Wallet wallet = new Wallet();
-                wallet.setNumber(customer.get().getId());
-                wallet.setAmountOfMoney(customer.get().getBalance());
-                walletService.addWallet(wallet, personId);
-            }
-        } catch (StripeException e) {
-            logger.error(e.getMessage(), e);
+    private void addWalletForPerson(long personId) throws StripeException {
+        Optional<Customer> customer = stripePayment
+            .saveCustomer(personService.getPerson(personId));
+        if (customer.isPresent()) {
+            Wallet wallet = new Wallet();
+            wallet.setNumber(customer.get().getId());
+            wallet.setAmountOfMoney(customer.get().getBalance());
+            walletService.addWallet(wallet, personId);
         }
     }
 }
