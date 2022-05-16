@@ -22,11 +22,16 @@ public class MainViewController {
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ) {
-        Person person = personService.getPerson(userDetails.getUsername());
-        GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
+        if (userDetails != null) {
+            Person person = personService.getPerson(userDetails.getUsername());
+            GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
 
-        model.addAttribute("id", person.getId());
-        model.addAttribute("role", role.getAuthority());
+            model.addAttribute("id", person.getId());
+            model.addAttribute("role", role.getAuthority());
+        } else {
+            model.addAttribute("id", 0);
+            model.addAttribute("role", "ROLE_GUEST");
+        }
 
         return "index";
     }

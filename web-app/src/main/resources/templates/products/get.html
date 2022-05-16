@@ -7,6 +7,12 @@
 <body>
 <h1>Product</h1>
 
+<div th:if="${role == 'ROLE_GUEST'}">
+    <form name="login" th:action="@{/login}" method="get">
+        <button type="submit">Log In</button>
+    </form>
+</div>
+
 <form name="logout" th:action="@{/logout}" method="post">
     <div>
         <a th:href="@{/}">Main</a>
@@ -23,7 +29,9 @@
             <a th:href="@{/profile}">Profile</a>
         </span>
 
-        <button type="submit">Log Out</button>
+        <span th:if="${role == 'ROLE_USER' || role == 'ROLE_ADMIN'}">
+            <button type="submit">Log Out</button>
+        </span>
     </div>
 </form>
 

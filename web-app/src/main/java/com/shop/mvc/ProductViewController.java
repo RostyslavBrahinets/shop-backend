@@ -17,8 +17,13 @@ public class ProductViewController {
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ) {
-        GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
-        model.addAttribute("role", role.getAuthority());
+        if (userDetails != null) {
+            GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
+            model.addAttribute("role", role.getAuthority());
+        } else {
+            model.addAttribute("role", "ROLE_GUEST");
+        }
+
         return "products/index";
     }
 
@@ -28,9 +33,15 @@ public class ProductViewController {
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ) {
-        GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
+        if (userDetails != null) {
+            GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
+            model.addAttribute("role", role.getAuthority());
+        } else {
+            model.addAttribute("role", "ROLE_GUEST");
+        }
+
         model.addAttribute("id", id);
-        model.addAttribute("role", role.getAuthority());
+
         return "products/get";
     }
 }
