@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Category</title>
+</head>
+<body>
+<form name="logout" th:action="@{/logout}" method="post">
+    <div>
+        <a th:href="@{/}">Main</a>
+
+        <span th:if="${role == 'ROLE_ADMIN'}">
+            <a th:href="@{/admin/users}">Admin</a>
+        </span>
+
+        <a th:href="@{/categories}">Categories</a>
+        <a th:href="@{/products}">Products</a>
+
+        <span th:if="${role == 'ROLE_USER'}">
+            <a th:href="@{/basket}">Basket</a>
+            <a th:href="@{/wallet}">Wallet</a>
+            <a th:href="@{/profile}">Profile</a>
+        </span>
+
+        <span th:if="${role == 'ROLE_USER' || role == 'ROLE_ADMIN'}">
+            <button type="submit">Log Out</button>
+        </span>
+    </div>
+</form>
+
+<hr/>
+
+<div class="category-container"></div>
+
+<script th:inline="javascript">
+
+</script>
+</body>
+</html>
