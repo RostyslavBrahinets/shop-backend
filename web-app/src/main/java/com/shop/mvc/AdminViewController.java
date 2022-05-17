@@ -73,4 +73,9 @@ public class AdminViewController {
     public String deleteProduct() {
         return "products/delete";
     }
+
+    @GetMapping("/categories/add")
+    public String addCategory() {
+        return "categories/add";
+    }
 }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add category</title>
+</head>
+<body>
+<h1>Add category</h1>
+
+<div>
+    <a th:href="@{/}">Main</a>
+    <a th:href="@{/admin/users}">Admin</a>
+    <a th:href="@{/categories}">Categories</a>
+    <a th:href="@{/products}">Products</a>
+</div>
+
+<hr/>
+
+<div>
+    <label for="name">Name:</label>
+    <input type="text" id="name"/>
+    <br/>
+
+    <button id="button-add" onclick="addCategory()">Add</button>
+</div>
+
+<script th:inline="javascript">
+    function addCategory() {
+        const name = document.querySelector('#name').value;
+
+        const bodyCategory = {
+            "name": name
+        };
+
+        fetch(`http://localhost:8080/web-api/categories/`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(bodyCategory)
+        }).then(response => response.ok ? response.json() : alert(error));
+    }
+</script>
+</body>
+</html>
