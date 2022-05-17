@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Change Role</title>
+</head>
+<body>
+<h1>Change Role</h1>
+
+<form name="logout" th:action="@{/logout}" method="post">
+    <a th:href="@{/}">Main</a>
+    <a th:href="@{/admin/users}">Admin</a>
+    <a th:href="@{/products}">Products</a>
+    <button type="submit">Log Out</button>
+</form>
+
+<hr/>
+
+<div>
+    <form name="update-role" method="post" id="update-role">
+        <label for="role">Role:</label>
+        <select id="role">
+            <option>ROLE_USER</option>
+            <option>ROLE_ADMIN</option>
+        </select>
+        <button>Change</button>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let id = /*[[${id}]]*/ 0;
+    /*]]>*/
+
+    const form = document.querySelector('#update-role');
+    form.action = `/web-api/person-role/${id}`;
+</script>
+</body>
+</html>

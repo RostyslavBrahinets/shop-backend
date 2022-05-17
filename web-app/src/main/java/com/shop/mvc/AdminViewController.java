@@ -32,11 +32,20 @@ public class AdminViewController {
 
     @GetMapping("/users/{id}")
     public String getUser(
-        @PathVariable String id,
+        @PathVariable long id,
         Model model
     ) {
         model.addAttribute("id", id);
         return "admin/get";
+    }
+
+    @GetMapping("/users/{id}/update-role")
+    public String updateRoleForUser(
+        @PathVariable long id,
+        Model model
+    ) {
+        model.addAttribute("id", id);
+        return "admin/update_role";
     }
 
     @GetMapping("/products/add")
