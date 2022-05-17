@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete category</title>
+</head>
+<body>
+<h1>Delete category</h1>
+
+<div>
+    <a th:href="@{/}">Main</a>
+    <a th:href="@{/admin/users}">Admin</a>
+    <a th:href="@{/categories}">Categories</a>
+    <a th:href="@{/products}">Products</a>
+</div>
+
+<hr/>
+
+<div>
+    <label for="id">Id:</label>
+    <input type="text" id="id"/>
+    <button id="button-delete" onclick="deleteProduct()">Delete</button>
+</div>
+
+<script>
+    function deleteProduct() {
+        const id = document.querySelector('#id').value;
+        fetch(`http://localhost:8080/web-api/categories/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'POST'
+        }).then(response => response.ok ? response.json() : alert(error));
+    }
+</script>
+</body>
+</html>
