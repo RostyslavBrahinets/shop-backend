@@ -1,5 +1,5 @@
 INSERT INTO category (name)
-VALUES ('BOOKS'),
-       ('CLOTHES'),
-       ('ELECTRONICS');
+VALUES ('Books'),
+       ('Clothes'),
+       ('Electronics');
 
