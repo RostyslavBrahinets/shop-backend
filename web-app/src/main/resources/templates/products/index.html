@@ -23,6 +23,8 @@
             <a th:href="@{/admin/products/delete}">Delete</a>
         </span>
 
+        <a th:href="@{/categories}">Categories</a>
+
         <span th:if="${role == 'ROLE_USER'}">
             <a th:href="@{/basket}">Basket</a>
             <a th:href="@{/wallet}">Wallet</a>
