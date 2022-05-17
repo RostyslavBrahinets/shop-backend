@@ -2,6 +2,7 @@ package com.shop.mvc;
 
 import com.shop.models.Category;
 import com.shop.models.Person;
+import com.shop.services.CategoryService;
 import com.shop.services.PersonService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,13 +12,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminViewController {
     private final PersonService personService;
+    private final CategoryService categoryService;
 
-    public AdminViewController(PersonService personService) {
+    public AdminViewController(
+        PersonService personService,
+        CategoryService categoryService
+    ) {
         this.personService = personService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/users")
@@ -50,7 +59,13 @@ public class AdminViewController {
 
     @GetMapping("/products/add")
     public String addProduct(Model model) {
-        model.addAttribute("categories", Category.values());
+        List<String> categories = new ArrayList<>();
+
+        for (Category category : categoryService.getCategories()) {
+            categories.add(category.getName());
+        }
+
+        model.addAttribute("categories", categories);
         return "products/add";
     }
 
