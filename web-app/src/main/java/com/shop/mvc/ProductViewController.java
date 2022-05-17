@@ -42,6 +42,6 @@ public class ProductViewController {
 
         model.addAttribute("id", id);
 
-        return "products/get";
+        return "products/find";
     }
 }

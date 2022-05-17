@@ -42,6 +42,6 @@ public class CategoryViewController {
 
         model.addAttribute("id", id);
 
-        return "categories/get";
+        return "categories/find";
     }
 }

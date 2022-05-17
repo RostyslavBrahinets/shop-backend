@@ -45,7 +45,7 @@ public class AdminViewController {
         Model model
     ) {
         model.addAttribute("id", id);
-        return "admin/get";
+        return "admin/find";
     }
 
     @GetMapping("/users/{id}/update-role")
