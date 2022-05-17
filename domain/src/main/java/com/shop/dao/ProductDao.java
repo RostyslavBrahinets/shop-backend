@@ -23,13 +23,12 @@ public class ProductDao {
 
     public void addProduct(Product product) {
         jdbcTemplate.update(
-            "INSERT INTO product (name, describe, price, category, in_stock, image) "
-                + "VALUES (:name, :describe, :price, :category, :in_stock, :image)",
+            "INSERT INTO product (name, describe, price, in_stock, image) "
+                + "VALUES (:name, :describe, :price, :in_stock, :image)",
             Map.of(
                 "name", product.getName(),
                 "describe", product.getDescribe(),
                 "price", product.getPrice(),
-                "category", product.getCategory().toString(),
                 "in_stock", product.isInStock(),
                 "image", product.getImage()
             )
