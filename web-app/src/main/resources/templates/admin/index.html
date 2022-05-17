@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<h1>Users</h1>
+
+<form name="logout" th:action="@{/logout}" method="post">
+    <a th:href="@{/}">Main</a>
+    <a th:href="@{/products}">Products</a>
+    <button type="submit">Log Out</button>
+</form>
+
+<hr/>
+
+<div class="users-container"></div>
+
+<script th:inline="javascript">
+    function displayUsers(adminId) {
+        fetch('http://localhost:8080/web-api/people/', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'GET'
+        })
+            .then(response => response.ok ? response.json() : alert(error))
+            .then(data => {
+                const links = data.map(({id}) => `http://localhost:8080/admin/users/${id}`);
+
+                let formattedData = data.map(({firstName, lastName}) => `${firstName} ${lastName}`);
+                formattedData = formattedData.join('-').split('-');
+
+                for (let i = 0; i < formattedData.length; i++) {
+                    const userId = links[i][links[i].length-1];
+
+                    if (userId === adminId.toString()) {
+                        continue;
+                    }
+
+                    const user = formattedData[i];
+                    const a = document.createElement('a');
+                    const link = document.createTextNode(user);
+                    const node = document.createElement('div');
+
+                    a.appendChild(link);
+                    a.title = user.toString();
+                    a.href = links[i];
+
+                    node.appendChild(a)
+                    document.querySelector('.users-container').append(node);
+                }
+            });
+    }
+
+    /*<![CDATA[*/
+    let id = /*[[${id}]]*/ 0;
+    /*]]>*/
+
+    displayUsers(id);
+</script>
+</body>
+</html>

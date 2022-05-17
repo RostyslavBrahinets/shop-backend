@@ -18,7 +18,7 @@
         <a th:href="@{/}">Main</a>
 
         <span th:if="${role == 'ROLE_ADMIN'}">
-            <a th:href="@{/admin}">Admin</a>
+            <a th:href="@{/admin/users}">Admin</a>
         </span>
 
         <a th:href="@{/products}">Products</a>
@@ -89,7 +89,7 @@
     }
 
     /*<![CDATA[*/
-    let id = /*[[${id}]]*/ '0';
+    let id = /*[[${id}]]*/ 0;
     /*]]>*/
 
     displayProductInfo(id);
