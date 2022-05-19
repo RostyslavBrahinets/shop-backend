@@ -9,13 +9,13 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    testImplementation 'org.mockito:mockito-core:4.2.0'
+    testImplementation 'org.mockito:mockito-core:4.5.1'
     implementation 'javax.persistence:javax.persistence-api:2.2'
-    implementation 'org.postgresql:postgresql:42.3.3'
+    implementation 'org.postgresql:postgresql:42.3.4'
     implementation 'com.zaxxer:HikariCP:5.0.1'
-    implementation 'org.flywaydb:flyway-core:8.5.5'
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.6'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:2.6.6'
+    implementation 'org.flywaydb:flyway-core:8.5.10'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.7'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:2.6.7'
     implementation 'org.springframework.boot:spring-boot-starter-security:2.6.7'
     implementation 'com.stripe:stripe-java:20.120.0'
 }
