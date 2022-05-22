@@ -19,23 +19,31 @@
 <div>
     <label for="name">Name:</label>
     <input type="text" id="name"/>
+    <div id="invalid-name"></div>
     <br/>
 
     <label for="describe">Describe:</label>
     <textarea id="describe"></textarea>
+    <div id="invalid-describe"></div>
     <br/>
 
     <label for="price">Price:</label>
-    <input type="number" min="0" id="price"/>
+    <input type="number" min="0" id="price" value="0"/>
+    <div id="invalid-price"></div>
+    <br/>
+
+    <label for="barcode">Bar Code:</label>
+    <input type="text" id="barcode"/>
+    <div id="invalid-barcode"></div>
     <br/>
 
     <label for="category">Category:</label>
     <select id="category"></select>
     <br/>
 
-    <label for="in-stock">In stock:</label>
+    <label for="in-stock">In Stock:</label>
     <select id="in-stock">
-        <option>True</option>
+        <option selected>True</option>
         <option>False</option>
     </select>
     <br/>
@@ -45,33 +53,90 @@
     <br/>
 
     <button id="button-add" onclick="addProduct()">Add</button>
+
+    <div id="adding-result"></div>
 </div>
 
 <script th:inline="javascript">
     function addProduct() {
         const name = document.querySelector('#name').value;
         const describe = document.querySelector('#describe').value;
-        const price = document.querySelector('#price').value;
-        const category = document.querySelector('#category').value;
-        const inStock = document.querySelector('#in-stock').value;
+        const price = parseFloat(document.querySelector('#price').value);
+        const barcode = document.querySelector('#barcode').value;
+        const category = document.querySelector('#category').value.toString();
+        const inStock = document.querySelector('#in-stock').value === 'True';
 
-        const bodyProduct = {
-            "name": name,
-            "describe": describe,
-            "price": price,
-            "category": category,
-            "in-stock": inStock,
-            "image": imageByteArray.length === 0 ? -1 : imageByteArray
-        };
+        let nodeName = document.querySelector('#invalid-name');
+        let nodeDescribe = document.querySelector('#invalid-describe');
+        let nodePrice = document.querySelector('#invalid-price');
+        let nodeBarcode = document.querySelector('#invalid-barcode');
+        let message;
 
-        fetch(`http://localhost:8080/web-api/products/`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            method: 'POST',
-            body: JSON.stringify(bodyProduct)
-        }).then(response => response.ok ? response.json() : alert(error));
+        nodeName.textContent = '';
+        nodeDescribe.textContent = '';
+        nodePrice.textContent = '';
+        nodeBarcode.textContent = '';
+
+        if (!name || name.trim() === '') {
+            message = document.createTextNode('Invalid Name');
+            nodeName.appendChild(message);
+        } else if (!describe || describe.trim() === '') {
+            message = document.createTextNode('Invalid Describe');
+            nodeDescribe.appendChild(message);
+        } else if (!price || price < 0) {
+            message = document.createTextNode('Invalid Price');
+            nodePrice.appendChild(message);
+        } else if (!barcode || barcode.trim() === '') {
+            message = document.createTextNode('Invalid Barcode');
+            nodeBarcode.appendChild(message);
+        } else {
+            const bodyProduct = {
+                'name': name,
+                'describe': describe,
+                'price': price,
+                'barcode': barcode,
+                'inStock': inStock,
+                'image': imageByteArray
+            };
+
+            fetch(`http://localhost:8080/web-api/products`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(bodyProduct)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const node = document.querySelector('#adding-result');
+                    const message = document.createTextNode(`Product '${data.name}' Successfully Added`);
+
+                    node.textContent = '';
+                    node.appendChild(message);
+
+                    document.querySelector('#name').value = '';
+                    document.querySelector('#describe').value = '';
+                    document.querySelector('#price').value = '0';
+                    document.querySelector('#barcode').value = '';
+                })
+                .catch(error => console.log('Request failed', error));
+
+            const bodyProductCategory = {
+                'barcode': barcode,
+                'category': category
+            };
+
+            fetch(`http://localhost:8080/web-api/product-category`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(bodyProductCategory)
+            })
+                .catch(error => console.log('Request failed', error));
+        }
     }
 
     /*<![CDATA[*/
@@ -81,6 +146,11 @@
     for (let i = 0; i < categories.length; i++) {
         const option = document.createElement('option');
         option.textContent = categories[i];
+
+        if (i === 0) {
+            option.selected = true;
+        }
+
         document.querySelector('#category').appendChild(option);
     }
 
@@ -92,8 +162,8 @@
         reader.readAsArrayBuffer(e.target.files[0]);
         reader.onloadend = (evt) => {
             if (evt.target.readyState === FileReader.DONE) {
-                const arrayBuffer = evt.target.result,
-                    array = new Uint8Array(arrayBuffer);
+                const arrayBuffer = evt.target.result;
+                const array = new Uint8Array(arrayBuffer);
                 for (const a of array) {
                     imageByteArray.push(a);
                 }

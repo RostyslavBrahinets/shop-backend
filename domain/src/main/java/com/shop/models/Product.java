@@ -20,7 +20,7 @@ public class Product implements Serializable {
     private Category category;
     private boolean inStock;
     @Lob
-    private byte[][][] image;
+    private byte[] image;
 
     public Product() {
     }
@@ -31,8 +31,8 @@ public class Product implements Serializable {
         String describe,
         double price,
         String barcode,
-        boolean inStock/*,
-        byte[][][] image*/
+        boolean inStock,
+        byte[] image
     ) {
         this.id = id;
         this.name = name;
@@ -40,7 +40,7 @@ public class Product implements Serializable {
         this.price = price;
         this.barcode = barcode;
         this.inStock = inStock;
-//        this.image = image;
+        this.image = image;
     }
 
     public long getId() {
@@ -99,11 +99,11 @@ public class Product implements Serializable {
         this.inStock = inStock;
     }
 
-    public byte[][][] getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(byte[][][] image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
@@ -125,13 +125,13 @@ public class Product implements Serializable {
             && Objects.equals(describe, product.describe)
             && Objects.equals(barcode, product.barcode)
             && category == product.category
-            && Arrays.deepEquals(image, product.image);
+            && Arrays.equals(image, product.image);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(id, name, describe, barcode, price, category, inStock);
-        result = 31 * result + Arrays.deepHashCode(image);
+        result = 31 * result + Arrays.hashCode(image);
         return result;
     }
 

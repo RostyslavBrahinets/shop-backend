@@ -33,14 +33,14 @@ public class ProductController {
 
     @PostMapping
     public Product savePerson(@RequestBody Product product) throws IOException {
-        if (product.getImage().length == 0) {
-            String imagePath = "images/empty.jpg";
-            BufferedImage image = ImageIO.read(new File(imagePath));
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ImageIO.write(image, "jpg", byteArrayOutputStream);
-            byte[] bytes = byteArrayOutputStream.toByteArray();
-            product.setImage(bytes);
-        }
+//        if (product.getImage().length == 0) {
+//            String imagePath = "static/images/empty.jpg";
+//            BufferedImage image = ImageIO.read(new File(imagePath));
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            ImageIO.write(image, "jpg", byteArrayOutputStream);
+//            byte[] bytes = byteArrayOutputStream.toByteArray();
+//            product.setImage(bytes);
+//        }
 
         return productService.addProduct(product);
     }
