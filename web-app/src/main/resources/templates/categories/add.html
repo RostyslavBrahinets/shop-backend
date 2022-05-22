@@ -26,36 +26,36 @@
 <script th:inline="javascript">
     function addCategory() {
         const name = document.querySelector('#name').value;
+        const node = document.querySelector('#adding-result');
+        let message;
 
-        const bodyCategory = {
-            "name": name
-        };
+        node.textContent = '';
 
-        fetch(`http://localhost:8080/web-api/categories/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(bodyCategory)
-        })
-            .then(response => response.json())
-            .then(data => {
-                const node = document.querySelector('#adding-result');
-                let message;
+        if (!name || name.trim() === '') {
+            message = document.createTextNode('Invalid Name');
+            node.appendChild(message);
+        } else {
+            const bodyCategory = {
+                'name': name
+            };
 
-                if (data.name === undefined) {
-                    message = document.createTextNode('Invalid Name');
-                } else {
-                    message = document.createTextNode(`Category '${data.name}' Successfully Added`);
-                }
-
-                node.textContent = '';
-                node.appendChild(message);
-
-                document.querySelector('#name').value = '';
+            fetch(`http://localhost:8080/web-api/categories/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(bodyCategory)
             })
-            .catch(error => console.log('Request failed', error));
+                .then(response => response.json())
+                .then(data => {
+                    message = document.createTextNode(`Category '${data.name}' Successfully Added`);
+                    node.appendChild(message);
+
+                    document.querySelector('#name').value = '';
+                })
+                .catch(error => console.log('Request failed', error));
+        }
     }
 </script>
 </body>
