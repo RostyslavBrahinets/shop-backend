@@ -74,14 +74,10 @@ public class ProductsBasketsService {
     public void deleteProductFromBasket(long productId, long basketId) {
         productValidator.validate(productId);
         basketValidator.validate(basketId);
-        productsBasketsRepository.deleteProductFromBasket(productId, productId);
+        productsBasketsRepository.deleteProductFromBasket(productId, basketId);
 
         Product product = productService.getProduct(productId);
         Basket basket = basketService.getBasket(basketId);
-
-        List<Product> products = basket.getProducts();
-        products.remove((int) productId);
-        basket.setProducts(products);
 
         double newTotalCost = basket.getTotalCost();
         newTotalCost -= product.getPrice();
@@ -112,7 +108,6 @@ public class ProductsBasketsService {
         stripePayment.updateCustomer(wallet.getNumber(), (long) newAmountOfMoney * -100);
 
         basket.setTotalCost(0);
-        basket.setProducts(new ArrayList<>());
         basketService.updateBasket(basket.getId(), basket);
 
         deleteProductsFromBasket(basket.getId());
