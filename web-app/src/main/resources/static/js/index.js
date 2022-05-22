@@ -1,11 +1,11 @@
 fetch('http://localhost:8080/web-api/', {
+    method: 'GET',
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-    },
-    method: 'GET'
+    }
 })
-    .then(response => response.ok ? response.json() : alert(error))
+    .then(response => response.json())
     .then(data => {
         const links = data.map(({id}) => `http://localhost:8080/products/${id}`);
 
@@ -22,7 +22,8 @@ fetch('http://localhost:8080/web-api/', {
             a.title = element.toString();
             a.href = links[i];
             node.appendChild(a)
-            document.querySelector('.container').append(node);
+            document.querySelector('.products-container').append(node);
             i++;
-        });
-    });
+        })
+    })
+    .catch(error => console.log('Request failed', error));
