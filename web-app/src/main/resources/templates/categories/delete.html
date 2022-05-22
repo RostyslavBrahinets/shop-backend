@@ -30,7 +30,7 @@
         if (id < 1) {
             const node = document.querySelector('#deleting-result');
             node.textContent = '';
-            node.appendChild(document.createTextNode('Invalid id!'));
+            node.appendChild(document.createTextNode('Invalid Id'));
         } else {
             fetch(`http://localhost:8080/web-api/categories/${id}`, {
                 method: 'POST',
