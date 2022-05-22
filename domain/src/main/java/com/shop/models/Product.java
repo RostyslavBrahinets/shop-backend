@@ -16,10 +16,11 @@ public class Product implements Serializable {
     private String name;
     private String describe;
     private double price;
+    private String barcode;
     private Category category;
     private boolean inStock;
     @Lob
-    private byte[] image;
+    private byte[][][] image;
 
     public Product() {
     }
@@ -29,17 +30,17 @@ public class Product implements Serializable {
         String name,
         String describe,
         double price,
-        Category category,
-        boolean inStock,
-        byte[] image
+        String barcode,
+        boolean inStock/*,
+        byte[][][] image*/
     ) {
         this.id = id;
         this.name = name;
         this.describe = describe;
         this.price = price;
-        this.category = category;
+        this.barcode = barcode;
         this.inStock = inStock;
-        this.image = image;
+//        this.image = image;
     }
 
     public long getId() {
@@ -74,6 +75,14 @@ public class Product implements Serializable {
         this.price = price;
     }
 
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -90,11 +99,11 @@ public class Product implements Serializable {
         this.inStock = inStock;
     }
 
-    public byte[] getImage() {
+    public byte[][][] getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(byte[][][] image) {
         this.image = image;
     }
 
@@ -114,14 +123,15 @@ public class Product implements Serializable {
             && inStock == product.inStock
             && Objects.equals(name, product.name)
             && Objects.equals(describe, product.describe)
+            && Objects.equals(barcode, product.barcode)
             && category == product.category
-            && Arrays.equals(image, product.image);
+            && Arrays.deepEquals(image, product.image);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, name, describe, price, category, inStock);
-        result = 31 * result + Arrays.hashCode(image);
+        int result = Objects.hash(id, name, describe, barcode, price, category, inStock);
+        result = 31 * result + Arrays.deepHashCode(image);
         return result;
     }
 
@@ -131,10 +141,10 @@ public class Product implements Serializable {
             + "id=" + id
             + ", name='" + name + '\''
             + ", describe='" + describe + '\''
+            + ", barcode='" + barcode + '\''
             + ", price=" + price
             + ", category=" + category
             + ", inStock=" + inStock
-            + ", image=" + Arrays.toString(image)
             + '}';
     }
 }
