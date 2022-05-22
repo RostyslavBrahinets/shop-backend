@@ -37,6 +37,13 @@ public class CategoryDao {
         );
     }
 
+    public void deleteCategory(String name) {
+        jdbcTemplate.update(
+            "DELETE FROM category WHERE name=:name",
+            Map.of("name", name)
+        );
+    }
+
     public Optional<Category> getCategory(long id) {
         return jdbcTemplate.query(
                 "SELECT * FROM category WHERE id=:id",

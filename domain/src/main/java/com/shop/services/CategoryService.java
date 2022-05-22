@@ -38,6 +38,11 @@ public class CategoryService {
         categoryRepository.deleteCategory(id);
     }
 
+    public void deleteCategory(String name) {
+        categoryValidator.validate(name);
+        categoryRepository.deleteCategory(name);
+    }
+
     public Category getCategory(long id) {
         categoryValidator.validate(id);
         Optional<Category> category = categoryRepository.getCategory(id);

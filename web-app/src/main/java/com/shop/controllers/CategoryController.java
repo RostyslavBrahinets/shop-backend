@@ -32,9 +32,9 @@ public class CategoryController {
         return categoryService.addCategory(category);
     }
 
-    @PostMapping("/{id}")
-    public String deleteCategory(@PathVariable int id) {
-        categoryService.deleteCategory(id);
+    @PostMapping("/{name}")
+    public String deleteCategory(@PathVariable String name) {
+        categoryService.deleteCategory(name);
         return "Category Successfully Deleted";
     }
 }

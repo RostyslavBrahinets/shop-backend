@@ -27,6 +27,10 @@ public class CategoryRepository {
         categoryDao.deleteCategory(id);
     }
 
+    public void deleteCategory(String name) {
+        categoryDao.deleteCategory(name);
+    }
+
     public Optional<Category> getCategory(long id) {
         return categoryDao.getCategory(id);
     }

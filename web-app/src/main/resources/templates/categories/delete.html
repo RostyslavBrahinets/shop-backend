@@ -17,22 +17,22 @@
 <hr/>
 
 <div>
-    <label for="id">Id:</label>
-    <input type="text" id="id"/>
-    <button id="button-delete" onclick="deleteProduct()">Delete</button>
+    <label for="name">Name:</label>
+    <input type="text" id="name"/>
+    <button id="button-delete" onclick="deleteCategory()">Delete</button>
     <div id="deleting-result"></div>
 </div>
 
 <script>
-    function deleteProduct() {
-        const id = document.querySelector('#id').value;
+    function deleteCategory() {
+        const name = document.querySelector('#name').value;
         const node = document.querySelector('#deleting-result');
         node.textContent = '';
 
-        if (id < 1) {
-            node.appendChild(document.createTextNode('Invalid Id'));
+        if (!name || name.trim() === '') {
+            node.appendChild(document.createTextNode('Invalid Name'));
         } else {
-            fetch(`http://localhost:8080/web-api/categories/${id}`, {
+            fetch(`http://localhost:8080/web-api/categories/${name}`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -41,7 +41,7 @@
                 .then(response => response.text())
                 .then(data => {
                     node.appendChild(document.createTextNode(data));
-                    document.querySelector('#id').value = '';
+                    document.querySelector('#name').value = '';
                 })
                 .catch(error => console.log('Request failed', error));
         }
