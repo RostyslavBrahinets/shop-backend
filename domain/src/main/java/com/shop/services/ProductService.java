@@ -49,6 +49,16 @@ public class ProductService {
         }
     }
 
+    public Product getProduct(String barcode) {
+        validator.validate(barcode);
+        Optional<Product> product = productRepository.getProduct(barcode);
+        if (product.isEmpty()) {
+            throw new NotFoundException("Product not found");
+        } else {
+            return product.get();
+        }
+    }
+
     public List<Product> getRandomProducts(int count) {
         List<Product> products = new ArrayList<>();
         int size = getProducts().size();
