@@ -49,13 +49,13 @@
 <script th:inline="javascript">
     function displayProductInfo(id) {
         fetch(`http://localhost:8080/web-api/products/${id}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
-            },
-            method: 'GET'
+            }
         })
-            .then(response => response.ok ? response.json() : alert(error))
+            .then(response => response.json())
             .then(data => {
                 const node = document.createElement('div');
                 const divImage = document.createElement('div');
@@ -89,7 +89,8 @@
                 node.appendChild(divInStock);
                 node.appendChild(divBarcode);
                 document.querySelector('.product-container').append(node);
-            });
+            })
+            .catch(error => console.log('Request failed', error));
     }
 
     /*<![CDATA[*/

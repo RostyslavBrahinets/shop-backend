@@ -25,18 +25,19 @@
 <script th:inline="javascript">
     function displayWalletInfo(id) {
         fetch(`http://localhost:8080/web-api/wallets/${id}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
-            },
-            method: 'GET'
+            }
         })
-            .then(response => response.ok ? response.json() : alert(error))
+            .then(response => response.json())
             .then(data => {
                 const node = document.createElement('div');
                 node.appendChild(document.createTextNode(`Amount Of Money: ${data.amountOfMoney}`));
                 document.querySelector('.wallet-container').append(node);
-            });
+            })
+            .catch(error => console.log('Request failed', error));
     }
 
     /*<![CDATA[*/

@@ -26,13 +26,13 @@
 <script th:inline="javascript">
     function displayPersonInfo(id) {
         fetch(`http://localhost:8080/web-api/people/${id}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
-            },
-            method: 'GET'
+            }
         })
-            .then(response => response.ok ? response.json() : alert(error))
+            .then(response => response.json())
             .then(data => {
                 const node = document.createElement('div');
 
@@ -51,18 +51,19 @@
                 }
 
                 document.querySelector('.person-container').append(node);
-            });
+            })
+            .catch(error => console.log('Request failed', error));
     }
 
     function displayContactInfo(id) {
         fetch(`http://localhost:8080/web-api/contacts/${id}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
-            },
-            method: 'GET'
+            }
         })
-            .then(response => response.ok ? response.json() : alert(error))
+            .then(response => response.json())
             .then(data => {
                 const node = document.createElement('div');
 
@@ -81,7 +82,8 @@
                 }
 
                 document.querySelector('.contact-container').append(node);
-            });
+            })
+            .catch(error => console.log('Request failed', error));
     }
 
     /*<![CDATA[*/

@@ -21,13 +21,13 @@
 <script th:inline="javascript">
     function displayUsers(adminId) {
         fetch('http://localhost:8080/web-api/people/', {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
-            },
-            method: 'GET'
+            }
         })
-            .then(response => response.ok ? response.json() : alert(error))
+            .then(response => response.json())
             .then(data => {
                 const links = data.map(({id}) => `http://localhost:8080/admin/users/${id}`);
 
@@ -59,7 +59,8 @@
                         document.querySelector('.users-container').append(node);
                     }
                 }
-            });
+            })
+            .catch(error => console.log('Request failed', error));
     }
 
     /*<![CDATA[*/
