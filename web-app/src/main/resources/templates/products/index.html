@@ -41,12 +41,13 @@
 
 <div>
     <span>Sort by:</span>
-    <a href="#sorted" onclick="sortProductsByNameAsc()">Name (a-z)</a>
-    <a href="#sorted" onclick="sortProductsByNameDesc()">Name (z-a)</a>
+    <a href="#" onclick="sortProductsByNameAsc()">Name (a-z)</a>
+    <a href="#" onclick="sortProductsByNameDesc()">Name (z-a)</a>
 </div>
 
-<div class="container"></div>
+<div class="products-container"></div>
 
 <script th:src="@{../js/products/index.js}" type="text/javascript"></script>
+<script th:src="@{../js/sorting.js}" type="text/javascript"></script>
 </body>
 </html>

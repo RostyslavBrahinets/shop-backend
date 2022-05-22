@@ -1,12 +1,12 @@
 function displayProducts() {
     fetch('http://localhost:8080/web-api/products/', {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
-        },
-        method: 'GET'
+        }
     })
-        .then(response => response.ok ? response.json() : alert(error))
+        .then(response => response.json())
         .then(data => {
             const links = data.map(({id}) => `http://localhost:8080/products/${id}`);
 
@@ -23,64 +23,11 @@ function displayProducts() {
                 a.title = element.toString();
                 a.href = links[i];
                 node.appendChild(a)
-                document.querySelector('.container').append(node);
+                document.querySelector('.products-container').append(node);
                 i++;
             });
-        });
-}
-
-function sortProductsByNameAsc() {
-    let node = document.querySelector('.container');
-    let products = node.querySelectorAll('a');
-
-    let sortedProducts = [].map.call(products, function (product) {
-        return product;
-    }).sort(sortA());
-
-    node.remove();
-
-    node = document.createElement('div');
-    node.className = 'container';
-
-    for (let i = 0; i < sortedProducts.length; i++) {
-        let divA = document.createElement('div');
-        divA.appendChild(sortedProducts[i]);
-        node.appendChild(divA);
-    }
-
-    document.body.appendChild(node);
-}
-
-function sortProductsByNameDesc() {
-    let node = document.querySelector('.container');
-    let products = node.querySelectorAll('a');
-
-    let sortedProducts = [].map.call(products, function (product) {
-        return product;
-    }).sort(sortA()).reverse();
-
-    node.remove();
-
-    node = document.createElement('div');
-    node.className = 'container';
-
-    for (let i = 0; i < sortedProducts.length; i++) {
-        let divA = document.createElement('div');
-        divA.appendChild(sortedProducts[i]);
-        node.appendChild(divA);
-    }
-
-    document.body.appendChild(node);
-}
-
-function sortA() {
-    return function (a, b) {
-        let filter_a = a.title;
-        let filter_b = b.title;
-        return filter_a < filter_b
-            ? -1
-            : (filter_a > filter_b ? 1 : 0);
-    }
+        })
+        .catch(error => console.log('Request failed', error));
 }
 
 displayProducts();
