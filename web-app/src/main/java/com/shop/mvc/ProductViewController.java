@@ -1,5 +1,7 @@
 package com.shop.mvc;
 
+import com.shop.models.Product;
+import com.shop.services.ProductService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/products")
 public class ProductViewController {
+    private final ProductService productService;
+
+    public ProductViewController(ProductService productService) {
+        this.productService = productService;
+    }
+
     @GetMapping
     public String index(
         @AuthenticationPrincipal UserDetails userDetails,
@@ -41,6 +49,9 @@ public class ProductViewController {
         }
 
         model.addAttribute("id", id);
+
+        Product product = productService.getProduct(id);
+        model.addAttribute("inStock", product.isInStock());
 
         return "products/find";
     }

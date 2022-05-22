@@ -40,7 +40,7 @@
 
 <div class="product-container"></div>
 
-<div th:if="${role == 'ROLE_USER'}">
+<div th:if="${role == 'ROLE_USER' && inStock}">
     <form name="add" th:action="@{/web-api/products-baskets/{id}(id=${id})}" method="post">
         <button type="submit">Add To Basket</button>
     </form>
@@ -74,9 +74,9 @@
                 divPrice.appendChild(document.createTextNode(`Price: ${data.price}`));
 
                 if (data.inStock) {
-                    divInStock.appendChild(document.createTextNode(`${data.name} is in stock`));
+                    divInStock.appendChild(document.createTextNode(`'${data.name}' is in stock`));
                 } else {
-                    divInStock.appendChild(document.createTextNode(`Sorry! ${data.name} isn't in stock`));
+                    divInStock.appendChild(document.createTextNode(`Sorry! '${data.name}' isn't in stock`));
                 }
 
                 divBarcode.appendChild(document.createTextNode(`Barcode: ${data.barcode}`));
