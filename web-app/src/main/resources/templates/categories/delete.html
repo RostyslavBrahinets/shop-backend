@@ -26,10 +26,10 @@
 <script>
     function deleteProduct() {
         const id = document.querySelector('#id').value;
+        const node = document.querySelector('#deleting-result');
+        node.textContent = '';
 
         if (id < 1) {
-            const node = document.querySelector('#deleting-result');
-            node.textContent = '';
             node.appendChild(document.createTextNode('Invalid Id'));
         } else {
             fetch(`http://localhost:8080/web-api/categories/${id}`, {
@@ -40,10 +40,7 @@
             })
                 .then(response => response.text())
                 .then(data => {
-                    const node = document.querySelector('#deleting-result');
-                    node.textContent = '';
                     node.appendChild(document.createTextNode(data));
-
                     document.querySelector('#id').value = '';
                 })
                 .catch(error => console.log('Request failed', error));
