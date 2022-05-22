@@ -23,14 +23,15 @@ public class ProductDao {
 
     public void addProduct(Product product) {
         jdbcTemplate.update(
-            "INSERT INTO product (name, describe, price, in_stock, image) "
-                + "VALUES (:name, :describe, :price, :in_stock, :image)",
+            "INSERT INTO product (name, describe, price, barcode, in_stock/*, image*/) "
+                + "VALUES (:name, :describe, :price, :barcode, :in_stock/*, :image*/)",
             Map.of(
                 "name", product.getName(),
                 "describe", product.getDescribe(),
                 "price", product.getPrice(),
-                "in_stock", product.isInStock(),
-                "image", product.getImage()
+                "barcode", product.getBarcode(),
+                "in_stock", product.isInStock()/*,
+                "image", product.getImage()*/
             )
         );
     }
@@ -46,6 +47,15 @@ public class ProductDao {
         return jdbcTemplate.query(
                 "SELECT * FROM product WHERE id=:id",
                 Map.of("id", id),
+                new BeanPropertyRowMapper<>(Product.class)
+            )
+            .stream().findAny();
+    }
+
+    public Optional<Product> getProduct(String barcode) {
+        return jdbcTemplate.query(
+                "SELECT * FROM product WHERE barcode=:barcode",
+                Map.of("barcode", barcode),
                 new BeanPropertyRowMapper<>(Product.class)
             )
             .stream().findAny();
