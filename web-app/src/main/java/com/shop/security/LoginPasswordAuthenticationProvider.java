@@ -1,5 +1,7 @@
 package com.shop.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,6 +20,7 @@ import java.util.Objects;
 public class LoginPasswordAuthenticationProvider implements AuthenticationProvider {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final Logger logger = LoggerFactory.getLogger(LoginPasswordAuthenticationProvider.class);
 
     public LoginPasswordAuthenticationProvider(
         UserDetailsService userDetailsService,
@@ -34,9 +37,13 @@ public class LoginPasswordAuthenticationProvider implements AuthenticationProvid
         String password = authentication.getCredentials().toString();
         UsernamePasswordAuthenticationToken token = null;
 
-        UserDetails user = userDetailsService.loadUserByUsername(username);
-        if (passwordEncoder.matches(password, Objects.requireNonNull(user).getPassword())) {
-            token = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        try {
+            UserDetails user = userDetailsService.loadUserByUsername(username);
+            if (passwordEncoder.matches(password, Objects.requireNonNull(user).getPassword())) {
+                token = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
 
         if (token != null) {
