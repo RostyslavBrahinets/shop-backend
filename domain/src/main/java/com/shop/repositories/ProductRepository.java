@@ -19,8 +19,8 @@ public class ProductRepository {
         return productDao.getProducts();
     }
 
-    public void addProduct(Product person) {
-        productDao.addProduct(person);
+    public void addProduct(Product product) {
+        productDao.addProduct(product);
     }
 
     public void deleteProduct(long id) {
@@ -29,5 +29,9 @@ public class ProductRepository {
 
     public Optional<Product> getProduct(long id) {
         return productDao.getProduct(id);
+    }
+
+    public Optional<Product> getProduct(String barcode) {
+        return productDao.getProduct(barcode);
     }
 }
