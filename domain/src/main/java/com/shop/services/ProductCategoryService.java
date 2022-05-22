@@ -2,11 +2,13 @@ package com.shop.services;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.models.Category;
+import com.shop.models.Product;
 import com.shop.repositories.ProductCategoryRepository;
 import com.shop.validators.CategoryValidator;
 import com.shop.validators.ProductValidator;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,5 +41,10 @@ public class ProductCategoryService {
         productValidator.validate(productId);
         categoryValidator.validate(categoryId);
         productCategoryRepository.addProductToCategory(productId, categoryId);
+    }
+
+    public List<Product> getProductsInCategory(long categoryId) {
+        categoryValidator.validate(categoryId);
+        return productCategoryRepository.getProductsInCategory(categoryId);
     }
 }

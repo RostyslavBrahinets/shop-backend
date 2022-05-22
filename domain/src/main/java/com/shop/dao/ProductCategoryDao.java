@@ -2,10 +2,12 @@ package com.shop.dao;
 
 import com.shop.db.DatabaseTemplate;
 import com.shop.models.Category;
+import com.shop.models.Product;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -31,6 +33,15 @@ public class ProductCategoryDao {
                 "product_id", productId,
                 "category_id", categoryId
             )
+        );
+    }
+
+    public List<Product> getProductsInCategory(long categoryId) {
+        return jdbcTemplate.query(
+            "SELECT p.* FROM product p, product_category pc "
+                + "WHERE pc.product_id=p.id AND pc.category_id=:category_id",
+            Map.of("category_id", categoryId),
+            new BeanPropertyRowMapper<>(Product.class)
         );
     }
 }

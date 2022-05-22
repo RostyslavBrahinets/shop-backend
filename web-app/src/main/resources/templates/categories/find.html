@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Category</title>
+    <meta charset="UTF-8">
+    <title>Products</title>
 </head>
 <body>
+<h1>Products</h1>
+
 <form name="logout" th:action="@{/logout}" method="post">
     <div>
         <a th:href="@{/}">Main</a>
@@ -30,10 +32,54 @@
 
 <hr/>
 
-<div class="category-container"></div>
+<div class="products-container"></div>
 
 <script th:inline="javascript">
+    function displayProductsInCategory(id) {
+        fetch(`http://localhost:8080/web-api/product-category/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            method: 'GET'
+        })
+            .then(response => response.ok ? response.json() : alert(error))
+            .then(data => {
+                if (data.length === 0) {
+                    const node = document.createElement('div');
+                    node.appendChild(document.createTextNode('Not Found Products In This Category'));
+                    document.querySelector('.products-container').append(node);
+                    return;
+                }
 
+                const links = data.map(({id}) => `http://localhost:8080/products/${id}`);
+
+                let formattedData = data.map(({name}) => `${name}`);
+                formattedData = formattedData.join('-').split('-');
+
+                let i = 0;
+                formattedData.forEach(element => {
+                    const node = document.createElement('div');
+                    const a = document.createElement('a');
+                    const link = document.createTextNode(element);
+
+                    a.appendChild(link);
+                    a.title = element.toString();
+                    a.href = links[i];
+
+                    node.appendChild(a)
+
+                    document.querySelector('.products-container').append(node);
+                    i++;
+                });
+            });
+    }
+
+    /*<![CDATA[*/
+    let id = /*[[${id}]]*/ 0;
+    /*]]>*/
+
+    displayProductsInCategory(id);
 </script>
 </body>
 </html>

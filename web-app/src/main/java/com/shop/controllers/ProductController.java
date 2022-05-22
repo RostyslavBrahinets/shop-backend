@@ -5,7 +5,6 @@ import com.shop.services.ProductService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -33,12 +32,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product savePerson(
-        @RequestBody Product product,
-        HttpServletResponse response
-    ) throws IOException {
-        response.sendRedirect("/products");
-
+    public Product savePerson(@RequestBody Product product) throws IOException {
         if (product.getImage().length == 0) {
             String imagePath = "images/empty.jpg";
             BufferedImage image = ImageIO.read(new File(imagePath));
