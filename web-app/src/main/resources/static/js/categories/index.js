@@ -1,12 +1,12 @@
 function displayCategories() {
     fetch('http://localhost:8080/web-api/categories/', {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
-        },
-        method: 'GET'
+        }
     })
-        .then(response => response.ok ? response.json() : alert(error))
+        .then(response => response.json())
         .then(data => {
             const links = data.map(({id}) => `http://localhost:8080/categories/${id}`);
 
@@ -26,7 +26,8 @@ function displayCategories() {
                 document.querySelector('.categories-container').append(node);
                 i++;
             });
-        });
+        })
+        .catch(error => console.log('Request failed', error));
 }
 
 displayCategories();
