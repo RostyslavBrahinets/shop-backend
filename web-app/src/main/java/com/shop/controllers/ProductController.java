@@ -45,9 +45,9 @@ public class ProductController {
         return productService.addProduct(product);
     }
 
-    @PostMapping("/{id}")
-    public String deleteProduct(@PathVariable long id) {
-        productService.deleteProduct(id);
+    @PostMapping("/{barcode}")
+    public String deleteProduct(@PathVariable String barcode) {
+        productService.deleteProduct(barcode);
         return "Product Successfully Deleted";
     }
 }

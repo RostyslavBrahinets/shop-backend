@@ -39,6 +39,11 @@ public class ProductService {
         productRepository.deleteProduct(id);
     }
 
+    public void deleteProduct(String barcode) {
+        validator.validate(barcode);
+        productRepository.deleteProduct(barcode);
+    }
+
     public Product getProduct(long id) {
         validator.validate(id);
         Optional<Product> product = productRepository.getProduct(id);

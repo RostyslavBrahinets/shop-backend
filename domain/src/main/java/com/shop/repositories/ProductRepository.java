@@ -34,4 +34,8 @@ public class ProductRepository {
     public Optional<Product> getProduct(String barcode) {
         return productDao.getProduct(barcode);
     }
+
+    public void deleteProduct(String barcode) {
+        productDao.deleteProduct(barcode);
+    }
 }

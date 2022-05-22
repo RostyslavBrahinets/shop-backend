@@ -17,22 +17,22 @@
 <hr/>
 
 <div>
-    <label for="id">Id:</label>
-    <input type="text" id="id"/>
+    <label for="barcode">Barcode:</label>
+    <input type="text" id="barcode"/>
     <button id="button-delete" onclick="deleteProduct()">Delete</button>
     <div id="deleting-result"></div>
 </div>
 
 <script>
     function deleteProduct() {
-        const id = document.querySelector('#id').value;
+        const barcode = document.querySelector('#barcode').value;
         const node = document.querySelector('#deleting-result');
         node.textContent = '';
 
-        if (id < 1) {
+        if (!barcode || barcode.trim() === '') {
             node.appendChild(document.createTextNode('Invalid Id'));
         } else {
-            fetch(`http://localhost:8080/web-api/products/${id}`, {
+            fetch(`http://localhost:8080/web-api/products/${barcode}`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -41,7 +41,7 @@
                 .then(response => response.text())
                 .then(data => {
                     node.appendChild(document.createTextNode(data));
-                    document.querySelector('#id').value = '';
+                    document.querySelector('#barcode').value = '';
                 })
                 .catch(error => console.log('Request failed', error));
         }

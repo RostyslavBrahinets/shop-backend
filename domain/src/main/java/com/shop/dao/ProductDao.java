@@ -60,4 +60,11 @@ public class ProductDao {
             )
             .stream().findAny();
     }
+
+    public void deleteProduct(String barcode) {
+        jdbcTemplate.update(
+            "DELETE FROM product WHERE barcode=:barcode",
+            Map.of("barcode", barcode)
+        );
+    }
 }
