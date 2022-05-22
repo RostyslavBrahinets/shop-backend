@@ -19,9 +19,8 @@
 <div>
     <label for="name">Name:</label>
     <input type="text" id="name"/>
-    <br/>
-
     <button id="button-add" onclick="addCategory()">Add</button>
+    <div id="adding-result"></div>
 </div>
 
 <script th:inline="javascript">
@@ -33,13 +32,30 @@
         };
 
         fetch(`http://localhost:8080/web-api/categories/`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            method: 'POST',
             body: JSON.stringify(bodyCategory)
-        }).then(response => response.ok ? response.json() : alert(error));
+        })
+            .then(response => response.json())
+            .then(data => {
+                const node = document.querySelector('#adding-result');
+                let message;
+
+                if (data.name === undefined) {
+                    message = document.createTextNode('Invalid Name');
+                } else {
+                    message = document.createTextNode(`Category '${data.name}' Successfully Added`);
+                }
+
+                node.textContent = '';
+                node.appendChild(message);
+
+                document.querySelector('#name').value = '';
+            })
+            .catch(error => console.log('Request failed', error));
     }
 </script>
 </body>
