@@ -5,8 +5,6 @@ import com.shop.services.CategoryService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -30,20 +28,13 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category saveCategory(
-        @RequestBody Category category,
-        HttpServletResponse response
-    ) throws IOException {
-        response.sendRedirect("/categories");
+    public Category saveCategory(@RequestBody Category category) {
         return categoryService.addCategory(category);
     }
 
     @PostMapping("/{id}")
-    public void deleteCategory(
-        @PathVariable int id,
-        HttpServletResponse response
-    ) throws IOException {
+    public String deleteCategory(@PathVariable int id) {
         categoryService.deleteCategory(id);
-        response.sendRedirect("/categories");
+        return "Category Successfully Deleted";
     }
 }

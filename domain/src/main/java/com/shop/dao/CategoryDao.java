@@ -32,7 +32,7 @@ public class CategoryDao {
 
     public void deleteCategory(long id) {
         jdbcTemplate.update(
-            "DELETE FROM person WHERE id=:id",
+            "DELETE FROM category WHERE id=:id",
             Map.of("id", id)
         );
     }
