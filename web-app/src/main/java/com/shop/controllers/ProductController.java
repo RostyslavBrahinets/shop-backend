@@ -2,7 +2,6 @@ package com.shop.controllers;
 
 import com.shop.models.Product;
 import com.shop.services.ProductService;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
@@ -14,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = ProductController.PRODUCTS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = ProductController.PRODUCTS_URL)
 public class ProductController {
     public static final String PRODUCTS_URL = "/web-api/products";
     private final ProductService productService;
@@ -53,11 +52,8 @@ public class ProductController {
     }
 
     @PostMapping("/{id}")
-    public void deleteProduct(
-        @PathVariable int id,
-        HttpServletResponse response
-    ) throws IOException {
+    public String deleteProduct(@PathVariable long id) {
         productService.deleteProduct(id);
-        response.sendRedirect("/products");
+        return "Product Successfully Deleted";
     }
 }

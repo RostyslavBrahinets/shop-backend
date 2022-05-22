@@ -20,18 +20,34 @@
     <label for="id">Id:</label>
     <input type="text" id="id"/>
     <button id="button-delete" onclick="deleteProduct()">Delete</button>
+    <div id="deleting-result"></div>
 </div>
 
 <script>
     function deleteProduct() {
         const id = document.querySelector('#id').value;
-        fetch(`http://localhost:8080/web-api/products/${id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            method: 'POST'
-        }).then(response => response.ok ? response.json() : alert(error));
+
+        if (id < 1) {
+            const node = document.querySelector('#deleting-result');
+            node.textContent = '';
+            node.appendChild(document.createTextNode('Invalid id!'));
+        } else {
+            fetch(`http://localhost:8080/web-api/products/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                }
+            })
+                .then(response => response.text())
+                .then(data => {
+                    const node = document.querySelector('#deleting-result');
+                    node.textContent = '';
+                    node.appendChild(document.createTextNode(data));
+
+                    document.querySelector('#id').value = '';
+                })
+                .catch(error => console.log('Request failed', error));
+        }
     }
 </script>
 </body>
