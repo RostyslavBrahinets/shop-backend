@@ -1,5 +1,6 @@
 package com.shop.controllers;
 
+import com.shop.dto.PersonDto;
 import com.shop.models.Person;
 import com.shop.services.PersonService;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,17 @@ public class PersonController {
         @RequestBody Person person
     ) {
         return personService.addPerson(person);
+    }
+
+    @PostMapping("/{id}")
+    public Person updatePerson(
+        @PathVariable long id,
+        @RequestBody PersonDto person
+    ) {
+        Person updatedPerson = new Person();
+        updatedPerson.setFirstName(person.getFirstName());
+        updatedPerson.setLastName(person.getLastName());
+        return personService.updatePerson(id, updatedPerson);
     }
 
     @DeleteMapping("/{id}")

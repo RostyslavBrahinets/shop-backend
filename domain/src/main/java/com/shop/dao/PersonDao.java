@@ -56,4 +56,15 @@ public class PersonDao {
             )
             .stream().findAny();
     }
+
+    public void updatePerson(long id, Person updatedPerson) {
+        jdbcTemplate.update(
+            "UPDATE person SET first_name=:first_name, last_name=:last_name WHERE id=:id",
+            Map.of(
+                "first_name", updatedPerson.getFirstName(),
+                "last_name", updatedPerson.getLastName(),
+                "id", id
+            )
+        );
+    }
 }

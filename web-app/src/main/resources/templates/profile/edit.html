@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+</head>
+<body>
+<h1>Edit Profile</h1>
+
+<form name="logout" th:action="@{/logout}" method="post">
+    <div>
+        <a th:href="@{/}">Main</a>
+        <a th:href="@{/categories}">Categories</a>
+        <a th:href="@{/products}">Products</a>
+        <a th:href="@{/wallet}">Wallet</a>
+        <a th:href="@{/basket}">Basket</a>
+        <a th:href="@{/profile}">Profile</a>
+        <button type="submit">Log Out</button>
+    </div>
+</form>
+
+<hr/>
+
+<div>
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName"/>
+    <div id="invalid-first-name"></div>
+    <br/>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName"/>
+    <div id="invalid-last-name"></div>
+    <br/>
+
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone"/>
+    <div id="invalid-phone"></div>
+    <br/>
+
+    <button onclick="editProfile()">Save</button>
+    <div id="editing-result"></div>
+    <br/>
+</div>
+
+<script th:inline="javascript">
+    function fillFields(id) {
+        fetch(`http://localhost:8080/web-api/people/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('#firstName').value = data.firstName;
+                document.querySelector('#lastName').value = data.lastName;
+            })
+            .catch(error => console.log('Request failed', error));
+
+        fetch(`http://localhost:8080/web-api/contacts/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('#phone').value = data.phone;
+            })
+            .catch(error => console.log('Request failed', error));
+    }
+
+    function editProfile() {
+        /*<![CDATA[*/
+        let id = /*[[${id}]]*/ 0;
+        /*]]>*/
+
+        const firstName = document.querySelector('#firstName').value;
+        const lastName = document.querySelector('#lastName').value;
+        const phone = document.querySelector('#phone').value;
+
+        const nodeFirstName = document.querySelector('#invalid-first-name');
+        const nodeLastName = document.querySelector('#invalid-last-name');
+        const nodePhone = document.querySelector('#invalid-phone');
+
+        let message;
+
+        nodeFirstName.textContent = '';
+        nodeLastName.textContent = '';
+        nodePhone.textContent = '';
+
+        if (!firstName || firstName.trim() === '') {
+            message = document.createTextNode('Invalid First Name');
+            nodeFirstName.appendChild(message);
+        } else if (!lastName || lastName.trim() === '') {
+            message = document.createTextNode('Invalid Last Name');
+            nodeLastName.appendChild(message);
+        } else if (!phone || phone.trim() === '') {
+            message = document.createTextNode('Invalid Phone');
+            nodePhone.appendChild(message);
+        } else {
+            const bodyPerson = {
+                'firstName': firstName,
+                'lastName': lastName
+            };
+
+            fetch(`http://localhost:8080/web-api/people/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(bodyPerson)
+            })
+                .catch(error => console.log('Request failed', error));
+
+            const bodyContacts = {
+                'phone': phone
+            };
+
+            fetch(`http://localhost:8080/web-api/contacts/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(bodyContacts)
+            })
+                .then(response => response.json())
+                .then(() => {
+                    const node = document.querySelector('#editing-result');
+                    const message = document.createTextNode(`Profile Successfully Edited`);
+
+                    node.textContent = '';
+                    node.appendChild(message);
+                })
+                .catch(error => console.log('Request failed', error));
+        }
+    }
+
+    /*<![CDATA[*/
+    let id = /*[[${id}]]*/ 0;
+    /*]]>*/
+
+    fillFields(id);
+</script>
+</body>
+</html>

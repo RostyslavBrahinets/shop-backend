@@ -34,4 +34,8 @@ public class ContactRepository {
     public Optional<Contact> getContactByPerson(long personId) {
         return contactDao.getContactByPerson(personId);
     }
+
+    public void updateContact(long id, Contact updatedContact) {
+        contactDao.updateContact(id, updatedContact);
+    }
 }

@@ -60,4 +60,11 @@ public class PersonService {
             return person.get();
         }
     }
+
+    public Person updatePerson(long id, Person updatedPerson) {
+        personValidator.validate(id);
+        personValidator.validate(updatedPerson);
+        personRepository.updatePerson(id, updatedPerson);
+        return updatedPerson;
+    }
 }

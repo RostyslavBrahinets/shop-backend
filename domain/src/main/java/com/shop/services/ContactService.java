@@ -65,4 +65,10 @@ public class ContactService {
             return contact.get();
         }
     }
+
+    public Contact updateContact(long id, Contact updatedContact) {
+        personValidator.validate(id);
+        contactRepository.updateContact(id, updatedContact);
+        return updatedContact;
+    }
 }

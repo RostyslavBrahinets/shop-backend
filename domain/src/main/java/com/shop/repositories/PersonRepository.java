@@ -34,4 +34,8 @@ public class PersonRepository {
     public Optional<Person> getPerson(String email) {
         return personDao.getPerson(email);
     }
+
+    public void updatePerson(long id, Person updatedPerson) {
+        personDao.updatePerson(id, updatedPerson);
+    }
 }

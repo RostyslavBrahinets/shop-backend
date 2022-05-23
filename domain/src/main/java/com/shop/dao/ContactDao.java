@@ -58,4 +58,14 @@ public class ContactDao {
             )
             .stream().findAny();
     }
+
+    public void updateContact(long id, Contact updatedContact) {
+        jdbcTemplate.update(
+            "UPDATE contact SET phone=:phone WHERE person_id=:id",
+            Map.of(
+                "phone", updatedContact.getPhone(),
+                "id", id
+            )
+        );
+    }
 }

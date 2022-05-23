@@ -1,5 +1,6 @@
 package com.shop.controllers;
 
+import com.shop.dto.ContactDto;
 import com.shop.models.Contact;
 import com.shop.services.ContactService;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,19 @@ public class ContactController {
         @RequestBody int personId
     ) {
         return contactService.addContact(contact, personId);
+    }
+
+    @PostMapping("/{id}")
+    public Contact updateContact(
+        @PathVariable long id,
+        @RequestBody ContactDto contact
+    ) {
+        Contact oldContact = contactService.getContactByPerson(id);
+        Contact updatedContact = new Contact();
+        updatedContact.setPhone(contact.getPhone());
+        updatedContact.setEmail(oldContact.getEmail());
+        updatedContact.setPassword(oldContact.getPassword());
+        return contactService.updateContact(id, updatedContact);
     }
 
     @DeleteMapping("/{id}")
