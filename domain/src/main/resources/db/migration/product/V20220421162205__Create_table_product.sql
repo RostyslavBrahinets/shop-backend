@@ -6,5 +6,5 @@ CREATE TABLE IF NOT EXISTS product
     price    REAL         NOT NULL,
     barcode  VARCHAR(256) NOT NULL UNIQUE,
     in_stock BOOL         NOT NULL,
-    image    OID
+    image    BYTEA
 );
