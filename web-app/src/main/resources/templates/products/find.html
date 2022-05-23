@@ -38,6 +38,10 @@
 
 <hr/>
 
+<div>
+    <img th:src="@{/web-api/products/image/{id}(id=${id})}" alt="No Image" width="250">
+</div>
+
 <div class="product-container"></div>
 
 <div th:if="${role == 'ROLE_USER' && inStock}">
@@ -58,17 +62,12 @@
             .then(response => response.json())
             .then(data => {
                 const node = document.createElement('div');
-                const divImage = document.createElement('div');
                 const divName = document.createElement('div');
-                const divCategory = document.createElement('div');
                 const divDescribe = document.createElement('div');
                 const divPrice = document.createElement('div');
                 const divInStock = document.createElement('div');
                 const divBarcode = document.createElement('div');
 
-                let image = new Image();
-                image.src = data.image;
-                divImage.appendChild(image);
                 divName.appendChild(document.createTextNode(`Name: ${data.name}`));
                 divDescribe.appendChild(document.createTextNode(`Describe: ${data.describe}`));
                 divPrice.appendChild(document.createTextNode(`Price: ${data.price}`));
@@ -81,9 +80,7 @@
 
                 divBarcode.appendChild(document.createTextNode(`Barcode: ${data.barcode}`));
 
-                node.appendChild(divImage);
                 node.appendChild(divName);
-                node.appendChild(divCategory);
                 node.appendChild(divDescribe);
                 node.appendChild(divPrice);
                 node.appendChild(divInStock);

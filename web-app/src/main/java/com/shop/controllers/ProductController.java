@@ -2,13 +2,13 @@ package com.shop.controllers;
 
 import com.shop.models.Product;
 import com.shop.services.ProductService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -49,5 +49,15 @@ public class ProductController {
     public String deleteProduct(@PathVariable String barcode) {
         productService.deleteProduct(barcode);
         return "Product Successfully Deleted";
+    }
+
+    @GetMapping("/image/{id}")
+    public void showProductImage(
+        @PathVariable long id,
+        HttpServletResponse response
+    ) throws IOException {
+        Product product = productService.getProduct(id);
+        InputStream is = new ByteArrayInputStream(product.getImage());
+        IOUtils.copy(is, response.getOutputStream());
     }
 }
