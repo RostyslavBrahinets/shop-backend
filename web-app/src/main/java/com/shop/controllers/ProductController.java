@@ -2,14 +2,17 @@ package com.shop.controllers;
 
 import com.shop.models.Product;
 import com.shop.services.ProductService;
+import com.shop.utilities.ImageUtility;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(value = ProductController.PRODUCTS_URL)
@@ -33,16 +36,19 @@ public class ProductController {
 
     @PostMapping
     public Product savePerson(@RequestBody Product product) throws IOException {
-//        if (product.getImage().length == 0) {
-//            String imagePath = "static/images/empty.jpg";
-//            BufferedImage image = ImageIO.read(new File(imagePath));
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            ImageIO.write(image, "jpg", byteArrayOutputStream);
-//            byte[] bytes = byteArrayOutputStream.toByteArray();
-//            product.setImage(bytes);
-//        }
+        if (product.getImage().length > 0) {
+            return productService.addProduct(product);
+        }
 
-        return productService.addProduct(product);
+        product = productService.addProduct(product);
+        Product newProduct = productService.getProduct(product.getBarcode());
+        String imagePath = Objects.requireNonNull(getClass().getClassLoader().getResource(
+            "static/images/empty.jpg"
+        )).getFile();
+        byte[] byteImage = ImageUtility.imageToBytes(new File(imagePath));
+        productService.addImage(byteImage, newProduct.getId());
+        newProduct.setImage(byteImage);
+        return newProduct;
     }
 
     @PostMapping("/{barcode}")

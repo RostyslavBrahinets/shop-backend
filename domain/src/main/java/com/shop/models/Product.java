@@ -2,7 +2,6 @@ package com.shop.models;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Lob;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -19,7 +18,6 @@ public class Product implements Serializable {
     private String barcode;
     private Category category;
     private boolean inStock;
-    @Lob
     private byte[] image;
 
     public Product() {
