@@ -44,9 +44,9 @@ public class PersonRoleService {
         personRoleRepository.addRoleForPerson(personId, roleId);
     }
 
-    public void updateRoleForPerson(long personId, String roleName) {
+    public void updateRoleForPerson(long personId, String role) {
         personValidator.validate(personId);
-        Role role = roleService.getRoleByName(roleName);
-        personRoleRepository.updateRoleForPerson(personId, role.getId());
+        Role newRole = roleService.getRoleByName(role);
+        personRoleRepository.updateRoleForPerson(personId, newRole.getId());
     }
 }

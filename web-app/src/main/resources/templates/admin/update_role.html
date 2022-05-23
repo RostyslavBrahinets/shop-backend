@@ -18,23 +18,46 @@
 <hr/>
 
 <div>
-    <form name="update-role" method="post" id="update-role">
-        <label for="role">Role:</label>
-        <select id="role">
-            <option>ROLE_USER</option>
-            <option>ROLE_ADMIN</option>
-        </select>
-        <button>Change</button>
-    </form>
+    <label for="role">Role:</label>
+    <select id="role">
+        <option>ROLE_USER</option>
+        <option>ROLE_ADMIN</option>
+    </select>
+    <button onclick="changeRoleForPerson()">Change</button>
 </div>
 
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    let id = /*[[${id}]]*/ 0;
-    /*]]>*/
+<div id="changing-result"></div>
 
-    const form = document.querySelector('#update-role');
-    form.action = `/web-api/person-role/${id}`;
+<script th:inline="javascript">
+    function changeRoleForPerson() {
+        const role = document.querySelector('#role').value.toString();
+        const node = document.querySelector('#changing-result');
+        node.textContent = '';
+
+        const bodyRole = {
+            'role': role
+        };
+
+        console.log(bodyRole);
+
+        /*<![CDATA[*/
+        let id = /*[[${id}]]*/ 0;
+        /*]]>*/
+
+        fetch(`http://localhost:8080/web-api/person-role/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(bodyRole)
+        })
+            .then(response => response.text())
+            .then(data => {
+                node.appendChild(document.createTextNode(data));
+            })
+            .catch(error => console.log('Request failed', error));
+    }
 </script>
 </body>
 </html>

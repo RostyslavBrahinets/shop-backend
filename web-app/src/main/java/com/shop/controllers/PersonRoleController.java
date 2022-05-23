@@ -1,5 +1,6 @@
 package com.shop.controllers;
 
+import com.shop.dto.RoleDto;
 import com.shop.models.Role;
 import com.shop.services.PersonRoleService;
 import org.springframework.http.MediaType;
@@ -24,10 +25,13 @@ public class PersonRoleController {
 
 
     @PostMapping("/{id}")
-    public void updateRoleForPerson(
+    public String updateRoleForPerson(
         @PathVariable long id,
-        @RequestBody String role
+        @RequestBody RoleDto role
     ) {
-        personRoleService.updateRoleForPerson(id, role);
+        System.out.println(role);
+        System.out.println(role.getRole());
+        personRoleService.updateRoleForPerson(id, role.getRole());
+        return "Role Successfully Changed";
     }
 }
