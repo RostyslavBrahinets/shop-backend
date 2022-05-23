@@ -31,17 +31,19 @@ public class ProductsBasketsController {
     private final BasketService basketService;
     private final PersonService personService;
     private final WalletService walletService;
+    private final ReportDto report;
 
     public ProductsBasketsController(
         ProductsBasketsService productsBasketsService,
         BasketService basketService,
         PersonService personService,
-        WalletService walletService
-    ) {
+        WalletService walletService,
+        ReportDto report) {
         this.productsBasketsService = productsBasketsService;
         this.basketService = basketService;
         this.personService = personService;
         this.walletService = walletService;
+        this.report = report;
     }
 
     @GetMapping
@@ -79,30 +81,37 @@ public class ProductsBasketsController {
     public void buy(
         @AuthenticationPrincipal UserDetails userDetail,
         HttpServletResponse response
-    ) throws IOException, StripeException {
-        response.setContentType("application/pdf");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=report_" + currentDateTime + ".pdf";
-        response.setHeader(headerKey, headerValue);
-
+    ) throws StripeException, IOException {
         Person person = personService.getPerson(userDetail.getUsername());
         Basket basket = basketService.getBasketByPerson(person.getId());
 
         List<Product> productsInBasket = productsBasketsService
             .getProductsFromBasket(basket.getId());
 
-        ReportDto reportDto = new ReportDto();
-        reportDto.setProducts(productsInBasket);
-        reportDto.setTotalCost(basket.getTotalCost());
+        report.setProducts(productsInBasket);
+        report.setTotalCost(basket.getTotalCost());
 
         productsBasketsService.buy(person.getId());
 
-        Wallet wallet = walletService.getWalletByPerson(person.getId());
-        reportDto.setAmountOfMoney(wallet.getAmountOfMoney());
+        response.sendRedirect("/basket");
+    }
 
-        PdfUtility pdfUtility = new PdfUtility(reportDto);
+    @PostMapping("/download-report")
+    public void downloadReport(
+        @AuthenticationPrincipal UserDetails userDetail,
+        HttpServletResponse response
+    ) throws IOException {
+        Person person = personService.getPerson(userDetail.getUsername());
+        Wallet wallet = walletService.getWalletByPerson(person.getId());
+        report.setAmountOfMoney(wallet.getAmountOfMoney());
+
+        response.setContentType("application/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=report_" + currentDateTime + ".pdf";
+        response.setHeader(headerKey, headerValue);
+        PdfUtility pdfUtility = new PdfUtility(report);
         pdfUtility.export(response);
     }
 }

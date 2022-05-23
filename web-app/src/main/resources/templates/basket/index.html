@@ -10,10 +10,10 @@
 <form name="logout" th:action="@{/logout}" method="post">
     <div>
         <a th:href="@{/}">Main</a>
-        <a th:href="@{/profile}">Profile</a>
         <a th:href="@{/categories}">Categories</a>
         <a th:href="@{/products}">Products</a>
         <a th:href="@{/wallet}">Wallet</a>
+        <a th:href="@{/profile}">Profile</a>
         <button type="submit">Log Out</button>
     </div>
 </form>
@@ -22,8 +22,13 @@
 
 <div class="products-container"></div>
 <div class="basket-container"></div>
+
 <form name="buy" th:action="@{/web-api/products-baskets/buy}" method="post">
     <button type="submit">Buy</button>
+</form>
+
+<form name="download-report" th:action="@{/web-api/products-baskets/download-report}" method="post">
+    <button type="submit">Download Report</button>
 </form>
 
 <script th:inline="javascript">
@@ -99,7 +104,5 @@
     displayProductsInBasket();
     displayBasketInfo(id);
 </script>
-
-
 </body>
 </html>
