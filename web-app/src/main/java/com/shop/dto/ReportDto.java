@@ -1,9 +1,11 @@
 package com.shop.dto;
 
 import com.shop.models.Product;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class ReportDto {
     private List<Product> products;
     private double totalCost;

@@ -1,5 +1,8 @@
 package com.shop.dto;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ProductCategoryDto {
     private String barcode;
     private String category;
