@@ -67,4 +67,22 @@ public class ProductDao {
             Map.of("barcode", barcode)
         );
     }
+
+    public byte[] getImage(long id) {
+        return jdbcTemplate.queryForObject(
+            "SELECT image FROM product WHERE id=:id",
+            Map.of("id", id),
+            (rs, rowNum) -> rs.getBytes(1)
+        );
+    }
+
+    public void addImage(byte[] image, long id) {
+        jdbcTemplate.update(
+            "UPDATE product SET image=:image WHERE id=:id",
+            Map.of(
+                "image", image,
+                "id", id
+            )
+        );
+    }
 }

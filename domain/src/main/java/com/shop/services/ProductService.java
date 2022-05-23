@@ -64,6 +64,16 @@ public class ProductService {
         }
     }
 
+    public byte[] getImage(long id) {
+        validator.validate(id);
+        return productRepository.getImage(id);
+    }
+
+    public void addImage(byte[] image, long id) {
+        validator.validate(id);
+        productRepository.addImage(image, id);
+    }
+
     public List<Product> getRandomProducts(int count) {
         List<Product> products = new ArrayList<>();
         int size = getProducts().size();

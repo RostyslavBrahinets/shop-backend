@@ -38,4 +38,12 @@ public class ProductRepository {
     public void deleteProduct(String barcode) {
         productDao.deleteProduct(barcode);
     }
+
+    public byte[] getImage(long id) {
+        return productDao.getImage(id);
+    }
+
+    public void addImage(byte[] image, long id) {
+        productDao.addImage(image, id);
+    }
 }
