@@ -36,7 +36,10 @@ public class ProductsBasketsDao {
     public void deleteProductFromBasket(long productId, long basketId) {
         jdbcTemplate.update(
             "DELETE FROM products_baskets "
-                + "WHERE product_id=:product_id AND basket_id=:basket_id",
+                + "WHERE ctid IN "
+                + "(SELECT ctid FROM products_baskets "
+                + "WHERE product_id=:product_id AND basket_id=:basket_id "
+                + "ORDER BY product_id LIMIT 1)",
             Map.of(
                 "product_id", productId,
                 "basket_id", basketId
