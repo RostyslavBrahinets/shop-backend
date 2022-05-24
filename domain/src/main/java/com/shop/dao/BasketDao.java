@@ -1,6 +1,5 @@
 package com.shop.dao;
 
-import com.shop.db.DatabaseTemplate;
 import com.shop.models.Basket;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,57 +11,63 @@ import java.util.Optional;
 
 @Component
 public class BasketDao {
-    private final NamedParameterJdbcTemplate jdbcTemplate = DatabaseTemplate.getJdbcTemplate();
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public List<Basket> getBaskets() {
+    public BasketDao(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<Basket> findAll() {
         return jdbcTemplate.query(
             "SELECT * FROM basket",
             new BeanPropertyRowMapper<>(Basket.class)
         );
     }
 
-    public void addBasket(Basket basket, long personId) {
+    public void save(double totalCost, long personId) {
         jdbcTemplate.update(
             "INSERT INTO basket (total_cost, person_id) VALUES (:total_cost, :person_id)",
             Map.of(
-                "total_cost", basket.getTotalCost(),
+                "total_cost", totalCost,
                 "person_id", personId
             )
         );
     }
 
-    public void updateBasket(long id, Basket updatedBasket) {
+    public void update(long id, double totalCost) {
         jdbcTemplate.update(
             "UPDATE basket SET total_cost=:total_cost WHERE id=:id",
             Map.of(
-                "total_cost", updatedBasket.getTotalCost(),
+                "total_cost", totalCost,
                 "id", id
             )
         );
     }
 
-    public void deleteBasket(long id) {
+    public void delete(long id) {
         jdbcTemplate.update(
-            "DELETE FROM contact WHERE id=:id",
+            "DELETE FROM basket WHERE id=:id",
             Map.of("id", id)
         );
     }
 
-    public Optional<Basket> getBasket(long id) {
-        return jdbcTemplate.query(
-                "SELECT * FROM basket WHERE id=:id",
-                Map.of("id", id),
-                new BeanPropertyRowMapper<>(Basket.class)
-            )
-            .stream().findAny();
+    public Optional<Basket> findById(long id) {
+        Basket basket = jdbcTemplate.queryForObject(
+            "SELECT * FROM basket WHERE id=:id",
+            Map.of("id", id),
+            Basket.class
+        );
+
+        return Optional.ofNullable(basket);
     }
 
-    public Optional<Basket> getBasketByPerson(long personId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM basket WHERE person_id=:person_id",
-                Map.of("person_id", personId),
-                new BeanPropertyRowMapper<>(Basket.class)
-            )
-            .stream().findAny();
+    public Optional<Basket> findByPerson(long personId) {
+        Basket basket = jdbcTemplate.queryForObject(
+            "SELECT * FROM basket WHERE person_id=:person_id",
+            Map.of("person_id", personId),
+            Basket.class
+        );
+
+        return Optional.ofNullable(basket);
     }
 }
