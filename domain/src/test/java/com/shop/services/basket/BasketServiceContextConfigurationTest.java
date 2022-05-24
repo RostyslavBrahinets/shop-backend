@@ -36,51 +36,51 @@ public class BasketServiceContextConfigurationTest {
 
     @Test
     void get_all_baskets() {
-        basketService.getBaskets();
+        basketService.findAll();
 
-        verify(basketRepository).getBaskets();
+        verify(basketRepository).findAll();
     }
 
     @Test
     void add_new_basket() {
-        basketService.addBasket(basket, 1);
+        basketService.save(basket, 1);
 
         verify(basketValidator, atLeast(1)).validate(basket);
         verify(personValidator, atLeast(1)).validate(1);
-        verify(basketRepository).addBasket(basket, 1);
+        verify(basketRepository).save(basket, 1);
     }
 
     @Test
     void update_basket() {
-        basketService.updateBasket(1, basket);
+        basketService.update(1, basket);
 
         verify(basketValidator, atLeast(1)).validate(1);
         verify(basketValidator, atLeast(1)).validate(basket);
-        verify(basketRepository).updateBasket(1, basket);
+        verify(basketRepository).update(1, basket);
     }
 
     @Test
     void delete_basket_by_id() {
-        basketService.deleteBasket(1);
+        basketService.delete(1);
 
         verify(basketValidator, atLeast(1)).validate(1);
-        verify(basketRepository).deleteBasket(1);
+        verify(basketRepository).delete(1);
     }
 
     @Test
     void get_basket_by_id() {
-        basketService.getBasket(1);
+        basketService.findById(1);
 
         verify(basketValidator, atLeast(1)).validate(1);
-        verify(basketRepository).getBasket(1);
+        verify(basketRepository).findById(1);
     }
 
     @Test
     void get_basket_by_person() {
-        basketService.getBasketByPerson(1);
+        basketService.findByPerson(1);
 
         verify(personValidator, atLeast(1)).validate(1);
-        verify(basketRepository).getBasketByPerson(1);
+        verify(basketRepository).findByPerson(1);
     }
 
     @TestConfiguration

@@ -31,44 +31,44 @@ public class BasketRepositoryContextConfigurationTest {
 
     @Test
     void get_all_baskets() {
-        basketRepository.getBaskets();
+        basketRepository.findAll();
 
-        verify(basketDao).getBaskets();
+        verify(basketDao).findAll();
     }
 
     @Test
     void add_new_basket() {
-        basketRepository.addBasket(basket, 1);
+        basketRepository.save(basket, 1);
 
-        verify(basketDao).addBasket(basket, 1);
+        verify(basketDao).save(basket.getTotalCost(), 1);
     }
 
     @Test
     void update_basket() {
-        basketRepository.updateBasket(1, basket);
+        basketRepository.update(1, basket);
 
-        verify(basketDao).updateBasket(1, basket);
+        verify(basketDao).update(1, basket.getTotalCost());
     }
 
     @Test
     void delete_basket_by_id() {
-        basketRepository.deleteBasket(1);
+        basketRepository.delete(1);
 
-        verify(basketDao).deleteBasket(1);
+        verify(basketDao).delete(1);
     }
 
     @Test
     void get_basket_by_id() {
-        basketRepository.getBasket(1);
+        basketRepository.findById(1);
 
-        verify(basketDao).getBasket(1);
+        verify(basketDao).findById(1);
     }
 
     @Test
     void get_basket_by_person() {
-        basketRepository.getBasketByPerson(1);
+        basketRepository.findByPerson(1);
 
-        verify(basketDao).getBasketByPerson(1);
+        verify(basketDao).findByPerson(1);
     }
 
     @TestConfiguration
