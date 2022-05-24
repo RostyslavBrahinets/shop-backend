@@ -1,6 +1,5 @@
 package com.shop.services;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Basket;
 import com.shop.repositories.BasketRepository;
 import com.shop.validators.BasketValidator;
@@ -51,21 +50,13 @@ public class BasketService {
 
     public Basket getBasket(long id) {
         basketValidator.validate(id);
-        Optional<Basket> basket = basketRepository.getBasket(id);
-        if (basket.isEmpty()) {
-            throw new NotFoundException("Basket not found");
-        } else {
-            return basket.get();
-        }
+        Optional<Basket> basketOptional = basketRepository.getBasket(id);
+        return basketOptional.orElseGet(Basket::new);
     }
 
     public Basket getBasketByPerson(long personId) {
         personValidator.validate(personId);
-        Optional<Basket> basket = basketRepository.getBasketByPerson(personId);
-        if (basket.isEmpty()) {
-            throw new NotFoundException("Basket not found");
-        } else {
-            return basket.get();
-        }
+        Optional<Basket> basketOptional = basketRepository.getBasketByPerson(personId);
+        return basketOptional.orElseGet(Basket::new);
     }
 }
