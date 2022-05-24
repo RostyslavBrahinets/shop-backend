@@ -25,38 +25,38 @@ public class BasketService {
         this.personValidator = personValidator;
     }
 
-    public List<Basket> getBaskets() {
-        return basketRepository.getBaskets();
+    public List<Basket> findAll() {
+        return basketRepository.findAll();
     }
 
-    public Basket addBasket(Basket basket, long personId) {
+    public Basket save(Basket basket, long personId) {
         basketValidator.validate(basket);
         personValidator.validate(personId);
-        basketRepository.addBasket(basket, personId);
+        basketRepository.save(basket, personId);
         return basket;
     }
 
-    public Basket updateBasket(long id, Basket basket) {
+    public Basket update(long id, Basket basket) {
         basketValidator.validate(id);
         basketValidator.validate(basket);
-        basketRepository.updateBasket(id, basket);
+        basketRepository.update(id, basket);
         return basket;
     }
 
-    public void deleteBasket(long id) {
+    public void delete(long id) {
         basketValidator.validate(id);
-        basketRepository.deleteBasket(id);
+        basketRepository.delete(id);
     }
 
-    public Basket getBasket(long id) {
+    public Basket findById(long id) {
         basketValidator.validate(id);
-        Optional<Basket> basketOptional = basketRepository.getBasket(id);
+        Optional<Basket> basketOptional = basketRepository.findById(id);
         return basketOptional.orElseGet(Basket::new);
     }
 
-    public Basket getBasketByPerson(long personId) {
+    public Basket findByPerson(long personId) {
         personValidator.validate(personId);
-        Optional<Basket> basketOptional = basketRepository.getBasketByPerson(personId);
+        Optional<Basket> basketOptional = basketRepository.findByPerson(personId);
         return basketOptional.orElseGet(Basket::new);
     }
 }

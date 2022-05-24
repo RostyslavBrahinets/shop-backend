@@ -135,7 +135,7 @@ public class RegistrationViewController {
     private void addBasketForPerson(long personId) {
         Basket basket = new Basket();
         basket.setTotalCost(0);
-        basketService.addBasket(basket, personId);
+        basketService.save(basket, personId);
     }
 
     private void addWalletForPerson(long personId) throws StripeException {

@@ -49,7 +49,7 @@ public class ProductsBasketsController {
     @GetMapping
     public List<Product> findAllProductsInBasket(@AuthenticationPrincipal UserDetails userDetail) {
         Person person = personService.getPerson(userDetail.getUsername());
-        Basket basket = basketService.getBasketByPerson(person.getId());
+        Basket basket = basketService.findByPerson(person.getId());
         return productsBasketsService.getProductsFromBasket(basket.getId());
     }
 
@@ -60,7 +60,7 @@ public class ProductsBasketsController {
         HttpServletResponse response
     ) throws IOException {
         Person person = personService.getPerson(userDetail.getUsername());
-        Basket basket = basketService.getBasketByPerson(person.getId());
+        Basket basket = basketService.findByPerson(person.getId());
         response.sendRedirect("/basket");
         return productsBasketsService.addProductToBasket(id, basket.getId());
     }
@@ -72,7 +72,7 @@ public class ProductsBasketsController {
         HttpServletResponse response
     ) throws IOException {
         Person person = personService.getPerson(userDetail.getUsername());
-        Basket basket = basketService.getBasketByPerson(person.getId());
+        Basket basket = basketService.findByPerson(person.getId());
         response.sendRedirect("/basket");
         productsBasketsService.deleteProductFromBasket(id, basket.getId());
     }
@@ -83,7 +83,7 @@ public class ProductsBasketsController {
         HttpServletResponse response
     ) throws StripeException, IOException {
         Person person = personService.getPerson(userDetail.getUsername());
-        Basket basket = basketService.getBasketByPerson(person.getId());
+        Basket basket = basketService.findByPerson(person.getId());
 
         List<Product> productsInBasket = productsBasketsService
             .getProductsFromBasket(basket.getId());

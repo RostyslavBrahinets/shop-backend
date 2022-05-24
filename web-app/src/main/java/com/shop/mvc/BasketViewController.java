@@ -31,7 +31,7 @@ public class BasketViewController {
         Model model
     ) {
         Person person = personService.getPerson(userDetails.getUsername());
-        Basket basket = basketService.getBasketByPerson(person.getId());
+        Basket basket = basketService.findByPerson(person.getId());
         model.addAttribute("id", basket.getId());
         return "basket/index";
     }

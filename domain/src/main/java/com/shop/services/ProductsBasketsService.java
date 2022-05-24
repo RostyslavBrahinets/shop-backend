@@ -12,7 +12,6 @@ import com.shop.validators.ProductValidator;
 import com.stripe.exception.StripeException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -57,7 +56,7 @@ public class ProductsBasketsService {
         productsBasketsRepository.addProductToBasket(productId, basketId);
 
         Product product = productService.getProduct(productId);
-        Basket basket = basketService.getBasket(basketId);
+        Basket basket = basketService.findById(basketId);
 
         List<Product> products = basket.getProducts();
         products.add(product);
@@ -66,7 +65,7 @@ public class ProductsBasketsService {
         double newTotalCost = basket.getTotalCost();
         newTotalCost += product.getPrice();
         basket.setTotalCost(newTotalCost);
-        basketService.updateBasket(basketId, basket);
+        basketService.update(basketId, basket);
 
         return productId;
     }
@@ -77,12 +76,12 @@ public class ProductsBasketsService {
         productsBasketsRepository.deleteProductFromBasket(productId, basketId);
 
         Product product = productService.getProduct(productId);
-        Basket basket = basketService.getBasket(basketId);
+        Basket basket = basketService.findById(basketId);
 
         double newTotalCost = basket.getTotalCost();
         newTotalCost -= product.getPrice();
         basket.setTotalCost(newTotalCost);
-        basketService.updateBasket(basketId, basket);
+        basketService.update(basketId, basket);
     }
 
     public void deleteProductsFromBasket(long basketId) {
@@ -94,7 +93,7 @@ public class ProductsBasketsService {
         personValidator.validate(personId);
 
         Wallet wallet = walletService.getWalletByPerson(personId);
-        Basket basket = basketService.getBasketByPerson(personId);
+        Basket basket = basketService.findByPerson(personId);
 
         double newAmountOfMoney = wallet.getAmountOfMoney();
         newAmountOfMoney -= basket.getTotalCost();
@@ -108,7 +107,7 @@ public class ProductsBasketsService {
         stripePayment.updateCustomer(wallet.getNumber(), (long) newAmountOfMoney * -100);
 
         basket.setTotalCost(0);
-        basketService.updateBasket(basket.getId(), basket);
+        basketService.update(basket.getId(), basket);
 
         deleteProductsFromBasket(basket.getId());
     }
