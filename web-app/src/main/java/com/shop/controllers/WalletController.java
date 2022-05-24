@@ -30,7 +30,7 @@ public class WalletController {
     }
 
     @GetMapping("/{id}")
-    public Wallet findByIdWallet(@PathVariable int id) throws StripeException {
+    public Wallet findByIdWallet(@PathVariable long id) throws StripeException {
         Wallet wallet = walletService.getWallet(id);
         Optional<Customer> customer = stripePayment
             .findByIdCustomer(walletService.getWallet(id).getNumber());
