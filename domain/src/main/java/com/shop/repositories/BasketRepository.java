@@ -38,4 +38,8 @@ public class BasketRepository {
     public Optional<Basket> findByPerson(long personId) {
         return basketDao.findByPerson(personId);
     }
+
+    public int count() {
+        return basketDao.findAll().size();
+    }
 }
