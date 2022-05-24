@@ -16,17 +16,20 @@ public class Basket implements Serializable {
     private List<Product> products;
     private double totalCost;
 
+    public static Basket of(double totalCost) {
+        return new Basket(0, totalCost);
+    }
+
     public Basket() {
         this.products = new ArrayList<>();
     }
 
     public Basket(
         long id,
-        List<Product> products,
         double totalCost
     ) {
         this.id = id;
-        this.products = products;
+        this.products = new ArrayList<>();
         this.totalCost = totalCost;
     }
 
@@ -52,6 +55,10 @@ public class Basket implements Serializable {
 
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public Basket withId(long id) {
+        return new Basket(id, this.totalCost);
     }
 
     @Override
