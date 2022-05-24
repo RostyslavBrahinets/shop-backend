@@ -76,6 +76,7 @@ public class BasketRepositoryTest {
 
     @Test
     @DisplayName("Basket was deleted")
+    @DirtiesContext
     void basket_was_deleted() {
         var basketToSave = Basket.of(0);
 
@@ -143,8 +144,8 @@ public class BasketRepositoryTest {
 
         assertThat(baskets).isEqualTo(
             List.of(
-                Basket.of(0).withId(2),
-                Basket.of(0).withId(3)
+                Basket.of(0).withId(1),
+                Basket.of(0).withId(2)
             )
         );
     }
