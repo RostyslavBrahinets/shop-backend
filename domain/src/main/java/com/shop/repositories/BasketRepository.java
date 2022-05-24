@@ -15,27 +15,27 @@ public class BasketRepository {
         this.basketDao = basketDao;
     }
 
-    public List<Basket> getBaskets() {
-        return basketDao.getBaskets();
+    public List<Basket> findAll() {
+        return basketDao.findAll();
     }
 
-    public void addBasket(Basket basket, long personId) {
-        basketDao.addBasket(basket, personId);
+    public void save(Basket basket, long personId) {
+        basketDao.save(basket.getTotalCost(), personId);
     }
 
-    public void updateBasket(long id, Basket basket) {
-        basketDao.updateBasket(id, basket);
+    public void update(long id, Basket basket) {
+        basketDao.update(id, basket.getTotalCost());
     }
 
-    public void deleteBasket(long id) {
-        basketDao.deleteBasket(id);
+    public void delete(long id) {
+        basketDao.delete(id);
     }
 
-    public Optional<Basket> getBasket(long id) {
-        return basketDao.getBasket(id);
+    public Optional<Basket> findById(long id) {
+        return basketDao.findById(id);
     }
 
-    public Optional<Basket> getBasketByPerson(long personId) {
-        return basketDao.getBasketByPerson(personId);
+    public Optional<Basket> findByPerson(long personId) {
+        return basketDao.findByPerson(personId);
     }
 }

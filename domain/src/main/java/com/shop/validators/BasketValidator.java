@@ -28,7 +28,7 @@ public class BasketValidator {
     public void validate(long id) {
         List<Long> ids = new ArrayList<>();
 
-        for (Basket basket : basketRepository.getBaskets()) {
+        for (Basket basket : basketRepository.findAll()) {
             ids.add(basket.getId());
         }
 
