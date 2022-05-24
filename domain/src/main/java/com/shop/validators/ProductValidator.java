@@ -41,7 +41,7 @@ public class ProductValidator {
             ids.add(product.getId());
         }
 
-        if (id < 1 || !ids.contains(id)) {
+        if (!ids.contains(id)) {
             throw new NotFoundException("Product not found");
         }
     }

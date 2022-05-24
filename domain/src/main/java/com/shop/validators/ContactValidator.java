@@ -42,7 +42,7 @@ public class ContactValidator {
             ids.add(contact.getId());
         }
 
-        if (id < 1 || !ids.contains(id)) {
+        if (!ids.contains(id)) {
             throw new NotFoundException("Contact not found");
         }
     }

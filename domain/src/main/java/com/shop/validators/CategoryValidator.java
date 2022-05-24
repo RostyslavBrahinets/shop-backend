@@ -32,7 +32,7 @@ public class CategoryValidator {
             ids.add(category.getId());
         }
 
-        if (id < 1 || !ids.contains(id)) {
+        if (!ids.contains(id)) {
             throw new NotFoundException("Category not found");
         }
     }

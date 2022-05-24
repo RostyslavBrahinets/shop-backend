@@ -35,7 +35,7 @@ public class WalletValidator {
             ids.add(wallet.getId());
         }
 
-        if (id < 1 || !ids.contains(id)) {
+        if (!ids.contains(id)) {
             throw new NotFoundException("Wallet not found");
         }
     }

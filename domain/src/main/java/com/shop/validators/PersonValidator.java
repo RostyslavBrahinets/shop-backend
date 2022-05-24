@@ -35,7 +35,7 @@ public class PersonValidator {
             ids.add(person.getId());
         }
 
-        if (id < 1 || !ids.contains(id)) {
+        if (!ids.contains(id)) {
             throw new NotFoundException("Person not found");
         }
     }
