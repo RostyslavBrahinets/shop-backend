@@ -5,6 +5,7 @@ import com.shop.repositories.BasketRepository;
 import com.shop.services.BasketService;
 import com.shop.validators.BasketValidator;
 import com.shop.validators.PersonValidator;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class BasketServiceContextConfigurationTest {
     private BasketService basketService;
 
     @Test
+    @DisplayName("Get all baskets")
     void get_all_baskets() {
         basketService.findAll();
 
@@ -42,7 +44,8 @@ public class BasketServiceContextConfigurationTest {
     }
 
     @Test
-    void add_new_basket() {
+    @DisplayName("Save basket")
+    void save_basket() {
         basketService.save(basket, 1);
 
         verify(basketValidator, atLeast(1)).validate(basket);
@@ -51,6 +54,7 @@ public class BasketServiceContextConfigurationTest {
     }
 
     @Test
+    @DisplayName("Update basket")
     void update_basket() {
         basketService.update(1, basket);
 
@@ -60,7 +64,8 @@ public class BasketServiceContextConfigurationTest {
     }
 
     @Test
-    void delete_basket_by_id() {
+    @DisplayName("Delete basket")
+    void delete_basket() {
         basketService.delete(1);
 
         verify(basketValidator, atLeast(1)).validate(1);
@@ -68,6 +73,7 @@ public class BasketServiceContextConfigurationTest {
     }
 
     @Test
+    @DisplayName("Get basket by id")
     void get_basket_by_id() {
         basketService.findById(1);
 
@@ -76,6 +82,7 @@ public class BasketServiceContextConfigurationTest {
     }
 
     @Test
+    @DisplayName("Get basket by person")
     void get_basket_by_person() {
         basketService.findByPerson(1);
 

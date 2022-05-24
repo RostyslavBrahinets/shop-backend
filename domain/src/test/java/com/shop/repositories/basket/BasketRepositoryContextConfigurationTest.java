@@ -3,6 +3,7 @@ package com.shop.repositories.basket;
 import com.shop.dao.BasketDao;
 import com.shop.models.Basket;
 import com.shop.repositories.BasketRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class BasketRepositoryContextConfigurationTest {
     private BasketRepository basketRepository;
 
     @Test
+    @DisplayName("Get all baskets")
     void get_all_baskets() {
         basketRepository.findAll();
 
@@ -37,13 +39,15 @@ public class BasketRepositoryContextConfigurationTest {
     }
 
     @Test
-    void add_new_basket() {
+    @DisplayName("Save basket")
+    void save_basket() {
         basketRepository.save(basket, 1);
 
         verify(basketDao).save(basket.getTotalCost(), 1);
     }
 
     @Test
+    @DisplayName("Update basket")
     void update_basket() {
         basketRepository.update(1, basket);
 
@@ -51,13 +55,15 @@ public class BasketRepositoryContextConfigurationTest {
     }
 
     @Test
-    void delete_basket_by_id() {
+    @DisplayName("Delete basket")
+    void delete_basket() {
         basketRepository.delete(1);
 
         verify(basketDao).delete(1);
     }
 
     @Test
+    @DisplayName("Get basket by id")
     void get_basket_by_id() {
         basketRepository.findById(1);
 
@@ -65,6 +71,7 @@ public class BasketRepositoryContextConfigurationTest {
     }
 
     @Test
+    @DisplayName("Get basket by person")
     void get_basket_by_person() {
         basketRepository.findByPerson(1);
 

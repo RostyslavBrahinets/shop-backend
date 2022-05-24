@@ -26,10 +26,9 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @JdbcTest
-@ContextConfiguration(
-    classes = {
-        DatabaseConfig.class,
-    })
+@ContextConfiguration(classes = {
+    DatabaseConfig.class
+})
 @Sql(scripts = {
     "classpath:db/migration/person/V20220421161641__Create_table_person.sql",
     "classpath:db/migration/basket/V20220421161946__Create_table_basket.sql"
