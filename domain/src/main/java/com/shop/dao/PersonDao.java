@@ -1,6 +1,5 @@
 package com.shop.dao;
 
-import com.shop.db.DatabaseTemplate;
 import com.shop.models.Person;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,7 +11,11 @@ import java.util.Optional;
 
 @Component
 public class PersonDao {
-    private final NamedParameterJdbcTemplate jdbcTemplate = DatabaseTemplate.getJdbcTemplate();
+    private final NamedParameterJdbcTemplate jdbcTemplate;
+
+    public PersonDao(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public List<Person> getPeople() {
         return jdbcTemplate.query(
