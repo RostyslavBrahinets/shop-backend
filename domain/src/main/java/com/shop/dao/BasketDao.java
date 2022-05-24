@@ -52,22 +52,18 @@ public class BasketDao {
     }
 
     public Optional<Basket> findById(long id) {
-        Basket basket = jdbcTemplate.queryForObject(
+        return jdbcTemplate.queryForStream(
             "SELECT * FROM basket WHERE id=:id",
             Map.of("id", id),
-            Basket.class
-        );
-
-        return Optional.ofNullable(basket);
+            new BeanPropertyRowMapper<>(Basket.class)
+        ).findFirst();
     }
 
     public Optional<Basket> findByPerson(long personId) {
-        Basket basket = jdbcTemplate.queryForObject(
+        return jdbcTemplate.queryForStream(
             "SELECT * FROM basket WHERE person_id=:person_id",
             Map.of("person_id", personId),
-            Basket.class
-        );
-
-        return Optional.ofNullable(basket);
+            new BeanPropertyRowMapper<>(Basket.class)
+        ).findFirst();
     }
 }
