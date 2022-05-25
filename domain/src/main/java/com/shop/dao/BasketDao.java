@@ -27,9 +27,9 @@ public class BasketDao {
     public void save(double totalCost, long personId) {
         jdbcTemplate.update(
             "INSERT INTO basket (total_cost, person_id) VALUES (:total_cost, :person_id)",
-            Map.of(
-                "total_cost", totalCost,
-                "person_id", personId
+            Map.ofEntries(
+                Map.entry("total_cost", totalCost),
+                Map.entry("person_id", personId)
             )
         );
     }
@@ -37,9 +37,9 @@ public class BasketDao {
     public void update(long id, double totalCost) {
         jdbcTemplate.update(
             "UPDATE basket SET total_cost=:total_cost WHERE id=:id",
-            Map.of(
-                "total_cost", totalCost,
-                "id", id
+            Map.ofEntries(
+                Map.entry("total_cost", totalCost),
+                Map.entry("id", id)
             )
         );
     }
@@ -47,14 +47,14 @@ public class BasketDao {
     public void delete(long id) {
         jdbcTemplate.update(
             "DELETE FROM basket WHERE id=:id",
-            Map.of("id", id)
+            Map.ofEntries(Map.entry("id", id))
         );
     }
 
     public Optional<Basket> findById(long id) {
         return jdbcTemplate.query(
                 "SELECT * FROM basket WHERE id=:id",
-                Map.of("id", id),
+                Map.ofEntries(Map.entry("id", id)),
                 new BeanPropertyRowMapper<>(Basket.class)
             )
             .stream().findAny();
@@ -63,7 +63,7 @@ public class BasketDao {
     public Optional<Basket> findByPerson(long personId) {
         return jdbcTemplate.query(
                 "SELECT * FROM basket WHERE person_id=:person_id",
-                Map.of("person_id", personId),
+                Map.ofEntries(Map.entry("person_id", personId)),
                 new BeanPropertyRowMapper<>(Basket.class)
             )
             .stream().findAny();
