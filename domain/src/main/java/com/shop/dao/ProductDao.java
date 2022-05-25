@@ -1,6 +1,5 @@
 package com.shop.dao;
 
-import com.shop.db.DatabaseTemplate;
 import com.shop.models.Product;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,76 +11,87 @@ import java.util.Optional;
 
 @Component
 public class ProductDao {
-    private final NamedParameterJdbcTemplate jdbcTemplate = DatabaseTemplate.getJdbcTemplate();
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public List<Product> getProducts() {
+    public ProductDao(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<Product> findAll() {
         return jdbcTemplate.query(
             "SELECT * FROM product",
             new BeanPropertyRowMapper<>(Product.class)
         );
     }
 
-    public void addProduct(Product product) {
+    public void save(
+        String name,
+        String describe,
+        double price,
+        String barcode,
+        boolean inStock,
+        byte[] image
+    ) {
         jdbcTemplate.update(
             "INSERT INTO product (name, describe, price, barcode, in_stock, image) "
                 + "VALUES (:name, :describe, :price, :barcode, :in_stock, :image)",
-            Map.of(
-                "name", product.getName(),
-                "describe", product.getDescribe(),
-                "price", product.getPrice(),
-                "barcode", product.getBarcode(),
-                "in_stock", product.isInStock(),
-                "image", product.getImage()
+            Map.ofEntries(
+                Map.entry("name", name),
+                Map.entry("describe", describe),
+                Map.entry("price", price),
+                Map.entry("barcode", barcode),
+                Map.entry("in_stock", inStock),
+                Map.entry("image", image)
             )
         );
     }
 
-    public void deleteProduct(long id) {
+    public void delete(long id) {
         jdbcTemplate.update(
             "DELETE FROM product WHERE id=:id",
-            Map.of("id", id)
+            Map.ofEntries(Map.entry("id", id))
         );
     }
 
-    public Optional<Product> getProduct(long id) {
-        return jdbcTemplate.query(
-                "SELECT * FROM product WHERE id=:id",
-                Map.of("id", id),
-                new BeanPropertyRowMapper<>(Product.class)
-            )
-            .stream().findAny();
-    }
-
-    public Optional<Product> getProduct(String barcode) {
-        return jdbcTemplate.query(
-                "SELECT * FROM product WHERE barcode=:barcode",
-                Map.of("barcode", barcode),
-                new BeanPropertyRowMapper<>(Product.class)
-            )
-            .stream().findAny();
-    }
-
-    public void deleteProduct(String barcode) {
+    public void delete(String barcode) {
         jdbcTemplate.update(
             "DELETE FROM product WHERE barcode=:barcode",
-            Map.of("barcode", barcode)
+            Map.ofEntries(Map.entry("barcode", barcode))
         );
     }
 
-    public byte[] getImage(long id) {
+    public Optional<Product> findById(long id) {
+        return jdbcTemplate.query(
+                "SELECT * FROM product WHERE id=:id",
+                Map.ofEntries(Map.entry("id", id)),
+                new BeanPropertyRowMapper<>(Product.class)
+            )
+            .stream().findAny();
+    }
+
+    public Optional<Product> findByBarcode(String barcode) {
+        return jdbcTemplate.query(
+                "SELECT * FROM product WHERE barcode=:barcode",
+                Map.ofEntries(Map.entry("barcode", barcode)),
+                new BeanPropertyRowMapper<>(Product.class)
+            )
+            .stream().findAny();
+    }
+
+    public byte[] getByIdImage(long id) {
         return jdbcTemplate.queryForObject(
             "SELECT image FROM product WHERE id=:id",
-            Map.of("id", id),
+            Map.ofEntries(Map.entry("id", id)),
             (rs, rowNum) -> rs.getBytes(1)
         );
     }
 
-    public void addImage(byte[] image, long id) {
+    public void saveImage(byte[] image, long id) {
         jdbcTemplate.update(
             "UPDATE product SET image=:image WHERE id=:id",
-            Map.of(
-                "image", image,
-                "id", id
+            Map.ofEntries(
+                Map.entry("image", image),
+                Map.entry("id", id)
             )
         );
     }
