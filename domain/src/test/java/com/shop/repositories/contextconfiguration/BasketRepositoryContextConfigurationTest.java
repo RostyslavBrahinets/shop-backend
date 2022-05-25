@@ -12,8 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
@@ -35,47 +34,65 @@ public class BasketRepositoryContextConfigurationTest {
     void get_all_baskets() {
         basketRepository.findAll();
 
-        verify(basketDao).findAll();
-    }
-
-    @Test
-    @DisplayName("Save basket")
-    void save_basket() {
-        basketRepository.save(basket, 1);
-
-        verify(basketDao).save(basket.getTotalCost(), 1);
-    }
-
-    @Test
-    @DisplayName("Update basket")
-    void update_basket() {
-        basketRepository.update(1, basket);
-
-        verify(basketDao).update(1, basket.getTotalCost());
-    }
-
-    @Test
-    @DisplayName("Delete basket")
-    void delete_basket() {
-        basketRepository.delete(1);
-
-        verify(basketDao).delete(1);
+        verify(basketDao, atLeast(1)).findAll();
     }
 
     @Test
     @DisplayName("Get basket by id")
     void get_basket_by_id() {
-        basketRepository.findById(1);
+        long id = 1;
 
-        verify(basketDao).findById(1);
+        basketRepository.findById(id);
+
+        verify(basketDao).findById(id);
     }
 
     @Test
     @DisplayName("Get basket by person")
     void get_basket_by_person() {
-        basketRepository.findByPerson(1);
+        long personId = 1;
 
-        verify(basketDao).findByPerson(1);
+        basketRepository.findByPerson(personId);
+
+        verify(basketDao).findByPerson(personId);
+    }
+
+    @Test
+    @DisplayName("Save basket")
+    void save_basket() {
+        long personId = 1;
+
+        basketRepository.save(basket, personId);
+
+        verify(basketDao).save(basket.getTotalCost(), personId);
+    }
+
+    @Test
+    @DisplayName("Update basket")
+    void update_basket() {
+        long id = 1;
+
+        basketRepository.update(id, basket);
+
+        verify(basketDao).update(id, basket.getTotalCost());
+    }
+
+    @Test
+    @DisplayName("Delete basket")
+    void delete_basket() {
+        long id = 1;
+
+        basketRepository.delete(id);
+
+        verify(basketDao).delete(id);
+    }
+
+    @Test
+    @DisplayName("Count baskets")
+    void count_baskets() {
+        basketRepository.count();
+
+        verify(basketDao, atLeast(1)).findAll();
     }
 
     @TestConfiguration
@@ -88,11 +105,6 @@ public class BasketRepositoryContextConfigurationTest {
         @Bean
         public BasketDao basketDao() {
             return mock(BasketDao.class);
-        }
-
-        @Bean
-        public BasketRepository basketRepository() {
-            return mock(BasketRepository.class);
         }
     }
 }
