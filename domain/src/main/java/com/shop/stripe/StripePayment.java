@@ -26,7 +26,7 @@ public class StripePayment {
     public Optional<Customer> saveCustomer(Person person) throws StripeException {
         Stripe.apiKey = stripeKey;
 
-        Contact contact = contactService.getContactByPerson(person.getId());
+        Contact contact = contactService.findByPerson(person.getId());
 
         Map<String, Object> params = new HashMap<>();
         params.put("name", person.getFirstName() + " " + person.getLastName());
