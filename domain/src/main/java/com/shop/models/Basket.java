@@ -17,6 +17,7 @@ public class Basket implements Serializable {
     private double totalCost;
 
     public Basket() {
+        products = new ArrayList<>();
     }
 
     public Basket(
@@ -24,6 +25,7 @@ public class Basket implements Serializable {
         double totalCost
     ) {
         this.id = id;
+        products = new ArrayList<>();
         this.totalCost = totalCost;
     }
 
