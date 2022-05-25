@@ -29,7 +29,8 @@ public class Product implements Serializable {
         String describe,
         double price,
         String barcode,
-        boolean inStock
+        boolean inStock,
+        byte[] image
     ) {
         this.id = id;
         this.name = name;
@@ -37,6 +38,7 @@ public class Product implements Serializable {
         this.price = price;
         this.barcode = barcode;
         this.inStock = inStock;
+        this.image = image;
     }
 
     public static Product of(
@@ -44,7 +46,8 @@ public class Product implements Serializable {
         String describe,
         double price,
         String barcode,
-        boolean inStock
+        boolean inStock,
+        byte[] image
     ) {
         return new Product(
             0,
@@ -52,7 +55,8 @@ public class Product implements Serializable {
             describe,
             price,
             barcode,
-            inStock
+            inStock,
+            image
         );
     }
 
@@ -63,7 +67,8 @@ public class Product implements Serializable {
             this.describe,
             this.price,
             this.barcode,
-            this.inStock
+            this.inStock,
+            this.image
         );
     }
 
