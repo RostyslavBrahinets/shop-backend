@@ -16,7 +16,7 @@ public class RoleService {
     }
 
     public Role getRoleByName(String name) {
-        Optional<Role> role = roleRepository.getRoleByName(name);
+        Optional<Role> role = roleRepository.findByName(name);
         if (role.isEmpty()) {
             throw new NotFoundException("Role not found");
         } else {
