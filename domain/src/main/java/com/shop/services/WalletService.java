@@ -1,6 +1,5 @@
 package com.shop.services;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Wallet;
 import com.shop.repositories.WalletRepository;
 import com.shop.validators.PersonValidator;
@@ -26,45 +25,37 @@ public class WalletService {
         this.personValidator = personValidator;
     }
 
-    public List<Wallet> getWallets() {
-        return walletRepository.getWallets();
+    public List<Wallet> findAll() {
+        return walletRepository.findAll();
     }
 
-    public Wallet addWallet(Wallet wallet, long personId) {
-        walletValidator.validate(wallet);
-        walletRepository.addWallet(wallet, personId);
-        return wallet;
-    }
-
-    public Wallet updateWallet(long id, Wallet wallet) {
+    public Wallet findById(long id) {
         walletValidator.validate(id);
-        walletValidator.validate(wallet);
-        walletRepository.updateWallet(id, wallet);
-        return wallet;
+        Optional<Wallet> wallet = walletRepository.findById(id);
+        return wallet.orElseGet(Wallet::new);
     }
 
-    public void deleteWallet(long id) {
-        walletValidator.validate(id);
-        walletRepository.deleteWallet(id);
-    }
-
-    public Wallet getWallet(long id) {
-        walletValidator.validate(id);
-        Optional<Wallet> wallet = walletRepository.getWallet(id);
-        if (wallet.isEmpty()) {
-            throw new NotFoundException("Wallet not found");
-        } else {
-            return wallet.get();
-        }
-    }
-
-    public Wallet getWalletByPerson(long personId) {
+    public Wallet findByPerson(long personId) {
         personValidator.validate(personId);
-        Optional<Wallet> wallet = walletRepository.getWalletByPerson(personId);
-        if (wallet.isEmpty()) {
-            throw new NotFoundException("Wallet not found");
-        } else {
-            return wallet.get();
-        }
+        Optional<Wallet> wallet = walletRepository.findByPerson(personId);
+        return wallet.orElseGet(Wallet::new);
+    }
+
+    public Wallet save(Wallet wallet, long personId) {
+        walletValidator.validate(wallet);
+        walletRepository.save(wallet, personId);
+        return wallet;
+    }
+
+    public Wallet update(long id, Wallet wallet) {
+        walletValidator.validate(id);
+        walletValidator.validate(wallet);
+        walletRepository.update(id, wallet);
+        return wallet;
+    }
+
+    public void delete(long id) {
+        walletValidator.validate(id);
+        walletRepository.delete(id);
     }
 }
