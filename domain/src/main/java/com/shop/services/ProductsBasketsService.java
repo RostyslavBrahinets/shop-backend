@@ -45,17 +45,17 @@ public class ProductsBasketsService {
         this.stripePayment = stripePayment;
     }
 
-    public List<Product> getProductsFromBasket(long basketId) {
+    public List<Product> findAllProductsInBasket(long basketId) {
         basketValidator.validate(basketId);
-        return productsBasketsRepository.getProductsFromBasket(basketId);
+        return productsBasketsRepository.findAllProductsInBasket(basketId);
     }
 
-    public long addProductToBasket(long productId, long basketId) {
+    public long saveProductToBasket(long productId, long basketId) {
         productValidator.validate(productId);
         basketValidator.validate(basketId);
-        productsBasketsRepository.addProductToBasket(productId, basketId);
+        productsBasketsRepository.saveProductToBasket(productId, basketId);
 
-        Product product = productService.getProduct(productId);
+        Product product = productService.findById(productId);
         Basket basket = basketService.findById(basketId);
 
         List<Product> products = basket.getProducts();
@@ -75,7 +75,7 @@ public class ProductsBasketsService {
         basketValidator.validate(basketId);
         productsBasketsRepository.deleteProductFromBasket(productId, basketId);
 
-        Product product = productService.getProduct(productId);
+        Product product = productService.findById(productId);
         Basket basket = basketService.findById(basketId);
 
         double newTotalCost = basket.getTotalCost();
@@ -92,7 +92,7 @@ public class ProductsBasketsService {
     public void buy(long personId) throws StripeException {
         personValidator.validate(personId);
 
-        Wallet wallet = walletService.getWalletByPerson(personId);
+        Wallet wallet = walletService.findByPerson(personId);
         Basket basket = basketService.findByPerson(personId);
 
         double newAmountOfMoney = wallet.getAmountOfMoney();
@@ -103,7 +103,7 @@ public class ProductsBasketsService {
         }
 
         wallet.setAmountOfMoney(newAmountOfMoney);
-        walletService.updateWallet(wallet.getId(), wallet);
+        walletService.update(wallet.getId(), wallet);
         stripePayment.updateCustomer(wallet.getNumber(), (long) newAmountOfMoney * -100);
 
         basket.setTotalCost(0);
