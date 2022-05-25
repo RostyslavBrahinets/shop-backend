@@ -1,6 +1,5 @@
 package com.shop.dao;
 
-import com.shop.db.DatabaseTemplate;
 import com.shop.models.Category;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,51 +11,53 @@ import java.util.Optional;
 
 @Component
 public class CategoryDao {
-    private final NamedParameterJdbcTemplate jdbcTemplate = DatabaseTemplate.getJdbcTemplate();
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public List<Category> getCategories() {
+    public CategoryDao(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<Category> findAll() {
         return jdbcTemplate.query(
             "SELECT * FROM category",
             new BeanPropertyRowMapper<>(Category.class)
         );
     }
 
-    public void addCategory(Category category) {
+    public void save(String name) {
         jdbcTemplate.update(
             "INSERT INTO category (name) VALUES (:name)",
-            Map.of(
-                "name", category.getName()
-            )
+            Map.ofEntries(Map.entry("name", name))
         );
     }
 
-    public void deleteCategory(long id) {
+    public void delete(long id) {
         jdbcTemplate.update(
             "DELETE FROM category WHERE id=:id",
-            Map.of("id", id)
+            Map.ofEntries(Map.entry("id", id))
         );
     }
 
-    public void deleteCategory(String name) {
+    public void delete(String name) {
         jdbcTemplate.update(
             "DELETE FROM category WHERE name=:name",
-            Map.of("name", name)
+            Map.ofEntries(Map.entry("name", name))
         );
     }
 
-    public Optional<Category> getCategory(long id) {
+    public Optional<Category> findById(long id) {
         return jdbcTemplate.query(
                 "SELECT * FROM category WHERE id=:id",
-                Map.of("id", id),
+                Map.ofEntries(Map.entry("id", id)),
                 new BeanPropertyRowMapper<>(Category.class)
             )
             .stream().findAny();
     }
 
-    public Optional<Category> getCategory(String name) {
+    public Optional<Category> findByName(String name) {
         return jdbcTemplate.query(
                 "SELECT * FROM category WHERE name=:name",
-                Map.of("name", name),
+                Map.ofEntries(Map.entry("name", name)),
                 new BeanPropertyRowMapper<>(Category.class)
             )
             .stream().findAny();
