@@ -15,27 +15,36 @@ public class ContactRepository {
         this.contactDao = contactDao;
     }
 
-    public List<Contact> getContacts() {
-        return contactDao.getContacts();
+    public List<Contact> findAll() {
+        return contactDao.findAll();
     }
 
-    public void addContact(Contact contact, long personId) {
-        contactDao.addContact(contact, personId);
+    public Optional<Contact> findById(long id) {
+        return contactDao.findById(id);
     }
 
-    public void deleteContact(long id) {
-        contactDao.deleteContact(id);
+    public Optional<Contact> findByPerson(long personId) {
+        return contactDao.findByPerson(personId);
     }
 
-    public Optional<Contact> getContact(long id) {
-        return contactDao.getContact(id);
+    public void save(Contact contact, long personId) {
+        contactDao.save(
+            contact.getEmail(),
+            contact.getPhone(),
+            contact.getPassword(),
+            personId
+        );
     }
 
-    public Optional<Contact> getContactByPerson(long personId) {
-        return contactDao.getContactByPerson(personId);
+    public void update(long id, Contact contact) {
+        contactDao.update(id, contact.getPhone());
     }
 
-    public void updateContact(long id, Contact updatedContact) {
-        contactDao.updateContact(id, updatedContact);
+    public void delete(long id) {
+        contactDao.delete(id);
+    }
+
+    public int count() {
+        return contactDao.findAll().size();
     }
 }
