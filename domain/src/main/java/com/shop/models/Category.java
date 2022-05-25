@@ -16,9 +16,20 @@ public class Category implements Serializable {
     public Category() {
     }
 
-    public Category(long id, String name) {
+    public Category(
+        long id,
+        String name
+    ) {
         this.id = id;
         this.name = name;
+    }
+
+    public static Category of(String name) {
+        return new Category(0, name);
+    }
+
+    public Category withId(long id) {
+        return new Category(id, this.name);
     }
 
     public long getId() {
@@ -47,9 +58,9 @@ public class Category implements Serializable {
             return false;
         }
 
-        Category role = (Category) o;
-        return id == role.id
-            && Objects.equals(name, role.name);
+        Category category = (Category) o;
+        return id == category.id
+            && Objects.equals(name, category.name);
     }
 
     @Override
