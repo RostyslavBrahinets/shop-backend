@@ -1,6 +1,5 @@
 package com.shop.services;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Person;
 import com.shop.repositories.PersonRepository;
 import com.shop.validators.ContactValidator;
@@ -26,45 +25,37 @@ public class PersonService {
         this.contactValidator = contactValidator;
     }
 
-    public List<Person> getPeople() {
-        return personRepository.getPeople();
+    public List<Person> findAll() {
+        return personRepository.findAll();
     }
 
-    public Person addPerson(Person person) {
+    public Person findById(long id) {
+        personValidator.validate(id);
+        Optional<Person> person = personRepository.findById(id);
+        return person.orElseGet(Person::new);
+    }
+
+    public Person findByEmail(String email) {
+        contactValidator.validate(email);
+        Optional<Person> person = personRepository.findByEmail(email);
+        return person.orElseGet(Person::new);
+    }
+
+    public Person save(Person person) {
         personValidator.validate(person);
-        personRepository.addPerson(person);
+        personRepository.save(person);
         return person;
     }
 
-    public void deletePerson(long id) {
+    public Person update(long id, Person person) {
         personValidator.validate(id);
-        personRepository.deletePerson(id);
+        personValidator.validate(person);
+        personRepository.update(id, person);
+        return person;
     }
 
-    public Person getPerson(long id) {
+    public void delete(long id) {
         personValidator.validate(id);
-        Optional<Person> person = personRepository.getPerson(id);
-        if (person.isEmpty()) {
-            throw new NotFoundException("Person not found");
-        } else {
-            return person.get();
-        }
-    }
-
-    public Person getPerson(String email) {
-        contactValidator.validate(email);
-        Optional<Person> person = personRepository.getPerson(email);
-        if (person.isEmpty()) {
-            throw new NotFoundException("Person not found");
-        } else {
-            return person.get();
-        }
-    }
-
-    public Person updatePerson(long id, Person updatedPerson) {
-        personValidator.validate(id);
-        personValidator.validate(updatedPerson);
-        personRepository.updatePerson(id, updatedPerson);
-        return updatedPerson;
+        personRepository.delete(id);
     }
 }
