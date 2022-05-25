@@ -27,21 +27,21 @@ public class ProductsBasketsService {
 
     public ProductsBasketsService(
         ProductsBasketsRepository productsBasketsRepository,
-        ProductValidator productValidator,
-        BasketValidator basketValidator,
-        PersonValidator personValidator,
         BasketService basketService,
         ProductService productService,
         WalletService walletService,
+        ProductValidator productValidator,
+        BasketValidator basketValidator,
+        PersonValidator personValidator,
         StripePayment stripePayment
     ) {
         this.productsBasketsRepository = productsBasketsRepository;
-        this.productValidator = productValidator;
-        this.basketValidator = basketValidator;
-        this.personValidator = personValidator;
         this.basketService = basketService;
         this.productService = productService;
         this.walletService = walletService;
+        this.productValidator = productValidator;
+        this.basketValidator = basketValidator;
+        this.personValidator = personValidator;
         this.stripePayment = stripePayment;
     }
 
