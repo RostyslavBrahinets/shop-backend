@@ -1,4 +1,4 @@
-package com.shop.tables_schemas;
+package com.shop.tablesschemas;
 
 import com.shop.configs.DatabaseConfig;
 import org.junit.jupiter.api.AfterEach;
@@ -20,10 +20,9 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/person/V20220421161641__Create_table_person.sql",
-    "classpath:db/migration/basket/V20220421161946__Create_table_basket.sql"
+    "classpath:db/migration/person/V20220421161641__Create_table_person.sql"
 })
-public class BasketTableSchemaTest {
+public class PersonTableSchemaTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -31,20 +30,21 @@ public class BasketTableSchemaTest {
     void tearDown() {
         JdbcTestUtils.dropTables(
             jdbcTemplate.getJdbcTemplate(),
-            "basket"
+            "person"
         );
     }
 
     @Test
-    @DisplayName("Failed to insert null total cost value")
-    void failed_to_insert_null_total_cost_value() {
+    @DisplayName("Failed to insert null first name value")
+    void failed_to_insert_null_first_name_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("total_cost", null);
-        params.addValue("person_id", 1);
+        params.addValue("first_name", null);
+        params.addValue("last_name", "Smith");
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO basket(total_cost, person_id) VALUES (:total_cost, :person_id)",
+                "INSERT INTO person(first_name, last_name) "
+                    + "VALUES (:first_name, :last_name)",
                 params
             )
         )
@@ -52,15 +52,16 @@ public class BasketTableSchemaTest {
     }
 
     @Test
-    @DisplayName("Failed to insert null person id value")
-    void failed_to_insert_null_person_id_value() {
+    @DisplayName("Failed to insert null last name value")
+    void failed_to_insert_null_last_name_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("total_cost", 0);
-        params.addValue("person_id", null);
+        params.addValue("first_name", "John");
+        params.addValue("last_name", null);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO basket(total_cost, person_id) VALUES (:total_cost, :person_id)",
+                "INSERT INTO person(first_name, last_name) "
+                    + "VALUES (:first_name, :last_name)",
                 params
             )
         )

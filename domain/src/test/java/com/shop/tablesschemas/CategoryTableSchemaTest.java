@@ -1,4 +1,4 @@
-package com.shop.tables_schemas;
+package com.shop.tablesschemas;
 
 import com.shop.configs.DatabaseConfig;
 import org.junit.jupiter.api.AfterEach;
@@ -20,9 +20,9 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/person/V20220421161641__Create_table_person.sql"
+    "classpath:db/migration/category/V20220421162204__Create_table_category.sql"
 })
-public class PersonTableSchemaTest {
+public class CategoryTableSchemaTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -30,38 +30,19 @@ public class PersonTableSchemaTest {
     void tearDown() {
         JdbcTestUtils.dropTables(
             jdbcTemplate.getJdbcTemplate(),
-            "person"
+            "category"
         );
     }
 
     @Test
-    @DisplayName("Failed to insert null first name value")
-    void failed_to_insert_null_first_name_value() {
+    @DisplayName("Failed to insert null name value")
+    void failed_to_insert_null_name_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("first_name", null);
-        params.addValue("last_name", "Smith");
+        params.addValue("name", null);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO person(first_name, last_name) "
-                    + "VALUES (:first_name, :last_name)",
-                params
-            )
-        )
-            .isInstanceOf(DataIntegrityViolationException.class);
-    }
-
-    @Test
-    @DisplayName("Failed to insert null last name value")
-    void failed_to_insert_null_last_name_value() {
-        var params = new MapSqlParameterSource();
-        params.addValue("first_name", "John");
-        params.addValue("last_name", null);
-
-        assertThatCode(
-            () -> jdbcTemplate.update(
-                "INSERT INTO person(first_name, last_name) "
-                    + "VALUES (:first_name, :last_name)",
+                "INSERT INTO category(name) VALUES (:name)",
                 params
             )
         )

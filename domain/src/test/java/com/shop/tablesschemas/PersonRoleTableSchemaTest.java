@@ -1,4 +1,4 @@
-package com.shop.tables_schemas;
+package com.shop.tablesschemas;
 
 import com.shop.configs.DatabaseConfig;
 import org.junit.jupiter.api.AfterEach;
@@ -20,9 +20,9 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/role/V20220505172953__Create_table_role.sql"
+    "classpath:db/migration/person_role/V20220505173243__Create_table_person_role.sql"
 })
-public class RoleTableSchemaTest {
+public class PersonRoleTableSchemaTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -30,19 +30,38 @@ public class RoleTableSchemaTest {
     void tearDown() {
         JdbcTestUtils.dropTables(
             jdbcTemplate.getJdbcTemplate(),
-            "role"
+            "person_role"
         );
     }
 
     @Test
-    @DisplayName("Failed to insert null name value")
-    void failed_to_insert_null_name_value() {
+    @DisplayName("Failed to insert null person id value")
+    void failed_to_insert_null_person_id_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("name", null);
+        params.addValue("person_id", null);
+        params.addValue("role_id", 1);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO role(name) VALUES (:name)",
+                "INSERT INTO person_role(person_id, role_id) "
+                    + "VALUES (:person_id, :role_id)",
+                params
+            )
+        )
+            .isInstanceOf(DataIntegrityViolationException.class);
+    }
+
+    @Test
+    @DisplayName("Failed to insert null role id value")
+    void failed_to_insert_null_role_id_value() {
+        var params = new MapSqlParameterSource();
+        params.addValue("person_id", 1);
+        params.addValue("role_id", null);
+
+        assertThatCode(
+            () -> jdbcTemplate.update(
+                "INSERT INTO person_role(person_id, role_id) "
+                    + "VALUES (:person_id, :role_id)",
                 params
             )
         )

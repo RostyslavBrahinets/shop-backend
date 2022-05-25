@@ -1,4 +1,4 @@
-package com.shop.tables_schemas;
+package com.shop.tablesschemas;
 
 import com.shop.configs.DatabaseConfig;
 import org.junit.jupiter.api.AfterEach;
@@ -21,9 +21,9 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 })
 @Sql(scripts = {
     "classpath:db/migration/person/V20220421161641__Create_table_person.sql",
-    "classpath:db/migration/wallet/V20220421162043__Create_table_wallet.sql"
+    "classpath:db/migration/basket/V20220421161946__Create_table_basket.sql"
 })
-public class WalletTableSchemaTest {
+public class BasketTableSchemaTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -31,40 +31,20 @@ public class WalletTableSchemaTest {
     void tearDown() {
         JdbcTestUtils.dropTables(
             jdbcTemplate.getJdbcTemplate(),
-            "wallet"
+            "basket"
         );
     }
 
     @Test
-    @DisplayName("Failed to insert null number value")
-    void failed_to_insert_null_number_value() {
+    @DisplayName("Failed to insert null total cost value")
+    void failed_to_insert_null_total_cost_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("number", null);
-        params.addValue("amount_of_money", 0);
+        params.addValue("total_cost", null);
         params.addValue("person_id", 1);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO wallet(number, amount_of_money, person_id) "
-                    + "VALUES (:number, :amount_of_money, :person_id)",
-                params
-            )
-        )
-            .isInstanceOf(DataIntegrityViolationException.class);
-    }
-
-    @Test
-    @DisplayName("Failed to insert null amount of money value")
-    void failed_to_insert_null_amount_of_money_value() {
-        var params = new MapSqlParameterSource();
-        params.addValue("number", "123");
-        params.addValue("amount_of_money", null);
-        params.addValue("person_id", 1);
-
-        assertThatCode(
-            () -> jdbcTemplate.update(
-                "INSERT INTO wallet(number, amount_of_money, person_id) "
-                    + "VALUES (:number, :amount_of_money, :person_id)",
+                "INSERT INTO basket(total_cost, person_id) VALUES (:total_cost, :person_id)",
                 params
             )
         )
@@ -75,14 +55,12 @@ public class WalletTableSchemaTest {
     @DisplayName("Failed to insert null person id value")
     void failed_to_insert_null_person_id_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("number", "123");
-        params.addValue("amount_of_money", 0);
+        params.addValue("total_cost", 0);
         params.addValue("person_id", null);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO wallet(number, amount_of_money, person_id) "
-                    + "VALUES (:number, :amount_of_money, :person_id)",
+                "INSERT INTO basket(total_cost, person_id) VALUES (:total_cost, :person_id)",
                 params
             )
         )

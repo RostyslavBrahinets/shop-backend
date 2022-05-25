@@ -1,4 +1,4 @@
-package com.shop.tables_schemas;
+package com.shop.tablesschemas;
 
 import com.shop.configs.DatabaseConfig;
 import org.junit.jupiter.api.AfterEach;
@@ -20,9 +20,9 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/person_role/V20220505173243__Create_table_person_role.sql"
+    "classpath:db/migration/products_baskets/V20220421162626__Create_table_products_baskets.sql"
 })
-public class PersonRoleTableSchemaTest {
+public class ProductsBasketsTableSchemaTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -30,21 +30,21 @@ public class PersonRoleTableSchemaTest {
     void tearDown() {
         JdbcTestUtils.dropTables(
             jdbcTemplate.getJdbcTemplate(),
-            "person_role"
+            "products_baskets"
         );
     }
 
     @Test
-    @DisplayName("Failed to insert null person id value")
-    void failed_to_insert_null_person_id_value() {
+    @DisplayName("Failed to insert null product id value")
+    void failed_to_insert_null_product_id_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("person_id", null);
-        params.addValue("role_id", 1);
+        params.addValue("product_id", null);
+        params.addValue("basket_id", 1);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO person_role(person_id, role_id) "
-                    + "VALUES (:person_id, :role_id)",
+                "INSERT INTO products_baskets(product_id, basket_id) "
+                    + "VALUES (:product_id, :basket_id)",
                 params
             )
         )
@@ -52,16 +52,16 @@ public class PersonRoleTableSchemaTest {
     }
 
     @Test
-    @DisplayName("Failed to insert null role id value")
-    void failed_to_insert_null_role_id_value() {
+    @DisplayName("Failed to insert null basket id value")
+    void failed_to_insert_null_basket_id_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("person_id", 1);
-        params.addValue("role_id", null);
+        params.addValue("product_id", 1);
+        params.addValue("basket_id", null);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO person_role(person_id, role_id) "
-                    + "VALUES (:person_id, :role_id)",
+                "INSERT INTO products_baskets(product_id, basket_id) "
+                    + "VALUES (:product_id, :basket_id)",
                 params
             )
         )

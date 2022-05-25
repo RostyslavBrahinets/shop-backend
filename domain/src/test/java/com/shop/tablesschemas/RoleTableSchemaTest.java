@@ -1,4 +1,4 @@
-package com.shop.tables_schemas;
+package com.shop.tablesschemas;
 
 import com.shop.configs.DatabaseConfig;
 import org.junit.jupiter.api.AfterEach;
@@ -20,9 +20,9 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/category/V20220421162204__Create_table_category.sql"
+    "classpath:db/migration/role/V20220505172953__Create_table_role.sql"
 })
-public class CategoryTableSchemaTest {
+public class RoleTableSchemaTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -30,7 +30,7 @@ public class CategoryTableSchemaTest {
     void tearDown() {
         JdbcTestUtils.dropTables(
             jdbcTemplate.getJdbcTemplate(),
-            "category"
+            "role"
         );
     }
 
@@ -42,7 +42,7 @@ public class CategoryTableSchemaTest {
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO category(name) VALUES (:name)",
+                "INSERT INTO role(name) VALUES (:name)",
                 params
             )
         )
