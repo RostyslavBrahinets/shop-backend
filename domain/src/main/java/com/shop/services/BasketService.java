@@ -29,6 +29,18 @@ public class BasketService {
         return basketRepository.findAll();
     }
 
+    public Basket findById(long id) {
+        basketValidator.validate(id);
+        Optional<Basket> basket = basketRepository.findById(id);
+        return basket.orElseGet(Basket::new);
+    }
+
+    public Basket findByPerson(long personId) {
+        personValidator.validate(personId);
+        Optional<Basket> basket = basketRepository.findByPerson(personId);
+        return basket.orElseGet(Basket::new);
+    }
+
     public Basket save(Basket basket, long personId) {
         basketValidator.validate(basket);
         personValidator.validate(personId);
@@ -46,17 +58,5 @@ public class BasketService {
     public void delete(long id) {
         basketValidator.validate(id);
         basketRepository.delete(id);
-    }
-
-    public Basket findById(long id) {
-        basketValidator.validate(id);
-        Optional<Basket> basketOptional = basketRepository.findById(id);
-        return basketOptional.orElseGet(Basket::new);
-    }
-
-    public Basket findByPerson(long personId) {
-        personValidator.validate(personId);
-        Optional<Basket> basketOptional = basketRepository.findByPerson(personId);
-        return basketOptional.orElseGet(Basket::new);
     }
 }
