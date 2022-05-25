@@ -27,6 +27,17 @@ public class Wallet implements Serializable {
         this.amountOfMoney = amountOfMoney;
     }
 
+    public static Wallet of(
+        String number,
+        double amountOfMoney
+    ) {
+        return new Wallet(0, number, amountOfMoney);
+    }
+
+    public Wallet withId(long id) {
+        return new Wallet(id, this.number, this.amountOfMoney);
+    }
+
     public long getId() {
         return id;
     }
@@ -63,7 +74,7 @@ public class Wallet implements Serializable {
 
         Wallet wallet = (Wallet) o;
         return id == wallet.id
-            && Double.compare(wallet.amountOfMoney, amountOfMoney) == 0
+            && Double.compare(amountOfMoney, wallet.amountOfMoney) == 0
             && Objects.equals(number, wallet.number);
     }
 
