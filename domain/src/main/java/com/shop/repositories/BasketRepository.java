@@ -19,6 +19,14 @@ public class BasketRepository {
         return basketDao.findAll();
     }
 
+    public Optional<Basket> findById(long id) {
+        return basketDao.findById(id);
+    }
+
+    public Optional<Basket> findByPerson(long personId) {
+        return basketDao.findByPerson(personId);
+    }
+
     public void save(Basket basket, long personId) {
         basketDao.save(basket.getTotalCost(), personId);
     }
@@ -29,14 +37,6 @@ public class BasketRepository {
 
     public void delete(long id) {
         basketDao.delete(id);
-    }
-
-    public Optional<Basket> findById(long id) {
-        return basketDao.findById(id);
-    }
-
-    public Optional<Basket> findByPerson(long personId) {
-        return basketDao.findByPerson(personId);
     }
 
     public int count() {
