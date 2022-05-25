@@ -14,7 +14,7 @@ public class RoleRepository {
         this.roleDao = roleDao;
     }
 
-    public Optional<Role> getRoleByName(String name) {
-        return roleDao.getRoleByName(name);
+    public Optional<Role> findByName(String name) {
+        return roleDao.findByName(name);
     }
 }
