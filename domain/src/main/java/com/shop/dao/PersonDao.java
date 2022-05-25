@@ -17,57 +17,57 @@ public class PersonDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Person> getPeople() {
+    public List<Person> findAll() {
         return jdbcTemplate.query(
             "SELECT * FROM person",
             new BeanPropertyRowMapper<>(Person.class)
         );
     }
 
-    public void addPerson(Person person) {
+    public void save(String firstName, String lastName) {
         jdbcTemplate.update(
             "INSERT INTO person (first_name, last_name) VALUES (:first_name, :last_name)",
-            Map.of(
-                "first_name", person.getFirstName(),
-                "last_name", person.getLastName()
+            Map.ofEntries(
+                Map.entry("first_name", firstName),
+                Map.entry("last_name", lastName)
             )
         );
     }
 
-    public void deletePerson(long id) {
+    public void update(long id, String firstName, String lastName) {
         jdbcTemplate.update(
-            "DELETE FROM person WHERE id=:id",
-            Map.of("id", id)
+            "UPDATE person SET first_name=:first_name, last_name=:last_name WHERE id=:id",
+            Map.ofEntries(
+                Map.entry("first_name", firstName),
+                Map.entry("last_name", lastName),
+                Map.entry("id", id)
+            )
         );
     }
 
-    public Optional<Person> getPerson(long id) {
+    public void delete(long id) {
+        jdbcTemplate.update(
+            "DELETE FROM person WHERE id=:id",
+            Map.ofEntries(Map.entry("id", id))
+        );
+    }
+
+    public Optional<Person> findById(long id) {
         return jdbcTemplate.query(
                 "SELECT * FROM person WHERE id=:id",
-                Map.of("id", id),
+                Map.ofEntries(Map.entry("id", id)),
                 new BeanPropertyRowMapper<>(Person.class)
             )
             .stream().findAny();
     }
 
-    public Optional<Person> getPerson(String email) {
+    public Optional<Person> findByEmail(String email) {
         return jdbcTemplate.query(
                 "SELECT * FROM person p, contact c "
                     + "WHERE p.id=c.person_id and c.email=:email",
-                Map.of("email", email),
+                Map.ofEntries(Map.entry("email", email)),
                 new BeanPropertyRowMapper<>(Person.class)
             )
             .stream().findAny();
-    }
-
-    public void updatePerson(long id, Person updatedPerson) {
-        jdbcTemplate.update(
-            "UPDATE person SET first_name=:first_name, last_name=:last_name WHERE id=:id",
-            Map.of(
-                "first_name", updatedPerson.getFirstName(),
-                "last_name", updatedPerson.getLastName(),
-                "id", id
-            )
-        );
     }
 }
