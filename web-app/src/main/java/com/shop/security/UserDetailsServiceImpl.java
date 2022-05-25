@@ -34,13 +34,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        Person person = personService.getPerson(email);
+        Person person = personService.findByEmail(email);
         long id = person.getId();
-        Role role = personRoleService.getRole(id);
+        Role role = personRoleService.findRoleByPerson(id);
         List<GrantedAuthority> grantedAuthorities = List.of(
             new SimpleGrantedAuthority(role.getName())
         );
-        Contact contact = contactService.getContact(id);
+        Contact contact = contactService.findById(id);
 
         return new User(
             Objects.requireNonNull(contact).getEmail(),
