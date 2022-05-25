@@ -1,8 +1,7 @@
-package com.shop.services.basket;
+package com.shop.services;
 
 import com.shop.models.Basket;
 import com.shop.repositories.BasketRepository;
-import com.shop.services.BasketService;
 import com.shop.validators.BasketValidator;
 import com.shop.validators.PersonValidator;
 import org.junit.jupiter.api.DisplayName;
@@ -44,21 +43,47 @@ public class BasketServiceContextConfigurationTest {
     }
 
     @Test
+    @DisplayName("Get basket by id")
+    void get_basket_by_id() {
+        long id = 1;
+
+        basketService.findById(id);
+
+        verify(basketValidator, atLeast(1)).validate(id);
+        verify(basketRepository).findById(id);
+    }
+
+    @Test
+    @DisplayName("Get basket by person")
+    void get_basket_by_person() {
+        long personId = 1;
+
+        basketService.findByPerson(personId);
+
+        verify(personValidator, atLeast(1)).validate(personId);
+        verify(basketRepository).findByPerson(personId);
+    }
+
+    @Test
     @DisplayName("Save basket")
     void save_basket() {
-        basketService.save(basket, 1);
+        long personId = 1;
+
+        basketService.save(basket, personId);
 
         verify(basketValidator, atLeast(1)).validate(basket);
-        verify(personValidator, atLeast(1)).validate(1);
-        verify(basketRepository).save(basket, 1);
+        verify(personValidator, atLeast(1)).validate(personId);
+        verify(basketRepository).save(basket, personId);
     }
 
     @Test
     @DisplayName("Update basket")
     void update_basket() {
-        basketService.update(1, basket);
+        long id = 1;
 
-        verify(basketValidator, atLeast(1)).validate(1);
+        basketService.update(id, basket);
+
+        verify(basketValidator, atLeast(1)).validate(id);
         verify(basketValidator, atLeast(1)).validate(basket);
         verify(basketRepository).update(1, basket);
     }
@@ -66,28 +91,12 @@ public class BasketServiceContextConfigurationTest {
     @Test
     @DisplayName("Delete basket")
     void delete_basket() {
-        basketService.delete(1);
+        long id = 1;
 
-        verify(basketValidator, atLeast(1)).validate(1);
-        verify(basketRepository).delete(1);
-    }
+        basketService.delete(id);
 
-    @Test
-    @DisplayName("Get basket by id")
-    void get_basket_by_id() {
-        basketService.findById(1);
-
-        verify(basketValidator, atLeast(1)).validate(1);
-        verify(basketRepository).findById(1);
-    }
-
-    @Test
-    @DisplayName("Get basket by person")
-    void get_basket_by_person() {
-        basketService.findByPerson(1);
-
-        verify(personValidator, atLeast(1)).validate(1);
-        verify(basketRepository).findByPerson(1);
+        verify(basketValidator, atLeast(1)).validate(id);
+        verify(basketRepository).delete(id);
     }
 
     @TestConfiguration
