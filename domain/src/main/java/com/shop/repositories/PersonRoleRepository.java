@@ -14,12 +14,12 @@ public class PersonRoleRepository {
         this.personRoleDao = personRoleDao;
     }
 
-    public Optional<Role> getRole(long personId) {
-        return personRoleDao.getRole(personId);
+    public Optional<Role> findRoleByPerson(long personId) {
+        return personRoleDao.findRoleByPerson(personId);
     }
 
-    public void addRoleForPerson(long personId, long roleId) {
-        personRoleDao.addRoleForPerson(personId, roleId);
+    public void saveRoleForPerson(long personId, long roleId) {
+        personRoleDao.saveRoleForPerson(personId, roleId);
     }
 
     public void updateRoleForPerson(long personId, long roleId) {
