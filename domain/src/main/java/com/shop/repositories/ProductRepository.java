@@ -46,12 +46,8 @@ public class ProductRepository {
         productDao.delete(barcode);
     }
 
-    public byte[] findByIdImage(long id) {
-        return productDao.findByIdImage(id);
-    }
-
-    public void saveImage(byte[] image, long id) {
-        productDao.saveImage(image, id);
+    public void saveImageForProduct(byte[] image, long id) {
+        productDao.saveImageForProduct(image, id);
     }
 
     public int count() {

@@ -20,10 +20,6 @@ public class ProductCategoryRepository {
         return productCategoryDao.findAllProductsInCategory(categoryId);
     }
 
-    public Optional<Category> findCategoryForProduct(long productId) {
-        return productCategoryDao.findCategoryForProduct(productId);
-    }
-
     public void saveProductToCategory(long productId, long categoryId) {
         productCategoryDao.saveProductToCategory(productId, categoryId);
     }
