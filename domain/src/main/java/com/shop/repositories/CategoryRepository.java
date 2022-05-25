@@ -15,27 +15,31 @@ public class CategoryRepository {
         this.categoryDao = categoryDao;
     }
 
-    public List<Category> getCategories() {
-        return categoryDao.getCategories();
+    public List<Category> findAll() {
+        return categoryDao.findAll();
     }
 
-    public void addCategory(Category category) {
-        categoryDao.addCategory(category);
+    public Optional<Category> findById(long id) {
+        return categoryDao.findById(id);
     }
 
-    public void deleteCategory(long id) {
-        categoryDao.deleteCategory(id);
+    public Optional<Category> findByName(String name) {
+        return categoryDao.findByName(name);
     }
 
-    public void deleteCategory(String name) {
-        categoryDao.deleteCategory(name);
+    public void save(Category category) {
+        categoryDao.save(category.getName());
     }
 
-    public Optional<Category> getCategory(long id) {
-        return categoryDao.getCategory(id);
+    public void delete(long id) {
+        categoryDao.delete(id);
     }
 
-    public Optional<Category> getCategory(String name) {
-        return categoryDao.getCategory(name);
+    public void delete(String name) {
+        categoryDao.delete(name);
+    }
+
+    public int count() {
+        return categoryDao.findAll().size();
     }
 }
