@@ -4,7 +4,6 @@ import com.shop.configs.DatabaseConfig;
 import com.shop.dao.BasketDao;
 import com.shop.dao.PersonDao;
 import com.shop.models.Basket;
-import com.shop.models.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,11 +42,11 @@ public class BasketDaoTest {
     void setUp() {
         PersonDao personDao = new PersonDao(jdbcTemplate);
 
-        Person person = new Person();
-        person.setFirstName("First Name");
-        person.setLastName("Last Name");
-        personDao.addPerson(person);
-        personDao.addPerson(person);
+        String firstName = "First Name";
+        String lastName = "Last Name";
+
+        personDao.save(firstName, lastName);
+        personDao.save(firstName, lastName);
 
         basketDao = new BasketDao(jdbcTemplate);
     }

@@ -4,7 +4,6 @@ import com.shop.configs.DatabaseConfig;
 import com.shop.dao.BasketDao;
 import com.shop.dao.PersonDao;
 import com.shop.models.Basket;
-import com.shop.models.Person;
 import com.shop.repositories.BasketRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +13,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -50,12 +48,13 @@ public class BasketRepositoryTest {
     @BeforeEach
     void setUp() {
         PersonDao personDao = new PersonDao(namedParameterJdbcTemplate);
-        Person person = new Person();
-        person.setFirstName("First Name");
-        person.setLastName("Last Name");
-        personDao.addPerson(person);
-        personDao.addPerson(person);
-        
+
+        String firstName = "First Name";
+        String lastName = "Last Name";
+
+        personDao.save(firstName, lastName);
+        personDao.save(firstName, lastName);
+
         namedParameterJdbcTemplate.getJdbcTemplate().execute("TRUNCATE TABLE basket");
     }
 
