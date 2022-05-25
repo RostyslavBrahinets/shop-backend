@@ -1,6 +1,5 @@
 package com.shop.services;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Category;
 import com.shop.repositories.CategoryRepository;
 import com.shop.validators.CategoryValidator;
@@ -15,51 +14,42 @@ public class CategoryService {
     private final CategoryValidator categoryValidator;
 
     public CategoryService(
-            CategoryRepository categoryRepository,
-            CategoryValidator categoryValidator
+        CategoryRepository categoryRepository,
+        CategoryValidator categoryValidator
     ) {
         this.categoryRepository = categoryRepository;
         this.categoryValidator = categoryValidator;
     }
 
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
+    }
 
-    public List<Category> getCategories() {
-        return categoryRepository.getCategories();
+    public Category findById(long id) {
+        categoryValidator.validate(id);
+        Optional<Category> category = categoryRepository.findById(id);
+        return category.orElseGet(Category::new);
+    }
+
+    public Category findByName(String name) {
+        categoryValidator.validate(name);
+        Optional<Category> category = categoryRepository.findByName(name);
+        return category.orElseGet(Category::new);
     }
 
     public Category addCategory(Category category) {
         categoryValidator.validate(category);
-        categoryRepository.addCategory(category);
+        categoryRepository.save(category);
         return category;
     }
 
-    public void deleteCategory(long id) {
+    public void delete(long id) {
         categoryValidator.validate(id);
-        categoryRepository.deleteCategory(id);
+        categoryRepository.delete(id);
     }
 
-    public void deleteCategory(String name) {
+    public void delete(String name) {
         categoryValidator.validate(name);
-        categoryRepository.deleteCategory(name);
-    }
-
-    public Category getCategory(long id) {
-        categoryValidator.validate(id);
-        Optional<Category> category = categoryRepository.getCategory(id);
-        if (category.isEmpty()) {
-            throw new NotFoundException("Category not found");
-        } else {
-            return category.get();
-        }
-    }
-
-    public Category getCategory(String name) {
-        categoryValidator.validate(name);
-        Optional<Category> category = categoryRepository.getCategory(name);
-        if (category.isEmpty()) {
-            throw new NotFoundException("Category not found");
-        } else {
-            return category.get();
-        }
+        categoryRepository.delete(name);
     }
 }
