@@ -14,12 +14,12 @@ public class ProductsBasketsRepository {
         this.productsBasketsDao = productsBasketsDao;
     }
 
-    public List<Product> getProductsFromBasket(long basketId) {
-        return productsBasketsDao.getProductsFromBasket(basketId);
+    public List<Product> findAllProductsInBasket(long basketId) {
+        return productsBasketsDao.findAllProductsInBasket(basketId);
     }
 
-    public void addProductToBasket(long productId, long basketId) {
-        productsBasketsDao.addProductToBasket(productId, basketId);
+    public void saveProductToBasket(long productId, long basketId) {
+        productsBasketsDao.saveProductToBasket(productId, basketId);
     }
 
     public void deleteProductFromBasket(long productId, long basketId) {
