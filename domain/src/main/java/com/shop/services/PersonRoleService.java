@@ -1,6 +1,5 @@
 package com.shop.services;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Role;
 import com.shop.repositories.PersonRoleRepository;
 import com.shop.validators.PersonValidator;
@@ -28,25 +27,21 @@ public class PersonRoleService {
         this.roleValidator = roleValidator;
     }
 
-    public Role getRole(long personId) {
+    public Role findRoleByPerson(long personId) {
         personValidator.validate(personId);
-        Optional<Role> role = personRoleRepository.getRole(personId);
-        if (role.isEmpty()) {
-            throw new NotFoundException("Role for this person not found");
-        } else {
-            return role.get();
-        }
+        Optional<Role> role = personRoleRepository.findRoleByPerson(personId);
+        return role.orElseGet(Role::new);
     }
 
-    public void addRoleForPerson(long personId, long roleId) {
+    public void saveRoleForPerson(long personId, long roleId) {
         personValidator.validate(personId);
         roleValidator.validate(roleId);
-        personRoleRepository.addRoleForPerson(personId, roleId);
+        personRoleRepository.saveRoleForPerson(personId, roleId);
     }
 
-    public void updateRoleForPerson(long personId, String role) {
+    public void updateRoleForPerson(long personId, String name) {
         personValidator.validate(personId);
-        Role newRole = roleService.getRoleByName(role);
+        Role newRole = roleService.getRoleByName(name);
         personRoleRepository.updateRoleForPerson(personId, newRole.getId());
     }
 }
