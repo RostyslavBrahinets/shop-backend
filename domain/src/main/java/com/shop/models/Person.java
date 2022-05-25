@@ -23,17 +23,22 @@ public class Person implements Serializable {
     public Person(
         long id,
         String firstName,
-        String lastName,
-        Contact contact,
-        Basket basket,
-        Wallet wallet
+        String lastName
     ) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.contact = contact;
-        this.basket = basket;
-        this.wallet = wallet;
+    }
+
+    public static Person of(
+        String firstName,
+        String lastName
+    ) {
+        return new Person(0, firstName, lastName);
+    }
+
+    public Person withId(long id) {
+        return new Person(id, this.firstName, this.lastName);
     }
 
     public long getId() {
@@ -115,8 +120,6 @@ public class Person implements Serializable {
             + ", firstName='" + firstName + '\''
             + ", lastName='" + lastName + '\''
             + ", contact=" + contact
-            + ", basket=" + basket
-            + ", wallet=" + wallet
             + '}';
     }
 }
