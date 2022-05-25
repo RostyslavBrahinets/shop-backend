@@ -23,14 +23,11 @@ public class PersonRoleController {
         return personRoleService.findRoleByPerson(id);
     }
 
-
     @PostMapping("/{id}")
     public String updateRoleForPerson(
         @PathVariable long id,
         @RequestBody RoleDto role
     ) {
-        System.out.println(role);
-        System.out.println(role.getRole());
         personRoleService.updateRoleForPerson(id, role.getRole());
         return "Role Successfully Changed";
     }
