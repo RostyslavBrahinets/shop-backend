@@ -1,6 +1,5 @@
 package com.shop.services;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Product;
 import com.shop.repositories.ProductRepository;
 import com.shop.validators.ProductValidator;
@@ -14,69 +13,61 @@ import java.util.Random;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
-    private final ProductValidator validator;
+    private final ProductValidator productValidator;
 
     public ProductService(
         ProductRepository productRepository,
-        ProductValidator validator
+        ProductValidator productValidator
     ) {
         this.productRepository = productRepository;
-        this.validator = validator;
+        this.productValidator = productValidator;
     }
 
-    public List<Product> getProducts() {
-        return productRepository.getProducts();
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 
-    public Product addProduct(Product product) {
-        validator.validate(product);
-        productRepository.addProduct(product);
+    public Product findById(long id) {
+        productValidator.validate(id);
+        Optional<Product> product = productRepository.findById(id);
+        return product.orElseGet(Product::new);
+    }
+
+    public Product findByBarcode(String barcode) {
+        productValidator.validate(barcode);
+        Optional<Product> product = productRepository.findByBarcode(barcode);
+        return product.orElseGet(Product::new);
+    }
+
+    public Product save(Product product) {
+        productValidator.validate(product);
+        productRepository.save(product);
         return product;
     }
 
-    public void deleteProduct(long id) {
-        validator.validate(id);
-        productRepository.deleteProduct(id);
+    public void delete(long id) {
+        productValidator.validate(id);
+        productRepository.delete(id);
     }
 
-    public void deleteProduct(String barcode) {
-        validator.validate(barcode);
-        productRepository.deleteProduct(barcode);
+    public void delete(String barcode) {
+        productValidator.validate(barcode);
+        productRepository.delete(barcode);
     }
 
-    public Product getProduct(long id) {
-        validator.validate(id);
-        Optional<Product> product = productRepository.getProduct(id);
-        if (product.isEmpty()) {
-            throw new NotFoundException("Product not found");
-        } else {
-            return product.get();
-        }
+    public byte[] findByIdImage(long id) {
+        productValidator.validate(id);
+        return productRepository.findByIdImage(id);
     }
 
-    public Product getProduct(String barcode) {
-        validator.validate(barcode);
-        Optional<Product> product = productRepository.getProduct(barcode);
-        if (product.isEmpty()) {
-            throw new NotFoundException("Product not found");
-        } else {
-            return product.get();
-        }
+    public void saveImage(byte[] image, long id) {
+        productValidator.validate(id);
+        productRepository.saveImage(image, id);
     }
 
-    public byte[] getImage(long id) {
-        validator.validate(id);
-        return productRepository.getImage(id);
-    }
-
-    public void addImage(byte[] image, long id) {
-        validator.validate(id);
-        productRepository.addImage(image, id);
-    }
-
-    public List<Product> getRandomProducts(int count) {
+    public List<Product> findRandomProducts(int count) {
         List<Product> products = new ArrayList<>();
-        int size = getProducts().size();
+        int size = findAll().size();
 
         if (count > size) {
             count = size;
@@ -84,7 +75,7 @@ public class ProductService {
 
         int i = 0;
         while (i < count) {
-            Optional<Product> product = productRepository.getProduct(getRandomIndex());
+            Optional<Product> product = productRepository.findById(getRandomIndex());
             if (product.isPresent()) {
                 if (!products.contains(product.get())) {
                     products.add(product.get());
@@ -98,7 +89,7 @@ public class ProductService {
 
     private long getRandomIndex() {
         Random random = new Random();
-        List<Product> products = getProducts();
+        List<Product> products = findAll();
         long maxRandomId = products.get(products.size() - 1).getId();
 
         List<Long> ids = new ArrayList<>();
