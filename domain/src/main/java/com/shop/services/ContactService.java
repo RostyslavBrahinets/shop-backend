@@ -1,6 +1,5 @@
 package com.shop.services;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Contact;
 import com.shop.repositories.ContactRepository;
 import com.shop.validators.ContactValidator;
@@ -30,45 +29,37 @@ public class ContactService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Contact> getContacts() {
-        return contactRepository.getContacts();
+    public List<Contact> findAll() {
+        return contactRepository.findAll();
     }
 
-    public Contact addContact(Contact contact, long personId) {
+    public Contact findById(long id) {
+        contactValidator.validate(id);
+        Optional<Contact> contact = contactRepository.findById(id);
+        return contact.orElseGet(Contact::new);
+    }
+
+    public Contact findByPerson(long personId) {
+        personValidator.validate(personId);
+        Optional<Contact> contact = contactRepository.findByPerson(personId);
+        return contact.orElseGet(Contact::new);
+    }
+
+    public Contact save(Contact contact, long personId) {
         contactValidator.validate(contact);
         contact.setPassword(passwordEncoder.encode(contact.getPassword()));
-        contactRepository.addContact(contact, personId);
+        contactRepository.save(contact, personId);
         return contact;
     }
 
-    public void deleteContact(long id) {
-        contactValidator.validate(id);
-        contactRepository.deleteContact(id);
-    }
-
-    public Contact getContact(long id) {
-        contactValidator.validate(id);
-        Optional<Contact> contact = contactRepository.getContact(id);
-        if (contact.isEmpty()) {
-            throw new NotFoundException("Contact not found");
-        } else {
-            return contact.get();
-        }
-    }
-
-    public Contact getContactByPerson(long personId) {
-        personValidator.validate(personId);
-        Optional<Contact> contact = contactRepository.getContactByPerson(personId);
-        if (contact.isEmpty()) {
-            throw new NotFoundException("Contact not found");
-        } else {
-            return contact.get();
-        }
-    }
-
-    public Contact updateContact(long id, Contact updatedContact) {
+    public Contact update(long id, Contact contact) {
         personValidator.validate(id);
-        contactRepository.updateContact(id, updatedContact);
-        return updatedContact;
+        contactRepository.update(id, contact);
+        return contact;
+    }
+
+    public void delete(long id) {
+        contactValidator.validate(id);
+        contactRepository.delete(id);
     }
 }
