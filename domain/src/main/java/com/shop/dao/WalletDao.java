@@ -1,6 +1,5 @@
 package com.shop.dao;
 
-import com.shop.db.DatabaseTemplate;
 import com.shop.models.Wallet;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,57 +11,65 @@ import java.util.Optional;
 
 @Component
 public class WalletDao {
-    private final NamedParameterJdbcTemplate jdbcTemplate = DatabaseTemplate.getJdbcTemplate();
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public List<Wallet> getWallets() {
+    public WalletDao(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<Wallet> findAll() {
         return jdbcTemplate.query(
             "SELECT * FROM wallet",
             new BeanPropertyRowMapper<>(Wallet.class)
         );
     }
 
-    public void addWallet(Wallet wallet, long personId) {
+    public void save(
+        String number,
+        double amountOfMoney,
+        long personId
+    ) {
         jdbcTemplate.update(
             "INSERT INTO wallet (number, amount_of_money, person_id)"
                 + " VALUES (:number, :amount_of_money, :person_id)",
-            Map.of(
-                "number", wallet.getNumber(),
-                "amount_of_money", wallet.getAmountOfMoney(),
-                "person_id", personId
+            Map.ofEntries(
+                Map.entry("number", number),
+                Map.entry("amount_of_money", amountOfMoney),
+                Map.entry("person_id", personId)
             )
         );
     }
 
-    public void updateWallet(long id, Wallet updatedWallet) {
+    public void update(long id, double amountOfMoney) {
         jdbcTemplate.update(
             "UPDATE wallet SET amount_of_money=:amount_of_money WHERE id=:id",
-            Map.of(
-                "amount_of_money", updatedWallet.getAmountOfMoney(),
-                "id", id
+            Map.ofEntries(
+                Map.entry("amount_of_money", amountOfMoney),
+                Map.entry("id", id)
             )
         );
     }
 
-    public void deleteWallet(long id) {
+    public void delete(long id) {
         jdbcTemplate.update(
             "DELETE FROM wallet WHERE id=:id",
-            Map.of("id", id)
+            Map.ofEntries(Map.entry("id", id))
         );
     }
 
-    public Optional<Wallet> getWallet(long id) {
+    public Optional<Wallet> findById(long id) {
         return jdbcTemplate.query(
                 "SELECT * FROM wallet WHERE id=:id",
-                Map.of("id", id),
+                Map.ofEntries(Map.entry("id", id)),
                 new BeanPropertyRowMapper<>(Wallet.class)
             )
             .stream().findAny();
     }
 
-    public Optional<Wallet> getWalletByPerson(long personId) {
+    public Optional<Wallet> findByPerson(long personId) {
         return jdbcTemplate.query(
                 "SELECT * FROM wallet WHERE person_id=:person_id",
-                Map.of("person_id", personId),
+                Map.ofEntries(Map.entry("person_id", personId)),
                 new BeanPropertyRowMapper<>(Wallet.class)
             )
             .stream().findAny();
