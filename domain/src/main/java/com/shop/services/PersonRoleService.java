@@ -2,6 +2,7 @@ package com.shop.services;
 
 import com.shop.models.Role;
 import com.shop.repositories.PersonRoleRepository;
+import com.shop.repositories.RoleRepository;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.RoleValidator;
 import org.springframework.stereotype.Service;
@@ -12,18 +13,15 @@ import java.util.Optional;
 public class PersonRoleService {
     private final PersonRoleRepository personRoleRepository;
     private final PersonValidator personValidator;
-    private final RoleService roleService;
     private final RoleValidator roleValidator;
 
     public PersonRoleService(
         PersonRoleRepository personRoleRepository,
         PersonValidator personValidator,
-        RoleService roleService,
         RoleValidator roleValidator
     ) {
         this.personRoleRepository = personRoleRepository;
         this.personValidator = personValidator;
-        this.roleService = roleService;
         this.roleValidator = roleValidator;
     }
 
@@ -39,9 +37,9 @@ public class PersonRoleService {
         personRoleRepository.saveRoleForPerson(personId, roleId);
     }
 
-    public void updateRoleForPerson(long personId, String name) {
+    public void updateRoleForPerson(long personId, long roleId) {
         personValidator.validate(personId);
-        Role newRole = roleService.getRoleByName(name);
-        personRoleRepository.updateRoleForPerson(personId, newRole.getId());
+        roleValidator.validate(roleId);
+        personRoleRepository.updateRoleForPerson(personId, roleId);
     }
 }

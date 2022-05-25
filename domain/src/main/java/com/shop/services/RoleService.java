@@ -1,6 +1,5 @@
 package com.shop.services;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Role;
 import com.shop.repositories.RoleRepository;
 import org.springframework.stereotype.Service;
@@ -15,12 +14,8 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
-    public Role getRoleByName(String name) {
+    public Role findByName(String name) {
         Optional<Role> role = roleRepository.findByName(name);
-        if (role.isEmpty()) {
-            throw new NotFoundException("Role not found");
-        } else {
-            return role.get();
-        }
+        return role.orElseGet(Role::new);
     }
 }

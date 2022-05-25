@@ -17,12 +17,12 @@ import java.util.List;
 @Service
 public class ProductsBasketsService {
     private final ProductsBasketsRepository productsBasketsRepository;
-    private final ProductValidator productValidator;
-    private final BasketValidator basketValidator;
-    private final PersonValidator personValidator;
     private final BasketService basketService;
     private final ProductService productService;
     private final WalletService walletService;
+    private final ProductValidator productValidator;
+    private final BasketValidator basketValidator;
+    private final PersonValidator personValidator;
     private final StripePayment stripePayment;
 
     public ProductsBasketsService(

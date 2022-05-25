@@ -47,13 +47,15 @@ public class ContactService {
 
     public Contact save(Contact contact, long personId) {
         contactValidator.validate(contact);
+        personValidator.validate(personId);
         contact.setPassword(passwordEncoder.encode(contact.getPassword()));
         contactRepository.save(contact, personId);
         return contact;
     }
 
     public Contact update(long id, Contact contact) {
-        personValidator.validate(id);
+        contactValidator.validate(id);
+        contactValidator.validate(contact);
         contactRepository.update(id, contact);
         return contact;
     }

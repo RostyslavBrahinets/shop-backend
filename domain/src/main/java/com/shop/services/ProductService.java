@@ -45,24 +45,14 @@ public class ProductService {
         return product;
     }
 
-    public void delete(long id) {
-        productValidator.validate(id);
-        productRepository.delete(id);
-    }
-
     public void delete(String barcode) {
         productValidator.validate(barcode);
         productRepository.delete(barcode);
     }
 
-    public byte[] findByIdImage(long id) {
+    public void saveImageForProduct(byte[] image, long id) {
         productValidator.validate(id);
-        return productRepository.findByIdImage(id);
-    }
-
-    public void saveImage(byte[] image, long id) {
-        productValidator.validate(id);
-        productRepository.saveImage(image, id);
+        productRepository.saveImageForProduct(image, id);
     }
 
     public List<Product> findRandomProducts(int count) {

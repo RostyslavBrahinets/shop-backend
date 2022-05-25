@@ -43,6 +43,7 @@ public class WalletService {
 
     public Wallet save(Wallet wallet, long personId) {
         walletValidator.validate(wallet);
+        personValidator.validate(personId);
         walletRepository.save(wallet, personId);
         return wallet;
     }
