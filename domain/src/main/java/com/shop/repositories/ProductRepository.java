@@ -38,10 +38,6 @@ public class ProductRepository {
         );
     }
 
-    public void delete(long id) {
-        productDao.delete(id);
-    }
-
     public void delete(String barcode) {
         productDao.delete(barcode);
     }

@@ -31,10 +31,6 @@ public class CategoryRepository {
         categoryDao.save(category.getName());
     }
 
-    public void delete(long id) {
-        categoryDao.delete(id);
-    }
-
     public void delete(String name) {
         categoryDao.delete(name);
     }
