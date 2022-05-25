@@ -15,35 +15,46 @@ public class ProductRepository {
         this.productDao = productDao;
     }
 
-    public List<Product> getProducts() {
-        return productDao.getProducts();
+    public List<Product> findAll() {
+        return productDao.findAll();
     }
 
-    public void addProduct(Product product) {
-        productDao.addProduct(product);
+    public Optional<Product> findById(long id) {
+        return productDao.findById(id);
     }
 
-    public void deleteProduct(long id) {
-        productDao.deleteProduct(id);
+    public Optional<Product> findByBarcode(String barcode) {
+        return productDao.findByBarcode(barcode);
     }
 
-    public Optional<Product> getProduct(long id) {
-        return productDao.getProduct(id);
+    public void save(Product product) {
+        productDao.save(
+            product.getName(),
+            product.getDescribe(),
+            product.getPrice(),
+            product.getBarcode(),
+            product.isInStock(),
+            product.getImage()
+        );
     }
 
-    public Optional<Product> getProduct(String barcode) {
-        return productDao.getProduct(barcode);
+    public void delete(long id) {
+        productDao.delete(id);
     }
 
-    public void deleteProduct(String barcode) {
-        productDao.deleteProduct(barcode);
+    public void delete(String barcode) {
+        productDao.delete(barcode);
     }
 
-    public byte[] getImage(long id) {
-        return productDao.getImage(id);
+    public byte[] findByIdImage(long id) {
+        return productDao.findByIdImage(id);
     }
 
-    public void addImage(byte[] image, long id) {
-        productDao.addImage(image, id);
+    public void saveImage(byte[] image, long id) {
+        productDao.saveImage(image, id);
+    }
+
+    public int count() {
+        return productDao.findAll().size();
     }
 }
