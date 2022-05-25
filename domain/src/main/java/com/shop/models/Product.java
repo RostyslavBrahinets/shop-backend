@@ -29,8 +29,7 @@ public class Product implements Serializable {
         String describe,
         double price,
         String barcode,
-        boolean inStock,
-        byte[] image
+        boolean inStock
     ) {
         this.id = id;
         this.name = name;
@@ -38,7 +37,34 @@ public class Product implements Serializable {
         this.price = price;
         this.barcode = barcode;
         this.inStock = inStock;
-        this.image = image;
+    }
+
+    public static Product of(
+        String name,
+        String describe,
+        double price,
+        String barcode,
+        boolean inStock
+    ) {
+        return new Product(
+            0,
+            name,
+            describe,
+            price,
+            barcode,
+            inStock
+        );
+    }
+
+    public Product withId(long id) {
+        return new Product(
+            id,
+            this.name,
+            this.describe,
+            this.price,
+            this.barcode,
+            this.inStock
+        );
     }
 
     public long getId() {
