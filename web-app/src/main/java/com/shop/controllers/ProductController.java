@@ -26,34 +26,34 @@ public class ProductController {
 
     @GetMapping
     public List<Product> findAllProducts() {
-        return productService.getProducts();
+        return productService.findAll();
     }
 
     @GetMapping("/{id}")
     public Product findByIdProduct(@PathVariable long id) {
-        return productService.getProduct(id);
+        return productService.findById(id);
     }
 
     @PostMapping
     public Product savePerson(@RequestBody Product product) throws IOException {
         if (product.getImage().length > 0) {
-            return productService.addProduct(product);
+            return productService.save(product);
         }
 
-        product = productService.addProduct(product);
-        Product newProduct = productService.getProduct(product.getBarcode());
+        product = productService.save(product);
+        Product newProduct = productService.findByBarcode(product.getBarcode());
         String imagePath = Objects.requireNonNull(getClass().getClassLoader().getResource(
             "static/images/empty.jpg"
         )).getFile();
         byte[] byteImage = ImageUtility.imageToBytes(new File(imagePath));
-        productService.addImage(byteImage, newProduct.getId());
+        productService.saveImage(byteImage, newProduct.getId());
         newProduct.setImage(byteImage);
         return newProduct;
     }
 
     @PostMapping("/{barcode}")
     public String deleteProduct(@PathVariable String barcode) {
-        productService.deleteProduct(barcode);
+        productService.delete(barcode);
         return "Product Successfully Deleted";
     }
 
@@ -62,7 +62,7 @@ public class ProductController {
         @PathVariable long id,
         HttpServletResponse response
     ) throws IOException {
-        Product product = productService.getProduct(id);
+        Product product = productService.findById(id);
         InputStream is = new ByteArrayInputStream(product.getImage());
         IOUtils.copy(is, response.getOutputStream());
     }

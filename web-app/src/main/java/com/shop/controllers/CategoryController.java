@@ -19,12 +19,12 @@ public class CategoryController {
 
     @GetMapping
     public List<Category> findAllCategories() {
-        return categoryService.getCategories();
+        return categoryService.findAll();
     }
 
     @GetMapping("/{id}")
     public Category findByIdCategory(@PathVariable long id) {
-        return categoryService.getCategory(id);
+        return categoryService.findById(id);
     }
 
     @PostMapping
@@ -34,7 +34,7 @@ public class CategoryController {
 
     @PostMapping("/{name}")
     public String deleteCategory(@PathVariable String name) {
-        categoryService.deleteCategory(name);
+        categoryService.delete(name);
         return "Category Successfully Deleted";
     }
 }

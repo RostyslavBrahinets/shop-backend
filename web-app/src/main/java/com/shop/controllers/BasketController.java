@@ -29,7 +29,7 @@ public class BasketController {
     }
 
     @PostMapping
-    public Basket saveWallet(
+    public Basket saveBasket(
         @RequestBody Basket basket,
         @RequestBody int personId
     ) {

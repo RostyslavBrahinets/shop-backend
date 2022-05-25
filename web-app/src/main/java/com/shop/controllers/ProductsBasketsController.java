@@ -48,9 +48,9 @@ public class ProductsBasketsController {
 
     @GetMapping
     public List<Product> findAllProductsInBasket(@AuthenticationPrincipal UserDetails userDetail) {
-        Person person = personService.getPerson(userDetail.getUsername());
+        Person person = personService.findByEmail(userDetail.getUsername());
         Basket basket = basketService.findByPerson(person.getId());
-        return productsBasketsService.getProductsFromBasket(basket.getId());
+        return productsBasketsService.findAllProductsInBasket(basket.getId());
     }
 
     @PostMapping("/{id}")
@@ -59,10 +59,10 @@ public class ProductsBasketsController {
         @PathVariable long id,
         HttpServletResponse response
     ) throws IOException {
-        Person person = personService.getPerson(userDetail.getUsername());
+        Person person = personService.findByEmail(userDetail.getUsername());
         Basket basket = basketService.findByPerson(person.getId());
         response.sendRedirect("/basket");
-        return productsBasketsService.addProductToBasket(id, basket.getId());
+        return productsBasketsService.saveProductToBasket(id, basket.getId());
     }
 
     @PostMapping("/{id}/delete")
@@ -71,7 +71,7 @@ public class ProductsBasketsController {
         @PathVariable long id,
         HttpServletResponse response
     ) throws IOException {
-        Person person = personService.getPerson(userDetail.getUsername());
+        Person person = personService.findByEmail(userDetail.getUsername());
         Basket basket = basketService.findByPerson(person.getId());
         response.sendRedirect("/basket");
         productsBasketsService.deleteProductFromBasket(id, basket.getId());
@@ -82,11 +82,11 @@ public class ProductsBasketsController {
         @AuthenticationPrincipal UserDetails userDetail,
         HttpServletResponse response
     ) throws StripeException, IOException {
-        Person person = personService.getPerson(userDetail.getUsername());
+        Person person = personService.findByEmail(userDetail.getUsername());
         Basket basket = basketService.findByPerson(person.getId());
 
         List<Product> productsInBasket = productsBasketsService
-            .getProductsFromBasket(basket.getId());
+            .findAllProductsInBasket(basket.getId());
 
         report.setProducts(productsInBasket);
         report.setTotalCost(basket.getTotalCost());
@@ -101,8 +101,8 @@ public class ProductsBasketsController {
         @AuthenticationPrincipal UserDetails userDetail,
         HttpServletResponse response
     ) throws IOException {
-        Person person = personService.getPerson(userDetail.getUsername());
-        Wallet wallet = walletService.getWalletByPerson(person.getId());
+        Person person = personService.findByEmail(userDetail.getUsername());
+        Wallet wallet = walletService.findByPerson(person.getId());
         report.setAmountOfMoney(wallet.getAmountOfMoney());
 
         response.setContentType("application/pdf");

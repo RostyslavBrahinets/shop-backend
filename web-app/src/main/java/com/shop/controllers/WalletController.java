@@ -19,25 +19,28 @@ public class WalletController {
     private final WalletService walletService;
     private final StripePayment stripePayment;
 
-    public WalletController(WalletService walletService, StripePayment stripePayment) {
+    public WalletController(
+        WalletService walletService,
+        StripePayment stripePayment
+    ) {
         this.walletService = walletService;
         this.stripePayment = stripePayment;
     }
 
     @GetMapping
     public List<Wallet> findAllWallets() {
-        return walletService.getWallets();
+        return walletService.findAll();
     }
 
     @GetMapping("/{id}")
     public Wallet findByIdWallet(@PathVariable long id) throws StripeException {
-        Wallet wallet = walletService.getWallet(id);
+        Wallet wallet = walletService.findById(id);
         Optional<Customer> customer = stripePayment
-            .findByIdCustomer(walletService.getWallet(id).getNumber());
+            .findByIdCustomer(walletService.findById(id).getNumber());
 
         customer.ifPresent(value -> {
             wallet.setAmountOfMoney(value.getBalance() / -100.0);
-            walletService.updateWallet(wallet.getId(), wallet);
+            walletService.update(wallet.getId(), wallet);
         });
 
         return wallet;
@@ -48,12 +51,12 @@ public class WalletController {
         @RequestBody Wallet wallet,
         @RequestBody int personId
     ) {
-        return walletService.addWallet(wallet, personId);
+        return walletService.save(wallet, personId);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteWallet(@PathVariable int id) {
-        walletService.deleteWallet(id);
+        walletService.delete(id);
     }
 }

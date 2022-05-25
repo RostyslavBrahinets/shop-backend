@@ -21,19 +21,19 @@ public class PersonController {
 
     @GetMapping
     public List<Person> findAllPeople() {
-        return personService.getPeople();
+        return personService.findAll();
     }
 
     @GetMapping("/{id}")
     public Person findByIdPerson(@PathVariable int id) {
-        return personService.getPerson(id);
+        return personService.findById(id);
     }
 
     @PostMapping
     public Person savePerson(
         @RequestBody Person person
     ) {
-        return personService.addPerson(person);
+        return personService.save(person);
     }
 
     @PostMapping("/{id}")
@@ -44,12 +44,12 @@ public class PersonController {
         Person updatedPerson = new Person();
         updatedPerson.setFirstName(person.getFirstName());
         updatedPerson.setLastName(person.getLastName());
-        return personService.updatePerson(id, updatedPerson);
+        return personService.update(id, updatedPerson);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePerson(@PathVariable int id) {
-        personService.deletePerson(id);
+        personService.delete(id);
     }
 }

@@ -19,14 +19,14 @@ public class ProductCategoryController {
 
     @GetMapping("/{id}")
     public List<Product> findAllProductsInCategory(@PathVariable long id) {
-        return productCategoryService.getProductsInCategory(id);
+        return productCategoryService.findAllProductsInCategory(id);
     }
 
     @PostMapping
     public void saveProductsToCategory(
         @RequestBody ProductCategoryDto productCategoryDto
     ) {
-        productCategoryService.addProductToCategory(
+        productCategoryService.saveProductToCategory(
             productCategoryDto.getBarcode(),
             productCategoryDto.getCategory()
         );

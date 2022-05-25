@@ -21,7 +21,7 @@ public class MainController {
 
     @GetMapping
     public List<Product> index() {
-        return productService.getRandomProducts(10);
+        return productService.findRandomProducts(10);
     }
 }
 

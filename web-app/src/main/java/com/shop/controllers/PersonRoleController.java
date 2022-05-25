@@ -20,7 +20,7 @@ public class PersonRoleController {
     public Role findRoleForPerson(
         @PathVariable long id
     ) {
-        return personRoleService.getRole(id);
+        return personRoleService.findRoleByPerson(id);
     }
 
 

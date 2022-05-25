@@ -21,12 +21,12 @@ public class ContactController {
 
     @GetMapping
     public List<Contact> findAllContact() {
-        return contactService.getContacts();
+        return contactService.findAll();
     }
 
     @GetMapping("/{id}")
     public Contact findByIdContact(@PathVariable int id) {
-        return contactService.getContact(id);
+        return contactService.findById(id);
     }
 
     @PostMapping
@@ -34,7 +34,7 @@ public class ContactController {
         @RequestBody Contact contact,
         @RequestBody int personId
     ) {
-        return contactService.addContact(contact, personId);
+        return contactService.save(contact, personId);
     }
 
     @PostMapping("/{id}")
@@ -42,17 +42,17 @@ public class ContactController {
         @PathVariable long id,
         @RequestBody ContactDto contact
     ) {
-        Contact oldContact = contactService.getContactByPerson(id);
+        Contact oldContact = contactService.findByPerson(id);
         Contact updatedContact = new Contact();
         updatedContact.setPhone(contact.getPhone());
         updatedContact.setEmail(oldContact.getEmail());
         updatedContact.setPassword(oldContact.getPassword());
-        return contactService.updateContact(id, updatedContact);
+        return contactService.update(id, updatedContact);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteContact(@PathVariable int id) {
-        contactService.deleteContact(id);
+        contactService.delete(id);
     }
 }
