@@ -15,27 +15,38 @@ public class PersonRepository {
         this.personDao = personDao;
     }
 
-    public List<Person> getPeople() {
-        return personDao.getPeople();
+    public List<Person> findAll() {
+        return personDao.findAll();
     }
 
-    public void addPerson(Person person) {
-        personDao.addPerson(person);
+    public Optional<Person> findById(long id) {
+        return personDao.findById(id);
     }
 
-    public void deletePerson(long id) {
-        personDao.deletePerson(id);
+    public Optional<Person> findByEmail(String email) {
+        return personDao.findByEmail(email);
     }
 
-    public Optional<Person> getPerson(long id) {
-        return personDao.getPerson(id);
+    public void save(Person person) {
+        personDao.save(
+            person.getFirstName(),
+            person.getLastName()
+        );
     }
 
-    public Optional<Person> getPerson(String email) {
-        return personDao.getPerson(email);
+    public void update(long id, Person person) {
+        personDao.update(
+            id,
+            person.getFirstName(),
+            person.getLastName()
+        );
     }
 
-    public void updatePerson(long id, Person updatedPerson) {
-        personDao.updatePerson(id, updatedPerson);
+    public void delete(long id) {
+        personDao.delete(id);
+    }
+
+    public int count() {
+        return personDao.findAll().size();
     }
 }
