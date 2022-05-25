@@ -39,9 +39,6 @@ public class BasketRepositoryTest {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
-    private BasketDao basketDao;
-
-    @Autowired
     private BasketRepository basketRepository;
 
     @BeforeEach
@@ -88,9 +85,9 @@ public class BasketRepositoryTest {
     }
 
     @Test
-    @DisplayName("Save basket and check note data")
+    @DisplayName("Save basket and check basket data")
     @DirtiesContext
-    void save_note_and_check_note_data() {
+    void save_basket_and_check_basket_data() {
         var basketToSave = Basket.of(0);
         basketRepository.save(basketToSave, 1);
         var savedBasket = basketRepository.findById(basketRepository.count());
@@ -116,13 +113,14 @@ public class BasketRepositoryTest {
     @Test
     @DisplayName("Basket was not found")
     void basket_was_not_found() {
-        Optional<Basket> noteEntity = basketRepository.findById(1);
+        Optional<Basket> basket = basketRepository.findById(1);
 
-        assertThat(noteEntity).isEmpty();
+        assertThat(basket).isEmpty();
     }
 
     @Test
     @DisplayName("Basket was found")
+    @DirtiesContext
     void basket_was_found() {
         basketRepository.save(Basket.of(0), 1);
 
