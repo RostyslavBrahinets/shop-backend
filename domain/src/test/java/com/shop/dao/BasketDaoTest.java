@@ -1,4 +1,4 @@
-package com.shop.dao.basket;
+package com.shop.dao;
 
 import com.shop.configs.DatabaseConfig;
 import com.shop.dao.BasketDao;
