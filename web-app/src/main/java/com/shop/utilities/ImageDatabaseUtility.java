@@ -16,7 +16,7 @@ public class ImageDatabaseUtility {
             if (product.isPresent()) {
                 if (product.get().getImage() == null) {
                     byte[] byteImage = ImageUtility.imageToBytes(new File(images.get(i)));
-                    productDao.saveImage(byteImage, i + 1);
+                    productDao.saveImageForProduct(byteImage, i + 1);
                 }
             }
         }

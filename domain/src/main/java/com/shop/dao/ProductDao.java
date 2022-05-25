@@ -78,15 +78,7 @@ public class ProductDao {
         );
     }
 
-    public byte[] findByIdImage(long id) {
-        return jdbcTemplate.queryForObject(
-            "SELECT image FROM product WHERE id=:id",
-            Map.ofEntries(Map.entry("id", id)),
-            (rs, rowNum) -> rs.getBytes(1)
-        );
-    }
-
-    public void saveImage(byte[] image, long id) {
+    public void saveImageForProduct(byte[] image, long id) {
         jdbcTemplate.update(
             "UPDATE product SET image=:image WHERE id=:id",
             Map.ofEntries(
