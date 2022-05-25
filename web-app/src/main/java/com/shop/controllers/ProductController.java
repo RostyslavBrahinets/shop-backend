@@ -46,7 +46,7 @@ public class ProductController {
             "static/images/empty.jpg"
         )).getFile();
         byte[] byteImage = ImageUtility.imageToBytes(new File(imagePath));
-        productService.saveImage(byteImage, newProduct.getId());
+        productService.saveImageForProduct(byteImage, newProduct.getId());
         newProduct.setImage(byteImage);
         return newProduct;
     }

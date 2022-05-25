@@ -3,6 +3,7 @@ package com.shop.controllers;
 import com.shop.dto.RoleDto;
 import com.shop.models.Role;
 import com.shop.services.PersonRoleService;
+import com.shop.services.RoleService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +12,14 @@ import org.springframework.web.bind.annotation.*;
 public class PersonRoleController {
     public static final String PERSON_ROLE_URL = "/web-api/person-role";
     private final PersonRoleService personRoleService;
+    private final RoleService roleService;
 
-    public PersonRoleController(PersonRoleService personRoleService) {
+    public PersonRoleController(
+        PersonRoleService personRoleService,
+        RoleService roleService
+    ) {
         this.personRoleService = personRoleService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/{id}")
@@ -26,9 +32,10 @@ public class PersonRoleController {
     @PostMapping("/{id}")
     public String updateRoleForPerson(
         @PathVariable long id,
-        @RequestBody RoleDto role
+        @RequestBody RoleDto roleDto
     ) {
-        personRoleService.updateRoleForPerson(id, role.getRole());
+        Role role = roleService.findByName(roleDto.getRole());
+        personRoleService.updateRoleForPerson(id, role.getId());
         return "Role Successfully Changed";
     }
 }
