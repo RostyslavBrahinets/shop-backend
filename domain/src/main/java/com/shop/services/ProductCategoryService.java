@@ -1,6 +1,5 @@
 package com.shop.services;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Category;
 import com.shop.models.Product;
 import com.shop.repositories.CategoryRepository;
@@ -35,32 +34,28 @@ public class ProductCategoryService {
         this.categoryValidator = categoryValidator;
     }
 
-    public Category getCategoryForProduct(long productId) {
-        Optional<Category> category = productCategoryRepository.getCategoryForProduct(productId);
-
-        if (category.isEmpty()) {
-            throw new NotFoundException("Category Not Found");
-        } else {
-            return category.get();
-        }
+    public List<Product> findAllProductsInCategory(long categoryId) {
+        categoryValidator.validate(categoryId);
+        return productCategoryRepository.findAllProductsInCategory(categoryId);
     }
 
-    public void addProductToCategory(String barcode, String category) {
+    public Category findCategoryForProduct(long productId) {
+        productValidator.validate(productId);
+        Optional<Category> category = productCategoryRepository.findCategoryForProduct(productId);
+        return category.orElseGet(Category::new);
+    }
+
+    public void saveProductToCategory(String barcode, String category) {
         productValidator.validate(barcode);
         categoryValidator.validate(category);
-        Optional<Product> productOptional = productRepository.getProduct(barcode);
-        Optional<Category> categoryOptional = categoryRepository.getCategory(category);
+        Optional<Product> productOptional = productRepository.findByBarcode(barcode);
+        Optional<Category> categoryOptional = categoryRepository.findByName(category);
 
         if (productOptional.isPresent() && categoryOptional.isPresent()) {
-            productCategoryRepository.addProductToCategory(
+            productCategoryRepository.saveProductToCategory(
                 productOptional.get().getId(),
                 categoryOptional.get().getId()
             );
         }
-    }
-
-    public List<Product> getProductsInCategory(long categoryId) {
-        categoryValidator.validate(categoryId);
-        return productCategoryRepository.getProductsInCategory(categoryId);
     }
 }
