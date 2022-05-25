@@ -1,4 +1,4 @@
-package com.shop.repositories.basket;
+package com.shop.repositories.contextconfiguration;
 
 import com.shop.dao.BasketDao;
 import com.shop.models.Basket;

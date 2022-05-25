@@ -1,10 +1,9 @@
-package com.shop.repositories.basket;
+package com.shop.repositories;
 
 import com.shop.configs.DatabaseConfig;
 import com.shop.dao.BasketDao;
 import com.shop.dao.PersonDao;
 import com.shop.models.Basket;
-import com.shop.repositories.BasketRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
