@@ -36,7 +36,7 @@ public class ProductViewController {
     }
 
     @GetMapping("/{id}")
-    public String get(
+    public String find(
         @PathVariable long id,
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
@@ -50,7 +50,7 @@ public class ProductViewController {
 
         model.addAttribute("id", id);
 
-        Product product = productService.getProduct(id);
+        Product product = productService.findById(id);
         model.addAttribute("inStock", product.isInStock());
 
         return "products/find";

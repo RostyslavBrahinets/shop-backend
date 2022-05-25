@@ -30,7 +30,7 @@ public class BasketViewController {
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ) {
-        Person person = personService.getPerson(userDetails.getUsername());
+        Person person = personService.findByEmail(userDetails.getUsername());
         Basket basket = basketService.findByPerson(person.getId());
         model.addAttribute("id", basket.getId());
         return "basket/index";

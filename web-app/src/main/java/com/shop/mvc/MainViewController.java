@@ -23,7 +23,7 @@ public class MainViewController {
         Model model
     ) {
         if (userDetails != null) {
-            Person person = personService.getPerson(userDetails.getUsername());
+            Person person = personService.findByEmail(userDetails.getUsername());
             GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
 
             model.addAttribute("id", person.getId());

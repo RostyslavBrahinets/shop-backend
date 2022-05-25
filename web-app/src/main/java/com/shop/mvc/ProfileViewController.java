@@ -23,18 +23,18 @@ public class ProfileViewController {
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ) {
-        Person person = personService.getPerson(userDetails.getUsername());
+        Person person = personService.findByEmail(userDetails.getUsername());
         model.addAttribute("id", person.getId());
         return "profile/index";
     }
 
-    @GetMapping("/edit")
-    public String edit(
+    @GetMapping("/update")
+    public String update(
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ) {
-        Person person = personService.getPerson(userDetails.getUsername());
+        Person person = personService.findByEmail(userDetails.getUsername());
         model.addAttribute("id", person.getId());
-        return "profile/edit";
+        return "profile/update";
     }
 }

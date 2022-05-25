@@ -30,8 +30,8 @@ public class WalletViewController {
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ) {
-        Person person = personService.getPerson(userDetails.getUsername());
-        Wallet wallet = walletService.getWalletByPerson(person.getId());
+        Person person = personService.findByEmail(userDetails.getUsername());
+        Wallet wallet = walletService.findByPerson(person.getId());
         model.addAttribute("id", wallet.getId());
         return "wallet/index";
     }

@@ -34,7 +34,7 @@ public class AdminViewController {
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ) {
-        Person person = personService.getPerson(userDetails.getUsername());
+        Person person = personService.findByEmail(userDetails.getUsername());
         model.addAttribute("id", person.getId());
         return "admin/index";
     }
@@ -58,10 +58,10 @@ public class AdminViewController {
     }
 
     @GetMapping("/products/add")
-    public String addProduct(Model model) {
+    public String saveProduct(Model model) {
         List<String> categories = new ArrayList<>();
 
-        for (Category category : categoryService.getCategories()) {
+        for (Category category : categoryService.findAll()) {
             categories.add(category.getName());
         }
 
@@ -75,7 +75,7 @@ public class AdminViewController {
     }
 
     @GetMapping("/categories/add")
-    public String addCategory() {
+    public String saveCategory() {
         return "categories/add";
     }
 

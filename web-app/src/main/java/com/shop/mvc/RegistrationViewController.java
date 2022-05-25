@@ -65,12 +65,12 @@ public class RegistrationViewController {
         @RequestParam("confirm-password") String confirmPassword
     ) throws StripeException {
         if (isValidData(firstName, lastName, email, phone, password, confirmPassword)) {
-            addPerson(firstName, lastName);
-            long personId = getPersonId();
-            addContactForPerson(email, phone, password, personId);
-            addRoleForPerson(personId);
-            addBasketForPerson(personId);
-            addWalletForPerson(personId);
+            savePerson(firstName, lastName);
+            long personId = findPersonId();
+            saveContactForPerson(email, phone, password, personId);
+            saveRoleForPerson(personId);
+            saveBasketForPerson(personId);
+            saveWalletForPerson(personId);
         }
         return "redirect:/login";
     }
@@ -87,36 +87,36 @@ public class RegistrationViewController {
             throw new ValidationException("Password don't equals confirm password");
         }
 
-        Person person = getPerson(firstName, lastName);
+        Person person = findPerson(firstName, lastName);
         personValidator.validate(person);
-        Contact contact = getContact(email, phone, password);
+        Contact contact = findContact(email, phone, password);
         contactValidator.validate(contact);
         return true;
     }
 
-    private void addPerson(String firstName, String lastName) {
-        Person person = getPerson(firstName, lastName);
-        personService.addPerson(person);
+    private void savePerson(String firstName, String lastName) {
+        Person person = findPerson(firstName, lastName);
+        personService.save(person);
     }
 
-    private Person getPerson(String firstName, String lastName) {
+    private Person findPerson(String firstName, String lastName) {
         Person person = new Person();
         person.setFirstName(firstName);
         person.setLastName(lastName);
         return person;
     }
 
-    private long getPersonId() {
-        List<Person> people = personService.getPeople();
+    private long findPersonId() {
+        List<Person> people = personService.findAll();
         return people.get(people.size() - 1).getId();
     }
 
-    private void addContactForPerson(String email, String phone, String password, long personId) {
-        Contact contact = getContact(email, phone, password);
-        contactService.addContact(contact, personId);
+    private void saveContactForPerson(String email, String phone, String password, long personId) {
+        Contact contact = findContact(email, phone, password);
+        contactService.save(contact, personId);
     }
 
-    private Contact getContact(
+    private Contact findContact(
         String email,
         String phone,
         String password
@@ -128,24 +128,24 @@ public class RegistrationViewController {
         return contact;
     }
 
-    private void addRoleForPerson(long personId) {
-        personRoleService.addRoleForPerson(personId, 2);
+    private void saveRoleForPerson(long personId) {
+        personRoleService.saveRoleForPerson(personId, 2);
     }
 
-    private void addBasketForPerson(long personId) {
+    private void saveBasketForPerson(long personId) {
         Basket basket = new Basket();
         basket.setTotalCost(0);
         basketService.save(basket, personId);
     }
 
-    private void addWalletForPerson(long personId) throws StripeException {
+    private void saveWalletForPerson(long personId) throws StripeException {
         Optional<Customer> customer = stripePayment
-            .saveCustomer(personService.getPerson(personId));
+            .saveCustomer(personService.findById(personId));
         if (customer.isPresent()) {
             Wallet wallet = new Wallet();
             wallet.setNumber(customer.get().getId());
             wallet.setAmountOfMoney(customer.get().getBalance());
-            walletService.addWallet(wallet, personId);
+            walletService.save(wallet, personId);
         }
     }
 }

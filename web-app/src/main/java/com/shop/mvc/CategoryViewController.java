@@ -28,7 +28,7 @@ public class CategoryViewController {
     }
 
     @GetMapping("/{id}")
-    public String get(
+    public String find(
         @PathVariable long id,
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
