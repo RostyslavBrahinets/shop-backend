@@ -21,6 +21,14 @@ public class Role implements Serializable {
         this.name = name;
     }
 
+    public static Role of(String name) {
+        return new Role(0, name);
+    }
+
+    public Role withId(long id) {
+        return new Role(id, this.name);
+    }
+
     public long getId() {
         return id;
     }
