@@ -16,15 +16,15 @@ public class ProductCategoryRepository {
         this.productCategoryDao = productCategoryDao;
     }
 
-    public Optional<Category> getCategoryForProduct(long productId) {
-        return productCategoryDao.getCategoryForProduct(productId);
+    public List<Product> findAllProductsInCategory(long categoryId) {
+        return productCategoryDao.findAllProductsInCategory(categoryId);
     }
 
-    public void addProductToCategory(long productId, long categoryId) {
-        productCategoryDao.addProductToCategory(productId, categoryId);
+    public Optional<Category> findCategoryForProduct(long productId) {
+        return productCategoryDao.findCategoryForProduct(productId);
     }
 
-    public List<Product> getProductsInCategory(long categoryId) {
-        return productCategoryDao.getProductsInCategory(categoryId);
+    public void saveProductToCategory(long productId, long categoryId) {
+        productCategoryDao.saveProductToCategory(productId, categoryId);
     }
 }
