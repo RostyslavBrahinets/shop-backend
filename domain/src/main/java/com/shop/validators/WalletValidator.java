@@ -31,7 +31,7 @@ public class WalletValidator {
     public void validate(long id) {
         List<Long> ids = new ArrayList<>();
 
-        for (Wallet wallet : walletRepository.getWallets()) {
+        for (Wallet wallet : walletRepository.findAll()) {
             ids.add(wallet.getId());
         }
 

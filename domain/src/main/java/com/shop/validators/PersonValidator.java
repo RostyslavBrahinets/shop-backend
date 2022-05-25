@@ -31,7 +31,7 @@ public class PersonValidator {
     public void validate(long id) {
         List<Long> ids = new ArrayList<>();
 
-        for (Person person : personRepository.getPeople()) {
+        for (Person person : personRepository.findAll()) {
             ids.add(person.getId());
         }
 

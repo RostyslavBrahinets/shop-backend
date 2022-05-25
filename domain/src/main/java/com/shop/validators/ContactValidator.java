@@ -38,7 +38,7 @@ public class ContactValidator {
     public void validate(long id) {
         List<Long> ids = new ArrayList<>();
 
-        for (Contact contact : contactRepository.getContacts()) {
+        for (Contact contact : contactRepository.findAll()) {
             ids.add(contact.getId());
         }
 
@@ -66,7 +66,7 @@ public class ContactValidator {
 
     private boolean isEmailAlreadyInUse(String email) {
         List<String> emails = new ArrayList<>();
-        for (Contact contact : contactRepository.getContacts()) {
+        for (Contact contact : contactRepository.findAll()) {
             emails.add(contact.getEmail());
         }
         return emails.contains(email);
@@ -81,7 +81,7 @@ public class ContactValidator {
 
     private boolean isPhoneAlreadyInUse(String phone) {
         List<String> phones = new ArrayList<>();
-        for (Contact contact : contactRepository.getContacts()) {
+        for (Contact contact : contactRepository.findAll()) {
             phones.add(contact.getPhone());
         }
         return phones.contains(phone);

@@ -28,7 +28,7 @@ public class CategoryValidator {
     public void validate(long id) {
         List<Long> ids = new ArrayList<>();
 
-        for (Category category : categoryRepository.getCategories()) {
+        for (Category category : categoryRepository.findAll()) {
             ids.add(category.getId());
         }
 
@@ -40,7 +40,7 @@ public class CategoryValidator {
     public void validate(String name) {
         List<String> names = new ArrayList<>();
 
-        for (Category category : categoryRepository.getCategories()) {
+        for (Category category : categoryRepository.findAll()) {
             names.add(category.getName());
         }
 

@@ -37,7 +37,7 @@ public class ProductValidator {
     public void validate(long id) {
         List<Long> ids = new ArrayList<>();
 
-        for (Product product : productRepository.getProducts()) {
+        for (Product product : productRepository.findAll()) {
             ids.add(product.getId());
         }
 
