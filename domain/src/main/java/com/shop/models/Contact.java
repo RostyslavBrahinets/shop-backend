@@ -30,6 +30,18 @@ public class Contact implements Serializable {
         this.password = password;
     }
 
+    public static Contact of(
+        String email,
+        String phone,
+        String password
+    ) {
+        return new Contact(0, email, phone, password);
+    }
+
+    public Contact withId(long id) {
+        return new Contact(id, this.email, this.phone, this.password);
+    }
+
     public long getId() {
         return id;
     }
