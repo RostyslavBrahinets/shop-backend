@@ -1,4 +1,4 @@
-package com.shop.tables_schemas.basket;
+package com.shop.tables_schemas;
 
 import com.shop.configs.DatabaseConfig;
 import org.junit.jupiter.api.AfterEach;
