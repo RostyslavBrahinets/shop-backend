@@ -15,27 +15,35 @@ public class WalletRepository {
         this.walletDao = walletDao;
     }
 
-    public List<Wallet> getWallets() {
-        return walletDao.getWallets();
+    public List<Wallet> findAll() {
+        return walletDao.findAll();
     }
 
-    public void addWallet(Wallet wallet, long personId) {
-        walletDao.addWallet(wallet, personId);
+    public Optional<Wallet> findById(long id) {
+        return walletDao.findById(id);
     }
 
-    public void updateWallet(long id, Wallet wallet) {
-        walletDao.updateWallet(id, wallet);
+    public Optional<Wallet> findByPerson(long personId) {
+        return walletDao.findByPerson(personId);
     }
 
-    public void deleteWallet(long id) {
-        walletDao.deleteWallet(id);
+    public void save(Wallet wallet, long personId) {
+        walletDao.save(
+            wallet.getNumber(),
+            wallet.getAmountOfMoney(),
+            personId
+        );
     }
 
-    public Optional<Wallet> getWallet(long id) {
-        return walletDao.getWallet(id);
+    public void update(long id, Wallet wallet) {
+        walletDao.update(id, wallet.getAmountOfMoney());
     }
 
-    public Optional<Wallet> getWalletByPerson(long personId) {
-        return walletDao.getWalletByPerson(personId);
+    public void delete(long id) {
+        walletDao.delete(id);
+    }
+
+    public int count() {
+        return walletDao.findAll().size();
     }
 }
