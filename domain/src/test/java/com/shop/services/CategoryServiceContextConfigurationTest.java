@@ -51,6 +51,17 @@ public class CategoryServiceContextConfigurationTest {
     }
 
     @Test
+    @DisplayName("Get category by name")
+    void get_category_by_name() {
+        String name = "name";
+
+        categoryService.findByName(name);
+
+        verify(categoryValidator, atLeast(1)).validate(name);
+        verify(categoryRepository).findByName(name);
+    }
+
+    @Test
     @DisplayName("Save category")
     void save_category() {
         categoryService.save(category);
