@@ -24,6 +24,24 @@ public class WalletDao {
         );
     }
 
+    public Optional<Wallet> findById(long id) {
+        return jdbcTemplate.query(
+                "SELECT * FROM wallet WHERE id=:id",
+                Map.ofEntries(Map.entry("id", id)),
+                new BeanPropertyRowMapper<>(Wallet.class)
+            )
+            .stream().findAny();
+    }
+
+    public Optional<Wallet> findByPerson(long personId) {
+        return jdbcTemplate.query(
+                "SELECT * FROM wallet WHERE person_id=:person_id",
+                Map.ofEntries(Map.entry("person_id", personId)),
+                new BeanPropertyRowMapper<>(Wallet.class)
+            )
+            .stream().findAny();
+    }
+
     public void save(
         String number,
         double amountOfMoney,
@@ -55,23 +73,5 @@ public class WalletDao {
             "DELETE FROM wallet WHERE id=:id",
             Map.ofEntries(Map.entry("id", id))
         );
-    }
-
-    public Optional<Wallet> findById(long id) {
-        return jdbcTemplate.query(
-                "SELECT * FROM wallet WHERE id=:id",
-                Map.ofEntries(Map.entry("id", id)),
-                new BeanPropertyRowMapper<>(Wallet.class)
-            )
-            .stream().findAny();
-    }
-
-    public Optional<Wallet> findByPerson(long personId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM wallet WHERE person_id=:person_id",
-                Map.ofEntries(Map.entry("person_id", personId)),
-                new BeanPropertyRowMapper<>(Wallet.class)
-            )
-            .stream().findAny();
     }
 }

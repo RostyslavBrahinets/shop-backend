@@ -24,6 +24,24 @@ public class CategoryDao {
         );
     }
 
+    public Optional<Category> findById(long id) {
+        return jdbcTemplate.query(
+                "SELECT * FROM category WHERE id=:id",
+                Map.ofEntries(Map.entry("id", id)),
+                new BeanPropertyRowMapper<>(Category.class)
+            )
+            .stream().findAny();
+    }
+
+    public Optional<Category> findByName(String name) {
+        return jdbcTemplate.query(
+                "SELECT * FROM category WHERE name=:name",
+                Map.ofEntries(Map.entry("name", name)),
+                new BeanPropertyRowMapper<>(Category.class)
+            )
+            .stream().findAny();
+    }
+
     public void save(String name) {
         jdbcTemplate.update(
             "INSERT INTO category (name) VALUES (:name)",
@@ -43,23 +61,5 @@ public class CategoryDao {
             "DELETE FROM category WHERE name=:name",
             Map.ofEntries(Map.entry("name", name))
         );
-    }
-
-    public Optional<Category> findById(long id) {
-        return jdbcTemplate.query(
-                "SELECT * FROM category WHERE id=:id",
-                Map.ofEntries(Map.entry("id", id)),
-                new BeanPropertyRowMapper<>(Category.class)
-            )
-            .stream().findAny();
-    }
-
-    public Optional<Category> findByName(String name) {
-        return jdbcTemplate.query(
-                "SELECT * FROM category WHERE name=:name",
-                Map.ofEntries(Map.entry("name", name)),
-                new BeanPropertyRowMapper<>(Category.class)
-            )
-            .stream().findAny();
     }
 }

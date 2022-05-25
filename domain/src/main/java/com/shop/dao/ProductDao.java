@@ -24,6 +24,24 @@ public class ProductDao {
         );
     }
 
+    public Optional<Product> findById(long id) {
+        return jdbcTemplate.query(
+                "SELECT * FROM product WHERE id=:id",
+                Map.ofEntries(Map.entry("id", id)),
+                new BeanPropertyRowMapper<>(Product.class)
+            )
+            .stream().findAny();
+    }
+
+    public Optional<Product> findByBarcode(String barcode) {
+        return jdbcTemplate.query(
+                "SELECT * FROM product WHERE barcode=:barcode",
+                Map.ofEntries(Map.entry("barcode", barcode)),
+                new BeanPropertyRowMapper<>(Product.class)
+            )
+            .stream().findAny();
+    }
+
     public void save(
         String name,
         String describe,
@@ -60,25 +78,7 @@ public class ProductDao {
         );
     }
 
-    public Optional<Product> findById(long id) {
-        return jdbcTemplate.query(
-                "SELECT * FROM product WHERE id=:id",
-                Map.ofEntries(Map.entry("id", id)),
-                new BeanPropertyRowMapper<>(Product.class)
-            )
-            .stream().findAny();
-    }
-
-    public Optional<Product> findByBarcode(String barcode) {
-        return jdbcTemplate.query(
-                "SELECT * FROM product WHERE barcode=:barcode",
-                Map.ofEntries(Map.entry("barcode", barcode)),
-                new BeanPropertyRowMapper<>(Product.class)
-            )
-            .stream().findAny();
-    }
-
-    public byte[] getByIdImage(long id) {
+    public byte[] findByIdImage(long id) {
         return jdbcTemplate.queryForObject(
             "SELECT image FROM product WHERE id=:id",
             Map.ofEntries(Map.entry("id", id)),

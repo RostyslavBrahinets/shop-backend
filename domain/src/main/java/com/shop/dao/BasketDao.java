@@ -24,6 +24,24 @@ public class BasketDao {
         );
     }
 
+    public Optional<Basket> findById(long id) {
+        return jdbcTemplate.query(
+                "SELECT * FROM basket WHERE id=:id",
+                Map.ofEntries(Map.entry("id", id)),
+                new BeanPropertyRowMapper<>(Basket.class)
+            )
+            .stream().findAny();
+    }
+
+    public Optional<Basket> findByPerson(long personId) {
+        return jdbcTemplate.query(
+                "SELECT * FROM basket WHERE person_id=:person_id",
+                Map.ofEntries(Map.entry("person_id", personId)),
+                new BeanPropertyRowMapper<>(Basket.class)
+            )
+            .stream().findAny();
+    }
+
     public void save(double totalCost, long personId) {
         jdbcTemplate.update(
             "INSERT INTO basket (total_cost, person_id) VALUES (:total_cost, :person_id)",
@@ -49,23 +67,5 @@ public class BasketDao {
             "DELETE FROM basket WHERE id=:id",
             Map.ofEntries(Map.entry("id", id))
         );
-    }
-
-    public Optional<Basket> findById(long id) {
-        return jdbcTemplate.query(
-                "SELECT * FROM basket WHERE id=:id",
-                Map.ofEntries(Map.entry("id", id)),
-                new BeanPropertyRowMapper<>(Basket.class)
-            )
-            .stream().findAny();
-    }
-
-    public Optional<Basket> findByPerson(long personId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM basket WHERE person_id=:person_id",
-                Map.ofEntries(Map.entry("person_id", personId)),
-                new BeanPropertyRowMapper<>(Basket.class)
-            )
-            .stream().findAny();
     }
 }

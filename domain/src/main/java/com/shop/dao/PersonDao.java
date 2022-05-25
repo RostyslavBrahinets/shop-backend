@@ -24,6 +24,25 @@ public class PersonDao {
         );
     }
 
+    public Optional<Person> findById(long id) {
+        return jdbcTemplate.query(
+                "SELECT * FROM person WHERE id=:id",
+                Map.ofEntries(Map.entry("id", id)),
+                new BeanPropertyRowMapper<>(Person.class)
+            )
+            .stream().findAny();
+    }
+
+    public Optional<Person> findByEmail(String email) {
+        return jdbcTemplate.query(
+                "SELECT * FROM person p, contact c "
+                    + "WHERE p.id=c.person_id and c.email=:email",
+                Map.ofEntries(Map.entry("email", email)),
+                new BeanPropertyRowMapper<>(Person.class)
+            )
+            .stream().findAny();
+    }
+
     public void save(String firstName, String lastName) {
         jdbcTemplate.update(
             "INSERT INTO person (first_name, last_name) VALUES (:first_name, :last_name)",
@@ -50,24 +69,5 @@ public class PersonDao {
             "DELETE FROM person WHERE id=:id",
             Map.ofEntries(Map.entry("id", id))
         );
-    }
-
-    public Optional<Person> findById(long id) {
-        return jdbcTemplate.query(
-                "SELECT * FROM person WHERE id=:id",
-                Map.ofEntries(Map.entry("id", id)),
-                new BeanPropertyRowMapper<>(Person.class)
-            )
-            .stream().findAny();
-    }
-
-    public Optional<Person> findByEmail(String email) {
-        return jdbcTemplate.query(
-                "SELECT * FROM person p, contact c "
-                    + "WHERE p.id=c.person_id and c.email=:email",
-                Map.ofEntries(Map.entry("email", email)),
-                new BeanPropertyRowMapper<>(Person.class)
-            )
-            .stream().findAny();
     }
 }

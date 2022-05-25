@@ -16,6 +16,16 @@ public class PersonRoleDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public Optional<Role> findRoleByPerson(long personId) {
+        return jdbcTemplate.query(
+                "SELECT * FROM role r, person_role pr "
+                    + "WHERE pr.role_id=r.id and pr.person_id=:person_id",
+                Map.ofEntries(Map.entry("person_id", personId)),
+                new BeanPropertyRowMapper<>(Role.class)
+            )
+            .stream().findAny();
+    }
+
     public void saveRoleForPerson(long personId, long roleId) {
         jdbcTemplate.update(
             "INSERT INTO person_role (person_id, role_id) VALUES (:person_id, :role_id)",
@@ -34,15 +44,5 @@ public class PersonRoleDao {
                 Map.entry("role_id", roleId)
             )
         );
-    }
-
-    public Optional<Role> findRoleByPerson(long personId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM role r, person_role pr "
-                    + "WHERE pr.role_id=r.id and pr.person_id=:person_id",
-                Map.ofEntries(Map.entry("person_id", personId)),
-                new BeanPropertyRowMapper<>(Role.class)
-            )
-            .stream().findAny();
     }
 }

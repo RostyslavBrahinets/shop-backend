@@ -27,6 +27,16 @@ public class ProductCategoryDao {
         );
     }
 
+    public Optional<Category> findCategoryForProduct(long productId) {
+        return jdbcTemplate.query(
+                "SELECT * FROM category c, product_category pc "
+                    + "WHERE pc.category_id = c.id AND pc.product_id=:product_id",
+                Map.ofEntries(Map.entry("product_id", productId)),
+                new BeanPropertyRowMapper<>(Category.class)
+            )
+            .stream().findAny();
+    }
+
     public void saveProductToCategory(long productId, long categoryId) {
         jdbcTemplate.update(
             "INSERT INTO product_category (product_id, category_id)"
@@ -36,15 +46,5 @@ public class ProductCategoryDao {
                 Map.entry("category_id", categoryId)
             )
         );
-    }
-
-    public Optional<Category> findCategoryForProduct(long productId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM category c, product_category pc "
-                    + "WHERE pc.category_id = c.id AND pc.product_id=:product_id",
-                Map.ofEntries(Map.entry("product_id", productId)),
-                new BeanPropertyRowMapper<>(Category.class)
-            )
-            .stream().findAny();
     }
 }

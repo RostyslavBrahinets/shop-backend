@@ -24,6 +24,24 @@ public class ContactDao {
         );
     }
 
+    public Optional<Contact> findById(long id) {
+        return jdbcTemplate.query(
+                "SELECT * FROM contact WHERE id=:id",
+                Map.ofEntries(Map.entry("id", id)),
+                new BeanPropertyRowMapper<>(Contact.class)
+            )
+            .stream().findAny();
+    }
+
+    public Optional<Contact> findByPerson(long personId) {
+        return jdbcTemplate.query(
+                "SELECT * FROM contact WHERE person_id=:person_id",
+                Map.ofEntries(Map.entry("person_id", personId)),
+                new BeanPropertyRowMapper<>(Contact.class)
+            )
+            .stream().findAny();
+    }
+
     public void save(
         String email,
         String phone,
@@ -57,23 +75,5 @@ public class ContactDao {
             "DELETE FROM contact WHERE id=:id",
             Map.ofEntries(Map.entry("id", id))
         );
-    }
-
-    public Optional<Contact> findById(long id) {
-        return jdbcTemplate.query(
-                "SELECT * FROM contact WHERE id=:id",
-                Map.ofEntries(Map.entry("id", id)),
-                new BeanPropertyRowMapper<>(Contact.class)
-            )
-            .stream().findAny();
-    }
-
-    public Optional<Contact> findByPerson(long personId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM contact WHERE person_id=:person_id",
-                Map.ofEntries(Map.entry("person_id", personId)),
-                new BeanPropertyRowMapper<>(Contact.class)
-            )
-            .stream().findAny();
     }
 }
