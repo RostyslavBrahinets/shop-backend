@@ -37,10 +37,10 @@ public class PersonRoleServiceContextConfigurationTest {
     void get_role_by_person() {
         long personId = 1;
 
-        personRoleService.findRoleByPerson(personId);
+        personRoleService.findRoleForPerson(personId);
 
         verify(personValidator, atLeast(1)).validate(personId);
-        verify(personRoleRepository).findRoleByPerson(personId);
+        verify(personRoleRepository).findRoleForPerson(personId);
     }
 
     @Test

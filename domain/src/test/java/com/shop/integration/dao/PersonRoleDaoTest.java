@@ -68,7 +68,7 @@ public class PersonRoleDaoTest {
     @Test
     @DisplayName("Role for person was not found")
     void role_for_person_was_not_found() {
-        Optional<Role> role = personRoleDao.findRoleByPerson(1);
+        Optional<Role> role = personRoleDao.findRoleForPerson(1);
 
         assertThat(role).isEmpty();
     }
@@ -86,7 +86,7 @@ public class PersonRoleDaoTest {
                 )
             );
 
-        Optional<Role> role = personRoleDao.findRoleByPerson(1);
+        Optional<Role> role = personRoleDao.findRoleForPerson(1);
 
         assertThat(role).get().isEqualTo(Role.of("ROLE_ADMIN").withId(1));
     }
