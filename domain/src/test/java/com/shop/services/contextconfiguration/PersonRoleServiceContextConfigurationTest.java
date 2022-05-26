@@ -1,6 +1,7 @@
-package com.shop.services;
+package com.shop.services.contextconfiguration;
 
 import com.shop.repositories.PersonRoleRepository;
+import com.shop.services.PersonRoleService;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.RoleValidator;
 import org.junit.jupiter.api.DisplayName;

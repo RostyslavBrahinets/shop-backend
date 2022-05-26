@@ -1,7 +1,8 @@
-package com.shop.services;
+package com.shop.services.contextconfiguration;
 
 import com.shop.models.Product;
 import com.shop.repositories.ProductRepository;
+import com.shop.services.ProductService;
 import com.shop.validators.ProductValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

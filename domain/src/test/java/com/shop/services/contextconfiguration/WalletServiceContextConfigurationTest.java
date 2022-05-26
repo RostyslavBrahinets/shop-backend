@@ -1,7 +1,8 @@
-package com.shop.services;
+package com.shop.services.contextconfiguration;
 
 import com.shop.models.Wallet;
 import com.shop.repositories.WalletRepository;
+import com.shop.services.WalletService;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.WalletValidator;
 import org.junit.jupiter.api.DisplayName;

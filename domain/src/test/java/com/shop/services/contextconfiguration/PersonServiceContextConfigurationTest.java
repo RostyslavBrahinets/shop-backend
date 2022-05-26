@@ -1,7 +1,8 @@
-package com.shop.services;
+package com.shop.services.contextconfiguration;
 
 import com.shop.models.Person;
 import com.shop.repositories.PersonRepository;
+import com.shop.services.PersonService;
 import com.shop.validators.ContactValidator;
 import com.shop.validators.PersonValidator;
 import org.junit.jupiter.api.DisplayName;

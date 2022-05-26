@@ -1,6 +1,7 @@
-package com.shop.services;
+package com.shop.services.contextconfiguration;
 
 import com.shop.repositories.RoleRepository;
+import com.shop.services.RoleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,7 +1,8 @@
-package com.shop.services;
+package com.shop.services.contextconfiguration;
 
 import com.shop.models.Basket;
 import com.shop.repositories.BasketRepository;
+import com.shop.services.BasketService;
 import com.shop.validators.BasketValidator;
 import com.shop.validators.PersonValidator;
 import org.junit.jupiter.api.DisplayName;

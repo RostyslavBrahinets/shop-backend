@@ -1,6 +1,10 @@
-package com.shop.services;
+package com.shop.services.contextconfiguration;
 
 import com.shop.repositories.ProductsBasketsRepository;
+import com.shop.services.BasketService;
+import com.shop.services.ProductService;
+import com.shop.services.ProductsBasketsService;
+import com.shop.services.WalletService;
 import com.shop.stripe.StripePayment;
 import com.shop.validators.BasketValidator;
 import com.shop.validators.PersonValidator;
