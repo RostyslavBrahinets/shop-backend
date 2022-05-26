@@ -15,14 +15,14 @@ import java.util.Objects;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class ApplicationStarter {
-    private static final Logger logger = LoggerFactory.getLogger(ApplicationStarter.class);
-
     public static void main(String[] args) {
         SpringApplication.run(ApplicationStarter.class, args);
         setDatabase();
     }
 
     private static void setDatabase() {
+        final Logger logger = LoggerFactory.getLogger(ApplicationStarter.class);
+
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
             DatabaseConfig.class
         );
