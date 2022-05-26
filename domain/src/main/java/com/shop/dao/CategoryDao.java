@@ -49,13 +49,6 @@ public class CategoryDao {
         );
     }
 
-    public void delete(long id) {
-        jdbcTemplate.update(
-            "DELETE FROM category WHERE id=:id",
-            Map.ofEntries(Map.entry("id", id))
-        );
-    }
-
     public void delete(String name) {
         jdbcTemplate.update(
             "DELETE FROM category WHERE name=:name",

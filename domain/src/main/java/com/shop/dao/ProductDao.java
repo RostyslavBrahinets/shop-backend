@@ -64,13 +64,6 @@ public class ProductDao {
         );
     }
 
-    public void delete(long id) {
-        jdbcTemplate.update(
-            "DELETE FROM product WHERE id=:id",
-            Map.ofEntries(Map.entry("id", id))
-        );
-    }
-
     public void delete(String barcode) {
         jdbcTemplate.update(
             "DELETE FROM product WHERE barcode=:barcode",
