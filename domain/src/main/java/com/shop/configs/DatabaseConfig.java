@@ -18,11 +18,12 @@ public class DatabaseConfig {
     public DataSource dataSource(
         @Value("${spring.database.url}") String url,
         @Value("${spring.database.username}") String username,
-        @Value("${spring.database.password}") String password
+        @Value("${spring.database.password}") String password,
+        @Value("${spring.database.driver-class-name}") String driverClassName
     ) {
         final HikariConfig config = new HikariConfig();
 
-        config.setDriverClassName("${spring.database.driver-class-name}");
+        config.setDriverClassName(driverClassName);
         config.setJdbcUrl(url);
         config.setUsername(username);
         config.setPassword(password);
