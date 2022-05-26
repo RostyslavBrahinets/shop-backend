@@ -1,8 +1,6 @@
 package com.shop.dao;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.dao.BasketDao;
-import com.shop.dao.PersonDao;
 import com.shop.models.Basket;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +53,7 @@ public class BasketDaoTest {
     void tearDown() {
         JdbcTestUtils.dropTables(
             jdbcTemplate.getJdbcTemplate(),
-            "basket"
+            "basket", "person"
         );
     }
 
@@ -77,8 +75,8 @@ public class BasketDaoTest {
     }
 
     @Test
-    @DisplayName("Save multiple basket")
-    void save_multiple_basket() {
+    @DisplayName("Save multiple baskets")
+    void save_multiple_baskets() {
         basketDao.save(0, 1);
         basketDao.save(0, 2);
 
@@ -102,7 +100,10 @@ public class BasketDaoTest {
             .withTableName("basket")
             .usingGeneratedKeyColumns("id")
             .usingColumns("total_cost", "person_id")
-            .execute(Map.of("total_cost", 0, "person_id", 1));
+            .execute(Map.ofEntries(
+                Map.entry("total_cost", 0),
+                Map.entry("person_id", 1)
+            ));
 
         Optional<Basket> basket = basketDao.findById(1);
 
@@ -124,7 +125,12 @@ public class BasketDaoTest {
             .withTableName("basket")
             .usingGeneratedKeyColumns("id")
             .usingColumns("total_cost", "person_id")
-            .execute(Map.of("total_cost", 0, "person_id", 1));
+            .execute(
+                Map.ofEntries(
+                    Map.entry("total_cost", 0),
+                    Map.entry("person_id", 1)
+                )
+            );
 
         Optional<Basket> basket = basketDao.findByPerson(1);
 
@@ -135,8 +141,14 @@ public class BasketDaoTest {
     @DisplayName("Find all baskets")
     void find_all_baskets() {
         var batchInsertParameters = SqlParameterSourceUtils.createBatch(
-            Map.of("total_cost", 0, "person_id", 1),
-            Map.of("total_cost", 0, "person_id", 2)
+            Map.ofEntries(
+                Map.entry("total_cost", 0),
+                Map.entry("person_id", 1)
+            ),
+            Map.ofEntries(
+                Map.entry("total_cost", 0),
+                Map.entry("person_id", 2)
+            )
         );
 
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
@@ -168,7 +180,12 @@ public class BasketDaoTest {
             .withTableName("basket")
             .usingGeneratedKeyColumns("id")
             .usingColumns("total_cost", "person_id")
-            .execute(Map.of("total_cost", 0, "person_id", 1));
+            .execute(
+                Map.ofEntries(
+                    Map.entry("total_cost", 0),
+                    Map.entry("person_id", 1)
+                )
+            );
 
         var basketsCountBeforeDeletion = fetchBasketsCount();
 
@@ -188,13 +205,18 @@ public class BasketDaoTest {
             .withTableName("basket")
             .usingGeneratedKeyColumns("id")
             .usingColumns("total_cost", "person_id")
-            .execute(Map.of("total_cost", 0, "person_id", 1));
+            .execute(
+                Map.ofEntries(
+                    Map.entry("total_cost", 0),
+                    Map.entry("person_id", 1)
+                )
+            );
 
         basketDao.update(1, 100);
 
         var updatedBasket = jdbcTemplate.queryForObject(
             "SELECT total_cost FROM basket WHERE id=:id",
-            Map.of("id", 1),
+            Map.ofEntries(Map.entry("id", 1)),
             Double.class
         );
 
