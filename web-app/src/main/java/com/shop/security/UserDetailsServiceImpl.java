@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) {
         Person person = personService.findByEmail(email);
         long id = person.getId();
-        Role role = personRoleService.findRoleByPerson(id);
+        Role role = personRoleService.findRoleForPerson(id);
         List<GrantedAuthority> grantedAuthorities = List.of(
             new SimpleGrantedAuthority(role.getName())
         );

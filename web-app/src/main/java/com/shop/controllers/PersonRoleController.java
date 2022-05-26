@@ -26,7 +26,7 @@ public class PersonRoleController {
     public Role findRoleForPerson(
         @PathVariable long id
     ) {
-        return personRoleService.findRoleByPerson(id);
+        return personRoleService.findRoleForPerson(id);
     }
 
     @PostMapping("/{id}")

@@ -16,7 +16,7 @@ public class PersonRoleDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Optional<Role> findRoleByPerson(long personId) {
+    public Optional<Role> findRoleForPerson(long personId) {
         return jdbcTemplate.query(
                 "SELECT * FROM role r, person_role pr "
                     + "WHERE pr.role_id=r.id and pr.person_id=:person_id",

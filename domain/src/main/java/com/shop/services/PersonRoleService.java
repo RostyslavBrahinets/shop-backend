@@ -2,7 +2,6 @@ package com.shop.services;
 
 import com.shop.models.Role;
 import com.shop.repositories.PersonRoleRepository;
-import com.shop.repositories.RoleRepository;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.RoleValidator;
 import org.springframework.stereotype.Service;
@@ -25,9 +24,9 @@ public class PersonRoleService {
         this.roleValidator = roleValidator;
     }
 
-    public Role findRoleByPerson(long personId) {
+    public Role findRoleForPerson(long personId) {
         personValidator.validate(personId);
-        Optional<Role> role = personRoleRepository.findRoleByPerson(personId);
+        Optional<Role> role = personRoleRepository.findRoleForPerson(personId);
         return role.orElseGet(Role::new);
     }
 
