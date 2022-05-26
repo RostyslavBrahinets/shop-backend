@@ -16,13 +16,13 @@ import javax.sql.DataSource;
 public class DatabaseConfig {
     @Bean
     public DataSource dataSource(
-        @Value("${database.url}") String url,
-        @Value("${database.username}") String username,
-        @Value("${database.password}") String password
+        @Value("${spring.database.url}") String url,
+        @Value("${spring.database.username}") String username,
+        @Value("${spring.database.password}") String password
     ) {
         final HikariConfig config = new HikariConfig();
 
-        config.setDriverClassName("org.postgresql.Driver");
+        config.setDriverClassName("${spring.database.driver-class-name}");
         config.setJdbcUrl(url);
         config.setUsername(username);
         config.setPassword(password);
