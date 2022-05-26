@@ -27,12 +27,14 @@ public class WalletRepository {
         return walletDao.findByPerson(personId);
     }
 
-    public void save(Wallet wallet, long personId) {
+    public Wallet save(Wallet wallet, long personId) {
         walletDao.save(
             wallet.getNumber(),
             wallet.getAmountOfMoney(),
             personId
         );
+
+        return wallet;
     }
 
     public void update(long id, Wallet wallet) {

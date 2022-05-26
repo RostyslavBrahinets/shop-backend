@@ -27,8 +27,9 @@ public class BasketRepository {
         return basketDao.findByPerson(personId);
     }
 
-    public void save(Basket basket, long personId) {
+    public Basket save(Basket basket, long personId) {
         basketDao.save(basket.getTotalCost(), personId);
+        return basket;
     }
 
     public void update(long id, Basket basket) {

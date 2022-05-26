@@ -27,7 +27,7 @@ public class ProductRepository {
         return productDao.findByBarcode(barcode);
     }
 
-    public void save(Product product) {
+    public Product save(Product product) {
         productDao.save(
             product.getName(),
             product.getDescribe(),
@@ -36,6 +36,8 @@ public class ProductRepository {
             product.isInStock(),
             product.getImage()
         );
+
+        return product;
     }
 
     public void delete(String barcode) {

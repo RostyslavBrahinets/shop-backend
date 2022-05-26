@@ -14,8 +14,8 @@ public class PersonRoleRepository {
         this.personRoleDao = personRoleDao;
     }
 
-    public Optional<Role> findRoleByPerson(long personId) {
-        return personRoleDao.findRoleByPerson(personId);
+    public Optional<Role> findRoleForPerson(long personId) {
+        return personRoleDao.findRoleForPerson(personId);
     }
 
     public void saveRoleForPerson(long personId, long roleId) {

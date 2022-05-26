@@ -27,11 +27,13 @@ public class PersonRepository {
         return personDao.findByEmail(email);
     }
 
-    public void save(Person person) {
+    public Person save(Person person) {
         personDao.save(
             person.getFirstName(),
             person.getLastName()
         );
+
+        return person;
     }
 
     public void update(long id, Person person) {

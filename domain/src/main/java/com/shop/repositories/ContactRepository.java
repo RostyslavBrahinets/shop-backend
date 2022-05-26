@@ -27,13 +27,14 @@ public class ContactRepository {
         return contactDao.findByPerson(personId);
     }
 
-    public void save(Contact contact, long personId) {
+    public Contact save(Contact contact, long personId) {
         contactDao.save(
             contact.getEmail(),
             contact.getPhone(),
             contact.getPassword(),
             personId
         );
+        return contact;
     }
 
     public void update(long id, Contact contact) {
