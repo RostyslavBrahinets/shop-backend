@@ -54,7 +54,7 @@ public class ProductsBasketsController {
     }
 
     @PostMapping("/{id}")
-    public long addProductToBasket(
+    public long saveProductToBasket(
         @AuthenticationPrincipal UserDetails userDetail,
         @PathVariable long id,
         HttpServletResponse response
