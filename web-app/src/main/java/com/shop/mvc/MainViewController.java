@@ -29,7 +29,7 @@ public class MainViewController {
             model.addAttribute("id", person.getId());
             model.addAttribute("role", role.getAuthority());
         } else {
-            model.addAttribute("id", 0);
+            model.addAttribute("id", 0L);
             model.addAttribute("role", "ROLE_GUEST");
         }
 
