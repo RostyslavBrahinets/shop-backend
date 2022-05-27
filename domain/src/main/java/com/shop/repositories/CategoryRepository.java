@@ -27,9 +27,9 @@ public class CategoryRepository {
         return categoryDao.findByName(name);
     }
 
-    public Category save(Category category) {
-        categoryDao.save(category.getName());
-        return category;
+    public Category save(String name) {
+        categoryDao.save(name);
+        return Category.of(name);
     }
 
     public void delete(String name) {

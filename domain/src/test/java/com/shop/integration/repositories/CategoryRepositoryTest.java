@@ -64,9 +64,9 @@ public class CategoryRepositoryTest {
     @DisplayName("Category was deleted")
     @DirtiesContext
     void category_was_deleted() {
-        var categoryToSave = Category.of("category");
+        var categoryToSave = Category.of("name");
 
-        categoryRepository.save(categoryToSave);
+        categoryRepository.save("name");
 
         assertThat(categoryRepository.count()).isEqualTo(1);
 
@@ -79,8 +79,7 @@ public class CategoryRepositoryTest {
     @DisplayName("Save category and check category data")
     @DirtiesContext
     void save_category_and_check_category_data() {
-        var categoryToSave = Category.of("category");
-        categoryRepository.save(categoryToSave);
+        categoryRepository.save("name");
         var savedCategory = categoryRepository.findById(categoryRepository.count());
         Category category = null;
         if (savedCategory.isPresent()) {
@@ -88,15 +87,15 @@ public class CategoryRepositoryTest {
         }
 
         assertThat(category).extracting(Category::getId).isEqualTo(1L);
-        assertThat(category).extracting(Category::getName).isEqualTo("category");
+        assertThat(category).extracting(Category::getName).isEqualTo("name");
     }
 
     @Test
     @DisplayName("Save multiple categories")
     @DirtiesContext
     void save_multiple_categories() {
-        categoryRepository.save(Category.of("category1"));
-        categoryRepository.save(Category.of("category2"));
+        categoryRepository.save("name1");
+        categoryRepository.save("name2");
 
         assertThat(categoryRepository.count()).isEqualTo(2);
     }
@@ -113,26 +112,26 @@ public class CategoryRepositoryTest {
     @DisplayName("Category was found")
     @DirtiesContext
     void category_was_found() {
-        categoryRepository.save(Category.of("category"));
+        categoryRepository.save("name");
 
         Optional<Category> category = categoryRepository.findById(categoryRepository.count());
 
-        assertThat(category).get().isEqualTo(Category.of("category").withId(1));
+        assertThat(category).get().isEqualTo(Category.of("name").withId(1));
     }
 
     @Test
     @DisplayName("Find all categories")
     @DirtiesContext
     void find_all_categories() {
-        categoryRepository.save(Category.of("category1"));
-        categoryRepository.save(Category.of("category2"));
+        categoryRepository.save("name1");
+        categoryRepository.save("name2");
 
         var categories = categoryRepository.findAll();
 
         assertThat(categories).isEqualTo(
             List.of(
-                Category.of("category1").withId(1),
-                Category.of("category2").withId(2)
+                Category.of("name1").withId(1),
+                Category.of("name2").withId(2)
             )
         );
     }

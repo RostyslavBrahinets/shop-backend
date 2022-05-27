@@ -23,8 +23,6 @@ import static org.mockito.Mockito.*;
 )
 public class CategoryRepositoryContextConfigurationTest {
     @Autowired
-    private Category category;
-    @Autowired
     private CategoryDao categoryDao;
     @Autowired
     private CategoryRepository categoryRepository;
@@ -60,9 +58,11 @@ public class CategoryRepositoryContextConfigurationTest {
     @Test
     @DisplayName("Save category")
     void save_category() {
-        categoryRepository.save(category);
+        String name = "name";
 
-        verify(categoryDao).save(category.getName());
+        categoryRepository.save(name);
+
+        verify(categoryDao).save(name);
     }
 
     @Test

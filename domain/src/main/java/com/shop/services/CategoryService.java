@@ -37,10 +37,9 @@ public class CategoryService {
         return category.orElseGet(Category::new);
     }
 
-    public Category save(Category category) {
-        categoryValidator.validate(category);
-        categoryRepository.save(category);
-        return category;
+    public Category save(String name) {
+        categoryValidator.validateCategory(name);
+        return categoryRepository.save(name);
     }
 
     public void delete(String name) {

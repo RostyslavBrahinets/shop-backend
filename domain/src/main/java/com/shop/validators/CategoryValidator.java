@@ -17,9 +17,7 @@ public class CategoryValidator {
         this.categoryRepository = categoryRepository;
     }
 
-    public void validate(Category category) {
-        String name = category.getName();
-
+    public void validateCategory(String name) {
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name of category is invalid");
         }

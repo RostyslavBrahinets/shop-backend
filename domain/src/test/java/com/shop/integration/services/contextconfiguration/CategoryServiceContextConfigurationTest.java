@@ -24,8 +24,6 @@ import static org.mockito.Mockito.*;
 )
 public class CategoryServiceContextConfigurationTest {
     @Autowired
-    private Category category;
-    @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
     private CategoryValidator categoryValidator;
@@ -65,10 +63,12 @@ public class CategoryServiceContextConfigurationTest {
     @Test
     @DisplayName("Save category")
     void save_category() {
-        categoryService.save(category);
+        String name = "name";
 
-        verify(categoryValidator, atLeast(1)).validate(category);
-        verify(categoryRepository).save(category);
+        categoryService.save(name);
+
+        verify(categoryValidator, atLeast(1)).validateCategory(name);
+        verify(categoryRepository).save(name);
     }
 
     @Test
