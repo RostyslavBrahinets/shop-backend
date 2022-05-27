@@ -23,8 +23,6 @@ import static org.mockito.Mockito.*;
 )
 public class ProductRepositoryContextConfigurationTest {
     @Autowired
-    private Product product;
-    @Autowired
     private ProductDao productDao;
     @Autowired
     private ProductRepository productRepository;
@@ -60,16 +58,16 @@ public class ProductRepositoryContextConfigurationTest {
     @Test
     @DisplayName("Save product")
     void save_product() {
-        productRepository.save(product);
+        String name = "name";
+        String describe = "describe";
+        double price = 0;
+        String barcode = "123";
+        boolean inStock = true;
+        byte[] image = {1, 1, 1};
 
-        verify(productDao).save(
-            product.getName(),
-            product.getDescribe(),
-            product.getPrice(),
-            product.getBarcode(),
-            product.isInStock(),
-            product.getImage()
-        );
+        productRepository.save(name, describe, price, barcode, inStock, image);
+
+        verify(productDao).save(name, describe, price, barcode, inStock, image);
     }
 
     @Test

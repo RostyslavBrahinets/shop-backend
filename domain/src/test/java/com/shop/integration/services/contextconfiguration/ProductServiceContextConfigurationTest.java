@@ -24,8 +24,6 @@ import static org.mockito.Mockito.*;
 )
 public class ProductServiceContextConfigurationTest {
     @Autowired
-    private Product product;
-    @Autowired
     private ProductRepository productRepository;
     @Autowired
     private ProductValidator productValidator;
@@ -65,10 +63,17 @@ public class ProductServiceContextConfigurationTest {
     @Test
     @DisplayName("Save product")
     void save_product() {
-        productService.save(product);
+        String name = "name";
+        String describe = "describe";
+        double price = 0;
+        String barcode = "123";
+        boolean inStock = true;
+        byte[] image = {1, 1, 1};
 
-        verify(productValidator, atLeast(1)).validate(product);
-        verify(productRepository).save(product);
+        productService.save(name, describe, price, barcode, inStock, image);
+
+        verify(productValidator, atLeast(1)).validate(name, describe, price, barcode);
+        verify(productRepository).save(name, describe, price, barcode, inStock, image);
     }
 
     @Test

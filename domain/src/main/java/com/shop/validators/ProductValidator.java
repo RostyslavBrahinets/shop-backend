@@ -17,12 +17,12 @@ public class ProductValidator {
         this.productRepository = productRepository;
     }
 
-    public void validate(Product product) {
-        String name = product.getName();
-        String describe = product.getDescribe();
-        double price = product.getPrice();
-        String barcode = product.getBarcode();
-
+    public void validate(
+        String name,
+        String describe,
+        double price,
+        String barcode
+    ) {
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name is invalid");
         } else if (describe == null || describe.isBlank()) {

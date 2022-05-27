@@ -39,14 +39,14 @@ class ProductServiceTest {
     @Test
     @DisplayName("Product was saved for with correct input")
     void person_was_saved_with_correct_input() {
-        when(productRepository.save(Product.of(
+        when(productRepository.save(
             "name",
             "describe",
             100,
             "123",
             true,
             new byte[]{1, 1, 1}
-        ).withId(1)))
+        ))
             .thenReturn(Product.of(
                 "name",
                 "describe",
@@ -56,14 +56,13 @@ class ProductServiceTest {
                 new byte[]{1, 1, 1}
             ).withId(1));
 
-        Product savedProduct = productService.save(Product.of(
-            "name",
+        Product savedProduct = productService.save("name",
             "describe",
             100,
             "123",
             true,
             new byte[]{1, 1, 1}
-        ).withId(1));
+        );
 
         assertThat(savedProduct).isEqualTo(new Product(
             1,

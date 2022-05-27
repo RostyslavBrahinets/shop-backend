@@ -39,10 +39,16 @@ public class ProductService {
         return product.orElseGet(Product::new);
     }
 
-    public Product save(Product product) {
-        productValidator.validate(product);
-        productRepository.save(product);
-        return product;
+    public Product save(
+        String name,
+        String describe,
+        double price,
+        String barcode,
+        boolean inStock,
+        byte[] image
+    ) {
+        productValidator.validate(name, describe, price, barcode);
+        return productRepository.save(name, describe, price, barcode, inStock, image);
     }
 
     public void delete(String barcode) {

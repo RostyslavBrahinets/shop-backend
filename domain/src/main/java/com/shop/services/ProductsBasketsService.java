@@ -100,8 +100,7 @@ public class ProductsBasketsService {
             throw new NotFoundException("Not enough money to buy");
         }
 
-        wallet.setAmountOfMoney(newAmountOfMoney);
-        walletService.update(wallet.getId(), wallet);
+        walletService.update(wallet.getId(), newAmountOfMoney);
         stripePayment.updateCustomer(wallet.getNumber(), (long) newAmountOfMoney * -100);
 
         basketService.update(basket.getId(), 0);

@@ -64,7 +64,7 @@ public class ProductRepositoryTest {
     @DisplayName("Product was deleted")
     @DirtiesContext
     void product_was_deleted() {
-        var productToSave = Product.of(
+        productRepository.save(
             "name",
             "describe",
             100,
@@ -73,11 +73,9 @@ public class ProductRepositoryTest {
             new byte[]{1, 1, 1}
         );
 
-        productRepository.save(productToSave);
-
         assertThat(productRepository.count()).isEqualTo(1);
 
-        productRepository.delete(productToSave.getBarcode());
+        productRepository.delete("123");
 
         assertThat(productRepository.count()).isZero();
     }
@@ -86,7 +84,7 @@ public class ProductRepositoryTest {
     @DisplayName("Save product and check product data")
     @DirtiesContext
     void save_product_and_check_product_data() {
-        var productToSave = Product.of(
+        productRepository.save(
             "name",
             "describe",
             100,
@@ -94,7 +92,6 @@ public class ProductRepositoryTest {
             true,
             new byte[]{1, 1, 1}
         );
-        productRepository.save(productToSave);
         var savedProduct = productRepository.findById(productRepository.count());
         Product product = null;
         if (savedProduct.isPresent()) {
@@ -115,24 +112,20 @@ public class ProductRepositoryTest {
     @DirtiesContext
     void save_multiple_products() {
         productRepository.save(
-            Product.of(
-                "name",
-                "describe",
-                100,
-                "123",
-                true,
-                new byte[]{1, 1, 1}
-            )
+            "name",
+            "describe",
+            100,
+            "123",
+            true,
+            new byte[]{1, 1, 1}
         );
         productRepository.save(
-            Product.of(
-                "name",
-                "describe",
-                100,
-                "456",
-                true,
-                new byte[]{1, 1, 1}
-            )
+            "name",
+            "describe",
+            100,
+            "456",
+            true,
+            new byte[]{1, 1, 1}
         );
 
         assertThat(productRepository.count()).isEqualTo(2);
@@ -151,14 +144,12 @@ public class ProductRepositoryTest {
     @DirtiesContext
     void product_was_found() {
         productRepository.save(
-            Product.of(
-                "name",
-                "describe",
-                100,
-                "123",
-                true,
-                new byte[]{1, 1, 1}
-            )
+            "name",
+            "describe",
+            100,
+            "123",
+            true,
+            new byte[]{1, 1, 1}
         );
 
         Optional<Product> product = productRepository.findById(productRepository.count());
@@ -180,24 +171,20 @@ public class ProductRepositoryTest {
     @DirtiesContext
     void find_all_products() {
         productRepository.save(
-            Product.of(
-                "name",
-                "describe",
-                100,
-                "123",
-                true,
-                new byte[]{1, 1, 1}
-            )
+            "name",
+            "describe",
+            100,
+            "123",
+            true,
+            new byte[]{1, 1, 1}
         );
         productRepository.save(
-            Product.of(
-                "name",
-                "describe",
-                100,
-                "456",
-                true,
-                new byte[]{1, 1, 1}
-            )
+            "name",
+            "describe",
+            100,
+            "456",
+            true,
+            new byte[]{1, 1, 1}
         );
 
         var products = productRepository.findAll();

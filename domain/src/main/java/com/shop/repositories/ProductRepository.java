@@ -27,17 +27,16 @@ public class ProductRepository {
         return productDao.findByBarcode(barcode);
     }
 
-    public Product save(Product product) {
-        productDao.save(
-            product.getName(),
-            product.getDescribe(),
-            product.getPrice(),
-            product.getBarcode(),
-            product.isInStock(),
-            product.getImage()
-        );
-
-        return product;
+    public Product save(
+        String name,
+        String describe,
+        double price,
+        String barcode,
+        boolean inStock,
+        byte[] image
+    ) {
+        productDao.save(name, describe, price, barcode, inStock, image);
+        return Product.of(name, describe, price, barcode, inStock, image);
     }
 
     public void delete(String barcode) {
