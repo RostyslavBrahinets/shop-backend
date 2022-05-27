@@ -74,9 +74,7 @@ public class BasketRepositoryTest {
     @DisplayName("Basket was deleted")
     @DirtiesContext
     void basket_was_deleted() {
-        var basketToSave = Basket.of(0);
-
-        basketRepository.save(basketToSave, 1);
+        basketRepository.save(0, 1);
 
         assertThat(basketRepository.count()).isEqualTo(1);
 
@@ -89,8 +87,7 @@ public class BasketRepositoryTest {
     @DisplayName("Save basket and check basket data")
     @DirtiesContext
     void save_basket_and_check_basket_data() {
-        var basketToSave = Basket.of(0);
-        basketRepository.save(basketToSave, 1);
+        basketRepository.save(0, 1);
         var savedBasket = basketRepository.findById(basketRepository.count());
         Basket basket = null;
         if (savedBasket.isPresent()) {
@@ -105,8 +102,8 @@ public class BasketRepositoryTest {
     @DisplayName("Save multiple baskets")
     @DirtiesContext
     void save_multiple_baskets() {
-        basketRepository.save(Basket.of(0), 1);
-        basketRepository.save(Basket.of(0), 2);
+        basketRepository.save(0, 1);
+        basketRepository.save(0, 2);
 
         assertThat(basketRepository.count()).isEqualTo(2);
     }
@@ -123,7 +120,7 @@ public class BasketRepositoryTest {
     @DisplayName("Basket was found")
     @DirtiesContext
     void basket_was_found() {
-        basketRepository.save(Basket.of(0), 1);
+        basketRepository.save(0, 1);
 
         Optional<Basket> basket = basketRepository.findById(basketRepository.count());
 
@@ -134,8 +131,8 @@ public class BasketRepositoryTest {
     @DisplayName("Find all baskets")
     @DirtiesContext
     void find_all_baskets() {
-        basketRepository.save(Basket.of(0), 1);
-        basketRepository.save(Basket.of(0), 2);
+        basketRepository.save(0, 1);
+        basketRepository.save(0, 2);
 
         var baskets = basketRepository.findAll();
 

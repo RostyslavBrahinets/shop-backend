@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = BasketController.BASKETS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(BasketController.BASKETS_URL)
 public class BasketController {
     public static final String BASKETS_URL = "/web-api/baskets";
     private final BasketService basketService;
@@ -33,7 +33,7 @@ public class BasketController {
         @RequestBody Basket basket,
         @RequestBody int personId
     ) {
-        return basketService.save(basket, personId);
+        return basketService.save(basket.getTotalCost(), personId);
     }
 
     @DeleteMapping("/{id}")

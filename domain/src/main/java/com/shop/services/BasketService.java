@@ -41,18 +41,16 @@ public class BasketService {
         return basket.orElseGet(Basket::new);
     }
 
-    public Basket save(Basket basket, long personId) {
-        basketValidator.validate(basket);
+    public Basket save(double totalCost, long personId) {
+        basketValidator.validate(totalCost);
         personValidator.validate(personId);
-        basketRepository.save(basket, personId);
-        return basket;
+        return basketRepository.save(totalCost, personId);
     }
 
-    public Basket update(long id, Basket basket) {
+    public Basket update(long id, double totalCost) {
         basketValidator.validate(id);
-        basketValidator.validate(basket);
-        basketRepository.update(id, basket);
-        return basket;
+        basketValidator.validate(totalCost);
+        return basketRepository.update(id, totalCost);
     }
 
     public void delete(long id) {

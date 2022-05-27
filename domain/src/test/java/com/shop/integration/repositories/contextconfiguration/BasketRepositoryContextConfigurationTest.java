@@ -23,8 +23,6 @@ import static org.mockito.Mockito.*;
 )
 public class BasketRepositoryContextConfigurationTest {
     @Autowired
-    private Basket basket;
-    @Autowired
     private BasketDao basketDao;
     @Autowired
     private BasketRepository basketRepository;
@@ -61,20 +59,22 @@ public class BasketRepositoryContextConfigurationTest {
     @DisplayName("Save basket")
     void save_basket() {
         long personId = 1;
+        double totalCost = 0;
 
-        basketRepository.save(basket, personId);
+        basketRepository.save(totalCost, personId);
 
-        verify(basketDao).save(basket.getTotalCost(), personId);
+        verify(basketDao).save(totalCost, personId);
     }
 
     @Test
     @DisplayName("Update basket")
     void update_basket() {
         long id = 1;
+        double totalCost = 100;
 
-        basketRepository.update(id, basket);
+        basketRepository.update(id, totalCost);
 
-        verify(basketDao).update(id, basket.getTotalCost());
+        verify(basketDao).update(id, totalCost);
     }
 
     @Test

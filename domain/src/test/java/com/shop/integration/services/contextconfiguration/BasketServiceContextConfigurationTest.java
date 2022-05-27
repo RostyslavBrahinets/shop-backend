@@ -25,8 +25,6 @@ import static org.mockito.Mockito.*;
 )
 public class BasketServiceContextConfigurationTest {
     @Autowired
-    private Basket basket;
-    @Autowired
     private BasketRepository basketRepository;
     @Autowired
     private BasketValidator basketValidator;
@@ -69,24 +67,26 @@ public class BasketServiceContextConfigurationTest {
     @DisplayName("Save basket")
     void save_basket() {
         long personId = 1;
+        double totalCost = 0;
 
-        basketService.save(basket, personId);
+        basketService.save(totalCost, personId);
 
-        verify(basketValidator, atLeast(1)).validate(basket);
+        verify(basketValidator, atLeast(1)).validate(totalCost);
         verify(personValidator, atLeast(1)).validate(personId);
-        verify(basketRepository).save(basket, personId);
+        verify(basketRepository).save(totalCost, personId);
     }
 
     @Test
     @DisplayName("Update basket")
     void update_basket() {
         long id = 1;
+        double totalCost = 100;
 
-        basketService.update(id, basket);
+        basketService.update(id, totalCost);
 
         verify(basketValidator, atLeast(1)).validate(id);
-        verify(basketValidator, atLeast(1)).validate(basket);
-        verify(basketRepository).update(1, basket);
+        verify(basketValidator, atLeast(1)).validate(totalCost);
+        verify(basketRepository).update(1, totalCost);
     }
 
     @Test

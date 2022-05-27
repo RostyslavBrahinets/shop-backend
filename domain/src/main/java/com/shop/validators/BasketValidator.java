@@ -17,9 +17,7 @@ public class BasketValidator {
         this.basketRepository = basketRepository;
     }
 
-    public void validate(Basket basket) {
-        double totalCost = basket.getTotalCost();
-
+    public void validate(double totalCost) {
         if (totalCost < 0) {
             throw new ValidationException("Total cost of products in basket is invalid");
         }

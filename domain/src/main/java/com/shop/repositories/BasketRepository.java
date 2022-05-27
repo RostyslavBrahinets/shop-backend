@@ -27,13 +27,14 @@ public class BasketRepository {
         return basketDao.findByPerson(personId);
     }
 
-    public Basket save(Basket basket, long personId) {
-        basketDao.save(basket.getTotalCost(), personId);
-        return basket;
+    public Basket save(double totalCost, long personId) {
+        basketDao.save(totalCost, personId);
+        return Basket.of(totalCost);
     }
 
-    public void update(long id, Basket basket) {
-        basketDao.update(id, basket.getTotalCost());
+    public Basket update(long id, double totalCost) {
+        basketDao.update(id, totalCost);
+        return Basket.of(totalCost).withId(id);
     }
 
     public void delete(long id) {

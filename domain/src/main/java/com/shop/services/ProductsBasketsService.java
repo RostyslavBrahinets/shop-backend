@@ -64,8 +64,7 @@ public class ProductsBasketsService {
 
         double newTotalCost = basket.getTotalCost();
         newTotalCost += product.getPrice();
-        basket.setTotalCost(newTotalCost);
-        basketService.update(basketId, basket);
+        basketService.update(basketId, newTotalCost);
 
         return productId;
     }
@@ -80,8 +79,7 @@ public class ProductsBasketsService {
 
         double newTotalCost = basket.getTotalCost();
         newTotalCost -= product.getPrice();
-        basket.setTotalCost(newTotalCost);
-        basketService.update(basketId, basket);
+        basketService.update(basketId, newTotalCost);
     }
 
     public void deleteProductsFromBasket(long basketId) {
@@ -106,8 +104,7 @@ public class ProductsBasketsService {
         walletService.update(wallet.getId(), wallet);
         stripePayment.updateCustomer(wallet.getNumber(), (long) newAmountOfMoney * -100);
 
-        basket.setTotalCost(0);
-        basketService.update(basket.getId(), basket);
+        basketService.update(basket.getId(), 0);
 
         deleteProductsFromBasket(basket.getId());
     }

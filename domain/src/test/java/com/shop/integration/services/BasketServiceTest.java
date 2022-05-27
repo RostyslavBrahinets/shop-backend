@@ -43,10 +43,10 @@ class BasketServiceTest {
     @Test
     @DisplayName("Basket was saved for with correct input")
     void basket_was_saved_with_correct_input() {
-        when(basketRepository.save(Basket.of(0).withId(1), 1))
+        when(basketRepository.save(0, 1))
             .thenReturn(Basket.of(0).withId(1));
 
-        Basket savedBasket = basketService.save(Basket.of(0).withId(1), 1);
+        Basket savedBasket = basketService.save(0, 1);
 
         assertThat(savedBasket).isEqualTo(new Basket(1, 0));
     }
@@ -104,16 +104,5 @@ class BasketServiceTest {
     void basket_was_deleted() {
         basketService.delete(1);
         verify(basketRepository).delete(1);
-    }
-
-    @Test
-    @DisplayName("Basket was updated")
-    void basket_was_updated() {
-        when(basketRepository.save(Basket.of(0).withId(1), 1))
-            .thenReturn(Basket.of(0).withId(1));
-
-        Basket updatedBasket = basketService.update(1, Basket.of(100).withId(1));
-
-        assertThat(updatedBasket).isEqualTo(new Basket(1, 100));
     }
 }
