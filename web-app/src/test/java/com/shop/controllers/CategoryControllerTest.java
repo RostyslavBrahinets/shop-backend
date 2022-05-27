@@ -86,8 +86,8 @@ class CategoryControllerTest {
     @Test
     @DisplayName("Category deleted")
     void category_deleted() throws Exception {
-        mockMvc.perform(post(CATEGORIES_URL + "/1")
+        mockMvc.perform(post(CATEGORIES_URL + "/name")
                 .with(user("admin").password("admin").roles("ADMIN")))
-            .andExpect(status().is2xxSuccessful());
+            .andExpect(status().isOk());
     }
 }
