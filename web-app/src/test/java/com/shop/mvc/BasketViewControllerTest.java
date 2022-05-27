@@ -67,8 +67,8 @@ class BasketViewControllerTest {
     }
 
     @Test
-    @DisplayName("Not found basket for admin")
-    void not_found_basket_for_admin() throws Exception {
+    @DisplayName("Basket not found for admin")
+    void basket_not_found_for_admin() throws Exception {
         when(personService.findByEmail("admin")).thenReturn(
             new Person(1, "admin", "admin")
         );

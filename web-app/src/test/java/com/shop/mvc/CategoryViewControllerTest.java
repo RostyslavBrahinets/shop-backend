@@ -77,7 +77,7 @@ class CategoryViewControllerTest {
 
     @Test
     @DisplayName("Show products in category for guest")
-    void show_products_in_category_category_for_guest() throws Exception {
+    void show_products_in_category_for_guest() throws Exception {
         mockMvc.perform(get("/categories/1")
                 .with(anonymous()))
             .andExpect(status().isOk())
@@ -89,7 +89,7 @@ class CategoryViewControllerTest {
 
     @Test
     @DisplayName("Show products in category for user")
-    void show_products_in_category_category_for_user() throws Exception {
+    void show_products_in_category_for_user() throws Exception {
         mockMvc.perform(get("/categories/1")
                 .with(user("test@email.com").password("user").roles("USER")))
             .andExpect(status().isOk())
@@ -101,7 +101,7 @@ class CategoryViewControllerTest {
 
     @Test
     @DisplayName("Show products in category for admin")
-    void show_products_in_category_category_for_admin() throws Exception {
+    void show_products_in_category_for_admin() throws Exception {
         mockMvc.perform(get("/categories/1")
                 .with(user("admin").password("admin").roles("ADMIN")))
             .andExpect(status().isOk())
@@ -109,6 +109,5 @@ class CategoryViewControllerTest {
             .andExpect(view().name("categories/find"))
             .andExpect(model().attribute("role", "ROLE_ADMIN"))
             .andExpect(model().attribute("id", 1L));
-        ;
     }
 }

@@ -34,7 +34,7 @@ class MainViewControllerTest {
 
     @Test
     @DisplayName("Show main page for guest")
-    void show_root_page_for_guest() throws Exception {
+    void show_main_page_for_guest() throws Exception {
         mockMvc.perform(get("/")
                 .with(anonymous()))
             .andExpect(status().isOk())
@@ -46,7 +46,7 @@ class MainViewControllerTest {
 
     @Test
     @DisplayName("Show main page for user")
-    void show_root_page_for_user() throws Exception {
+    void show_main_page_for_user() throws Exception {
         when(personService.findByEmail("test@email.com")).thenReturn(
             new Person(2, "John", "Smith")
         );
@@ -62,7 +62,7 @@ class MainViewControllerTest {
 
     @Test
     @DisplayName("Show main page for admin")
-    void show_root_page_for_admin() throws Exception {
+    void show_main_page_for_admin() throws Exception {
         when(personService.findByEmail("admin")).thenReturn(
             new Person(1, "admin", "admin")
         );
