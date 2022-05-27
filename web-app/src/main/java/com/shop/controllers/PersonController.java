@@ -33,7 +33,7 @@ public class PersonController {
     public Person savePerson(
         @RequestBody Person person
     ) {
-        return personService.save(person);
+        return personService.save(person.getFirstName(), person.getLastName());
     }
 
     @PostMapping("/{id}")
@@ -44,7 +44,7 @@ public class PersonController {
         Person updatedPerson = new Person();
         updatedPerson.setFirstName(person.getFirstName());
         updatedPerson.setLastName(person.getLastName());
-        return personService.update(id, updatedPerson);
+        return personService.update(id, updatedPerson.getFirstName(), updatedPerson.getLastName());
     }
 
     @DeleteMapping("/{id}")

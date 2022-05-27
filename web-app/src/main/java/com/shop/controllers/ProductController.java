@@ -35,12 +35,26 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product savePerson(@RequestBody Product product) throws IOException {
+    public Product saveProduct(@RequestBody Product product) throws IOException {
         if (product.getImage().length > 0) {
-            return productService.save(product);
+            return productService.save(
+                product.getName(),
+                product.getDescribe(),
+                product.getPrice(),
+                product.getBarcode(),
+                product.isInStock(),
+                product.getImage()
+            );
         }
 
-        product = productService.save(product);
+        product = productService.save(
+            product.getName(),
+            product.getDescribe(),
+            product.getPrice(),
+            product.getBarcode(),
+            product.isInStock(),
+            product.getImage()
+        );
         Product newProduct = productService.findByBarcode(product.getBarcode());
         String imagePath = Objects.requireNonNull(getClass().getClassLoader().getResource(
             "static/images/empty.jpg"

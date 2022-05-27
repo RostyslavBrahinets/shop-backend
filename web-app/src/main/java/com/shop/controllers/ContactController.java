@@ -34,7 +34,12 @@ public class ContactController {
         @RequestBody Contact contact,
         @RequestBody int personId
     ) {
-        return contactService.save(contact, personId);
+        return contactService.save(
+            contact.getEmail(),
+            contact.getPhone(),
+            contact.getPassword(),
+            personId
+        );
     }
 
     @PostMapping("/{id}")
@@ -47,7 +52,7 @@ public class ContactController {
         updatedContact.setPhone(contact.getPhone());
         updatedContact.setEmail(oldContact.getEmail());
         updatedContact.setPassword(oldContact.getPassword());
-        return contactService.update(id, updatedContact);
+        return contactService.update(id, updatedContact.getPhone());
     }
 
     @DeleteMapping("/{id}")

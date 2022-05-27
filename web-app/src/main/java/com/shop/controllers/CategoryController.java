@@ -29,7 +29,7 @@ public class CategoryController {
 
     @PostMapping
     public Category saveCategory(@RequestBody Category category) {
-        return categoryService.save(category);
+        return categoryService.save(category.getName());
     }
 
     @PostMapping("/{name}")

@@ -1,8 +1,6 @@
 package com.shop.mvc;
 
 import com.shop.exceptions.ValidationException;
-import com.shop.models.Basket;
-import com.shop.models.Contact;
 import com.shop.models.Person;
 import com.shop.models.Wallet;
 import com.shop.services.*;
@@ -87,23 +85,13 @@ public class RegistrationViewController {
             throw new ValidationException("Password don't equals confirm password");
         }
 
-        Person person = findPerson(firstName, lastName);
-        personValidator.validate(person);
-        Contact contact = findContact(email, phone, password);
-        contactValidator.validate(contact);
+        personValidator.validate(firstName, lastName);
+        contactValidator.validate(email, phone, password);
         return true;
     }
 
     private void savePerson(String firstName, String lastName) {
-        Person person = findPerson(firstName, lastName);
-        personService.save(person);
-    }
-
-    private Person findPerson(String firstName, String lastName) {
-        Person person = new Person();
-        person.setFirstName(firstName);
-        person.setLastName(lastName);
-        return person;
+        personService.save(firstName, lastName);
     }
 
     private long findPersonId() {
@@ -112,20 +100,7 @@ public class RegistrationViewController {
     }
 
     private void saveContactForPerson(String email, String phone, String password, long personId) {
-        Contact contact = findContact(email, phone, password);
-        contactService.save(contact, personId);
-    }
-
-    private Contact findContact(
-        String email,
-        String phone,
-        String password
-    ) {
-        Contact contact = new Contact();
-        contact.setEmail(email);
-        contact.setPhone(phone);
-        contact.setPassword(password);
-        return contact;
+        contactService.save(email, phone, password, personId);
     }
 
     private void saveRoleForPerson(long personId) {
@@ -143,7 +118,7 @@ public class RegistrationViewController {
             Wallet wallet = new Wallet();
             wallet.setNumber(customer.get().getId());
             wallet.setAmountOfMoney(customer.get().getBalance());
-            walletService.save(wallet, personId);
+            walletService.save(wallet.getNumber(), wallet.getAmountOfMoney(), personId);
         }
     }
 }

@@ -40,7 +40,7 @@ public class WalletController {
 
         customer.ifPresent(value -> {
             wallet.setAmountOfMoney(value.getBalance() / -100.0);
-            walletService.update(wallet.getId(), wallet);
+            walletService.update(wallet.getId(), wallet.getAmountOfMoney());
         });
 
         return wallet;
@@ -51,7 +51,7 @@ public class WalletController {
         @RequestBody Wallet wallet,
         @RequestBody int personId
     ) {
-        return walletService.save(wallet, personId);
+        return walletService.save(wallet.getNumber(), wallet.getAmountOfMoney(), personId);
     }
 
     @DeleteMapping("/{id}")
