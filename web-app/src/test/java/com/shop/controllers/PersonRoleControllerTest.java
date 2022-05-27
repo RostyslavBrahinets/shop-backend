@@ -73,4 +73,12 @@ class PersonRoleControllerTest {
                 .with(user("admin").password("admin").roles("ADMIN")))
             .andExpect(status().isBadRequest());
     }
+
+    @Test
+    @DisplayName("Person update failed for incorrect id")
+    void person_update_failed_for_incorrect_id() throws Exception {
+        mockMvc.perform(post(PERSON_ROLE_URL + "/id")
+                .with(user("admin").password("admin").roles("ADMIN")))
+            .andExpect(status().isBadRequest());
+    }
 }
