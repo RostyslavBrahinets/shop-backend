@@ -17,13 +17,19 @@ public class WalletValidator {
         this.walletRepository = walletRepository;
     }
 
-    public void validate(Wallet wallet) {
-        String number = wallet.getNumber();
-        double amountOfMoney = wallet.getAmountOfMoney();
-
+    public void validate(
+        String number,
+        double amountOfMoney
+    ) {
         if (number == null || number.isBlank()) {
             throw new ValidationException("Number is invalid");
         } else if (amountOfMoney < 0) {
+            throw new ValidationException("Amount of money is invalid");
+        }
+    }
+
+    public void validateAmountOfMoney(double amountOfMoney) {
+        if (amountOfMoney < 0) {
             throw new ValidationException("Amount of money is invalid");
         }
     }

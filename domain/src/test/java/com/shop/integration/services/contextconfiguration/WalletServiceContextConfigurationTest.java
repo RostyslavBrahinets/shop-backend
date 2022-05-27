@@ -25,8 +25,6 @@ import static org.mockito.Mockito.*;
 )
 public class WalletServiceContextConfigurationTest {
     @Autowired
-    private Wallet wallet;
-    @Autowired
     private WalletRepository walletRepository;
     @Autowired
     private WalletValidator walletValidator;
@@ -69,24 +67,27 @@ public class WalletServiceContextConfigurationTest {
     @DisplayName("Save wallet")
     void save_wallet() {
         long personId = 1;
+        String number = "123";
+        double amountOfMoney = 0;
 
-        walletService.save(wallet, personId);
+        walletService.save(number, amountOfMoney, personId);
 
-        verify(walletValidator, atLeast(1)).validate(wallet);
+        verify(walletValidator, atLeast(1)).validate(number, amountOfMoney);
         verify(personValidator, atLeast(1)).validate(personId);
-        verify(walletRepository).save(wallet, personId);
+        verify(walletRepository).save(number, amountOfMoney, personId);
     }
 
     @Test
     @DisplayName("Update wallet")
     void update_wallet() {
         long id = 1;
+        double amountOfMoney = 100;
 
-        walletService.update(id, wallet);
+        walletService.update(id, amountOfMoney);
 
         verify(walletValidator, atLeast(1)).validate(id);
-        verify(walletValidator, atLeast(1)).validate(wallet);
-        verify(walletRepository).update(1, wallet);
+        verify(walletValidator, atLeast(1)).validateAmountOfMoney(amountOfMoney);
+        verify(walletRepository).update(1, amountOfMoney);
     }
 
     @Test

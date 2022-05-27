@@ -23,8 +23,6 @@ import static org.mockito.Mockito.*;
 )
 public class WalletRepositoryContextConfigurationTest {
     @Autowired
-    private Wallet wallet;
-    @Autowired
     private WalletDao walletDao;
     @Autowired
     private WalletRepository walletRepository;
@@ -61,24 +59,23 @@ public class WalletRepositoryContextConfigurationTest {
     @DisplayName("Save wallet")
     void save_wallet() {
         long personId = 1;
+        String number = "123";
+        double amountOfMoney = 0;
 
-        walletRepository.save(wallet, personId);
+        walletRepository.save(number, amountOfMoney, personId);
 
-        verify(walletDao).save(
-            wallet.getNumber(),
-            wallet.getAmountOfMoney(),
-            personId
-        );
+        verify(walletDao).save(number, amountOfMoney, personId);
     }
 
     @Test
     @DisplayName("Update wallet")
     void update_wallet() {
         long id = 1;
+        double amountOfMoney = 100;
 
-        walletRepository.update(id, wallet);
+        walletRepository.update(id, amountOfMoney);
 
-        verify(walletDao).update(id, wallet.getAmountOfMoney());
+        verify(walletDao).update(id, amountOfMoney);
     }
 
     @Test

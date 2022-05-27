@@ -43,10 +43,10 @@ class WalletServiceTest {
     @Test
     @DisplayName("Wallet was saved for with correct input")
     void wallet_was_saved_with_correct_input() {
-        when(walletRepository.save(Wallet.of("123", 0).withId(1), 1))
+        when(walletRepository.save("123", 0, 1))
             .thenReturn(Wallet.of("123", 0).withId(1));
 
-        Wallet savedWallet = walletService.save(Wallet.of("123", 0).withId(1), 1);
+        Wallet savedWallet = walletService.save("123", 0, 1);
 
         assertThat(savedWallet).isEqualTo(new Wallet(1, "123", 0));
     }
@@ -104,16 +104,5 @@ class WalletServiceTest {
     void wallet_was_deleted() {
         walletService.delete(1);
         verify(walletRepository).delete(1);
-    }
-
-    @Test
-    @DisplayName("Wallet was updated")
-    void wallet_was_updated() {
-        when(walletRepository.save(Wallet.of("123", 0).withId(1), 1))
-            .thenReturn(Wallet.of("123", 0).withId(1));
-
-        Wallet updatedWallet = walletService.update(1, Wallet.of("123", 100).withId(1));
-
-        assertThat(updatedWallet).isEqualTo(new Wallet(1, "123", 100));
     }
 }

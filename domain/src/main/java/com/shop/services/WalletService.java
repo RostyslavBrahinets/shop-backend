@@ -41,18 +41,20 @@ public class WalletService {
         return wallet.orElseGet(Wallet::new);
     }
 
-    public Wallet save(Wallet wallet, long personId) {
-        walletValidator.validate(wallet);
+    public Wallet save(
+        String number,
+        double amountOfMoney,
+        long personId
+    ) {
+        walletValidator.validate(number, amountOfMoney);
         personValidator.validate(personId);
-        walletRepository.save(wallet, personId);
-        return wallet;
+        return walletRepository.save(number, amountOfMoney, personId);
     }
 
-    public Wallet update(long id, Wallet wallet) {
+    public Wallet update(long id, double amountOfMoney) {
         walletValidator.validate(id);
-        walletValidator.validate(wallet);
-        walletRepository.update(id, wallet);
-        return wallet;
+        walletValidator.validateAmountOfMoney(amountOfMoney);
+        return walletRepository.update(id, amountOfMoney);
     }
 
     public void delete(long id) {

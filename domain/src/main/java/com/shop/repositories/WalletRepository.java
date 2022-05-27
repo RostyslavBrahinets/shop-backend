@@ -27,18 +27,23 @@ public class WalletRepository {
         return walletDao.findByPerson(personId);
     }
 
-    public Wallet save(Wallet wallet, long personId) {
+    public Wallet save(
+        String number,
+        double amountOfMoney,
+        long personId
+    ) {
         walletDao.save(
-            wallet.getNumber(),
-            wallet.getAmountOfMoney(),
+            number,
+            amountOfMoney,
             personId
         );
 
-        return wallet;
+        return Wallet.of(number, amountOfMoney);
     }
 
-    public void update(long id, Wallet wallet) {
-        walletDao.update(id, wallet.getAmountOfMoney());
+    public Wallet update(long id, double amountOfMoney) {
+        walletDao.update(id, amountOfMoney);
+        return Wallet.of("", amountOfMoney).withId(id);
     }
 
     public void delete(long id) {

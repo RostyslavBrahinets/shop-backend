@@ -74,9 +74,7 @@ public class WalletRepositoryTest {
     @DisplayName("Wallet was deleted")
     @DirtiesContext
     void wallet_was_deleted() {
-        var walletToSave = Wallet.of("123", 0);
-
-        walletRepository.save(walletToSave, 1);
+        walletRepository.save("123", 0, 1);
 
         assertThat(walletRepository.count()).isEqualTo(1);
 
@@ -89,8 +87,7 @@ public class WalletRepositoryTest {
     @DisplayName("Save wallet and check wallet data")
     @DirtiesContext
     void save_wallet_and_check_wallet_data() {
-        var walletToSave = Wallet.of("123", 0);
-        walletRepository.save(walletToSave, 1);
+        walletRepository.save("123", 0, 1);
         var savedWallet = walletRepository.findById(walletRepository.count());
         Wallet wallet = null;
         if (savedWallet.isPresent()) {
@@ -106,8 +103,8 @@ public class WalletRepositoryTest {
     @DisplayName("Save multiple wallets")
     @DirtiesContext
     void save_multiple_wallets() {
-        walletRepository.save(Wallet.of("123", 0), 1);
-        walletRepository.save(Wallet.of("456", 0), 2);
+        walletRepository.save("123", 0, 1);
+        walletRepository.save("456", 0, 2);
 
         assertThat(walletRepository.count()).isEqualTo(2);
     }
@@ -124,7 +121,7 @@ public class WalletRepositoryTest {
     @DisplayName("Wallet was found")
     @DirtiesContext
     void wallet_was_found() {
-        walletRepository.save(Wallet.of("123", 0), 1);
+        walletRepository.save("123", 0, 1);
 
         Optional<Wallet> wallet = walletRepository.findById(walletRepository.count());
 
@@ -135,8 +132,8 @@ public class WalletRepositoryTest {
     @DisplayName("Find all wallets")
     @DirtiesContext
     void find_all_wallets() {
-        walletRepository.save(Wallet.of("123", 0), 1);
-        walletRepository.save(Wallet.of("456", 0), 2);
+        walletRepository.save("123", 0, 1);
+        walletRepository.save("456", 0, 2);
 
         var wallets = walletRepository.findAll();
 
