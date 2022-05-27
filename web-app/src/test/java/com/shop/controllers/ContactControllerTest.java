@@ -20,8 +20,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockBeans({
@@ -97,5 +96,14 @@ class ContactControllerTest {
         mockMvc.perform(delete(CONTACTS_URL + "/1")
                 .with(user("admin").password("admin").roles("ADMIN")))
             .andExpect(status().is2xxSuccessful());
+    }
+
+
+    @Test
+    @DisplayName("Contact update failed for incorrect id")
+    void contact_update_failed_for_incorrect_id() throws Exception {
+        mockMvc.perform(post(CONTACTS_URL + "/id")
+                .with(user("admin").password("admin").roles("ADMIN")))
+            .andExpect(status().isBadRequest());
     }
 }
