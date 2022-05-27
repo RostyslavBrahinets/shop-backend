@@ -26,8 +26,6 @@ import static org.mockito.Mockito.*;
 )
 public class ContactServiceContextConfigurationTest {
     @Autowired
-    private Contact contact;
-    @Autowired
     private ContactRepository contactRepository;
     @Autowired
     private ContactValidator contactValidator;
@@ -72,25 +70,29 @@ public class ContactServiceContextConfigurationTest {
     @DisplayName("Save contact")
     void save_contact() {
         long personId = 1;
+        String email = "test@email.com";
+        String phone = "+380000000000";
+        String password = "password";
 
-        contactService.save(contact, personId);
+        contactService.save(email, phone, password, personId);
 
-        verify(contactValidator, atLeast(1)).validate(contact);
+        verify(contactValidator, atLeast(1)).validate(email, phone, password);
         verify(personValidator, atLeast(1)).validate(personId);
-        verify(passwordEncoder, atLeast(1)).encode(contact.getPassword());
-        verify(contactRepository).save(contact, personId);
+        verify(passwordEncoder, atLeast(1)).encode(password);
+        verify(contactRepository).save(email, phone, null, personId);
     }
 
     @Test
     @DisplayName("Update contact")
     void update_contact() {
         long id = 1;
+        String phone = "+380000000000";
 
-        contactService.update(id, contact);
+        contactService.update(id, phone);
 
         verify(contactValidator, atLeast(1)).validate(id);
-        verify(contactValidator, atLeast(1)).validate(contact);
-        verify(contactRepository).update(id, contact);
+        verify(contactValidator, atLeast(1)).validatePhone(phone);
+        verify(contactRepository).update(id, phone);
     }
 
     @Test

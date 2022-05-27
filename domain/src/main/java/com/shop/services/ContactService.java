@@ -45,19 +45,21 @@ public class ContactService {
         return contact.orElseGet(Contact::new);
     }
 
-    public Contact save(Contact contact, long personId) {
-        contactValidator.validate(contact);
+    public Contact save(
+        String email,
+        String phone,
+        String password,
+        long personId
+    ) {
+        contactValidator.validate(email, phone, password);
         personValidator.validate(personId);
-        contact.setPassword(passwordEncoder.encode(contact.getPassword()));
-        contactRepository.save(contact, personId);
-        return contact;
+        return contactRepository.save(email, phone, passwordEncoder.encode(password), personId);
     }
 
-    public Contact update(long id, Contact contact) {
+    public Contact update(long id, String phone) {
         contactValidator.validate(id);
-        contactValidator.validate(contact);
-        contactRepository.update(id, contact);
-        return contact;
+        contactValidator.validatePhone(phone);
+        return contactRepository.update(id, phone);
     }
 
     public void delete(long id) {

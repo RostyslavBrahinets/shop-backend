@@ -45,34 +45,6 @@ class ContactServiceTest {
     }
 
     @Test
-    @DisplayName("Contact was saved for with correct input")
-    void contact_was_saved_with_correct_input() {
-        when(contactRepository.save(Contact.of(
-            "test@email.com",
-            "+380000000000",
-            "password"
-        ).withId(1), 1))
-            .thenReturn(Contact.of(
-                "test@email.com",
-                "+380000000000",
-                "password"
-            ).withId(1));
-
-        Contact savedBasket = contactService.save(Contact.of(
-            "test@email.com",
-            "+380000000000",
-            "password"
-        ).withId(1), 1);
-
-        assertThat(savedBasket).isEqualTo(new Contact(
-            1,
-            "test@email.com",
-            "+380000000000",
-            passwordEncoder.encode("password")
-        ));
-    }
-
-    @Test
     @DisplayName("Empty list of contacts is returned in case when no contacts in storage")
     void empty_list_of_baskets_is_returned_in_case_when_no_baskets_in_storage() {
         when(contactRepository.findAll()).thenReturn(emptyList());
@@ -159,33 +131,5 @@ class ContactServiceTest {
     void contact_was_deleted() {
         contactService.delete(1);
         verify(contactRepository).delete(1);
-    }
-
-    @Test
-    @DisplayName("Basket was updated")
-    void basket_was_updated() {
-        when(contactRepository.save(Contact.of(
-            "test@email.com",
-            "+380000000000",
-            "password"
-        ).withId(1), 1))
-            .thenReturn(Contact.of(
-                "test@email.com",
-                "+380000000000",
-                "password"
-            ).withId(1));
-
-        Contact updatedContact = contactService.update(1, Contact.of(
-            "test@email.com",
-            "+381111111111",
-            "password"
-        ).withId(1));
-
-        assertThat(updatedContact).isEqualTo(new Contact(
-            1,
-            "test@email.com",
-            "+381111111111",
-            "password"
-        ));
     }
 }

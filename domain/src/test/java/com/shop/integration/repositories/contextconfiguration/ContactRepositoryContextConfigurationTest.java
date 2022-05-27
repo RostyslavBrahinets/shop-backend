@@ -23,8 +23,6 @@ import static org.mockito.Mockito.*;
 )
 public class ContactRepositoryContextConfigurationTest {
     @Autowired
-    private Contact contact;
-    @Autowired
     private ContactDao contactDao;
     @Autowired
     private ContactRepository contactRepository;
@@ -61,25 +59,24 @@ public class ContactRepositoryContextConfigurationTest {
     @DisplayName("Save contact")
     void save_contact() {
         long personId = 1;
+        String email = "test@email.com";
+        String phone = "+380000000000";
+        String password = "password";
 
-        contactRepository.save(contact, personId);
+        contactRepository.save(email, phone, password, personId);
 
-        verify(contactDao).save(
-            contact.getEmail(),
-            contact.getPhone(),
-            contact.getPassword(),
-            personId
-        );
+        verify(contactDao).save(email, phone, password, personId);
     }
 
     @Test
     @DisplayName("Update contact")
     void update_contact() {
         long id = 1;
+        String phone = "+3801111111111";
 
-        contactRepository.update(id, contact);
+        contactRepository.update(id, phone);
 
-        verify(contactDao).update(id, contact.getPhone());
+        verify(contactDao).update(id, phone);
     }
 
     @Test

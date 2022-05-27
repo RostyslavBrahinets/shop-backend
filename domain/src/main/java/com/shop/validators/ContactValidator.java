@@ -17,11 +17,11 @@ public class ContactValidator {
         this.contactRepository = contactRepository;
     }
 
-    public void validate(Contact contact) {
-        String email = contact.getEmail();
-        String phone = contact.getPhone();
-        String password = contact.getPassword();
-
+    public void validate(
+        String email,
+        String phone,
+        String password
+    ) {
         if (isInValidEmail(email)) {
             throw new ValidationException("E-mail is invalid");
         } else if (isEmailAlreadyInUse(email)) {
@@ -32,6 +32,14 @@ public class ContactValidator {
             throw new ValidationException("Phone is already in use");
         } else if (password == null || password.isBlank()) {
             throw new ValidationException("Password is invalid");
+        }
+    }
+
+    public void validatePhone(String phone) {
+        if (isInvalidPhone(phone)) {
+            throw new ValidationException("Phone is invalid");
+        } else if (isPhoneAlreadyInUse(phone)) {
+            throw new ValidationException("Phone is already in use");
         }
     }
 

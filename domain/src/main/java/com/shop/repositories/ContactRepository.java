@@ -27,18 +27,27 @@ public class ContactRepository {
         return contactDao.findByPerson(personId);
     }
 
-    public Contact save(Contact contact, long personId) {
+    public Contact save(
+        String email,
+        String phone,
+        String password,
+        long personId
+    ) {
         contactDao.save(
-            contact.getEmail(),
-            contact.getPhone(),
-            contact.getPassword(),
+            email,
+            phone,
+            password,
             personId
         );
-        return contact;
+        return Contact.of(email, phone, password);
     }
 
-    public void update(long id, Contact contact) {
-        contactDao.update(id, contact.getPhone());
+    public Contact update(
+        long id,
+        String phone
+    ) {
+        contactDao.update(id, phone);
+        return Contact.of("", phone, "").withId(id);
     }
 
     public void delete(long id) {

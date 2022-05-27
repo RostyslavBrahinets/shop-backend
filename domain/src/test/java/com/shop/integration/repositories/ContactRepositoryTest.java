@@ -72,13 +72,12 @@ public class ContactRepositoryTest {
     @DisplayName("Contact was deleted")
     @DirtiesContext
     void contact_was_deleted() {
-        var contactToSave = Contact.of(
+        contactRepository.save(
             "test@email.com",
             "+380000000000",
-            "password"
+            "password",
+            1
         );
-
-        contactRepository.save(contactToSave, 1);
 
         assertThat(contactRepository.count()).isEqualTo(1);
 
@@ -91,13 +90,12 @@ public class ContactRepositoryTest {
     @DisplayName("Save contact and check contact data")
     @DirtiesContext
     void save_contact_and_check_contact_data() {
-        var contactToSave = Contact.of(
+        contactRepository.save(
             "test@email.com",
             "+380000000000",
-            "password"
+            "password",
+            1
         );
-
-        contactRepository.save(contactToSave, 1);
         var savedContact = contactRepository.findById(contactRepository.count());
         Contact contact = null;
         if (savedContact.isPresent()) {
@@ -115,19 +113,15 @@ public class ContactRepositoryTest {
     @DirtiesContext
     void save_multiple_contacts() {
         contactRepository.save(
-            Contact.of(
-                "test1@email.com",
-                "+380000000000",
-                "password"
-            ),
+            "test1@email.com",
+            "+380000000001",
+            "password",
             1
         );
         contactRepository.save(
-            Contact.of(
-                "test2@email.com",
-                "+380000000001",
-                "password"
-            ),
+            "test2@email.com",
+            "+380000000002",
+            "password",
             2
         );
 
@@ -147,11 +141,9 @@ public class ContactRepositoryTest {
     @DirtiesContext
     void contact_was_found() {
         contactRepository.save(
-            Contact.of(
-                "test@email.com",
-                "+380000000000",
-                "password"
-            ),
+            "test@email.com",
+            "+380000000000",
+            "password",
             1
         );
 
@@ -171,19 +163,15 @@ public class ContactRepositoryTest {
     @DirtiesContext
     void find_all_contacts() {
         contactRepository.save(
-            Contact.of(
-                "test1@email.com",
-                "+380000000000",
-                "password"
-            ),
+            "test1@email.com",
+            "+380000000001",
+            "password",
             1
         );
         contactRepository.save(
-            Contact.of(
-                "test2@email.com",
-                "+380000000001",
-                "password"
-            ),
+            "test2@email.com",
+            "+380000000002",
+            "password",
             2
         );
 
@@ -193,13 +181,13 @@ public class ContactRepositoryTest {
             List.of(
                 Contact.of(
                         "test1@email.com",
-                        "+380000000000",
+                        "+380000000001",
                         "password"
                     )
                     .withId(1),
                 Contact.of(
                         "test2@email.com",
-                        "+380000000001",
+                        "+380000000002",
                         "password"
                     )
                     .withId(2)
