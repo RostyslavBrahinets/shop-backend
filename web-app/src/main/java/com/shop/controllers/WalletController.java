@@ -38,12 +38,13 @@ public class WalletController {
         Optional<Customer> customer = stripePayment
             .findByIdCustomer(walletService.findById(id).getNumber());
 
-        customer.ifPresent(value -> {
-            wallet.setAmountOfMoney(value.getBalance() / -100.0);
-            walletService.update(wallet.getId(), wallet.getAmountOfMoney());
-        });
+        Wallet updatedWallet = null;
+        if (customer.isPresent()) {
+            wallet.setAmountOfMoney(customer.get().getBalance() / -100.0);
+            updatedWallet = walletService.update(wallet.getId(), wallet.getAmountOfMoney());
+        }
 
-        return wallet;
+        return updatedWallet;
     }
 
     @PostMapping
