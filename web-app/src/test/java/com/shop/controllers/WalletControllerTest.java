@@ -1,6 +1,5 @@
 package com.shop.controllers;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Wallet;
 import com.shop.security.LoginPasswordAuthenticationProvider;
 import com.shop.services.WalletService;
@@ -17,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static com.shop.controllers.WalletController.WALLETS_URL;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -46,6 +44,10 @@ class WalletControllerTest {
             List.of(
                 new Wallet(1, "123", 0)
             )
+        );
+
+        when(walletService.update(1, 100)).thenReturn(
+            new Wallet(1, "123", 100)
         );
 
         mockMvc.perform(get(WALLETS_URL)
