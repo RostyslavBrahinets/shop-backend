@@ -17,10 +17,10 @@ public class PersonValidator {
         this.personRepository = personRepository;
     }
 
-    public void validate(Person person) {
-        String firstName = person.getFirstName();
-        String lastName = person.getLastName();
-
+    public void validate(
+        String firstName,
+        String lastName
+    ) {
         if (firstName == null || firstName.isBlank()) {
             throw new ValidationException("First name is invalid");
         } else if (lastName == null || lastName.isBlank()) {

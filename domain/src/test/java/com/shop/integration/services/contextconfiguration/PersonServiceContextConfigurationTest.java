@@ -25,8 +25,6 @@ import static org.mockito.Mockito.*;
 )
 public class PersonServiceContextConfigurationTest {
     @Autowired
-    private Person person;
-    @Autowired
     private PersonRepository personRepository;
     @Autowired
     private PersonValidator personValidator;
@@ -68,22 +66,27 @@ public class PersonServiceContextConfigurationTest {
     @Test
     @DisplayName("Save person")
     void save_person() {
-        personService.save(person);
+        String firstName = "John";
+        String lastName = "Smith";
 
-        verify(personValidator, atLeast(1)).validate(person);
-        verify(personRepository).save(person);
+        personService.save(firstName, lastName);
+
+        verify(personValidator, atLeast(1)).validate(firstName, lastName);
+        verify(personRepository).save(firstName, lastName);
     }
 
     @Test
     @DisplayName("Update person")
     void update_person() {
         long id = 1;
+        String firstName = "John";
+        String lastName = "Smith";
 
-        personService.update(id, person);
+        personService.update(id, firstName, lastName);
 
         verify(personValidator, atLeast(1)).validate(id);
-        verify(personValidator, atLeast(1)).validate(person);
-        verify(personRepository).update(id, person);
+        verify(personValidator, atLeast(1)).validate(firstName, lastName);
+        verify(personRepository).update(id, firstName, lastName);
     }
 
     @Test

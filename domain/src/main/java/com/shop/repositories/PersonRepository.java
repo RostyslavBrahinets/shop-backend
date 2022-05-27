@@ -27,21 +27,30 @@ public class PersonRepository {
         return personDao.findByEmail(email);
     }
 
-    public Person save(Person person) {
+    public Person save(
+        String firstName,
+        String lastName
+    ) {
         personDao.save(
-            person.getFirstName(),
-            person.getLastName()
+            firstName,
+            lastName
         );
 
-        return person;
+        return Person.of(firstName, lastName);
     }
 
-    public void update(long id, Person person) {
+    public Person update(
+        long id,
+        String firstName,
+        String lastName
+    ) {
         personDao.update(
             id,
-            person.getFirstName(),
-            person.getLastName()
+            firstName,
+            lastName
         );
+
+        return Person.of(firstName, lastName).withId(id);
     }
 
     public void delete(long id) {

@@ -41,17 +41,22 @@ public class PersonService {
         return person.orElseGet(Person::new);
     }
 
-    public Person save(Person person) {
-        personValidator.validate(person);
-        personRepository.save(person);
-        return person;
+    public Person save(
+        String firstName,
+        String lastName
+    ) {
+        personValidator.validate(firstName, lastName);
+        return personRepository.save(firstName, lastName);
     }
 
-    public Person update(long id, Person person) {
+    public Person update(
+        long id,
+        String firstName,
+        String lastName
+    ) {
         personValidator.validate(id);
-        personValidator.validate(person);
-        personRepository.update(id, person);
-        return person;
+        personValidator.validate(firstName, lastName);
+        return personRepository.update(id, firstName, lastName);
     }
 
     public void delete(long id) {

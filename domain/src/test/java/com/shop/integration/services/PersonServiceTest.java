@@ -43,10 +43,10 @@ class PersonServiceTest {
     @Test
     @DisplayName("Person was saved for with correct input")
     void person_was_saved_with_correct_input() {
-        when(personRepository.save(Person.of("John", "Smith").withId(1)))
+        when(personRepository.save("John", "Smith"))
             .thenReturn(Person.of("John", "Smith").withId(1));
 
-        Person savedPerson = personService.save(Person.of("John", "Smith").withId(1));
+        Person savedPerson = personService.save("John", "Smith");
 
         assertThat(savedPerson).isEqualTo(new Person(1, "John", "Smith"));
     }
@@ -104,16 +104,5 @@ class PersonServiceTest {
     void person_was_deleted() {
         personService.delete(1);
         verify(personRepository).delete(1);
-    }
-
-    @Test
-    @DisplayName("Person was updated")
-    void person_was_updated() {
-        when(personRepository.save(Person.of("John", "Smith").withId(1)))
-            .thenReturn(Person.of("John", "Smith").withId(1));
-
-        Person updatedPerson = personService.update(1, Person.of("James", "Bond").withId(1));
-
-        assertThat(updatedPerson).isEqualTo(new Person(1, "James", "Bond"));
     }
 }

@@ -64,9 +64,7 @@ public class PersonRepositoryTest {
     @DisplayName("Person was deleted")
     @DirtiesContext
     void person_was_deleted() {
-        var personToSave = Person.of("John", "Smith");
-
-        personRepository.save(personToSave);
+        personRepository.save("John", "Smith");
 
         assertThat(personRepository.count()).isEqualTo(1);
 
@@ -79,8 +77,7 @@ public class PersonRepositoryTest {
     @DisplayName("Save person and check person data")
     @DirtiesContext
     void save_person_and_check_person_data() {
-        var personToSave = Person.of("John", "Smith");
-        personRepository.save(personToSave);
+        personRepository.save("John", "Smith");
         var savedPerson = personRepository.findById(personRepository.count());
         Person person = null;
         if (savedPerson.isPresent()) {
@@ -96,8 +93,8 @@ public class PersonRepositoryTest {
     @DisplayName("Save multiple people")
     @DirtiesContext
     void save_multiple_people() {
-        personRepository.save(Person.of("John", "Smith"));
-        personRepository.save(Person.of("John", "Smith"));
+        personRepository.save("John", "Smith");
+        personRepository.save("John", "Smith");
 
         assertThat(personRepository.count()).isEqualTo(2);
     }
@@ -114,7 +111,7 @@ public class PersonRepositoryTest {
     @DisplayName("Person was found")
     @DirtiesContext
     void person_was_found() {
-        personRepository.save(Person.of("John", "Smith"));
+        personRepository.save("John", "Smith");
 
         Optional<Person> person = personRepository.findById(personRepository.count());
 
@@ -125,8 +122,8 @@ public class PersonRepositoryTest {
     @DisplayName("Find all people")
     @DirtiesContext
     void find_all_people() {
-        personRepository.save(Person.of("John", "Smith"));
-        personRepository.save(Person.of("John", "Smith"));
+        personRepository.save("John", "Smith");
+        personRepository.save("John", "Smith");
 
         var people = personRepository.findAll();
 

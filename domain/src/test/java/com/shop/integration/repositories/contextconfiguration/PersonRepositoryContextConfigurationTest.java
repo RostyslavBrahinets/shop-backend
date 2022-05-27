@@ -23,8 +23,6 @@ import static org.mockito.Mockito.*;
 )
 public class PersonRepositoryContextConfigurationTest {
     @Autowired
-    private Person person;
-    @Autowired
     private PersonDao personDao;
     @Autowired
     private PersonRepository personRepository;
@@ -60,26 +58,24 @@ public class PersonRepositoryContextConfigurationTest {
     @Test
     @DisplayName("Save person")
     void save_person() {
-        personRepository.save(person);
+        String firstName = "John";
+        String lastName = "Smith";
 
-        verify(personDao).save(
-            person.getFirstName(),
-            person.getLastName()
-        );
+        personRepository.save(firstName, lastName);
+
+        verify(personDao).save(firstName, lastName);
     }
 
     @Test
     @DisplayName("Update person")
     void update_person() {
         long id = 1;
+        String firstName = "John";
+        String lastName = "Smith";
 
-        personRepository.update(id, person);
+        personRepository.update(id, firstName, lastName);
 
-        verify(personDao).update(
-            id,
-            person.getFirstName(),
-            person.getLastName()
-        );
+        verify(personDao).update(id, firstName, lastName);
     }
 
     @Test
