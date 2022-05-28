@@ -9,6 +9,9 @@ import com.shop.validators.ContactValidator;
 import com.shop.validators.PersonValidator;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,7 +52,18 @@ public class RegistrationViewController {
     }
 
     @GetMapping("/registration")
-    public String registration() {
+    public String registration(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails != null) {
+            GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
+            String authority = role.getAuthority();
+            boolean alreadyRegistered = authority.equals("ROLE_ADMIN")
+                || authority.equals("ROLE_USER");
+
+            if (alreadyRegistered) {
+                return "redirect:/";
+            }
+        }
+
         return "registration";
     }
 
