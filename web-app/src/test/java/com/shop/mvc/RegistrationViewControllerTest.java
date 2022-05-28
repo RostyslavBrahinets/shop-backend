@@ -1,6 +1,7 @@
 package com.shop.mvc;
 
 import com.shop.models.Person;
+import com.shop.models.Wallet;
 import com.shop.security.LoginPasswordAuthenticationProvider;
 import com.shop.services.*;
 import com.shop.stripe.StripePayment;
@@ -31,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @MockBean(ContactService.class),
     @MockBean(PersonRoleService.class),
     @MockBean(BasketService.class),
-    @MockBean(WalletService.class),
     @MockBean(PersonValidator.class),
     @MockBean(ContactValidator.class),
     @MockBean(StripePayment.class)
@@ -41,6 +41,9 @@ class RegistrationViewControllerTest {
     @MockBean
     @Autowired
     private PersonService personService;
+    @MockBean
+    @Autowired
+    private WalletService walletService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -86,6 +89,9 @@ class RegistrationViewControllerTest {
                     )
                 )
             );
+
+        when(walletService.save("123", 0, 1))
+            .thenReturn(new Wallet(1, "123", 0));
 
         mockMvc.perform(post("/registration")
                 .with(anonymous())
