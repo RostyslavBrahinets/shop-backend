@@ -74,11 +74,12 @@ class WalletViewControllerTest {
         );
 
         when(walletService.findByPerson(1)).thenThrow(
-            new NotFoundException()
+            new NotFoundException("Wallet Not Found")
         );
 
         mockMvc.perform(get("/wallet")
                 .with(user("admin").password("admin").roles("ADMIN")))
-            .andExpect(status().isNotFound());
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/"));
     }
 }
