@@ -57,10 +57,6 @@ public class Basket implements Serializable {
         return totalCost;
     }
 
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
