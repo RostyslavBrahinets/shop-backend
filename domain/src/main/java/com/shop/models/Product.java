@@ -124,6 +124,10 @@ public class Product implements Serializable {
         return inStock;
     }
 
+    public void setInStock(boolean inStock) {
+        this.inStock = inStock;
+    }
+
     public byte[] getImage() {
         return image;
     }
