@@ -3,7 +3,6 @@ package com.shop.controllers;
 import com.shop.models.Basket;
 import com.shop.services.BasketService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,21 +23,21 @@ public class BasketController {
     }
 
     @GetMapping("/{id}")
-    public Basket findByIdBasket(@PathVariable int id) {
+    public Basket findByIdBasket(@PathVariable long id) {
         return basketService.findById(id);
     }
 
     @PostMapping
     public Basket saveBasket(
         @RequestBody Basket basket,
-        @RequestBody int personId
+        @RequestBody long personId
     ) {
         return basketService.save(basket.getTotalCost(), personId);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBasket(@PathVariable int id) {
+    public void deleteBasket(@PathVariable long id) {
         basketService.delete(id);
     }
 }

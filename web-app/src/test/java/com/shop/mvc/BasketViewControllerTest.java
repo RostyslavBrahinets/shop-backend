@@ -1,6 +1,5 @@
 package com.shop.mvc;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Basket;
 import com.shop.models.Person;
 import com.shop.security.LoginPasswordAuthenticationProvider;
@@ -73,12 +72,9 @@ class BasketViewControllerTest {
             new Person(1, "admin", "admin")
         );
 
-        when(basketService.findByPerson(1)).thenThrow(
-            new NotFoundException()
-        );
-
         mockMvc.perform(get("/basket")
                 .with(user("admin").password("admin").roles("ADMIN")))
-            .andExpect(status().isNotFound());
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/"));
     }
 }
