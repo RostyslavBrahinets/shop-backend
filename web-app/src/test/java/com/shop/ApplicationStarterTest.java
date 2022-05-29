@@ -7,9 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import javax.sql.DataSource;
+
 @SpringBootTest
 @ContextConfiguration(classes = {
     DatabaseConfig.class,
+    DataSource.class,
     ImageDatabaseUtility.class
 })
 public class ApplicationStarterTest {
