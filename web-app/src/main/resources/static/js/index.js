@@ -7,6 +7,14 @@ fetch('http://localhost:8080/web-api/', {
 })
     .then(response => response.json())
     .then(data => {
+        if (data.length === 0) {
+            document.querySelector('.sort').style.visibility = 'hidden';
+            const node = document.createElement('div');
+            node.appendChild(document.createTextNode('Products Not Found'));
+            document.querySelector('.products-container').append(node);
+            return;
+        }
+
         const links = data.map(({id}) => `http://localhost:8080/products/${id}`);
 
         let formattedData = data.map(({name}) => `${name}`);
