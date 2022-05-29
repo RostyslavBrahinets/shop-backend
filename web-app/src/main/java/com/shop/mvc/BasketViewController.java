@@ -26,7 +26,7 @@ public class BasketViewController {
         this.basketService = basketService;
     }
 
-    @GetMapping()
+    @GetMapping
     public String index(
         @AuthenticationPrincipal UserDetails userDetails,
         Model model

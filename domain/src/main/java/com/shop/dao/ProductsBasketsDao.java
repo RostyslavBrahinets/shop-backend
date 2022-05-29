@@ -19,7 +19,7 @@ public class ProductsBasketsDao {
     public List<Product> findAllProductsInBasket(long basketId) {
         return jdbcTemplate.query(
             "SELECT * FROM product p, products_baskets pb "
-                + "WHERE pb.product_id = p.id AND pb.basket_id=:basket_id",
+                + "WHERE pb.product_id=p.id AND pb.basket_id=:basket_id",
             Map.ofEntries(Map.entry("basket_id", basketId)),
             new BeanPropertyRowMapper<>(Product.class)
         );
