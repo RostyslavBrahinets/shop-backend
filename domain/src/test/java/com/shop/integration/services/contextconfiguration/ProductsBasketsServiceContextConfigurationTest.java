@@ -9,6 +9,7 @@ import com.shop.stripe.StripePayment;
 import com.shop.validators.BasketValidator;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.ProductValidator;
+import com.shop.validators.WalletValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -92,6 +93,11 @@ public class ProductsBasketsServiceContextConfigurationTest {
         @Bean
         public PersonValidator personValidator() {
             return mock(PersonValidator.class);
+        }
+
+        @Bean
+        public WalletValidator walletValidator() {
+            return mock(WalletValidator.class);
         }
 
         @Bean
