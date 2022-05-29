@@ -1,4 +1,4 @@
-package com.shop.integration.services;
+package com.shop.unit.services;
 
 import com.shop.repositories.PersonRoleRepository;
 import com.shop.services.PersonRoleService;

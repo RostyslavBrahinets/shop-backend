@@ -1,5 +1,6 @@
-package com.shop.integration.services;
+package com.shop.unit.services;
 
+import com.shop.exceptions.NotFoundException;
 import com.shop.models.Basket;
 import com.shop.repositories.BasketRepository;
 import com.shop.services.BasketService;
@@ -12,10 +13,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -43,6 +46,17 @@ class BasketServiceTest {
     @Test
     @DisplayName("Basket was saved for with correct input")
     void basket_was_saved_with_correct_input() {
+        when(basketRepository.save(0, 1))
+            .thenReturn(Basket.of(0).withId(1));
+
+        Basket savedBasket = basketService.save(0, 1);
+
+        assertThat(savedBasket).isEqualTo(new Basket(1, 0));
+    }
+
+    @Test
+    @DisplayName("Basket was not saved for with incorrect input")
+    void basket_was_not_saved_with_incorrect_input() {
         when(basketRepository.save(0, 1))
             .thenReturn(Basket.of(0).withId(1));
 

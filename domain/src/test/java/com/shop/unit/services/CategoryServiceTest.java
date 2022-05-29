@@ -1,4 +1,4 @@
-package com.shop.integration.services;
+package com.shop.unit.services;
 
 import com.shop.models.Category;
 import com.shop.repositories.CategoryRepository;
