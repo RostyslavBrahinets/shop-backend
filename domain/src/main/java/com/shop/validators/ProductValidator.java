@@ -50,5 +50,15 @@ public class ProductValidator {
         if (barcode == null || barcode.isBlank()) {
             throw new ValidationException("Barcode is invalid");
         }
+
+        List<String> barcodes = new ArrayList<>();
+
+        for (Product product : productRepository.findAll()) {
+            barcodes.add(product.getBarcode());
+        }
+
+        if (!barcodes.contains(barcode)) {
+            throw new NotFoundException("Barcode not found");
+        }
     }
 }

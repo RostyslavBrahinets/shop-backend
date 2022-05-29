@@ -136,6 +136,21 @@ public class ProductValidatorTest {
     @Test
     @DisplayName("Barcode validated without exceptions")
     void barcode_validated_without_exceptions() {
+        when(productRepository.findAll())
+            .thenReturn(
+                List.of(
+                    new Product(
+                        1,
+                        "name",
+                        "describe",
+                        0,
+                        "123",
+                        true,
+                        new byte[]{1, 1, 1}
+                    )
+                )
+            );
+
         assertDoesNotThrow(
             () -> productValidator.validate("123")
         );
@@ -156,6 +171,15 @@ public class ProductValidatorTest {
         assertThrows(
             ValidationException.class,
             () -> productValidator.validate("")
+        );
+    }
+
+    @Test
+    @DisplayName("Throw NotFoundException because barcode not found")
+    void throw_not_found_exception_because_barcode_not_found() {
+        assertThrows(
+            NotFoundException.class,
+            () -> productValidator.validate("123")
         );
     }
 }
