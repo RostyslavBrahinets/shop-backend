@@ -36,6 +36,10 @@ public class CategoryValidator {
     }
 
     public void validate(String name) {
+        if (name == null || name.isBlank()) {
+            throw new ValidationException("Name of category is invalid");
+        }
+
         List<String> names = new ArrayList<>();
 
         for (Category category : categoryRepository.findAll()) {
