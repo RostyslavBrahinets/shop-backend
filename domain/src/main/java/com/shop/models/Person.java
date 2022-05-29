@@ -119,7 +119,6 @@ public class Person implements Serializable {
             + "id=" + id
             + ", firstName='" + firstName + '\''
             + ", lastName='" + lastName + '\''
-            + ", contact=" + contact
             + '}';
     }
 }
