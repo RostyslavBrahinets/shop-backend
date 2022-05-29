@@ -10,10 +10,19 @@
 <form name="logout" th:action="@{/logout}" method="post">
     <div>
         <a th:href="@{/}">Main</a>
+
+        <span th:if="${role == 'ROLE_ADMIN'}">
+            <a th:href="@{/admin/users}">Admin</a>
+        </span>
+
         <a th:href="@{/categories}">Categories</a>
         <a th:href="@{/products}">Products</a>
-        <a th:href="@{/wallet}">Wallet</a>
-        <a th:href="@{/basket}">Basket</a>
+
+        <span th:if="${role == 'ROLE_USER'}">
+            <a th:href="@{/wallet}">Wallet</a>
+            <a th:href="@{/basket}">Basket</a>
+        </span>
+
         <button type="submit">Log Out</button>
     </div>
 </form>
