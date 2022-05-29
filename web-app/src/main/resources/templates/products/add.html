@@ -16,7 +16,7 @@
 
 <hr/>
 
-<div>
+<form class="add">
     <label for="name">Name:</label>
     <input type="text" id="name"/>
     <div id="invalid-name"></div>
@@ -50,12 +50,11 @@
 
     <label for="image">Image:</label>
     <input type="file" id="image"/>
-    <br/>
+</form>
 
-    <button id="button-add" onclick="addProduct()">Add</button>
+<button id="button-add" onclick="addProduct()">Add</button>
 
-    <div id="adding-result"></div>
-</div>
+<div id="adding-result"></div>
 
 <script th:inline="javascript">
     function addProduct() {
@@ -72,6 +71,7 @@
         let nodeBarcode = document.querySelector('#invalid-barcode');
         let message;
 
+        document.querySelector('#adding-result').textContent = '';
         nodeName.textContent = '';
         nodeDescribe.textContent = '';
         nodePrice.textContent = '';
@@ -115,10 +115,8 @@
                     node.textContent = '';
                     node.appendChild(message);
 
-                    document.querySelector('#name').value = '';
-                    document.querySelector('#describe').value = '';
-                    document.querySelector('#price').value = '0';
-                    document.querySelector('#barcode').value = '';
+                    document.querySelector('.add').reset();
+                    imageByteArray = [];
                 })
                 .catch(error => console.log('Request failed', error));
 
@@ -156,7 +154,7 @@
 
     const image = document.querySelector('#image');
     const reader = new FileReader();
-    const imageByteArray = [];
+    let imageByteArray = [];
 
     image.addEventListener('change', (e) => {
         reader.readAsArrayBuffer(e.target.files[0]);
