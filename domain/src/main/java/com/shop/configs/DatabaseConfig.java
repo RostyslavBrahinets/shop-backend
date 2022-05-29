@@ -16,10 +16,10 @@ import javax.sql.DataSource;
 public class DatabaseConfig {
     @Bean
     public DataSource dataSource(
-        @Value("${spring.database.url}") String url,
-        @Value("${spring.database.username}") String username,
-        @Value("${spring.database.password}") String password,
-        @Value("${spring.database.driver-class-name}") String driverClassName
+        @Value("${spring.datasource.url}") String url,
+        @Value("${spring.datasource.username}") String username,
+        @Value("${spring.datasource.password}") String password,
+        @Value("${spring.datasource.driver-class-name}") String driverClassName
     ) {
         final HikariConfig config = new HikariConfig();
 
