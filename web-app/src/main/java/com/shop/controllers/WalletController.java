@@ -40,7 +40,12 @@ public class WalletController {
 
         Wallet updatedWallet = null;
         if (customer.isPresent()) {
-            wallet.setAmountOfMoney(customer.get().getBalance() / -100.0);
+            long balance = customer.get().getBalance();
+            double amountOfMoney = Double.parseDouble(
+                String.format("%d.%d", balance / -100, balance % 100 * -1)
+            );
+
+            wallet.setAmountOfMoney(amountOfMoney);
             updatedWallet = walletService.update(wallet.getId(), wallet.getAmountOfMoney());
         }
 

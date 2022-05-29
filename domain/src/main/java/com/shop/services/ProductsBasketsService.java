@@ -1,6 +1,5 @@
 package com.shop.services;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Basket;
 import com.shop.models.Product;
 import com.shop.models.Wallet;
@@ -9,6 +8,7 @@ import com.shop.stripe.StripePayment;
 import com.shop.validators.BasketValidator;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.ProductValidator;
+import com.shop.validators.WalletValidator;
 import com.stripe.exception.StripeException;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +23,7 @@ public class ProductsBasketsService {
     private final ProductValidator productValidator;
     private final BasketValidator basketValidator;
     private final PersonValidator personValidator;
+    private final WalletValidator walletValidator;
     private final StripePayment stripePayment;
 
     public ProductsBasketsService(
@@ -33,6 +34,7 @@ public class ProductsBasketsService {
         ProductValidator productValidator,
         BasketValidator basketValidator,
         PersonValidator personValidator,
+        WalletValidator walletValidator,
         StripePayment stripePayment
     ) {
         this.productsBasketsRepository = productsBasketsRepository;
@@ -42,6 +44,7 @@ public class ProductsBasketsService {
         this.productValidator = productValidator;
         this.basketValidator = basketValidator;
         this.personValidator = personValidator;
+        this.walletValidator = walletValidator;
         this.stripePayment = stripePayment;
     }
 
@@ -96,12 +99,13 @@ public class ProductsBasketsService {
         double newAmountOfMoney = wallet.getAmountOfMoney();
         newAmountOfMoney -= basket.getTotalCost();
 
-        if (newAmountOfMoney < 0) {
-            throw new NotFoundException("Not enough money to buy");
-        }
+        walletValidator.validateAmountOfMoney(newAmountOfMoney);
+
+        String[] splitMoney = String.valueOf(newAmountOfMoney).split("\\.");
+        long money = Long.parseLong(splitMoney[0] + splitMoney[1]) * -1;
 
         walletService.update(wallet.getId(), newAmountOfMoney);
-        stripePayment.updateCustomer(wallet.getNumber(), (long) newAmountOfMoney * -100);
+        stripePayment.updateCustomer(wallet.getNumber(), money);
 
         basketService.update(basket.getId(), 0);
 
