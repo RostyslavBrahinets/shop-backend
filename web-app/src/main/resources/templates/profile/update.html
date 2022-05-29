@@ -129,12 +129,23 @@
                 body: JSON.stringify(bodyContacts)
             })
                 .then(response => response.json())
-                .then(() => {
+                .then(data => {
+                    const nodeError = document.querySelector('#invalid-phone');
                     const node = document.querySelector('#updating-result');
-                    const message = document.createTextNode(`Profile Successfully Updated`);
+                    const count = Object.keys(data).length;
 
+                    let message;
+
+                    nodeError.textContent = '';
                     node.textContent = '';
-                    node.appendChild(message);
+
+                    if (count === 1) {
+                        message = document.createTextNode(data.message);
+                        nodeError.appendChild(message);
+                    } else {
+                        message = document.createTextNode(`Profile Successfully Updated`);
+                        node.appendChild(message);
+                    }
                 })
                 .catch(error => console.log('Request failed', error));
         }
