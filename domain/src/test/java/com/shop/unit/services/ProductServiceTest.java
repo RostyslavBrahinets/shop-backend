@@ -1,6 +1,8 @@
 package com.shop.unit.services;
 
+import com.shop.models.Category;
 import com.shop.models.Product;
+import com.shop.repositories.ProductCategoryRepository;
 import com.shop.repositories.ProductRepository;
 import com.shop.services.ProductService;
 import com.shop.validators.ProductValidator;
@@ -15,14 +17,15 @@ import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
     @Mock
     private ProductValidator productValidator;
+    @Mock
+    private ProductCategoryRepository productCategoryRepository;
 
     private ProductService productService;
 
@@ -32,7 +35,8 @@ class ProductServiceTest {
 
         productService = new ProductService(
             productRepository,
-            productValidator
+            productValidator,
+            productCategoryRepository
         );
     }
 
@@ -171,8 +175,35 @@ class ProductServiceTest {
     @Test
     @DisplayName("Product was deleted")
     void product_was_deleted() {
-        productService.delete("123");
-        verify(productRepository).delete("123");
+        String barcode = "123";
+        long productId = 1L;
+        long categoryId = 1L;
+
+        when(productRepository.findByBarcode(barcode))
+            .thenReturn(
+                Optional.of(
+                    Product.of(
+                            "name",
+                            "describe",
+                            0,
+                            "123",
+                            true,
+                            new byte[]{1, 1, 1}
+                        )
+                        .withId(1)
+                )
+            );
+
+        when(productCategoryRepository.findCategoryForProduct(productId))
+            .thenReturn(Optional.of(Category.of("name").withId(1)));
+
+        productService.delete(barcode);
+
+        verify(productValidator, atLeast(1)).validate(barcode);
+        verify(productRepository).findByBarcode(barcode);
+        verify(productCategoryRepository).findCategoryForProduct(productId);
+        verify(productCategoryRepository).deleteProductFromCategory(productId, categoryId);
+        verify(productRepository).delete(barcode);
     }
 
     @Test

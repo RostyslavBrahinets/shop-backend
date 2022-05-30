@@ -1,6 +1,8 @@
 package com.shop.integration.services.contextconfiguration;
 
+import com.shop.models.Category;
 import com.shop.models.Product;
+import com.shop.repositories.ProductCategoryRepository;
 import com.shop.repositories.ProductRepository;
 import com.shop.services.ProductService;
 import com.shop.validators.ProductValidator;
@@ -12,6 +14,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -27,6 +31,8 @@ public class ProductServiceContextConfigurationTest {
     private ProductRepository productRepository;
     @Autowired
     private ProductValidator productValidator;
+    @Autowired
+    private ProductCategoryRepository productCategoryRepository;
     @Autowired
     private ProductService productService;
 
@@ -57,7 +63,7 @@ public class ProductServiceContextConfigurationTest {
         productService.findByBarcode(barcode);
 
         verify(productValidator, atLeast(1)).validate(barcode);
-        verify(productRepository).findByBarcode(barcode);
+        verify(productRepository, atLeast(1)).findByBarcode(barcode);
     }
 
     @Test
@@ -80,10 +86,33 @@ public class ProductServiceContextConfigurationTest {
     @DisplayName("Delete product")
     void delete_product() {
         String barcode = "123";
+        long productId = 1L;
+        long categoryId = 1L;
+
+        when(productRepository.findByBarcode(barcode))
+            .thenReturn(
+                Optional.of(
+                    Product.of(
+                            "name",
+                            "describe",
+                            0,
+                            "123",
+                            true,
+                            new byte[]{1, 1, 1}
+                        )
+                        .withId(1)
+                )
+            );
+
+        when(productCategoryRepository.findCategoryForProduct(productId))
+            .thenReturn(Optional.of(Category.of("name").withId(1)));
 
         productService.delete(barcode);
 
         verify(productValidator, atLeast(1)).validate(barcode);
+        verify(productRepository, atLeast(1)).findByBarcode(barcode);
+        verify(productCategoryRepository).findCategoryForProduct(productId);
+        verify(productCategoryRepository).deleteProductFromCategory(productId, categoryId);
         verify(productRepository).delete(barcode);
     }
 
@@ -114,6 +143,11 @@ public class ProductServiceContextConfigurationTest {
         @Bean
         public ProductValidator productValidator() {
             return mock(ProductValidator.class);
+        }
+
+        @Bean
+        public ProductCategoryRepository productCategoryRepository() {
+            return mock(ProductCategoryRepository.class);
         }
     }
 }
