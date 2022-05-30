@@ -29,8 +29,10 @@ public class ProductValidator {
             throw new ValidationException("Describe is invalid");
         } else if (price < 0) {
             throw new ValidationException("Price is invalid");
-        } else if (barcode == null || barcode.isBlank()) {
+        } else if (invalidBarcode(barcode) == 1) {
             throw new ValidationException("Barcode is invalid");
+        } else if (invalidBarcode(barcode) == 2) {
+            throw new NotFoundException("Barcode already in use");
         }
     }
 
@@ -60,5 +62,23 @@ public class ProductValidator {
         if (!barcodes.contains(barcode)) {
             throw new NotFoundException("Barcode not found");
         }
+    }
+
+    private byte invalidBarcode(String barcode) {
+        if (barcode == null || barcode.isBlank()) {
+            return (byte) 1;
+        }
+
+        List<String> barcodes = new ArrayList<>();
+
+        for (Product product : productRepository.findAll()) {
+            barcodes.add(product.getBarcode());
+        }
+
+        if (barcodes.contains(barcode)) {
+            return (byte) 2;
+        }
+
+        return (byte) 0;
     }
 }
