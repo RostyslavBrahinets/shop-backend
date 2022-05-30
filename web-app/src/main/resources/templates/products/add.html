@@ -63,7 +63,6 @@
         const describe = document.querySelector('#describe').value;
         const price = parseFloat(document.querySelector('#price').value);
         const barcode = document.querySelector('#barcode').value;
-        const category = document.querySelector('#category').value.toString();
         const inStock = document.querySelector('#in-stock').value === 'True';
 
         let nodeName = document.querySelector('#invalid-name');
@@ -84,7 +83,7 @@
         } else if (!describe || describe.trim() === '') {
             message = document.createTextNode('Invalid Describe');
             nodeDescribe.appendChild(message);
-        } else if (!price || price < 0) {
+        } else if (price < 0) {
             message = document.createTextNode('Invalid Price');
             nodePrice.appendChild(message);
         } else if (!barcode || barcode.trim() === '') {
@@ -110,6 +109,8 @@
             })
                 .then(response => response.json())
                 .then(data => {
+                    addProductToCategory(data.barcode)
+
                     const node = document.querySelector('#adding-result');
                     const message = document.createTextNode(`Product '${data.name}' Successfully Added`);
 
@@ -120,6 +121,10 @@
                     imageByteArray = [];
                 })
                 .catch(error => console.log('Request failed', error));
+        }
+
+        function addProductToCategory(barcode) {
+            const category = document.querySelector('#category').value.toString();
 
             const bodyProductCategory = {
                 'barcode': barcode,
