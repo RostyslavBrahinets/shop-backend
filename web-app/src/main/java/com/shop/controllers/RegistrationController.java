@@ -22,7 +22,6 @@ public class RegistrationController {
     public String registration(
         @RequestBody RegistrationDto registrationDto
     ) throws StripeException {
-        System.out.println("controller");
         registrationService.registration(
             registrationDto.getFirstName(),
             registrationDto.getLastName(),

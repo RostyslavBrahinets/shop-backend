@@ -41,9 +41,12 @@ public class AdminViewController {
 
     @GetMapping("/users/{id}")
     public String getUser(
+        @AuthenticationPrincipal UserDetails userDetails,
         @PathVariable long id,
         Model model
     ) {
+        Person person = personService.findByEmail(userDetails.getUsername());
+        model.addAttribute("currentId", person.getId());
         model.addAttribute("id", id);
         return "admin/find";
     }
