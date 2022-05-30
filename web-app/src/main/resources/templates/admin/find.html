@@ -33,23 +33,29 @@
         })
             .then(response => response.json())
             .then(data => {
+                const count = Object.keys(data).length;
                 const node = document.createElement('div');
 
-                const divs = [];
-                for (let i = 0; i < 2; i++) {
-                    divs.push(document.createElement('div'))
+                if (count === 1 || data.id === id) {
+                    node.appendChild(document.createTextNode('Person Not Found'));
+                    document.querySelector('.person-container').append(node);
+                } else {
+                    const divs = [];
+                    for (let i = 0; i < 2; i++) {
+                        divs.push(document.createElement('div'))
+                    }
+
+                    const texts = [];
+                    texts.push(document.createTextNode(`First Name: ${data.firstName}`));
+                    texts.push(document.createTextNode(`Last Name: ${data.lastName}`));
+
+                    for (let i = 0; i < 2; i++) {
+                        divs[i].appendChild(texts[i]);
+                        node.appendChild(divs[i]);
+                    }
+
+                    document.querySelector('.person-container').append(node);
                 }
-
-                const texts = [];
-                texts.push(document.createTextNode(`First Name: ${data.firstName}`));
-                texts.push(document.createTextNode(`Last Name: ${data.lastName}`));
-
-                for (let i = 0; i < 2; i++) {
-                    divs[i].appendChild(texts[i]);
-                    node.appendChild(divs[i]);
-                }
-
-                document.querySelector('.person-container').append(node);
             })
             .catch(error => console.log('Request failed', error));
     }
@@ -64,6 +70,12 @@
         })
             .then(response => response.json())
             .then(data => {
+                const count = Object.keys(data).length;
+
+                if (count === 1 || data.id === id) {
+                    return;
+                }
+
                 const node = document.createElement('div');
 
                 const divs = [];
@@ -95,6 +107,12 @@
         })
             .then(response => response.json())
             .then(data => {
+                const count = Object.keys(data).length;
+
+                if (count === 1 || data.id === id) {
+                    return;
+                }
+
                 const node = document.createElement('div');
                 const role = document.createTextNode(data.name);
                 const form = document.createElement('form');

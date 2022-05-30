@@ -27,9 +27,8 @@
             <a th:href="@{/wallet}">Wallet</a>
         </span>
 
-        <a th:href="@{/profile}">Profile</a>
-
         <span th:if="${role == 'ROLE_USER' || role == 'ROLE_ADMIN'}">
+            <a th:href="@{/profile}">Profile</a>
             <button type="submit">Log Out</button>
         </span>
     </div>

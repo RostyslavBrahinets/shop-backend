@@ -23,9 +23,8 @@
             <a th:href="@{/wallet}">Wallet</a>
         </span>
 
-        <a th:href="@{/profile}">Profile</a>
-
         <span th:if="${role == 'ROLE_USER' || role == 'ROLE_ADMIN'}">
+            <a th:href="@{/profile}">Profile</a>
             <button type="submit">Log Out</button>
         </span>
     </div>
@@ -50,37 +49,48 @@
             },
             method: 'GET'
         })
-            .then(response => response.ok ? response.json() : alert(error))
+            .then(response => response.json())
             .then(data => {
-                if (data.length === 0) {
+                const count = Object.keys(data).length;
+
+                if (count === 1) {
+                    const node = document.createElement('div');
+                    node.appendChild(document.createTextNode(data.message));
+                    document.querySelector('.products-container').append(node);
+
                     document.querySelector('.sort').style.visibility = 'hidden';
-                    const node = document.createElement('div');
-                    node.appendChild(document.createTextNode('Products Not Found In This Category'));
-                    document.querySelector('.products-container').append(node);
-                    return;
+                } else {
+                    if (data.length === 0) {
+                        document.querySelector('.sort').style.visibility = 'hidden';
+                        const node = document.createElement('div');
+                        node.appendChild(document.createTextNode('Products Not Found In This Category'));
+                        document.querySelector('.products-container').append(node);
+                        return;
+                    }
+
+                    const links = data.map(({id}) => `http://localhost:8080/products/${id}`);
+
+                    let formattedData = data.map(({name}) => `${name}`);
+                    formattedData = formattedData.join('-').split('-');
+
+                    let i = 0;
+                    formattedData.forEach(element => {
+                        const node = document.createElement('div');
+                        const a = document.createElement('a');
+                        const link = document.createTextNode(element);
+
+                        a.appendChild(link);
+                        a.title = element.toString();
+                        a.href = links[i];
+
+                        node.appendChild(a)
+
+                        document.querySelector('.products-container').append(node);
+                        i++;
+                    });
                 }
-
-                const links = data.map(({id}) => `http://localhost:8080/products/${id}`);
-
-                let formattedData = data.map(({name}) => `${name}`);
-                formattedData = formattedData.join('-').split('-');
-
-                let i = 0;
-                formattedData.forEach(element => {
-                    const node = document.createElement('div');
-                    const a = document.createElement('a');
-                    const link = document.createTextNode(element);
-
-                    a.appendChild(link);
-                    a.title = element.toString();
-                    a.href = links[i];
-
-                    node.appendChild(a)
-
-                    document.querySelector('.products-container').append(node);
-                    i++;
-                });
-            });
+            })
+            .catch(error => console.log('Request failed', error));
     }
 
     /*<![CDATA[*/
