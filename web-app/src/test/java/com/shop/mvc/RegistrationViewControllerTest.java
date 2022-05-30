@@ -1,7 +1,5 @@
 package com.shop.mvc;
 
-import com.shop.models.Person;
-import com.shop.models.Wallet;
 import com.shop.security.LoginPasswordAuthenticationProvider;
 import com.shop.services.*;
 import com.shop.stripe.StripePayment;
@@ -16,14 +14,10 @@ import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
-import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockBeans({
@@ -74,35 +68,5 @@ class RegistrationViewControllerTest {
                 .with(user("admin").password("admin").roles("ADMIN")))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/"));
-    }
-
-    @Test
-    @DisplayName("Redirection new user")
-    void registration_new_user() throws Exception {
-        when(personService.findAll())
-            .thenReturn(
-                List.of(
-                    new Person(
-                        1,
-                        "John",
-                        "Smith"
-                    )
-                )
-            );
-
-        when(walletService.save("123", 0, 1))
-            .thenReturn(new Wallet(1, "123", 0));
-
-        mockMvc.perform(post("/registration")
-                .with(anonymous())
-                .param("firstName", "John")
-                .param("lastName", "Smith")
-                .param("email", "test@email.com")
-                .param("phone", "+380000000000")
-                .param("password", "password")
-                .param("confirm-password", "password")
-            )
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/login"));
     }
 }
