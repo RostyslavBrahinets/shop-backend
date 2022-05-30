@@ -172,7 +172,6 @@ public class Product implements Serializable {
             + ", describe='" + describe + '\''
             + ", barcode='" + barcode + '\''
             + ", price=" + price
-            + ", category=" + category
             + ", inStock=" + inStock
             + '}';
     }
