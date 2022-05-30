@@ -6,45 +6,132 @@
 <div>
     <h1>Registration</h1>
 
-    <form name="registration" th:action="@{/registration}" method="post">
-        <div>
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName"/>
-        </div>
+    <div>
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName"/>
+        <div id="invalid-first-name"></div>
+        <br/>
 
-        <div>
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName"/>
-        </div>
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName"/>
+        <div id="invalid-last-name"></div>
+        <br/>
 
-        <div>
-            <label for="email">Email</label>
-            <input type="text" id="email" name="email"/>
-        </div>
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email"/>
+        <div id="invalid-email"></div>
+        <br/>
 
-        <div>
-            <label for="phone">Phone</label>
-            <input type="text" id="phone" name="phone"/>
-        </div>
+        <label for="phone">Phone</label>
+        <input type="text" id="phone" name="phone"/>
+        <div id="invalid-phone"></div>
+        <br/>
 
-        <div>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password"/>
-        </div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password"/>
+        <div id="invalid-password"></div>
+        <br/>
 
-        <div>
-            <label for="confirm-password">Confirm Password</label>
-            <input type="password" id="confirm-password" name="confirm-password"/>
-        </div>
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" name="confirm-password"/>
+        <div id="invalid-confirm-password"></div>
+        <br/>
 
-        <div>
-            <button type="submit">Registration</button>
-        </div>
-    </form>
+        <button id="button-registration" onclick="registration()">Registration</button>
+    </div>
+
+    <br/>
 
     <div>
         <a th:href="@{/login}">Login</a>
     </div>
 </div>
+
+<script th:inline="javascript">
+    function registration() {
+        const firstName = document.querySelector('#firstName').value;
+        const lastName = document.querySelector('#lastName').value;
+        const email = document.querySelector('#email').value;
+        const phone = document.querySelector('#phone').value;
+        const password = document.querySelector('#password').value;
+        const confirmPassword = document.querySelector('#confirm-password').value;
+
+        const nodeFirstName = document.querySelector('#invalid-first-name');
+        const nodeLastName = document.querySelector('#invalid-last-name');
+        const nodeEmail = document.querySelector('#invalid-email');
+        const nodePhone = document.querySelector('#invalid-phone');
+        const nodePassword = document.querySelector('#invalid-password');
+        const nodeConfirmPassword = document.querySelector('#invalid-confirm-password');
+
+        let message;
+
+        nodeFirstName.textContent = '';
+        nodeLastName.textContent = '';
+        nodeEmail.textContent = '';
+        nodePhone.textContent = '';
+        nodePassword.textContent = '';
+        nodeConfirmPassword.textContent = '';
+
+        if (!firstName || firstName.trim() === '') {
+            message = document.createTextNode('Invalid First Name');
+            nodeFirstName.appendChild(message);
+        } else if (!lastName || lastName.trim() === '') {
+            message = document.createTextNode('Invalid Last Name');
+            nodeLastName.appendChild(message);
+        } else if (!email || email.trim() === '') {
+            message = document.createTextNode('Invalid Email');
+            nodeEmail.appendChild(message);
+        } else if (!phone || phone.trim() === '') {
+            message = document.createTextNode('Invalid Phone');
+            nodePhone.appendChild(message);
+        } else if (!password || password.trim() === '') {
+            message = document.createTextNode('Invalid Password');
+            nodePassword.appendChild(message);
+        } else if (!confirmPassword || confirmPassword.trim() === '') {
+            message = document.createTextNode('Invalid Confirm Password');
+            nodeConfirmPassword.appendChild(message);
+        } else if (password !== confirmPassword) {
+            message = document.createTextNode('Confirm Password Don\'t Equals Password');
+            nodeConfirmPassword.appendChild(message);
+        } else {
+            const bodyRegistration = {
+                'firstName': firstName,
+                'lastName': lastName,
+                'email': email,
+                'phone': phone,
+                'password': password
+            };
+
+            fetch(`http://localhost:8080/web-api/registration`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(bodyRegistration)
+            })
+                .then(response => response.text())
+                .then(data => {
+                    let message;
+
+                    if (data.includes('message')) {
+                        const indexStart = data.indexOf(':') + 2;
+                        const indexEnd = data.length - 2;
+
+                        message = data.substring(indexStart, indexEnd);
+
+                        if (message.includes('Phone')) {
+                            nodePhone.appendChild(document.createTextNode(message));
+                        } else if (message.includes('E-mail')) {
+                            nodeEmail.appendChild(document.createTextNode(message));
+                        }
+                    }
+
+                    window.location.href = '/login';
+                })
+                .catch(error => console.log('Request failed', error));
+        }
+    }
+</script>
 </body>
 </html>

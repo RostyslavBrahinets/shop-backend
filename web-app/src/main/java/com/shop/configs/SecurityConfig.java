@@ -35,8 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .mvcMatchers(
                 "/registration", "/error", "/", "/categories/**", "/products/**",
-                "/web-api**", "/web-api/categories/**", "/web-api/products/**",
-                "/web-api/product-category/**", "/js/**", "/images/**"
+                "/web-api/registration", "/web-api**", "/web-api/categories/**",
+                "/web-api/products/**", "/web-api/product-category/**", "/js/**", "/images/**"
             ).permitAll()
             .mvcMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
