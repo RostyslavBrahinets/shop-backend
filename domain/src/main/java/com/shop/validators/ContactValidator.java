@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ContactValidator {
@@ -35,10 +36,17 @@ public class ContactValidator {
         }
     }
 
-    public void validatePhone(String phone) {
+    public void validatePhone(String phone, long id) {
+        Optional<Contact> contact = contactRepository.findById(id);
+        String currentPhone = "";
+
+        if (contact.isPresent()) {
+            currentPhone = contact.get().getPhone();
+        }
+
         if (isInvalidPhone(phone)) {
             throw new ValidationException("Phone is invalid");
-        } else if (isPhoneAlreadyInUse(phone)) {
+        } else if (isPhoneAlreadyInUse(phone) && !phone.equals(currentPhone)) {
             throw new ValidationException("Phone is already in use");
         }
     }

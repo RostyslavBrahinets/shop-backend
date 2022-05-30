@@ -58,7 +58,7 @@ public class ContactService {
 
     public Contact update(long id, String phone) {
         contactValidator.validate(id);
-        contactValidator.validatePhone(phone);
+        contactValidator.validatePhone(phone, id);
         return contactRepository.update(id, phone);
     }
 
