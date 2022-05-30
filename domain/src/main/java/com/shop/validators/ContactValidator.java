@@ -36,21 +36,6 @@ public class ContactValidator {
         }
     }
 
-    public void validatePhone(String phone, long id) {
-        Optional<Contact> contact = contactRepository.findById(id);
-        String currentPhone = "";
-
-        if (contact.isPresent()) {
-            currentPhone = contact.get().getPhone();
-        }
-
-        if (isInvalidPhone(phone)) {
-            throw new ValidationException("Phone is invalid");
-        } else if (isPhoneAlreadyInUse(phone) && !phone.equals(currentPhone)) {
-            throw new ValidationException("Phone is already in use");
-        }
-    }
-
     public void validate(long id) {
         List<Long> ids = new ArrayList<>();
 
@@ -68,6 +53,21 @@ public class ContactValidator {
             if (isInValidEmail(email)) {
                 throw new ValidationException("E-mail is invalid");
             }
+        }
+    }
+
+    public void validatePhone(String phone, long id) {
+        Optional<Contact> contact = contactRepository.findById(id);
+        String currentPhone = "";
+
+        if (contact.isPresent()) {
+            currentPhone = contact.get().getPhone();
+        }
+
+        if (isInvalidPhone(phone)) {
+            throw new ValidationException("Phone is invalid");
+        } else if (isPhoneAlreadyInUse(phone) && !phone.equals(currentPhone)) {
+            throw new ValidationException("Phone is already in use");
         }
     }
 

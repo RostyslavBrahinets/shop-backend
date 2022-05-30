@@ -91,7 +91,7 @@ public class ContactServiceContextConfigurationTest {
         contactService.update(id, phone);
 
         verify(contactValidator, atLeast(1)).validate(id);
-        verify(contactValidator, atLeast(1)).validatePhone(phone);
+        verify(contactValidator, atLeast(1)).validatePhone(phone, id);
         verify(contactRepository).update(id, phone);
     }
 

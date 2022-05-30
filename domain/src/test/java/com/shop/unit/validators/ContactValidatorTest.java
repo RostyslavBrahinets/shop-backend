@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -184,44 +185,69 @@ public class ContactValidatorTest {
     @Test
     @DisplayName("Phone validated without exceptions")
     void phone_validated_without_exceptions() {
+        when(contactRepository.findById(1))
+            .thenReturn(Optional.of(
+                new Contact(1, "test@email.com", "+380000000000", "password")
+            ));
+
         assertDoesNotThrow(
-            () -> contactValidator.validatePhone("+380000000000")
+            () -> contactValidator.validatePhone("+380000000000", 1)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because phone is null")
     void throw_validation_exception_because_phone_is_null() {
+        when(contactRepository.findById(1))
+            .thenReturn(Optional.of(
+                new Contact(1, "test@email.com", "+380000000000", "password")
+            ));
+
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validatePhone(null)
+            () -> contactValidator.validatePhone(null, 1)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because phone is empty")
     void throw_validation_exception_because_phone_is_empty() {
+        when(contactRepository.findById(1))
+            .thenReturn(Optional.of(
+                new Contact(1, "test@email.com", "+380000000000", "password")
+            ));
+
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validatePhone("")
+            () -> contactValidator.validatePhone("", 1)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because phone not starts with '+'")
     void throw_validation_exception_because_phone_not_starts_with_plus() {
+        when(contactRepository.findById(1))
+            .thenReturn(Optional.of(
+                new Contact(1, "test@email.com", "+380000000000", "password")
+            ));
+
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validatePhone("380000000000")
+            () -> contactValidator.validatePhone("380000000000", 1)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because length of phone less then expected")
-    void throw_validation_exception_because_phone_less_then_expected() {
+    void throw_validation_exception_because_length_of_phone_less_then_expected() {
+        when(contactRepository.findById(1))
+            .thenReturn(Optional.of(
+                new Contact(1, "test@email.com", "+380000000000", "password")
+            ));
+
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validatePhone("+380")
+            () -> contactValidator.validatePhone("+380", 1)
         );
     }
 
@@ -233,9 +259,14 @@ public class ContactValidatorTest {
                 List.of(new Contact(1, "test@email.com", "+380000000000", "password"))
             );
 
+        when(contactRepository.findById(1))
+            .thenReturn(Optional.of(
+                new Contact(2, "test@email.com", "+381111111111", "password")
+            ));
+
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validatePhone("+380000000000")
+            () -> contactValidator.validatePhone("+380000000000", 1)
         );
     }
 
