@@ -77,22 +77,25 @@ public class ProductsBasketsController {
     }
 
     @PostMapping("/buy")
-    public void buy(
-        @AuthenticationPrincipal UserDetails userDetail,
-        HttpServletResponse response
-    ) throws StripeException, IOException {
+    public String buy(
+        @AuthenticationPrincipal UserDetails userDetail
+    ) throws StripeException {
         Person person = personService.findByEmail(userDetail.getUsername());
         Basket basket = basketService.findByPerson(person.getId());
 
         List<Product> productsInBasket = productsBasketsService
             .findAllProductsInBasket(basket.getId());
 
+        if (productsInBasket.size() == 0) {
+            return "Basket Is Empty";
+        }
+
         report.setProducts(productsInBasket);
         report.setTotalCost(basket.getTotalCost());
 
         productsBasketsService.buy(person.getId());
 
-        response.sendRedirect("/basket");
+        return "Products Bought";
     }
 
     @PostMapping("/download-report")

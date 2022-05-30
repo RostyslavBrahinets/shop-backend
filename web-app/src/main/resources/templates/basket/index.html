@@ -23,13 +23,15 @@
 <div class="products-container"></div>
 <div class="basket-container"></div>
 
-<form name="buy" th:action="@{/web-api/products-baskets/buy}" method="post">
-    <button type="submit">Buy</button>
-</form>
+<div>
+    <button onclick="buy()">Buy</button>
+</div>
 
 <form name="download-report" th:action="@{/web-api/products-baskets/download-report}" method="post">
     <button type="submit">Download Report</button>
 </form>
+
+<div class="buying-message"></div>
 
 <script th:inline="javascript">
     function displayProductsInBasket() {
@@ -93,6 +95,32 @@
                 const text = document.createTextNode(`Total cost: ${data.totalCost}`);
                 node.appendChild(text);
                 document.querySelector('.basket-container').append(node);
+            })
+            .catch(error => console.log('Request failed', error));
+    }
+
+    function buy() {
+        fetch(`http://localhost:8080/web-api/products-baskets/buy`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => response.text())
+            .then(data => {
+                const nodeBuy = document.querySelector('.buying-message');
+
+                if (data.includes('message')) {
+                    const indexStart = data.indexOf(':') + 2;
+                    const indexEnd = data.length - 2;
+                    const message = data.substring(indexStart, indexEnd);
+
+                    nodeBuy.appendChild(document.createTextNode(message));
+                } else {
+                    alert(data);
+                    window.location.href = '/basket';
+                }
             })
             .catch(error => console.log('Request failed', error));
     }
