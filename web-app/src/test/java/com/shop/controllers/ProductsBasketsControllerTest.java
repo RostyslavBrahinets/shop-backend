@@ -32,7 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @MockBeans({
     @MockBean(PasswordEncoder.class),
-    @MockBean(LoginPasswordAuthenticationProvider.class)
+    @MockBean(LoginPasswordAuthenticationProvider.class),
+    @MockBean(ReportDto.class)
 })
 @WebMvcTest(ProductsBasketsController.class)
 class ProductsBasketsControllerTest {
@@ -48,9 +49,6 @@ class ProductsBasketsControllerTest {
     @Autowired
     @MockBean
     private WalletService walletService;
-    @Autowired
-    @MockBean
-    private ReportDto report;
 
     @Autowired
     private MockMvc mockMvc;
@@ -156,8 +154,7 @@ class ProductsBasketsControllerTest {
 
         mockMvc.perform(post(PRODUCTS_BASKETS_URL + "/buy")
                 .with(user("admin").password("admin").roles("ADMIN")))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/basket"));
+            .andExpect(status().isOk());
 
         verify(productsBasketsService).buy(1);
     }
