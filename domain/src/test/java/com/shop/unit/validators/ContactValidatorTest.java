@@ -93,6 +93,27 @@ public class ContactValidatorTest {
     }
 
     @Test
+    @DisplayName("Throw ValidationException because email of contact already in use")
+    void throw_validation_exception_because_email_of_contact_already_in_use() {
+        when(contactRepository.findAll())
+            .thenReturn(
+                List.of(
+                    new Contact(
+                        1,
+                        "test@email.com",
+                        "+380000000000",
+                        "password"
+                    )
+                )
+            );
+
+        assertThrows(
+            ValidationException.class,
+            () -> contactValidator.validate("test@email.com", "+380000000000", "password")
+        );
+    }
+
+    @Test
     @DisplayName("Throw ValidationException because phone of contact is null")
     void throw_validation_exception_because_phone_of_contact_is_null() {
         assertThrows(
@@ -138,10 +159,9 @@ public class ContactValidatorTest {
 
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validatePhone("+380000000000")
+            () -> contactValidator.validate("+380000000000")
         );
     }
-
 
     @Test
     @DisplayName("Throw ValidationException because password of contact is null")
