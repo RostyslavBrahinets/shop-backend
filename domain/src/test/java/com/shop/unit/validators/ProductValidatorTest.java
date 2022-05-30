@@ -102,6 +102,30 @@ public class ProductValidatorTest {
     }
 
     @Test
+    @DisplayName("Throw ValidationException because barcode of product already in use")
+    void throw_validation_exception_because_barcode_of_product_already_in_use() {
+        when(productRepository.findAll())
+            .thenReturn(
+                List.of(
+                    new Product(
+                        1,
+                        "name",
+                        "describe",
+                        0,
+                        "123",
+                        true,
+                        new byte[]{1, 1, 1}
+                    )
+                )
+            );
+
+        assertThrows(
+            ValidationException.class,
+            () -> productValidator.validate("name", "describe", 0, "123")
+        );
+    }
+
+    @Test
     @DisplayName("Id of product validated without exceptions")
     void id_of_product_validated_without_exceptions() {
         when(productRepository.findAll())
