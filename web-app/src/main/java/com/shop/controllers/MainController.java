@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = MainController.MAIN_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(MainController.MAIN_URL)
 public class MainController {
     public static final String MAIN_URL = "/web-api";
     private final ProductService productService;

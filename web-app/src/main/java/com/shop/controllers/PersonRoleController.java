@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = PersonRoleController.PERSON_ROLE_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(PersonRoleController.PERSON_ROLE_URL)
 public class PersonRoleController {
     public static final String PERSON_ROLE_URL = "/web-api/person-role";
     private final PersonRoleService personRoleService;

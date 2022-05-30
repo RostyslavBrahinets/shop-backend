@@ -2,13 +2,12 @@ package com.shop.controllers;
 
 import com.shop.models.Category;
 import com.shop.services.CategoryService;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = CategoryController.CATEGORIES_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(CategoryController.CATEGORIES_URL)
 public class CategoryController {
     public static final String CATEGORIES_URL = "/web-api/categories";
     private final CategoryService categoryService;

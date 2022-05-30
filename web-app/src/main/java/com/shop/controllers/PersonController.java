@@ -4,13 +4,12 @@ import com.shop.dto.PersonDto;
 import com.shop.models.Person;
 import com.shop.services.PersonService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = PersonController.PEOPLE_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(PersonController.PEOPLE_URL)
 public class PersonController {
     public static final String PEOPLE_URL = "/web-api/people";
     private final PersonService personService;

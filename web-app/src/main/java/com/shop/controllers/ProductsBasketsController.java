@@ -11,7 +11,6 @@ import com.shop.services.ProductsBasketsService;
 import com.shop.services.WalletService;
 import com.shop.utilities.PdfUtility;
 import com.stripe.exception.StripeException;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = ProductsBasketsController.PRODUCTS_BASKETS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(ProductsBasketsController.PRODUCTS_BASKETS_URL)
 public class ProductsBasketsController {
     public static final String PRODUCTS_BASKETS_URL = "/web-api/products-baskets";
     private final ProductsBasketsService productsBasketsService;

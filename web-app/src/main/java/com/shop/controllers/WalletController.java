@@ -6,14 +6,13 @@ import com.shop.stripe.StripePayment;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = WalletController.WALLETS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(WalletController.WALLETS_URL)
 public class WalletController {
     public static final String WALLETS_URL = "/web-api/wallets";
     private final WalletService walletService;

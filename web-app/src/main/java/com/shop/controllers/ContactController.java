@@ -4,13 +4,12 @@ import com.shop.dto.ContactDto;
 import com.shop.models.Contact;
 import com.shop.services.ContactService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = ContactController.CONTACTS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(ContactController.CONTACTS_URL)
 public class ContactController {
     public static final String CONTACTS_URL = "/web-api/contacts";
     private final ContactService contactService;

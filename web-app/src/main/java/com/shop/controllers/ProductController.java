@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping(value = ProductController.PRODUCTS_URL)
+@RequestMapping(ProductController.PRODUCTS_URL)
 public class ProductController {
     public static final String PRODUCTS_URL = "/web-api/products";
     private final ProductService productService;

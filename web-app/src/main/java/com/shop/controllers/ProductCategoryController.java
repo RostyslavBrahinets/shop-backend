@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = ProductCategoryController.PRODUCT_CATEGORY_URL)
+@RequestMapping(ProductCategoryController.PRODUCT_CATEGORY_URL)
 public class ProductCategoryController {
     public static final String PRODUCT_CATEGORY_URL = "/web-api/product-category";
     private final ProductCategoryService productCategoryService;
