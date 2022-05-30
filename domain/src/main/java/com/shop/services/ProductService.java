@@ -1,6 +1,8 @@
 package com.shop.services;
 
+import com.shop.models.Category;
 import com.shop.models.Product;
+import com.shop.repositories.ProductCategoryRepository;
 import com.shop.repositories.ProductRepository;
 import com.shop.validators.ProductValidator;
 import org.springframework.stereotype.Service;
@@ -14,13 +16,16 @@ import java.util.Random;
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductValidator productValidator;
+    private final ProductCategoryRepository productCategoryRepository;
 
     public ProductService(
         ProductRepository productRepository,
-        ProductValidator productValidator
+        ProductValidator productValidator,
+        ProductCategoryRepository productCategoryRepository
     ) {
         this.productRepository = productRepository;
         this.productValidator = productValidator;
+        this.productCategoryRepository = productCategoryRepository;
     }
 
     public List<Product> findAll() {
@@ -53,6 +58,17 @@ public class ProductService {
 
     public void delete(String barcode) {
         productValidator.validate(barcode);
+
+        Optional<Product> product = productRepository.findByBarcode(barcode);
+
+        if (product.isPresent()) {
+            Optional<Category> category = productCategoryRepository.findCategoryForProduct(product.get().getId());
+            category.ifPresent(value -> productCategoryRepository.deleteProductFromCategory(
+                product.get().getId(),
+                value.getId())
+            );
+        }
+
         productRepository.delete(barcode);
     }
 
