@@ -32,7 +32,7 @@ public class ProductValidator {
         } else if (invalidBarcode(barcode) == 1) {
             throw new ValidationException("Barcode is invalid");
         } else if (invalidBarcode(barcode) == 2) {
-            throw new NotFoundException("Barcode already in use");
+            throw new ValidationException("Barcode already in use");
         }
     }
 
