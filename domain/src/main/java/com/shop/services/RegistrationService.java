@@ -55,34 +55,18 @@ public class RegistrationService {
         );
 
         if (validData) {
-            savePerson(firstName, lastName);
+            personService.save(firstName, lastName);
             long personId = findPersonId();
-            saveContactForPerson(email, phone, password, personId);
-            saveRoleForPerson(personId);
-            saveBasketForPerson(personId);
+            contactService.save(email, phone, password, personId);
+            personRoleService.saveRoleForPerson(personId, 2);
+            basketService.save(0, personId);
             saveWalletForPerson(personId);
         }
-    }
-
-    private void savePerson(String firstName, String lastName) {
-        personService.save(firstName, lastName);
     }
 
     private long findPersonId() {
         List<Person> people = personService.findAll();
         return people.get(people.size() - 1).getId();
-    }
-
-    private void saveContactForPerson(String email, String phone, String password, long personId) {
-        contactService.save(email, phone, password, personId);
-    }
-
-    private void saveRoleForPerson(long personId) {
-        personRoleService.saveRoleForPerson(personId, 2);
-    }
-
-    private void saveBasketForPerson(long personId) {
-        basketService.save(0, personId);
     }
 
     private void saveWalletForPerson(long personId) throws StripeException {
