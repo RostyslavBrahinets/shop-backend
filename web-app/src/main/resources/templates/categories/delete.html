@@ -33,10 +33,14 @@
         if (!name || name.trim() === '') {
             node.appendChild(document.createTextNode('Invalid Name'));
         } else {
+            const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+
             fetch(`http://localhost:8080/web-api/categories/${name}`, {
                 method: 'POST',
                 headers: {
-                    'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-XSRF-TOKEN': csrfToken
                 }
             })
                 .then(response => response.text())

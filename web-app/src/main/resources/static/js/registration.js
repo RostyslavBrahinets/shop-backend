@@ -52,11 +52,14 @@ function registration() {
             'password': password
         };
 
+        const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+
         fetch(`http://localhost:8080/web-api/registration`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'X-XSRF-TOKEN': csrfToken
             },
             body: JSON.stringify(bodyRegistration)
         })
