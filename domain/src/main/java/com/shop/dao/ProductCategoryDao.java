@@ -47,4 +47,15 @@ public class ProductCategoryDao {
             )
         );
     }
+
+    public void deleteProductFromCategory(long productId, long categoryId) {
+        jdbcTemplate.update(
+            "DELETE FROM product_category "
+                + "WHERE product_id=:product_id AND category_id=:category_id",
+            Map.ofEntries(
+                Map.entry("product_id", productId),
+                Map.entry("category_id", categoryId)
+            )
+        );
+    }
 }
