@@ -2,6 +2,8 @@ package com.shop.mvc;
 
 import com.shop.models.Product;
 import com.shop.services.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,6 +43,8 @@ public class ProductViewController {
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ) {
+        final Logger logger = LoggerFactory.getLogger(ProductViewController.class);
+
         if (userDetails != null) {
             GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
             model.addAttribute("role", role.getAuthority());
@@ -50,8 +54,12 @@ public class ProductViewController {
 
         model.addAttribute("id", id);
 
-        Product product = productService.findById(id);
-        model.addAttribute("inStock", product.isInStock());
+        try {
+            Product product = productService.findById(id);
+            model.addAttribute("inStock", product.isInStock());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
 
         return "products/find";
     }
