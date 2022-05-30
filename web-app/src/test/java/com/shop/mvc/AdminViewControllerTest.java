@@ -132,6 +132,9 @@ class AdminViewControllerTest {
     @Test
     @DisplayName("Show user by id for admin")
     void show_user_by_id_for_admin() throws Exception {
+        when(personService.findByEmail("admin"))
+            .thenReturn(new Person(1, "admin", "admin"));
+
         mockMvc.perform(get("/admin/users/1")
                 .with(user("admin").password("admin").roles("ADMIN")))
             .andExpect(status().isOk())
