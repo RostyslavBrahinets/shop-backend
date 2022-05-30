@@ -19,6 +19,7 @@ import static com.shop.controllers.CategoryController.CATEGORIES_URL;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,7 +48,8 @@ class CategoryControllerTest {
         );
 
         mockMvc.perform(get(CATEGORIES_URL)
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray());
@@ -57,7 +59,8 @@ class CategoryControllerTest {
     @DisplayName("Category not found because of incorrect id")
     void category_not_found_because_of_incorrect_id() throws Exception {
         mockMvc.perform(get(CATEGORIES_URL + "/id")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
     }
 
@@ -68,7 +71,8 @@ class CategoryControllerTest {
             .thenThrow(NoSuchElementException.class);
 
         mockMvc.perform(get(CATEGORIES_URL + "/1")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isOk());
     }
 
@@ -79,7 +83,8 @@ class CategoryControllerTest {
             .thenReturn(new Category(1, "name"));
 
         mockMvc.perform(get(CATEGORIES_URL + "/1")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isOk());
     }
 
@@ -87,7 +92,8 @@ class CategoryControllerTest {
     @DisplayName("Category deleted")
     void category_deleted() throws Exception {
         mockMvc.perform(post(CATEGORIES_URL + "/name")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isOk());
     }
 }

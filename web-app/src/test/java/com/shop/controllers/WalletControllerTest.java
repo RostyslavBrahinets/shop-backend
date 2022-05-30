@@ -18,6 +18,7 @@ import java.util.List;
 import static com.shop.controllers.WalletController.WALLETS_URL;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -51,7 +52,8 @@ class WalletControllerTest {
         );
 
         mockMvc.perform(get(WALLETS_URL)
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray());
@@ -61,7 +63,8 @@ class WalletControllerTest {
     @DisplayName("Wallet not found because of incorrect id")
     void wallet_not_found_because_of_incorrect_id() throws Exception {
         mockMvc.perform(get(WALLETS_URL + "/id")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
     }
 
@@ -72,7 +75,8 @@ class WalletControllerTest {
             .thenReturn(new Wallet(1, "123", 0));
 
         mockMvc.perform(get(WALLETS_URL + "/1")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isOk());
     }
 
@@ -80,7 +84,8 @@ class WalletControllerTest {
     @DisplayName("Wallet not deleted because of incorrect id")
     void wallet_not_deleted_because_of_incorrect_id() throws Exception {
         mockMvc.perform(delete(WALLETS_URL + "/id")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
     }
 
@@ -88,7 +93,8 @@ class WalletControllerTest {
     @DisplayName("Wallet deleted")
     void wallet_deleted() throws Exception {
         mockMvc.perform(delete(WALLETS_URL + "/1")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().is2xxSuccessful());
     }
 }

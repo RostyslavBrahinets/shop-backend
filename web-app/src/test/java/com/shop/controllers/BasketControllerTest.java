@@ -19,6 +19,7 @@ import static com.shop.controllers.BasketController.BASKETS_URL;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -47,7 +48,8 @@ class BasketControllerTest {
         );
 
         mockMvc.perform(get(BASKETS_URL)
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray());
@@ -57,7 +59,8 @@ class BasketControllerTest {
     @DisplayName("Basket not found because of incorrect id")
     void basket_not_found_because_of_incorrect_id() throws Exception {
         mockMvc.perform(get(BASKETS_URL + "/id")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
     }
 
@@ -68,7 +71,8 @@ class BasketControllerTest {
             .thenThrow(NotFoundException.class);
 
         mockMvc.perform(get(BASKETS_URL + "/1")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isOk());
     }
 
@@ -79,7 +83,8 @@ class BasketControllerTest {
             .thenReturn(new Basket(1, 0));
 
         mockMvc.perform(get(BASKETS_URL + "/1")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isOk());
     }
 
@@ -87,7 +92,8 @@ class BasketControllerTest {
     @DisplayName("Basket not deleted because of incorrect id")
     void basket_not_deleted_because_of_incorrect_id() throws Exception {
         mockMvc.perform(delete(BASKETS_URL + "/id")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
     }
 
@@ -95,7 +101,8 @@ class BasketControllerTest {
     @DisplayName("Basket deleted")
     void basket_deleted() throws Exception {
         mockMvc.perform(delete(BASKETS_URL + "/1")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().is2xxSuccessful());
     }
 }

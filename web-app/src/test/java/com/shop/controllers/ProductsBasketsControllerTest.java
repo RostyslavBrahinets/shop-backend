@@ -25,6 +25,7 @@ import static com.shop.controllers.ProductsBasketsController.PRODUCTS_BASKETS_UR
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -78,7 +79,8 @@ class ProductsBasketsControllerTest {
             );
 
         mockMvc.perform(get(PRODUCTS_BASKETS_URL)
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray());
@@ -97,7 +99,8 @@ class ProductsBasketsControllerTest {
             .thenReturn(1L);
 
         mockMvc.perform(post(PRODUCTS_BASKETS_URL + "/1")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/basket"));
 
@@ -109,7 +112,8 @@ class ProductsBasketsControllerTest {
     @DisplayName("Product from basket not deleted because of incorrect id")
     void product_from_basket_not_deleted_because_of_incorrect_id() throws Exception {
         mockMvc.perform(post(PRODUCTS_BASKETS_URL + "/id/delete")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
     }
 
@@ -123,7 +127,8 @@ class ProductsBasketsControllerTest {
             .thenReturn(new Basket(1, 0));
 
         mockMvc.perform(post(PRODUCTS_BASKETS_URL + "/1/delete")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/basket"));
     }
@@ -153,7 +158,8 @@ class ProductsBasketsControllerTest {
             );
 
         mockMvc.perform(post(PRODUCTS_BASKETS_URL + "/buy")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isOk());
 
         verify(productsBasketsService).buy(1);
@@ -169,7 +175,8 @@ class ProductsBasketsControllerTest {
             .thenReturn(new Wallet(1, "123", 0));
 
         mockMvc.perform(post(PRODUCTS_BASKETS_URL + "/download-report")
-                .with(user("admin").password("admin").roles("ADMIN")))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf()))
             .andExpect(status().isOk());
     }
 }
