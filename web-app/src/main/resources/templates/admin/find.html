@@ -33,10 +33,10 @@
         })
             .then(response => response.json())
             .then(data => {
-                const count = Object.keys(data).length;
+                const error = JSON.stringify(data).includes('message');
                 const node = document.createElement('div');
 
-                if (count === 1 || data.id === id) {
+                if (error || currentId === id) {
                     node.appendChild(document.createTextNode('Person Not Found'));
                     document.querySelector('.person-container').append(node);
                 } else {
@@ -49,7 +49,7 @@
                     texts.push(document.createTextNode(`First Name: ${data.firstName}`));
                     texts.push(document.createTextNode(`Last Name: ${data.lastName}`));
 
-                    for (let i = 0; i < 2; i++) {
+                    for (let i = 0; i < divs.length; i++) {
                         divs[i].appendChild(texts[i]);
                         node.appendChild(divs[i]);
                     }
@@ -70,9 +70,9 @@
         })
             .then(response => response.json())
             .then(data => {
-                const count = Object.keys(data).length;
+                const error = JSON.stringify(data).includes('message');
 
-                if (count === 1 || data.id === id) {
+                if (error || currentId === id) {
                     return;
                 }
 
@@ -107,9 +107,9 @@
         })
             .then(response => response.json())
             .then(data => {
-                const count = Object.keys(data).length;
+                const error = JSON.stringify(data).includes('message');
 
-                if (count === 1 || data.id === id) {
+                if (error || currentId === id) {
                     return;
                 }
 
@@ -135,6 +135,7 @@
     }
 
     /*<![CDATA[*/
+    let currentId = /*[[${currentId}]]*/ 0;
     let id = /*[[${id}]]*/ 0;
     /*]]>*/
 
