@@ -67,12 +67,10 @@ public class ProductsBasketsController {
     @PostMapping("/{id}/delete")
     public void deleteProductFromBasket(
         @AuthenticationPrincipal UserDetails userDetail,
-        @PathVariable long id,
-        HttpServletResponse response
-    ) throws IOException {
+        @PathVariable long id
+    ) {
         Person person = personService.findByEmail(userDetail.getUsername());
         Basket basket = basketService.findByPerson(person.getId());
-        response.sendRedirect("/basket");
         productsBasketsService.deleteProductFromBasket(id, basket.getId());
     }
 

@@ -53,20 +53,15 @@
 
                     formattedData.forEach(element => {
                         const node = document.createElement('div');
-                        const form = document.createElement('form');
                         const button = document.createElement('button');
                         const text = document.createTextNode(element);
+                        const productId = ids[i].toString();
 
-                        form.name = 'remove';
-                        form.action = `/web-api/products-baskets/${ids[i]}/delete`;
-                        form.method = 'post';
-
-                        button.type = 'submit';
+                        button.addEventListener('click', () => deleteProductFromBasket(productId));
                         button.textContent = 'Remove';
 
-                        form.appendChild(text);
-                        form.appendChild(button);
-                        node.appendChild(form);
+                        node.appendChild(text);
+                        node.appendChild(button);
                         document.querySelector('.products-container').append(node);
 
                         i++;
@@ -126,6 +121,22 @@
                 }
             })
             .catch(error => console.log('Request failed', error));
+    }
+
+    function deleteProductFromBasket(id) {
+        const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+
+        fetch(`/web-api/products-baskets/${id}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-XSRF-TOKEN': csrfToken
+            }
+        })
+            .catch(error => console.log('Request failed', error));
+
+        window.location.href = '/basket';
     }
 
     /*<![CDATA[*/
