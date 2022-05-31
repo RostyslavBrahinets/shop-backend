@@ -28,7 +28,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/person/V20220421161641__Create_table_person.sql"
+    "classpath:db/migration/person/V20220421161641__Create_table_person.sql",
+    "classpath:db/migration/contact/V20220421161842__Create_table_contact.sql"
 })
 public class PersonDaoTest {
     @Autowired
@@ -45,7 +46,7 @@ public class PersonDaoTest {
     void tearDown() {
         JdbcTestUtils.dropTables(
             jdbcTemplate.getJdbcTemplate(),
-            "person"
+            "contact", "person"
         );
     }
 
@@ -100,6 +101,46 @@ public class PersonDaoTest {
             );
 
         Optional<Person> person = personDao.findById(1);
+
+        assertThat(person).get().isEqualTo(Person.of("John", "Smith").withId(1));
+    }
+
+    @Test
+    @DisplayName("Person by email was not found")
+    void person_by_email_was_not_found() {
+        Optional<Person> person = personDao.findByEmail("test@gmail.com");
+
+        assertThat(person).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Person by email was found")
+    void person_by_email_was_found() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("person")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("first_name", "last_name")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("first_name", "John"),
+                    Map.entry("last_name", "Smith")
+                )
+            );
+
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("contact")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("email", "phone", "password", "person_id")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("email", "test@gmail.com"),
+                    Map.entry("phone", "+380000000000"),
+                    Map.entry("password", "password"),
+                    Map.entry("person_id", 1)
+                )
+            );
+
+        Optional<Person> person = personDao.findByEmail("test@gmail.com");
 
         assertThat(person).get().isEqualTo(Person.of("John", "Smith").withId(1));
     }

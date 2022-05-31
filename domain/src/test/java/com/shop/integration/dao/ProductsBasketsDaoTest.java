@@ -25,7 +25,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/products_baskets/V20220421162626__Create_table_products_baskets.sql"
+    "classpath:db/migration/products_baskets/V20220421162626__Create_table_products_baskets.sql",
+    "classpath:db/migration/product/V20220421162205__Create_table_product.sql"
 })
 public class ProductsBasketsDaoTest {
     @Autowired
@@ -42,7 +43,7 @@ public class ProductsBasketsDaoTest {
     void tearDown() {
         JdbcTestUtils.dropTables(
             jdbcTemplate.getJdbcTemplate(),
-            "products_baskets"
+            "products_baskets", "product"
         );
     }
 
@@ -51,6 +52,26 @@ public class ProductsBasketsDaoTest {
             jdbcTemplate.getJdbcTemplate(),
             "products_baskets"
         );
+    }
+
+    @Test
+    @DisplayName("Get all products from basket")
+    void get_all_products_from_basket() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("products_baskets")
+            .usingColumns("product_id", "basket_id")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("product_id", 1),
+                    Map.entry("basket_id", 1)
+                )
+            );
+
+        productsBasketsDao.findAllProductsInBasket(1);
+
+        var productsBasketsCount = fetchProductsBasketsCount();
+
+        assertThat(productsBasketsCount).isEqualTo(1);
     }
 
     @Test
