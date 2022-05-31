@@ -51,9 +51,9 @@
         })
             .then(response => response.json())
             .then(data => {
-                const count = Object.keys(data).length;
+                const error = data.hasOwnProperty('message');
 
-                if (count === 1) {
+                if (error) {
                     const node = document.createElement('div');
                     node.appendChild(document.createTextNode(data.message));
                     document.querySelector('.products-container').append(node);
