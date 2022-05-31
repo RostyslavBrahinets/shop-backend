@@ -32,10 +32,16 @@ public class ApplicationStarter {
 
         List<String> imageNames = List.of(
             Objects.requireNonNull(ApplicationStarter.class.getClassLoader().getResource(
-                "static/images/samsung-a02.jpg"
+                "static/images/clean-code.jpg"
             )).getFile(),
             Objects.requireNonNull(ApplicationStarter.class.getClassLoader().getResource(
-                "static/images/iphone-13-pro-max.png"
+                "static/images/chevrolet-camaro.jpg"
+            )).getFile(),
+            Objects.requireNonNull(ApplicationStarter.class.getClassLoader().getResource(
+                "static/images/hoodie.jpg"
+            )).getFile(),
+            Objects.requireNonNull(ApplicationStarter.class.getClassLoader().getResource(
+                "static/images/samsung-a02.jpg"
             )).getFile()
         );
 
