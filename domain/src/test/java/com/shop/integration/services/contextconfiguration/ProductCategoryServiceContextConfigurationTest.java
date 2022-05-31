@@ -1,5 +1,7 @@
 package com.shop.integration.services.contextconfiguration;
 
+import com.shop.models.Category;
+import com.shop.models.Product;
 import com.shop.repositories.ProductCategoryRepository;
 import com.shop.services.CategoryService;
 import com.shop.services.ProductCategoryService;
@@ -28,7 +30,13 @@ public class ProductCategoryServiceContextConfigurationTest {
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
     @Autowired
+    private ProductValidator productValidator;
+    @Autowired
     private CategoryValidator categoryValidator;
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private CategoryService categoryService;
     @Autowired
     private ProductCategoryService productCategoryService;
 
@@ -41,6 +49,33 @@ public class ProductCategoryServiceContextConfigurationTest {
 
         verify(categoryValidator, atLeast(1)).validate(categoryId);
         verify(productCategoryRepository).findAllProductsInCategory(categoryId);
+    }
+
+    @Test
+    @DisplayName("Save product to category")
+    void save_product_to_category() {
+        String barcode = "123";
+        String categoryName = "name";
+
+        when(productService.findByBarcode(barcode))
+            .thenReturn(Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    barcode,
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1));
+
+        when(categoryService.findByName(categoryName))
+            .thenReturn(Category.of(categoryName).withId(1));
+
+        productCategoryService.saveProductToCategory(barcode, categoryName);
+
+        verify(productValidator, atLeast(1)).validate(barcode);
+        verify(categoryValidator, atLeast(1)).validate(categoryName);
+        verify(productCategoryRepository).saveProductToCategory(1, 1);
     }
 
     @TestConfiguration
