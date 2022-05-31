@@ -102,6 +102,9 @@ public class ProductsBasketsService {
         walletValidator.validateAmountOfMoney(newAmountOfMoney);
 
         String[] splitMoney = String.valueOf(newAmountOfMoney).split("\\.");
+        if (splitMoney[1].length() == 1) {
+            splitMoney[1] += "0";
+        }
         long money = Long.parseLong(splitMoney[0] + splitMoney[1]) * -1;
 
         walletService.update(wallet.getId(), newAmountOfMoney);
