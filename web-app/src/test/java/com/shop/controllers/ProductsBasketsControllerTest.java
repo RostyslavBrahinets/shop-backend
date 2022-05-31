@@ -129,8 +129,7 @@ class ProductsBasketsControllerTest {
         mockMvc.perform(post(PRODUCTS_BASKETS_URL + "/1/delete")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/basket"));
+            .andExpect(status().isOk());
     }
 
     @Test
