@@ -4,7 +4,6 @@ import com.shop.dto.RoleDto;
 import com.shop.models.Role;
 import com.shop.services.PersonRoleService;
 import com.shop.services.RoleService;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
