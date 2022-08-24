@@ -32,12 +32,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 @WebMvcTest(RegistrationViewController.class)
 class RegistrationViewControllerTest {
-    @MockBean
-    @Autowired
-    private PersonService personService;
-    @MockBean
-    @Autowired
-    private WalletService walletService;
+//    @MockBean
+//    @Autowired
+//    private PersonService personService;
+//    @MockBean
+//    @Autowired
+//    private WalletService walletService;
 
     @Autowired
     private MockMvc mockMvc;
