@@ -27,7 +27,7 @@ public class WalletValidatorTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        walletValidator = new WalletValidator(walletRepository);
+        walletValidator = new WalletValidator();
     }
 
     @Test
@@ -85,13 +85,17 @@ public class WalletValidatorTest {
     @Test
     @DisplayName("Id of wallet validated without exceptions")
     void id_of_wallet_validated_without_exceptions() {
-        when(walletRepository.findAll())
-            .thenReturn(
-                List.of(new Wallet(1, "123", 0))
-            );
+        List<Wallet> wallets = List.of(
+            Wallet.of(
+                "123",
+                0
+            ).withId(1)
+        );
+
+        when(walletRepository.findAll()).thenReturn(wallets);
 
         assertDoesNotThrow(
-            () -> walletValidator.validate(1)
+            () -> walletValidator.validate(1, wallets)
         );
     }
 
@@ -100,7 +104,7 @@ public class WalletValidatorTest {
     void throw_not_found_exception_because_id_of_wallet_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> walletValidator.validate(1)
+            () -> walletValidator.validate(1, List.of())
         );
     }
 }

@@ -28,14 +28,14 @@ public class ContactValidatorTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        contactValidator = new ContactValidator(contactRepository);
+        contactValidator = new ContactValidator();
     }
 
     @Test
     @DisplayName("Contact validated without exceptions")
     void contact_validated_without_exceptions() {
         assertDoesNotThrow(
-            () -> contactValidator.validate("test@email.com", "+380000000000", "password")
+            () -> contactValidator.validate("test@email.com", "+380000000000", "password", List.of())
         );
     }
 
@@ -44,7 +44,7 @@ public class ContactValidatorTest {
     void throw_validation_exception_because_email_of_contact_is_null() {
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate(null, "+380000000000", "password")
+            () -> contactValidator.validate(null, "+380000000000", "password", List.of())
         );
     }
 
@@ -53,7 +53,7 @@ public class ContactValidatorTest {
     void throw_validation_exception_because_email_of_contact_is_empty() {
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate("", "+380000000000", "password")
+            () -> contactValidator.validate("", "+380000000000", "password", List.of())
         );
     }
 
@@ -62,7 +62,7 @@ public class ContactValidatorTest {
     void throw_validation_exception_because_email_of_contact_starts_with_char_at() {
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate("@email.com", "+380000000000", "password")
+            () -> contactValidator.validate("@email.com", "+380000000000", "password", List.of())
         );
     }
 
@@ -71,7 +71,7 @@ public class ContactValidatorTest {
     void throw_validation_exception_because_email_of_contact_not_contains_char_at() {
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate("test.email.com", "+380000000000", "password")
+            () -> contactValidator.validate("test.email.com", "+380000000000", "password", List.of())
         );
     }
 
@@ -80,7 +80,7 @@ public class ContactValidatorTest {
     void throw_validation_exception_because_email_of_contact_not_ends_dot_com() {
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate("test@email", "+380000000000", "password")
+            () -> contactValidator.validate("test@email", "+380000000000", "password", List.of())
         );
     }
 
@@ -89,28 +89,27 @@ public class ContactValidatorTest {
     void throw_validation_exception_because_email_of_contact_ends_char_at_and_dot_com() {
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate("test@.com", "+380000000000", "password")
+            () -> contactValidator.validate("test@.com", "+380000000000", "password", List.of())
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because email of contact already in use")
     void throw_validation_exception_because_email_of_contact_already_in_use() {
-        when(contactRepository.findAll())
-            .thenReturn(
-                List.of(
-                    new Contact(
-                        1,
-                        "test@email.com",
-                        "+380000000000",
-                        "password"
-                    )
-                )
-            );
+        List<Contact> contacts = List.of(
+            new Contact(
+                1,
+                "test@email.com",
+                "+380000000000",
+                "password"
+            )
+        );
+
+        when(contactRepository.findAll()).thenReturn(contacts);
 
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate("test@email.com", "+380000000000", "password")
+            () -> contactValidator.validate("test@email.com", "+380000000000", "password", contacts)
         );
     }
 
@@ -119,7 +118,7 @@ public class ContactValidatorTest {
     void throw_validation_exception_because_phone_of_contact_is_null() {
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate("test@email.com", null, "password")
+            () -> contactValidator.validate("test@email.com", null, "password", List.of())
         );
     }
 
@@ -128,7 +127,7 @@ public class ContactValidatorTest {
     void throw_validation_exception_because_phone_of_contact_is_empty() {
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate("test@email.com", "", "password")
+            () -> contactValidator.validate("test@email.com", "", "password", List.of())
         );
     }
 
@@ -137,7 +136,7 @@ public class ContactValidatorTest {
     void throw_validation_exception_because_phone_of_contact_not_starts_with_plus() {
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate("test@email.com", "380000000000", "password")
+            () -> contactValidator.validate("test@email.com", "380000000000", "password", List.of())
         );
     }
 
@@ -146,7 +145,7 @@ public class ContactValidatorTest {
     void throw_validation_exception_because_phone_of_contact_less_then_expected() {
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate("test@email.com", "+380", "password")
+            () -> contactValidator.validate("test@email.com", "+380", "password", List.of())
         );
     }
 
@@ -169,7 +168,7 @@ public class ContactValidatorTest {
     void throw_validation_exception_because_password_of_contact_is_null() {
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate("test@email.com", "+380000000000", null)
+            () -> contactValidator.validate("test@email.com", "+380000000000", null, List.of())
         );
     }
 
@@ -178,108 +177,117 @@ public class ContactValidatorTest {
     void throw_validation_exception_because_password_of_contact_is_empty() {
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validate("test@email.com", "+380000000000", "")
+            () -> contactValidator.validate("test@email.com", "+380000000000", "", List.of())
         );
     }
 
     @Test
     @DisplayName("Phone validated without exceptions")
     void phone_validated_without_exceptions() {
+        Contact contact = Contact.of(
+            "test@email.com",
+            "+380000000000",
+            "password"
+        ).withId(1);
+
         when(contactRepository.findById(1))
             .thenReturn(Optional.of(
-                new Contact(1, "test@email.com", "+380000000000", "password")
+                contact
             ));
 
         assertDoesNotThrow(
-            () -> contactValidator.validatePhone("+380000000000", 1)
+            () -> contactValidator.validatePhone("+380000000000", contact, List.of())
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because phone is null")
     void throw_validation_exception_because_phone_is_null() {
+        Contact contact = Contact.of(
+            "test@email.com",
+            null,
+            "password"
+        ).withId(1);
+
         when(contactRepository.findById(1))
             .thenReturn(Optional.of(
-                new Contact(1, "test@email.com", "+380000000000", "password")
+                contact
             ));
 
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validatePhone(null, 1)
+            () -> contactValidator.validatePhone(null, contact, List.of())
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because phone is empty")
     void throw_validation_exception_because_phone_is_empty() {
+        Contact contact = Contact.of(
+            "test@email.com",
+            "",
+            "password"
+        ).withId(1);
+
         when(contactRepository.findById(1))
             .thenReturn(Optional.of(
-                new Contact(1, "test@email.com", "+380000000000", "password")
+                contact
             ));
 
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validatePhone("", 1)
+            () -> contactValidator.validatePhone("", contact, List.of())
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because phone not starts with '+'")
     void throw_validation_exception_because_phone_not_starts_with_plus() {
+        Contact contact = Contact.of(
+            "test@email.com",
+            "380000000000",
+            "password"
+        ).withId(1);
+
         when(contactRepository.findById(1))
             .thenReturn(Optional.of(
-                new Contact(1, "test@email.com", "+380000000000", "password")
+                contact
             ));
 
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validatePhone("380000000000", 1)
+            () -> contactValidator.validatePhone("380000000000", contact, List.of())
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because length of phone less then expected")
     void throw_validation_exception_because_length_of_phone_less_then_expected() {
+        Contact contact = Contact.of(
+            "test@email.com",
+            "+380",
+            "password"
+        ).withId(1);
+
         when(contactRepository.findById(1))
             .thenReturn(Optional.of(
-                new Contact(1, "test@email.com", "+380000000000", "password")
+                contact
             ));
 
         assertThrows(
             ValidationException.class,
-            () -> contactValidator.validatePhone("+380", 1)
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because phone is already in use")
-    void throw_validation_exception_because_phone_already_in_use() {
-        when(contactRepository.findAll())
-            .thenReturn(
-                List.of(new Contact(1, "test@email.com", "+380000000000", "password"))
-            );
-
-        when(contactRepository.findById(1))
-            .thenReturn(Optional.of(
-                new Contact(2, "test@email.com", "+381111111111", "password")
-            ));
-
-        assertThrows(
-            ValidationException.class,
-            () -> contactValidator.validatePhone("+380000000000", 1)
+            () -> contactValidator.validatePhone("+380", contact, List.of())
         );
     }
 
     @Test
     @DisplayName("Id of contact validated without exceptions")
     void id_of_contact_validated_without_exceptions() {
-        when(contactRepository.findAll())
-            .thenReturn(
-                List.of(new Contact(1, "test@email.com", "+380000000000", "password"))
-            );
+        List<Contact> contacts = List.of(new Contact(1, "test@email.com", "+380000000000", "password"));
+        when(contactRepository.findAll()).thenReturn(contacts);
 
         assertDoesNotThrow(
-            () -> contactValidator.validate(1)
+            () -> contactValidator.validate(1, contacts)
         );
     }
 
@@ -288,7 +296,7 @@ public class ContactValidatorTest {
     void throw_not_found_exception_because_id_of_contact_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> contactValidator.validate(1)
+            () -> contactValidator.validate(1, List.of())
         );
     }
 

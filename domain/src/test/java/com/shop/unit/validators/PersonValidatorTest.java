@@ -27,7 +27,7 @@ public class PersonValidatorTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        personValidator = new PersonValidator(personRepository);
+        personValidator = new PersonValidator();
     }
 
     @Test
@@ -77,14 +77,11 @@ public class PersonValidatorTest {
     @Test
     @DisplayName("Id of person validated without exceptions")
     void id_of_person_validated_without_exceptions() {
-        when(personRepository.findAll())
-            .thenReturn(
-                List.of(new Person(1, "John", "Smith"))
-            );
+        List<Person> people = List.of(new Person(1, "John", "Smith"));
 
-        assertDoesNotThrow(
-            () -> personValidator.validate(1)
-        );
+        when(personRepository.findAll()).thenReturn(people);
+
+        assertDoesNotThrow(() -> personValidator.validate(1, people));
     }
 
     @Test
@@ -92,7 +89,7 @@ public class PersonValidatorTest {
     void throw_not_found_exception_because_id_of_person_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> personValidator.validate(1)
+            () -> personValidator.validate(1, List.of())
         );
     }
 }

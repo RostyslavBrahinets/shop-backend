@@ -1,5 +1,6 @@
 package com.shop.unit.validators;
 
+import com.shop.models.Contact;
 import com.shop.repositories.ContactRepository;
 import com.shop.repositories.PersonRepository;
 import com.shop.validators.ContactValidator;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,8 +31,8 @@ public class RegistrationValidatorTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        personValidator = new PersonValidator(personRepository);
-        contactValidator = new ContactValidator(contactRepository);
+        personValidator = new PersonValidator();
+        contactValidator = new ContactValidator();
 
         registrationValidator = new RegistrationValidator(
             personValidator,
@@ -48,7 +51,8 @@ public class RegistrationValidatorTest {
             () -> contactValidator.validate(
                 "test@email.com",
                 "+380000000000",
-                "password"
+                "password",
+                List.of()
             )
         );
 
@@ -58,7 +62,8 @@ public class RegistrationValidatorTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password"
+                "password",
+                List.of()
             )
         );
     }

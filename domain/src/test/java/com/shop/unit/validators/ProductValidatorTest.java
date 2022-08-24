@@ -27,124 +27,206 @@ public class ProductValidatorTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        productValidator = new ProductValidator(productRepository);
+        productValidator = new ProductValidator();
     }
 
     @Test
     @DisplayName("Product validated without exceptions")
     void contact_validated_without_exceptions() {
         assertDoesNotThrow(
-            () -> productValidator.validate("name", "describe", 0, "123")
+            () -> productValidator.validate("name", "describe", 0, "123", List.of())
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because name of product is null")
     void throw_validation_exception_because_name_of_product_is_null() {
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1)
+        );
+
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate(null, "describe", 0, "123")
+            () -> productValidator.validate(null, "describe", 0, "123", products)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because name of product is empty")
     void throw_validation_exception_because_name_of_product_is_empty() {
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1)
+        );
+
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate("", "describe", 0, "123")
+            () -> productValidator.validate("", "describe", 0, "123", products)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because describe of product is null")
     void throw_validation_exception_because_describe_of_product_is_null() {
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1)
+        );
+
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate("name", null, 0, "123")
+            () -> productValidator.validate("name", null, 0, "123", products)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because describe of product is empty")
     void throw_validation_exception_because_describe_of_product_is_empty() {
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1)
+        );
+
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate("name", "", 0, "123")
+            () -> productValidator.validate("name", "", 0, "123", products)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because price of product less then expected")
     void throw_validation_exception_because_price_of_product_less_then_expected() {
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1)
+        );
+
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate("name", "describe", -1, "123")
+            () -> productValidator.validate("name", "describe", -1, "123", products)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because barcode of product is null")
     void throw_validation_exception_because_barcode_of_product_is_null() {
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1)
+        );
+
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate("name", "describe", 0, null)
+            () -> productValidator.validate("name", "describe", 0, null, products)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because barcode of product is empty")
     void throw_validation_exception_because_barcode_of_product_is_empty() {
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1)
+        );
+
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate("name", "describe", 0, "")
+            () -> productValidator.validate("name", "describe", 0, "", products)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because barcode of product already in use")
     void throw_validation_exception_because_barcode_of_product_already_in_use() {
-        when(productRepository.findAll())
-            .thenReturn(
-                List.of(
-                    new Product(
-                        1,
-                        "name",
-                        "describe",
-                        0,
-                        "123",
-                        true,
-                        new byte[]{1, 1, 1}
-                    )
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
                 )
-            );
+                .withId(1)
+        );
+
+        when(productRepository.findAll()).thenReturn(products);
 
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate("name", "describe", 0, "123")
+            () -> productValidator.validate("name", "describe", 0, "123", products)
         );
     }
 
     @Test
     @DisplayName("Id of product validated without exceptions")
     void id_of_product_validated_without_exceptions() {
-        when(productRepository.findAll())
-            .thenReturn(
-                List.of(
-                    new Product(
-                        1,
-                        "name",
-                        "describe",
-                        0,
-                        "123",
-                        true,
-                        new byte[]{1, 1, 1}
-                    )
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
                 )
-            );
+                .withId(1)
+        );
+
+        when(productRepository.findAll()).thenReturn(products);
 
         assertDoesNotThrow(
-            () -> productValidator.validate(1)
+            () -> productValidator.validate(1, products)
         );
     }
 
@@ -153,48 +235,71 @@ public class ProductValidatorTest {
     void throw_not_found_exception_because_id_of_product_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> productValidator.validate(1)
+            () -> productValidator.validate(1, List.of())
         );
     }
 
     @Test
     @DisplayName("Barcode validated without exceptions")
     void barcode_validated_without_exceptions() {
-        when(productRepository.findAll())
-            .thenReturn(
-                List.of(
-                    new Product(
-                        1,
-                        "name",
-                        "describe",
-                        0,
-                        "123",
-                        true,
-                        new byte[]{1, 1, 1}
-                    )
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
                 )
-            );
+                .withId(1)
+        );
+
+        when(productRepository.findAll()).thenReturn(products);
 
         assertDoesNotThrow(
-            () -> productValidator.validate("123")
+            () -> productValidator.validate("123", products)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because barcode is null")
     void throw_validation_exception_because_barcode_is_null() {
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1)
+        );
+
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate(null)
+            () -> productValidator.validate(null, products)
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because barcode is empty")
     void throw_validation_exception_because_barcode_is_empty() {
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1)
+        );
+
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate("")
+            () -> productValidator.validate("", products)
         );
     }
 
@@ -203,7 +308,7 @@ public class ProductValidatorTest {
     void throw_not_found_exception_because_barcode_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> productValidator.validate("123")
+            () -> productValidator.validate("123", List.of())
         );
     }
 }

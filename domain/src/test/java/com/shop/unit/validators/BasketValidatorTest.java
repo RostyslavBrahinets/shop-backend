@@ -27,7 +27,7 @@ public class BasketValidatorTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        basketValidator = new BasketValidator(basketRepository);
+        basketValidator = new BasketValidator();
     }
 
     @Test
@@ -65,7 +65,7 @@ public class BasketValidatorTest {
     void throw_not_found_exception_because_id_of_basket_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> basketValidator.validate(1)
+            () -> basketValidator.validate(1, List.of())
         );
     }
 }
