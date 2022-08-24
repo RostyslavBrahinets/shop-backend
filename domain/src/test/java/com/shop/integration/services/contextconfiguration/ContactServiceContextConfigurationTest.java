@@ -1,10 +1,13 @@
 package com.shop.integration.services.contextconfiguration;
 
 import com.shop.models.Contact;
+import com.shop.models.Person;
 import com.shop.repositories.ContactRepository;
 import com.shop.services.ContactService;
+import com.shop.services.PersonService;
 import com.shop.validators.ContactValidator;
 import com.shop.validators.PersonValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +17,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -35,13 +40,24 @@ public class ContactServiceContextConfigurationTest {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ContactService contactService;
+    @Autowired
+    private PersonService personService;
+
+    private List<Contact> contacts;
+    private List<Person> people;
+
+    @BeforeEach
+    void setUp() {
+        contacts = List.of();
+        people = List.of();
+    }
 
     @Test
     @DisplayName("Get all contacts")
     void get_all_contacts() {
         contactService.findAll();
 
-        verify(contactRepository).findAll();
+        verify(contactRepository, atLeast(1)).findAll();
     }
 
     @Test
@@ -51,8 +67,8 @@ public class ContactServiceContextConfigurationTest {
 
         contactService.findById(id);
 
-        verify(contactValidator, atLeast(1)).validate(id);
-        verify(contactRepository).findById(id);
+        verify(contactValidator, atLeast(1)).validate(id, contacts);
+        verify(contactRepository, atLeast(1)).findById(id);
     }
 
     @Test
@@ -62,7 +78,7 @@ public class ContactServiceContextConfigurationTest {
 
         contactService.findByPerson(personId);
 
-        verify(personValidator, atLeast(1)).validate(personId);
+        verify(personValidator, atLeast(1)).validate(personId, people);
         verify(contactRepository).findByPerson(personId);
     }
 
@@ -76,8 +92,10 @@ public class ContactServiceContextConfigurationTest {
 
         contactService.save(email, phone, password, personId);
 
-        verify(contactValidator, atLeast(1)).validate(email, phone, password);
-        verify(personValidator, atLeast(1)).validate(personId);
+        verify(contactRepository, atLeast(1)).findAll();
+        verify(contactValidator, atLeast(1)).validate(email, phone, password, contacts);
+        verify(personService, atLeast(1)).findAll();
+        verify(personValidator, atLeast(1)).validate(personId, people);
         verify(passwordEncoder, atLeast(1)).encode(password);
         verify(contactRepository).save(email, phone, null, personId);
     }
@@ -90,8 +108,9 @@ public class ContactServiceContextConfigurationTest {
 
         contactService.update(id, phone);
 
-        verify(contactValidator, atLeast(1)).validate(id);
-        verify(contactValidator, atLeast(1)).validatePhone(phone, id);
+        verify(contactRepository, atLeast(1)).findAll();
+        verify(contactRepository).findById(id);
+        verify(contactValidator, atLeast(1)).validate(id, contacts);
         verify(contactRepository).update(id, phone);
     }
 
@@ -102,7 +121,7 @@ public class ContactServiceContextConfigurationTest {
 
         contactService.delete(id);
 
-        verify(contactValidator, atLeast(1)).validate(id);
+        verify(contactValidator, atLeast(1)).validate(id, contacts);
         verify(contactRepository).delete(id);
     }
 
@@ -121,6 +140,11 @@ public class ContactServiceContextConfigurationTest {
         @Bean
         public ContactValidator contactValidator() {
             return mock(ContactValidator.class);
+        }
+
+        @Bean
+        public PersonService personService() {
+            return mock(PersonService.class);
         }
 
         @Bean

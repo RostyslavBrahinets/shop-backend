@@ -1,10 +1,13 @@
 package com.shop.integration.services.contextconfiguration;
 
+import com.shop.models.Person;
 import com.shop.models.Wallet;
 import com.shop.repositories.WalletRepository;
+import com.shop.services.PersonService;
 import com.shop.services.WalletService;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.WalletValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +16,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -33,12 +38,21 @@ public class WalletServiceContextConfigurationTest {
     @Autowired
     private WalletService walletService;
 
+    private List<Wallet> wallets;
+    private List<Person> people;
+
+    @BeforeEach
+    void setUp() {
+        wallets = List.of();
+        people = List.of();
+    }
+
     @Test
     @DisplayName("Get all wallets")
     void get_all_wallets() {
         walletService.findAll();
 
-        verify(walletRepository).findAll();
+        verify(walletRepository, atLeast(1)).findAll();
     }
 
     @Test
@@ -48,7 +62,7 @@ public class WalletServiceContextConfigurationTest {
 
         walletService.findById(id);
 
-        verify(walletValidator, atLeast(1)).validate(id);
+        verify(walletValidator, atLeast(1)).validate(id, wallets);
         verify(walletRepository).findById(id);
     }
 
@@ -59,7 +73,7 @@ public class WalletServiceContextConfigurationTest {
 
         walletService.findByPerson(personId);
 
-        verify(personValidator, atLeast(1)).validate(personId);
+        verify(personValidator, atLeast(1)).validate(personId, people);
         verify(walletRepository).findByPerson(1);
     }
 
@@ -73,7 +87,7 @@ public class WalletServiceContextConfigurationTest {
         walletService.save(number, amountOfMoney, personId);
 
         verify(walletValidator, atLeast(1)).validate(number, amountOfMoney);
-        verify(personValidator, atLeast(1)).validate(personId);
+        verify(personValidator, atLeast(1)).validate(personId, people);
         verify(walletRepository).save(number, amountOfMoney, personId);
     }
 
@@ -85,7 +99,7 @@ public class WalletServiceContextConfigurationTest {
 
         walletService.update(id, amountOfMoney);
 
-        verify(walletValidator, atLeast(1)).validate(id);
+        verify(walletValidator, atLeast(1)).validate(id, wallets);
         verify(walletValidator, atLeast(1)).validateAmountOfMoney(amountOfMoney);
         verify(walletRepository).update(1, amountOfMoney);
     }
@@ -97,7 +111,7 @@ public class WalletServiceContextConfigurationTest {
 
         walletService.delete(id);
 
-        verify(walletValidator, atLeast(1)).validate(id);
+        verify(walletValidator, atLeast(1)).validate(id, wallets);
         verify(walletRepository).delete(id);
     }
 
@@ -116,6 +130,11 @@ public class WalletServiceContextConfigurationTest {
         @Bean
         public WalletValidator walletValidator() {
             return mock(WalletValidator.class);
+        }
+
+        @Bean
+        public PersonService personService() {
+            return mock(PersonService.class);
         }
 
         @Bean

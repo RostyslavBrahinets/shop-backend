@@ -1,8 +1,10 @@
 package com.shop.integration.services.contextconfiguration;
 
 import com.shop.models.Basket;
+import com.shop.models.Person;
 import com.shop.repositories.BasketRepository;
 import com.shop.services.BasketService;
+import com.shop.services.PersonService;
 import com.shop.validators.BasketValidator;
 import com.shop.validators.PersonValidator;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +15,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -28,6 +32,8 @@ public class BasketServiceContextConfigurationTest {
     private BasketRepository basketRepository;
     @Autowired
     private BasketValidator basketValidator;
+    @Autowired
+    private PersonService personService;
     @Autowired
     private PersonValidator personValidator;
     @Autowired
@@ -56,10 +62,11 @@ public class BasketServiceContextConfigurationTest {
     @DisplayName("Get basket by person")
     void get_basket_by_person() {
         long personId = 1;
+        List<Person> people = personService.findAll();
 
         basketService.findByPerson(personId);
 
-        verify(personValidator, atLeast(1)).validate(personId);
+        verify(personValidator, atLeast(1)).validate(personId, people);
         verify(basketRepository).findByPerson(personId);
     }
 
@@ -68,11 +75,12 @@ public class BasketServiceContextConfigurationTest {
     void save_basket() {
         long personId = 1;
         double totalCost = 0;
+        List<Person> people = personService.findAll();
 
         basketService.save(totalCost, personId);
 
         verify(basketValidator, atLeast(1)).validate(totalCost);
-        verify(personValidator, atLeast(1)).validate(personId);
+        verify(personValidator, atLeast(1)).validate(personId, people);
         verify(basketRepository).save(totalCost, personId);
     }
 
@@ -115,6 +123,11 @@ public class BasketServiceContextConfigurationTest {
         @Bean
         public BasketValidator basketValidator() {
             return mock(BasketValidator.class);
+        }
+
+        @Bean
+        public PersonService personService() {
+            return mock(PersonService.class);
         }
 
         @Bean

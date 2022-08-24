@@ -1,19 +1,18 @@
 package com.shop.integration.services.contextconfiguration;
 
 import com.shop.models.Basket;
+import com.shop.models.Person;
 import com.shop.models.Product;
 import com.shop.models.Wallet;
 import com.shop.repositories.ProductsBasketsRepository;
-import com.shop.services.BasketService;
-import com.shop.services.ProductService;
-import com.shop.services.ProductsBasketsService;
-import com.shop.services.WalletService;
+import com.shop.services.*;
 import com.shop.stripe.StripePayment;
 import com.shop.validators.BasketValidator;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.ProductValidator;
 import com.shop.validators.WalletValidator;
 import com.stripe.exception.StripeException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +21,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -53,6 +54,15 @@ public class ProductsBasketsServiceContextConfigurationTest {
     private StripePayment stripePayment;
     @Autowired
     private ProductsBasketsService productsBasketsService;
+
+    private List<Person> people;
+    private List<Product> products;
+
+    @BeforeEach
+    void setUp() {
+        people = List.of();
+        products = List.of();
+    }
 
     @Test
     @DisplayName("Get all products in baskets")
@@ -89,7 +99,7 @@ public class ProductsBasketsServiceContextConfigurationTest {
 
         productsBasketsService.saveProductToBasket(productId, basketId);
 
-        verify(productValidator, atLeast(1)).validate(productId);
+        verify(productValidator, atLeast(1)).validate(productId, products);
         verify(basketValidator, atLeast(1)).validate(basketId);
         verify(productsBasketsRepository).saveProductToBasket(productId, basketId);
     }
@@ -118,7 +128,7 @@ public class ProductsBasketsServiceContextConfigurationTest {
 
         productsBasketsService.deleteProductFromBasket(productId, basketId);
 
-        verify(productValidator, atLeast(1)).validate(productId);
+        verify(productValidator, atLeast(1)).validate(productId, products);
         verify(basketValidator, atLeast(1)).validate(basketId);
         verify(productsBasketsRepository).deleteProductFromBasket(productId, basketId);
     }
@@ -151,7 +161,7 @@ public class ProductsBasketsServiceContextConfigurationTest {
 
         productsBasketsService.buy(personId);
 
-        verify(personValidator, atLeast(1)).validate(personId);
+        verify(personValidator, atLeast(1)).validate(personId, people);
         verify(walletValidator, atLeast(1)).validateAmountOfMoney(100);
         verify(basketValidator, atLeast(1)).validate(1);
         verify(productsBasketsRepository, atLeast(1)).deleteProductsFromBasket(1);
@@ -187,6 +197,11 @@ public class ProductsBasketsServiceContextConfigurationTest {
         @Bean
         public BasketValidator basketValidator() {
             return mock(BasketValidator.class);
+        }
+
+        @Bean
+        public PersonService personService() {
+            return mock(PersonService.class);
         }
 
         @Bean

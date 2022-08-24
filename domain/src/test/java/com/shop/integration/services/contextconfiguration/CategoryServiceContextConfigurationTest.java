@@ -4,6 +4,7 @@ import com.shop.models.Category;
 import com.shop.repositories.CategoryRepository;
 import com.shop.services.CategoryService;
 import com.shop.validators.CategoryValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +13,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -30,12 +33,19 @@ public class CategoryServiceContextConfigurationTest {
     @Autowired
     private CategoryService categoryService;
 
+    private List<Category> categories;
+
+    @BeforeEach
+    void setUp() {
+        categories = List.of();
+    }
+
     @Test
     @DisplayName("Get all categories")
     void get_all_categories() {
         categoryService.findAll();
 
-        verify(categoryRepository).findAll();
+        verify(categoryRepository, atLeast(1)).findAll();
     }
 
     @Test
@@ -45,7 +55,7 @@ public class CategoryServiceContextConfigurationTest {
 
         categoryService.findById(id);
 
-        verify(categoryValidator, atLeast(1)).validate(id);
+        verify(categoryValidator, atLeast(1)).validate(id, categories);
         verify(categoryRepository).findById(id);
     }
 
@@ -56,7 +66,7 @@ public class CategoryServiceContextConfigurationTest {
 
         categoryService.findByName(name);
 
-        verify(categoryValidator, atLeast(1)).validate(name);
+        verify(categoryValidator, atLeast(1)).validate(name, categories);
         verify(categoryRepository).findByName(name);
     }
 
@@ -78,7 +88,7 @@ public class CategoryServiceContextConfigurationTest {
 
         categoryService.delete(name);
 
-        verify(categoryValidator, atLeast(1)).validate(name);
+        verify(categoryValidator, atLeast(1)).validate(name, categories);
         verify(categoryRepository).delete(name);
     }
 

@@ -8,6 +8,7 @@ import com.shop.services.ProductCategoryService;
 import com.shop.services.ProductService;
 import com.shop.validators.CategoryValidator;
 import com.shop.validators.ProductValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -40,6 +43,15 @@ public class ProductCategoryServiceContextConfigurationTest {
     @Autowired
     private ProductCategoryService productCategoryService;
 
+    private List<Category> categories;
+    private List<Product> products;
+
+    @BeforeEach
+    void setUp() {
+        categories = List.of();
+        products = List.of();
+    }
+
     @Test
     @DisplayName("Get all products in category")
     void get_all_products_in_category() {
@@ -47,7 +59,7 @@ public class ProductCategoryServiceContextConfigurationTest {
 
         productCategoryService.findAllProductsInCategory(categoryId);
 
-        verify(categoryValidator, atLeast(1)).validate(categoryId);
+        verify(categoryValidator, atLeast(1)).validate(categoryId, categories);
         verify(productCategoryRepository).findAllProductsInCategory(categoryId);
     }
 
@@ -73,8 +85,8 @@ public class ProductCategoryServiceContextConfigurationTest {
 
         productCategoryService.saveProductToCategory(barcode, categoryName);
 
-        verify(productValidator, atLeast(1)).validate(barcode);
-        verify(categoryValidator, atLeast(1)).validate(categoryName);
+        verify(productValidator, atLeast(1)).validate(barcode, products);
+        verify(categoryValidator, atLeast(1)).validate(categoryName, categories);
         verify(productCategoryRepository).saveProductToCategory(1, 1);
     }
 

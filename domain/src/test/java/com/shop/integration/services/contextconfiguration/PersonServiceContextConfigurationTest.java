@@ -1,10 +1,12 @@
 package com.shop.integration.services.contextconfiguration;
 
 import com.shop.models.Person;
+import com.shop.models.Product;
 import com.shop.repositories.PersonRepository;
 import com.shop.services.PersonService;
 import com.shop.validators.ContactValidator;
 import com.shop.validators.PersonValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +15,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -33,12 +37,19 @@ public class PersonServiceContextConfigurationTest {
     @Autowired
     private PersonService personService;
 
+    private List<Person> people;
+
+    @BeforeEach
+    void setUp() {
+        people = List.of();
+    }
+
     @Test
     @DisplayName("Get all people")
     void get_all_people() {
         personService.findAll();
 
-        verify(personRepository).findAll();
+        verify(personRepository, atLeast(1)).findAll();
     }
 
     @Test
@@ -48,7 +59,7 @@ public class PersonServiceContextConfigurationTest {
 
         personService.findById(id);
 
-        verify(personValidator, atLeast(1)).validate(id);
+        verify(personValidator, atLeast(1)).validate(id, people);
         verify(personRepository).findById(id);
     }
 
@@ -84,7 +95,7 @@ public class PersonServiceContextConfigurationTest {
 
         personService.update(id, firstName, lastName);
 
-        verify(personValidator, atLeast(1)).validate(id);
+        verify(personValidator, atLeast(1)).validate(id, people);
         verify(personValidator, atLeast(1)).validate(firstName, lastName);
         verify(personRepository).update(id, firstName, lastName);
     }
@@ -96,7 +107,7 @@ public class PersonServiceContextConfigurationTest {
 
         personService.delete(id);
 
-        verify(personValidator, atLeast(1)).validate(id);
+        verify(personValidator, atLeast(1)).validate(id, people);
         verify(personRepository).delete(id);
     }
 

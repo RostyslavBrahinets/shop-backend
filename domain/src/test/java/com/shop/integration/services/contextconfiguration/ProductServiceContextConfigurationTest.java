@@ -6,6 +6,7 @@ import com.shop.repositories.ProductCategoryRepository;
 import com.shop.repositories.ProductRepository;
 import com.shop.services.ProductService;
 import com.shop.validators.ProductValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -36,6 +38,13 @@ public class ProductServiceContextConfigurationTest {
     @Autowired
     private ProductService productService;
 
+    private List<Product> products;
+
+    @BeforeEach
+    void setUp() {
+        products = List.of();
+    }
+
     @Test
     @DisplayName("Get all products")
     void get_all_products() {
@@ -51,7 +60,7 @@ public class ProductServiceContextConfigurationTest {
 
         productService.findById(id);
 
-        verify(productValidator, atLeast(1)).validate(id);
+        verify(productValidator, atLeast(1)).validate(id, products);
         verify(productRepository).findById(id);
     }
 
@@ -62,7 +71,7 @@ public class ProductServiceContextConfigurationTest {
 
         productService.findByBarcode(barcode);
 
-        verify(productValidator, atLeast(1)).validate(barcode);
+        verify(productValidator, atLeast(1)).validate(barcode, products);
         verify(productRepository, atLeast(1)).findByBarcode(barcode);
     }
 
@@ -78,7 +87,7 @@ public class ProductServiceContextConfigurationTest {
 
         productService.save(name, describe, price, barcode, inStock, image);
 
-        verify(productValidator, atLeast(1)).validate(name, describe, price, barcode);
+        verify(productValidator, atLeast(1)).validate(name, describe, price, barcode, products);
         verify(productRepository).save(name, describe, price, barcode, inStock, image);
     }
 
@@ -90,26 +99,24 @@ public class ProductServiceContextConfigurationTest {
         long categoryId = 1L;
 
         when(productRepository.findByBarcode(barcode))
-            .thenReturn(
-                Optional.of(
-                    Product.of(
-                            "name",
-                            "describe",
-                            0,
-                            "123",
-                            true,
-                            new byte[]{1, 1, 1}
-                        )
-                        .withId(1)
-                )
-            );
+            .thenReturn(Optional.of(
+                Product.of(
+                        "name",
+                        "describe",
+                        0,
+                        "123",
+                        true,
+                        new byte[]{1, 1, 1}
+                    )
+                    .withId(1)
+            ));
 
         when(productCategoryRepository.findCategoryForProduct(productId))
             .thenReturn(Optional.of(Category.of("name").withId(1)));
 
         productService.delete(barcode);
 
-        verify(productValidator, atLeast(1)).validate(barcode);
+        verify(productValidator, atLeast(1)).validate(barcode, products);
         verify(productRepository, atLeast(1)).findByBarcode(barcode);
         verify(productCategoryRepository).findCategoryForProduct(productId);
         verify(productCategoryRepository).deleteProductFromCategory(productId, categoryId);
@@ -124,7 +131,7 @@ public class ProductServiceContextConfigurationTest {
 
         productService.saveImageForProduct(image, id);
 
-        verify(productValidator, atLeast(1)).validate(id);
+        verify(productValidator, atLeast(1)).validate(id, products);
         verify(productRepository).saveImageForProduct(image, id);
     }
 

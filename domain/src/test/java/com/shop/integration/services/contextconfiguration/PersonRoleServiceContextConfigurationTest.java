@@ -1,9 +1,12 @@
 package com.shop.integration.services.contextconfiguration;
 
+import com.shop.models.Person;
 import com.shop.repositories.PersonRoleRepository;
 import com.shop.services.PersonRoleService;
+import com.shop.services.PersonService;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.RoleValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +15,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -32,6 +37,13 @@ public class PersonRoleServiceContextConfigurationTest {
     @Autowired
     private PersonRoleService personRoleService;
 
+    private List<Person> people;
+
+    @BeforeEach
+    void setUp() {
+        people = List.of();
+    }
+
     @Test
     @DisplayName("Get role by person")
     void get_role_by_person() {
@@ -39,7 +51,7 @@ public class PersonRoleServiceContextConfigurationTest {
 
         personRoleService.findRoleForPerson(personId);
 
-        verify(personValidator, atLeast(1)).validate(personId);
+        verify(personValidator, atLeast(1)).validate(personId, people);
         verify(personRoleRepository).findRoleForPerson(personId);
     }
 
@@ -51,7 +63,7 @@ public class PersonRoleServiceContextConfigurationTest {
 
         personRoleService.saveRoleForPerson(personId, roleId);
 
-        verify(personValidator, atLeast(1)).validate(personId);
+        verify(personValidator, atLeast(1)).validate(personId, people);
         verify(roleValidator, atLeast(1)).validate(roleId);
         verify(personRoleRepository).saveRoleForPerson(personId, roleId);
     }
@@ -64,7 +76,7 @@ public class PersonRoleServiceContextConfigurationTest {
 
         personRoleService.updateRoleForPerson(personId, roleId);
 
-        verify(personValidator, atLeast(1)).validate(personId);
+        verify(personValidator, atLeast(1)).validate(personId, people);
         verify(roleValidator, atLeast(1)).validate(roleId);
         verify(personRoleRepository).updateRoleForPerson(personId, roleId);
     }
@@ -74,6 +86,11 @@ public class PersonRoleServiceContextConfigurationTest {
         @Bean
         public PersonRoleRepository personRoleRepository() {
             return mock(PersonRoleRepository.class);
+        }
+
+        @Bean
+        public PersonService personService() {
+            return mock(PersonService.class);
         }
 
         @Bean

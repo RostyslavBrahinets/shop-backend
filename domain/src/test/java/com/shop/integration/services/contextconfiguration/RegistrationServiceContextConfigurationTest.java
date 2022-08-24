@@ -1,5 +1,6 @@
 package com.shop.integration.services.contextconfiguration;
 
+import com.shop.models.Contact;
 import com.shop.services.*;
 import com.shop.stripe.StripePayment;
 import com.shop.validators.RegistrationValidator;
@@ -12,6 +13,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -37,6 +40,7 @@ public class RegistrationServiceContextConfigurationTest {
         String email = "test@email.com";
         String phone = "+380000000000";
         String password = "password";
+        List<Contact> contacts = List.of();
 
         registrationService.registration(
             firstName,
@@ -51,7 +55,8 @@ public class RegistrationServiceContextConfigurationTest {
             lastName,
             email,
             phone,
-            password
+            password,
+            contacts
         );
     }
 
