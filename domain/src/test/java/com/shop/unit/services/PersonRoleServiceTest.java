@@ -2,6 +2,7 @@ package com.shop.unit.services;
 
 import com.shop.repositories.PersonRoleRepository;
 import com.shop.services.PersonRoleService;
+import com.shop.services.PersonService;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.RoleValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,8 @@ class PersonRoleServiceTest {
     @Mock
     private PersonRoleRepository personRoleRepository;
     @Mock
+    private PersonService personService;
+    @Mock
     private PersonValidator personValidator;
     @Mock
     private RoleValidator roleValidator;
@@ -28,6 +31,7 @@ class PersonRoleServiceTest {
 
         personRoleService = new PersonRoleService(
             personRoleRepository,
+            personService,
             personValidator,
             roleValidator
         );

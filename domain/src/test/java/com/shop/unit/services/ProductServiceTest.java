@@ -180,26 +180,24 @@ class ProductServiceTest {
         long categoryId = 1L;
 
         when(productRepository.findByBarcode(barcode))
-            .thenReturn(
-                Optional.of(
-                    Product.of(
-                            "name",
-                            "describe",
-                            0,
-                            "123",
-                            true,
-                            new byte[]{1, 1, 1}
-                        )
-                        .withId(1)
-                )
-            );
+            .thenReturn(Optional.of(
+                Product.of(
+                        "name",
+                        "describe",
+                        0,
+                        "123",
+                        true,
+                        new byte[]{1, 1, 1}
+                    )
+                    .withId(1)
+            ));
 
         when(productCategoryRepository.findCategoryForProduct(productId))
             .thenReturn(Optional.of(Category.of("name").withId(1)));
 
         productService.delete(barcode);
 
-        verify(productValidator, atLeast(1)).validate(barcode);
+        verify(productValidator, atLeast(1)).validate(barcode, List.of());
         verify(productRepository).findByBarcode(barcode);
         verify(productCategoryRepository).findCategoryForProduct(productId);
         verify(productCategoryRepository).deleteProductFromCategory(productId, categoryId);

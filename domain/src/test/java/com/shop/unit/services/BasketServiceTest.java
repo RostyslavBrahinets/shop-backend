@@ -1,9 +1,9 @@
 package com.shop.unit.services;
 
-import com.shop.exceptions.NotFoundException;
 import com.shop.models.Basket;
 import com.shop.repositories.BasketRepository;
 import com.shop.services.BasketService;
+import com.shop.services.PersonService;
 import com.shop.validators.BasketValidator;
 import com.shop.validators.PersonValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,12 +13,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -27,6 +25,8 @@ class BasketServiceTest {
     private BasketRepository basketRepository;
     @Mock
     private BasketValidator basketValidator;
+    @Mock
+    private PersonService personService;
     @Mock
     private PersonValidator personValidator;
 
@@ -39,6 +39,7 @@ class BasketServiceTest {
         basketService = new BasketService(
             basketRepository,
             basketValidator,
+            personService,
             personValidator
         );
     }

@@ -2,6 +2,7 @@ package com.shop.unit.services;
 
 import com.shop.models.Wallet;
 import com.shop.repositories.WalletRepository;
+import com.shop.services.PersonService;
 import com.shop.services.WalletService;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.WalletValidator;
@@ -25,6 +26,8 @@ class WalletServiceTest {
     @Mock
     private WalletValidator walletValidator;
     @Mock
+    private PersonService personService;
+    @Mock
     private PersonValidator personValidator;
 
     private WalletService walletService;
@@ -36,6 +39,7 @@ class WalletServiceTest {
         walletService = new WalletService(
             walletRepository,
             walletValidator,
+            personService,
             personValidator
         );
     }

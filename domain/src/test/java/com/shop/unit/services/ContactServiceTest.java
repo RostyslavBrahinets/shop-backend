@@ -3,6 +3,7 @@ package com.shop.unit.services;
 import com.shop.models.Contact;
 import com.shop.repositories.ContactRepository;
 import com.shop.services.ContactService;
+import com.shop.services.PersonService;
 import com.shop.validators.ContactValidator;
 import com.shop.validators.PersonValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,8 @@ class ContactServiceTest {
     @Mock
     private ContactValidator contactValidator;
     @Mock
+    private PersonService personService;
+    @Mock
     private PersonValidator personValidator;
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -39,6 +42,7 @@ class ContactServiceTest {
         contactService = new ContactService(
             contactRepository,
             contactValidator,
+            personService,
             personValidator,
             passwordEncoder
         );
