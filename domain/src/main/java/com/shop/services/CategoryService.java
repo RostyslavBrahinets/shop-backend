@@ -26,13 +26,13 @@ public class CategoryService {
     }
 
     public Category findById(long id) {
-        categoryValidator.validate(id);
+        categoryValidator.validate(id, categoryRepository.findAll());
         Optional<Category> category = categoryRepository.findById(id);
         return category.orElseGet(Category::new);
     }
 
     public Category findByName(String name) {
-        categoryValidator.validate(name);
+        categoryValidator.validate(name, categoryRepository.findAll());
         Optional<Category> category = categoryRepository.findByName(name);
         return category.orElseGet(Category::new);
     }
@@ -43,7 +43,7 @@ public class CategoryService {
     }
 
     public void delete(String name) {
-        categoryValidator.validate(name);
+        categoryValidator.validate(name, categoryRepository.findAll());
         categoryRepository.delete(name);
     }
 }

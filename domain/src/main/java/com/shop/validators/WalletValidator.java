@@ -2,6 +2,7 @@ package com.shop.validators;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
+import com.shop.models.Product;
 import com.shop.models.Wallet;
 import com.shop.repositories.WalletRepository;
 import org.springframework.stereotype.Component;
@@ -11,12 +12,6 @@ import java.util.List;
 
 @Component
 public class WalletValidator {
-    private final WalletRepository walletRepository;
-
-    public WalletValidator(WalletRepository walletRepository) {
-        this.walletRepository = walletRepository;
-    }
-
     public void validate(
         String number,
         double amountOfMoney
@@ -34,10 +29,10 @@ public class WalletValidator {
         }
     }
 
-    public void validate(long id) {
+    public void validate(long id, List<Wallet> wallets) {
         List<Long> ids = new ArrayList<>();
 
-        for (Wallet wallet : walletRepository.findAll()) {
+        for (Wallet wallet : wallets) {
             ids.add(wallet.getId());
         }
 

@@ -1,7 +1,10 @@
 package com.shop.validators;
 
 import com.shop.exceptions.ValidationException;
+import com.shop.models.Contact;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class RegistrationValidator {
@@ -21,10 +24,11 @@ public class RegistrationValidator {
         String lastName,
         String email,
         String phone,
-        String password
+        String password,
+        List<Contact> contacts
     ) throws ValidationException {
         personValidator.validate(firstName, lastName);
-        contactValidator.validate(email, phone, password);
+        contactValidator.validate(email, phone, password, contacts);
 
         return true;
     }

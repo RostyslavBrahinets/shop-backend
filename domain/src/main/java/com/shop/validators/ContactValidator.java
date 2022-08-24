@@ -2,6 +2,7 @@ package com.shop.validators;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
+import com.shop.models.Category;
 import com.shop.models.Contact;
 import com.shop.repositories.ContactRepository;
 import org.springframework.stereotype.Component;
@@ -12,34 +13,29 @@ import java.util.Optional;
 
 @Component
 public class ContactValidator {
-    private final ContactRepository contactRepository;
-
-    public ContactValidator(ContactRepository contactRepository) {
-        this.contactRepository = contactRepository;
-    }
-
     public void validate(
         String email,
         String phone,
-        String password
+        String password,
+        List<Contact> contacts
     ) {
         if (isInValidEmail(email)) {
             throw new ValidationException("E-mail is invalid");
-        } else if (isEmailAlreadyInUse(email)) {
+        } else if (isEmailAlreadyInUse(email, contacts)) {
             throw new ValidationException("E-mail is already in use");
         } else if (isInvalidPhone(phone)) {
             throw new ValidationException("Phone is invalid");
-        } else if (isPhoneAlreadyInUse(phone)) {
+        } else if (isPhoneAlreadyInUse(phone, contacts)) {
             throw new ValidationException("Phone is already in use");
         } else if (password == null || password.isBlank()) {
             throw new ValidationException("Password is invalid");
         }
     }
 
-    public void validate(long id) {
+    public void validate(long id, List<Contact> contacts) {
         List<Long> ids = new ArrayList<>();
 
-        for (Contact contact : contactRepository.findAll()) {
+        for (Contact contact : contacts) {
             ids.add(contact.getId());
         }
 
@@ -56,17 +52,12 @@ public class ContactValidator {
         }
     }
 
-    public void validatePhone(String phone, long id) {
-        Optional<Contact> contact = contactRepository.findById(id);
-        String currentPhone = "";
+    public void validatePhone(String phone, Contact contact, List<Contact> contacts) {
+        String currentPhone = contact.getPhone();
 
-        if (contact.isPresent()) {
-            currentPhone = contact.get().getPhone();
-        }
-
-        if (isInvalidPhone(phone)) {
+        if (isInvalidPhone(contact.getPhone())) {
             throw new ValidationException("Phone is invalid");
-        } else if (isPhoneAlreadyInUse(phone) && !phone.equals(currentPhone)) {
+        } else if (isPhoneAlreadyInUse(phone, contacts) && !phone.equals(currentPhone)) {
             throw new ValidationException("Phone is already in use");
         }
     }
@@ -80,9 +71,9 @@ public class ContactValidator {
             || email.endsWith("@.com");
     }
 
-    private boolean isEmailAlreadyInUse(String email) {
+    private boolean isEmailAlreadyInUse(String email, List<Contact> contacts) {
         List<String> emails = new ArrayList<>();
-        for (Contact contact : contactRepository.findAll()) {
+        for (Contact contact : contacts) {
             emails.add(contact.getEmail());
         }
         return emails.contains(email);
@@ -95,9 +86,9 @@ public class ContactValidator {
             || phone.length() < 12;
     }
 
-    private boolean isPhoneAlreadyInUse(String phone) {
+    private boolean isPhoneAlreadyInUse(String phone, List<Contact> contacts) {
         List<String> phones = new ArrayList<>();
-        for (Contact contact : contactRepository.findAll()) {
+        for (Contact contact : contacts) {
             phones.add(contact.getPhone());
         }
         return phones.contains(phone);

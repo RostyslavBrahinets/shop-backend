@@ -3,7 +3,6 @@ package com.shop.validators;
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
 import com.shop.models.Person;
-import com.shop.repositories.PersonRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,12 +10,6 @@ import java.util.List;
 
 @Component
 public class PersonValidator {
-    private final PersonRepository personRepository;
-
-    public PersonValidator(PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
-
     public void validate(
         String firstName,
         String lastName
@@ -28,10 +21,10 @@ public class PersonValidator {
         }
     }
 
-    public void validate(long id) {
+    public void validate(long id, List<Person> people) {
         List<Long> ids = new ArrayList<>();
 
-        for (Person person : personRepository.findAll()) {
+        for (Person person : people) {
             ids.add(person.getId());
         }
 

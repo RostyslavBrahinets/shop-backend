@@ -2,6 +2,7 @@ package com.shop.validators;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
+import com.shop.models.Basket;
 import com.shop.models.Category;
 import com.shop.repositories.CategoryRepository;
 import org.springframework.stereotype.Component;
@@ -11,22 +12,16 @@ import java.util.List;
 
 @Component
 public class CategoryValidator {
-    private final CategoryRepository categoryRepository;
-
-    public CategoryValidator(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
-
     public void validateCategory(String name) {
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name of category is invalid");
         }
     }
 
-    public void validate(long id) {
+    public void validate(long id, List<Category> categories) {
         List<Long> ids = new ArrayList<>();
 
-        for (Category category : categoryRepository.findAll()) {
+        for (Category category : categories) {
             ids.add(category.getId());
         }
 
@@ -35,14 +30,14 @@ public class CategoryValidator {
         }
     }
 
-    public void validate(String name) {
+    public void validate(String name, List<Category> categories) {
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name of category is invalid");
         }
 
         List<String> names = new ArrayList<>();
 
-        for (Category category : categoryRepository.findAll()) {
+        for (Category category : categories) {
             names.add(category.getName());
         }
 

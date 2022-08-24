@@ -11,22 +11,16 @@ import java.util.List;
 
 @Component
 public class BasketValidator {
-    private final BasketRepository basketRepository;
-
-    public BasketValidator(BasketRepository basketRepository) {
-        this.basketRepository = basketRepository;
-    }
-
     public void validate(double totalCost) {
         if (totalCost < 0) {
             throw new ValidationException("Total cost of products in basket is invalid");
         }
     }
 
-    public void validate(long id) {
+    public void validate(long id, List<Basket> baskets) {
         List<Long> ids = new ArrayList<>();
 
-        for (Basket basket : basketRepository.findAll()) {
+        for (Basket basket : baskets) {
             ids.add(basket.getId());
         }
 

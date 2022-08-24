@@ -13,15 +13,18 @@ import java.util.Optional;
 public class WalletService {
     private final WalletRepository walletRepository;
     private final WalletValidator walletValidator;
+    private final PersonService personService;
     private final PersonValidator personValidator;
 
     public WalletService(
         WalletRepository walletRepository,
         WalletValidator walletValidator,
+        PersonService personService,
         PersonValidator personValidator
     ) {
         this.walletRepository = walletRepository;
         this.walletValidator = walletValidator;
+        this.personService = personService;
         this.personValidator = personValidator;
     }
 
@@ -30,13 +33,13 @@ public class WalletService {
     }
 
     public Wallet findById(long id) {
-        walletValidator.validate(id);
+        walletValidator.validate(id, walletRepository.findAll());
         Optional<Wallet> wallet = walletRepository.findById(id);
         return wallet.orElseGet(Wallet::new);
     }
 
     public Wallet findByPerson(long personId) {
-        personValidator.validate(personId);
+        personValidator.validate(personId, personService.findAll());
         Optional<Wallet> wallet = walletRepository.findByPerson(personId);
         return wallet.orElseGet(Wallet::new);
     }
@@ -47,18 +50,18 @@ public class WalletService {
         long personId
     ) {
         walletValidator.validate(number, amountOfMoney);
-        personValidator.validate(personId);
+        personValidator.validate(personId, personService.findAll());
         return walletRepository.save(number, amountOfMoney, personId);
     }
 
     public Wallet update(long id, double amountOfMoney) {
-        walletValidator.validate(id);
+        walletValidator.validate(id, walletRepository.findAll());
         walletValidator.validateAmountOfMoney(amountOfMoney);
         return walletRepository.update(id, amountOfMoney);
     }
 
     public void delete(long id) {
-        walletValidator.validate(id);
+        walletValidator.validate(id, walletRepository.findAll());
         walletRepository.delete(id);
     }
 }

@@ -30,7 +30,7 @@ public class PersonService {
     }
 
     public Person findById(long id) {
-        personValidator.validate(id);
+        personValidator.validate(id, personRepository.findAll());
         Optional<Person> person = personRepository.findById(id);
         return person.orElseGet(Person::new);
     }
@@ -54,13 +54,13 @@ public class PersonService {
         String firstName,
         String lastName
     ) {
-        personValidator.validate(id);
+        personValidator.validate(id, personRepository.findAll());
         personValidator.validate(firstName, lastName);
         return personRepository.update(id, firstName, lastName);
     }
 
     public void delete(long id) {
-        personValidator.validate(id);
+        personValidator.validate(id, personRepository.findAll());
         personRepository.delete(id);
     }
 }

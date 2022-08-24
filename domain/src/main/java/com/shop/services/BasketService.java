@@ -13,15 +13,18 @@ import java.util.Optional;
 public class BasketService {
     private final BasketRepository basketRepository;
     private final BasketValidator basketValidator;
+    private final PersonService personService;
     private final PersonValidator personValidator;
 
     public BasketService(
         BasketRepository basketRepository,
         BasketValidator basketValidator,
+        PersonService personService,
         PersonValidator personValidator
     ) {
         this.basketRepository = basketRepository;
         this.basketValidator = basketValidator;
+        this.personService = personService;
         this.personValidator = personValidator;
     }
 
@@ -36,14 +39,14 @@ public class BasketService {
     }
 
     public Basket findByPerson(long personId) {
-        personValidator.validate(personId);
+        personValidator.validate(personId, personService.findAll());
         Optional<Basket> basket = basketRepository.findByPerson(personId);
         return basket.orElseGet(Basket::new);
     }
 
     public Basket save(double totalCost, long personId) {
         basketValidator.validate(totalCost);
-        personValidator.validate(personId);
+        personValidator.validate(personId, personService.findAll());
         return basketRepository.save(totalCost, personId);
     }
 

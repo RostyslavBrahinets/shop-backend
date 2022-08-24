@@ -32,13 +32,13 @@ public class ProductCategoryService {
     }
 
     public List<Product> findAllProductsInCategory(long categoryId) {
-        categoryValidator.validate(categoryId);
+        categoryValidator.validate(categoryId, categoryService.findAll());
         return productCategoryRepository.findAllProductsInCategory(categoryId);
     }
 
     public void saveProductToCategory(String barcode, String nameOfCategory) {
-        productValidator.validate(barcode);
-        categoryValidator.validate(nameOfCategory);
+        productValidator.validate(barcode, productService.findAll());
+        categoryValidator.validate(nameOfCategory, categoryService.findAll());
 
         Product product = productService.findByBarcode(barcode);
         Category category = categoryService.findByName(nameOfCategory);

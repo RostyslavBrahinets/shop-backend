@@ -33,13 +33,13 @@ public class ProductService {
     }
 
     public Product findById(long id) {
-        productValidator.validate(id);
+        productValidator.validate(id, productRepository.findAll());
         Optional<Product> product = productRepository.findById(id);
         return product.orElseGet(Product::new);
     }
 
     public Product findByBarcode(String barcode) {
-        productValidator.validate(barcode);
+        productValidator.validate(barcode, productRepository.findAll());
         Optional<Product> product = productRepository.findByBarcode(barcode);
         return product.orElseGet(Product::new);
     }
@@ -52,12 +52,12 @@ public class ProductService {
         boolean inStock,
         byte[] image
     ) {
-        productValidator.validate(name, describe, price, barcode);
+        productValidator.validate(name, describe, price, barcode, productRepository.findAll());
         return productRepository.save(name, describe, price, barcode, inStock, image);
     }
 
     public void delete(String barcode) {
-        productValidator.validate(barcode);
+        productValidator.validate(barcode, productRepository.findAll());
 
         Optional<Product> product = productRepository.findByBarcode(barcode);
 
@@ -73,7 +73,7 @@ public class ProductService {
     }
 
     public void saveImageForProduct(byte[] image, long id) {
-        productValidator.validate(id);
+        productValidator.validate(id, productRepository.findAll());
         productRepository.saveImageForProduct(image, id);
     }
 

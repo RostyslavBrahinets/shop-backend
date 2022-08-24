@@ -18,6 +18,7 @@ import java.util.List;
 public class ProductsBasketsService {
     private final ProductsBasketsRepository productsBasketsRepository;
     private final BasketService basketService;
+    private final PersonService personService;
     private final ProductService productService;
     private final WalletService walletService;
     private final ProductValidator productValidator;
@@ -29,6 +30,7 @@ public class ProductsBasketsService {
     public ProductsBasketsService(
         ProductsBasketsRepository productsBasketsRepository,
         BasketService basketService,
+        PersonService personService,
         ProductService productService,
         WalletService walletService,
         ProductValidator productValidator,
@@ -39,6 +41,7 @@ public class ProductsBasketsService {
     ) {
         this.productsBasketsRepository = productsBasketsRepository;
         this.basketService = basketService;
+        this.personService = personService;
         this.productService = productService;
         this.walletService = walletService;
         this.productValidator = productValidator;
@@ -54,7 +57,7 @@ public class ProductsBasketsService {
     }
 
     public long saveProductToBasket(long productId, long basketId) {
-        productValidator.validate(productId);
+        productValidator.validate(productId, productService.findAll());
         basketValidator.validate(basketId);
         productsBasketsRepository.saveProductToBasket(productId, basketId);
 
@@ -73,7 +76,7 @@ public class ProductsBasketsService {
     }
 
     public void deleteProductFromBasket(long productId, long basketId) {
-        productValidator.validate(productId);
+        productValidator.validate(productId, productService.findAll());
         basketValidator.validate(basketId);
         productsBasketsRepository.deleteProductFromBasket(productId, basketId);
 
@@ -91,7 +94,7 @@ public class ProductsBasketsService {
     }
 
     public void buy(long personId) throws StripeException {
-        personValidator.validate(personId);
+        personValidator.validate(personId, personService.findAll());
 
         Wallet wallet = walletService.findByPerson(personId);
         Basket basket = basketService.findByPerson(personId);

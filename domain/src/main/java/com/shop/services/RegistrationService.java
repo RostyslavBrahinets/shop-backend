@@ -51,7 +51,8 @@ public class RegistrationService {
             lastName,
             email,
             phone,
-            password
+            password,
+            contactService.findAll()
         );
 
         if (validData) {
