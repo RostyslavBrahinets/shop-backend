@@ -1,9 +1,9 @@
 package com.shop.controllers;
 
 import com.shop.exceptions.NotFoundException;
-import com.shop.models.Basket;
+import com.shop.models.Cart;
 import com.shop.security.LoginPasswordAuthenticationProvider;
-import com.shop.services.BasketService;
+import com.shop.services.CartService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.shop.controllers.BasketController.BASKETS_URL;
+import static com.shop.controllers.CartController.CARTS_URL;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -29,25 +29,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @MockBean(PasswordEncoder.class),
     @MockBean(LoginPasswordAuthenticationProvider.class)
 })
-@WebMvcTest(BasketController.class)
-class BasketControllerTest {
+@WebMvcTest(CartController.class)
+class CartControllerTest {
     @Autowired
     @MockBean
-    private BasketService basketService;
+    private CartService cartService;
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("All baskets request")
-    void all_baskets_request() throws Exception {
-        when(basketService.findAll()).thenReturn(
+    @DisplayName("All carts request")
+    void all_carts_request() throws Exception {
+        when(cartService.findAll()).thenReturn(
             List.of(
-                new Basket(1, 0)
+                new Cart(1, 0)
             )
         );
 
-        mockMvc.perform(get(BASKETS_URL)
+        mockMvc.perform(get(CARTS_URL)
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk())
@@ -56,51 +56,51 @@ class BasketControllerTest {
     }
 
     @Test
-    @DisplayName("Basket not found because of incorrect id")
-    void basket_not_found_because_of_incorrect_id() throws Exception {
-        mockMvc.perform(get(BASKETS_URL + "/id")
+    @DisplayName("Cart not found because of incorrect id")
+    void cart_not_found_because_of_incorrect_id() throws Exception {
+        mockMvc.perform(get(CARTS_URL + "/id")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isBadRequest());
     }
 
     @Test
-    @DisplayName("Basket not found")
-    void basket_not_found() throws Exception {
-        when(basketService.findById(anyInt()))
+    @DisplayName("Cart not found")
+    void cart_not_found() throws Exception {
+        when(cartService.findById(anyInt()))
             .thenThrow(NotFoundException.class);
 
-        mockMvc.perform(get(BASKETS_URL + "/1")
+        mockMvc.perform(get(CARTS_URL + "/1")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Basket found")
-    void basket_found() throws Exception {
-        when(basketService.findById(1))
-            .thenReturn(new Basket(1, 0));
+    @DisplayName("Cart found")
+    void cart_found() throws Exception {
+        when(cartService.findById(1))
+            .thenReturn(new Cart(1, 0));
 
-        mockMvc.perform(get(BASKETS_URL + "/1")
+        mockMvc.perform(get(CARTS_URL + "/1")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Basket not deleted because of incorrect id")
-    void basket_not_deleted_because_of_incorrect_id() throws Exception {
-        mockMvc.perform(delete(BASKETS_URL + "/id")
+    @DisplayName("Cart not deleted because of incorrect id")
+    void cart_not_deleted_because_of_incorrect_id() throws Exception {
+        mockMvc.perform(delete(CARTS_URL + "/id")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isBadRequest());
     }
 
     @Test
-    @DisplayName("Basket deleted")
-    void basket_deleted() throws Exception {
-        mockMvc.perform(delete(BASKETS_URL + "/1")
+    @DisplayName("Cart deleted")
+    void cart_deleted() throws Exception {
+        mockMvc.perform(delete(CARTS_URL + "/1")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().is2xxSuccessful());

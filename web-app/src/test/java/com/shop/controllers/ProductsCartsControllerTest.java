@@ -1,14 +1,14 @@
 package com.shop.controllers;
 
 import com.shop.dto.ReportDto;
-import com.shop.models.Basket;
+import com.shop.models.Cart;
 import com.shop.models.Person;
 import com.shop.models.Product;
 import com.shop.models.Wallet;
 import com.shop.security.LoginPasswordAuthenticationProvider;
-import com.shop.services.BasketService;
+import com.shop.services.CartService;
 import com.shop.services.PersonService;
-import com.shop.services.ProductsBasketsService;
+import com.shop.services.ProductsCartsService;
 import com.shop.services.WalletService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.shop.controllers.ProductsBasketsController.PRODUCTS_BASKETS_URL;
+import static com.shop.controllers.ProductsCartsController.PRODUCTS_CARTS_URL;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -36,14 +36,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @MockBean(LoginPasswordAuthenticationProvider.class),
     @MockBean(ReportDto.class)
 })
-@WebMvcTest(ProductsBasketsController.class)
-class ProductsBasketsControllerTest {
+@WebMvcTest(ProductsCartsController.class)
+class ProductsCartsControllerTest {
     @Autowired
     @MockBean
-    private ProductsBasketsService productsBasketsService;
+    private ProductsCartsService productsCartsService;
     @Autowired
     @MockBean
-    private BasketService basketService;
+    private CartService cartService;
     @Autowired
     @MockBean
     private PersonService personService;
@@ -55,15 +55,15 @@ class ProductsBasketsControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("All products from basket request")
-    void all_products_from_basket_request() throws Exception {
+    @DisplayName("All products from cart request")
+    void all_products_from_cart_request() throws Exception {
         when(personService.findByEmail("admin"))
             .thenReturn(new Person(1, "John", "Smith"));
 
-        when(basketService.findByPerson(1))
-            .thenReturn(new Basket(1, 0));
+        when(cartService.findByPerson(1))
+            .thenReturn(new Cart(1, 0));
 
-        when(productsBasketsService.findAllProductsInBasket(1))
+        when(productsCartsService.findAllProductsInCart(1))
             .thenReturn(
                 List.of(
                     new Product(
@@ -78,7 +78,7 @@ class ProductsBasketsControllerTest {
                 )
             );
 
-        mockMvc.perform(get(PRODUCTS_BASKETS_URL)
+        mockMvc.perform(get(PRODUCTS_CARTS_URL)
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk())
@@ -87,61 +87,61 @@ class ProductsBasketsControllerTest {
     }
 
     @Test
-    @DisplayName("Save product to basket")
-    void save_product_to_basket() throws Exception {
+    @DisplayName("Save product to cart")
+    void save_product_to_cart() throws Exception {
         when(personService.findByEmail("admin"))
             .thenReturn(new Person(1, "John", "Smith"));
 
-        when(basketService.findByPerson(1))
-            .thenReturn(new Basket(1, 0));
+        when(cartService.findByPerson(1))
+            .thenReturn(new Cart(1, 0));
 
-        when(productsBasketsService.saveProductToBasket(1, 1))
+        when(productsCartsService.saveProductToCart(1, 1))
             .thenReturn(1L);
 
-        mockMvc.perform(post(PRODUCTS_BASKETS_URL + "/1")
+        mockMvc.perform(post(PRODUCTS_CARTS_URL + "/1")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/basket"));
+            .andExpect(redirectedUrl("/cart"));
 
-        verify(productsBasketsService).saveProductToBasket(1, 1);
+        verify(productsCartsService).saveProductToCart(1, 1);
     }
 
 
     @Test
-    @DisplayName("Product from basket not deleted because of incorrect id")
-    void product_from_basket_not_deleted_because_of_incorrect_id() throws Exception {
-        mockMvc.perform(post(PRODUCTS_BASKETS_URL + "/id/delete")
+    @DisplayName("Product from cart not deleted because of incorrect id")
+    void product_from_cart_not_deleted_because_of_incorrect_id() throws Exception {
+        mockMvc.perform(post(PRODUCTS_CARTS_URL + "/id/delete")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isBadRequest());
     }
 
     @Test
-    @DisplayName("Product from basket deleted")
-    void product_from_basket_deleted() throws Exception {
+    @DisplayName("Product from cart deleted")
+    void product_from_cart_deleted() throws Exception {
         when(personService.findByEmail("admin"))
             .thenReturn(new Person(1, "John", "Smith"));
 
-        when(basketService.findByPerson(1))
-            .thenReturn(new Basket(1, 0));
+        when(cartService.findByPerson(1))
+            .thenReturn(new Cart(1, 0));
 
-        mockMvc.perform(post(PRODUCTS_BASKETS_URL + "/1/delete")
+        mockMvc.perform(post(PRODUCTS_CARTS_URL + "/1/delete")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Buy products in basket")
-    void buy_products_in_basket() throws Exception {
+    @DisplayName("Buy products in cart")
+    void buy_products_in_cart() throws Exception {
         when(personService.findByEmail("admin"))
             .thenReturn(new Person(1, "John", "Smith"));
 
-        when(basketService.findByPerson(1))
-            .thenReturn(new Basket(1, 0));
+        when(cartService.findByPerson(1))
+            .thenReturn(new Cart(1, 0));
 
-        when(productsBasketsService.findAllProductsInBasket(1))
+        when(productsCartsService.findAllProductsInCart(1))
             .thenReturn(
                 List.of(
                     new Product(
@@ -156,12 +156,12 @@ class ProductsBasketsControllerTest {
                 )
             );
 
-        mockMvc.perform(post(PRODUCTS_BASKETS_URL + "/buy")
+        mockMvc.perform(post(PRODUCTS_CARTS_URL + "/buy")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
 
-        verify(productsBasketsService).buy(1);
+        verify(productsCartsService).buy(1);
     }
 
     @Test
@@ -173,7 +173,7 @@ class ProductsBasketsControllerTest {
         when(walletService.findByPerson(1))
             .thenReturn(new Wallet(1, "123", 0));
 
-        mockMvc.perform(post(PRODUCTS_BASKETS_URL + "/download-report")
+        mockMvc.perform(post(PRODUCTS_CARTS_URL + "/download-report")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());

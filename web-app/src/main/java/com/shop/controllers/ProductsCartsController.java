@@ -1,13 +1,13 @@
 package com.shop.controllers;
 
 import com.shop.dto.ReportDto;
-import com.shop.models.Basket;
+import com.shop.models.Cart;
 import com.shop.models.Person;
 import com.shop.models.Product;
 import com.shop.models.Wallet;
-import com.shop.services.BasketService;
+import com.shop.services.CartService;
 import com.shop.services.PersonService;
-import com.shop.services.ProductsBasketsService;
+import com.shop.services.ProductsCartsService;
 import com.shop.services.WalletService;
 import com.shop.utilities.PdfUtility;
 import com.stripe.exception.StripeException;
@@ -23,55 +23,55 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(ProductsBasketsController.PRODUCTS_BASKETS_URL)
-public class ProductsBasketsController {
-    public static final String PRODUCTS_BASKETS_URL = "/web-api/products-baskets";
-    private final ProductsBasketsService productsBasketsService;
-    private final BasketService basketService;
+@RequestMapping(ProductsCartsController.PRODUCTS_CARTS_URL)
+public class ProductsCartsController {
+    public static final String PRODUCTS_CARTS_URL = "/web-api/products-carts";
+    private final ProductsCartsService productsCartsService;
+    private final CartService cartService;
     private final PersonService personService;
     private final WalletService walletService;
     private final ReportDto report;
 
-    public ProductsBasketsController(
-        ProductsBasketsService productsBasketsService,
-        BasketService basketService,
+    public ProductsCartsController(
+        ProductsCartsService productsCartsService,
+        CartService cartService,
         PersonService personService,
         WalletService walletService,
         ReportDto report) {
-        this.productsBasketsService = productsBasketsService;
-        this.basketService = basketService;
+        this.productsCartsService = productsCartsService;
+        this.cartService = cartService;
         this.personService = personService;
         this.walletService = walletService;
         this.report = report;
     }
 
     @GetMapping
-    public List<Product> findAllProductsInBasket(@AuthenticationPrincipal UserDetails userDetail) {
+    public List<Product> findAllProductsInCart(@AuthenticationPrincipal UserDetails userDetail) {
         Person person = personService.findByEmail(userDetail.getUsername());
-        Basket basket = basketService.findByPerson(person.getId());
-        return productsBasketsService.findAllProductsInBasket(basket.getId());
+        Cart cart = cartService.findByPerson(person.getId());
+        return productsCartsService.findAllProductsInCart(cart.getId());
     }
 
     @PostMapping("/{id}")
-    public long saveProductToBasket(
+    public long saveProductToCart(
         @AuthenticationPrincipal UserDetails userDetail,
         @PathVariable long id,
         HttpServletResponse response
     ) throws IOException {
         Person person = personService.findByEmail(userDetail.getUsername());
-        Basket basket = basketService.findByPerson(person.getId());
-        response.sendRedirect("/basket");
-        return productsBasketsService.saveProductToBasket(id, basket.getId());
+        Cart cart = cartService.findByPerson(person.getId());
+        response.sendRedirect("/cart");
+        return productsCartsService.saveProductToCart(id, cart.getId());
     }
 
     @PostMapping("/{id}/delete")
-    public void deleteProductFromBasket(
+    public void deleteProductFromCart(
         @AuthenticationPrincipal UserDetails userDetail,
         @PathVariable long id
     ) {
         Person person = personService.findByEmail(userDetail.getUsername());
-        Basket basket = basketService.findByPerson(person.getId());
-        productsBasketsService.deleteProductFromBasket(id, basket.getId());
+        Cart cart = cartService.findByPerson(person.getId());
+        productsCartsService.deleteProductFromCart(id, cart.getId());
     }
 
     @PostMapping("/buy")
@@ -79,19 +79,19 @@ public class ProductsBasketsController {
         @AuthenticationPrincipal UserDetails userDetail
     ) throws StripeException {
         Person person = personService.findByEmail(userDetail.getUsername());
-        Basket basket = basketService.findByPerson(person.getId());
+        Cart cart = cartService.findByPerson(person.getId());
 
-        List<Product> productsInBasket = productsBasketsService
-            .findAllProductsInBasket(basket.getId());
+        List<Product> productsInCart = productsCartsService
+            .findAllProductsInCart(cart.getId());
 
-        if (productsInBasket.size() == 0) {
-            return "Basket Is Empty";
+        if (productsInCart.size() == 0) {
+            return "Cart Is Empty";
         }
 
-        report.setProducts(productsInBasket);
-        report.setTotalCost(basket.getTotalCost());
+        report.setProducts(productsInCart);
+        report.setTotalCost(cart.getTotalCost());
 
-        productsBasketsService.buy(person.getId());
+        productsCartsService.buy(person.getId());
 
         return "Products Bought";
     }
