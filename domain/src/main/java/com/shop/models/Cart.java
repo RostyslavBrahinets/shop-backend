@@ -9,18 +9,18 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-public class Basket implements Serializable {
+public class Cart implements Serializable {
     @Serial
     private static final long serialVersionUID = 4L;
     private long id;
     private List<Product> products;
     private double totalCost;
 
-    public Basket() {
+    public Cart() {
         this.products = new ArrayList<>();
     }
 
-    public Basket(
+    public Cart(
         long id,
         double totalCost
     ) {
@@ -29,12 +29,12 @@ public class Basket implements Serializable {
         this.totalCost = totalCost;
     }
 
-    public static Basket of(double totalCost) {
-        return new Basket(0, totalCost);
+    public static Cart of(double totalCost) {
+        return new Cart(0, totalCost);
     }
 
-    public Basket withId(long id) {
-        return new Basket(id, this.totalCost);
+    public Cart withId(long id) {
+        return new Cart(id, this.totalCost);
     }
 
     public long getId() {
@@ -71,10 +71,10 @@ public class Basket implements Serializable {
             return false;
         }
 
-        Basket basket = (Basket) o;
-        return id == basket.id
-            && totalCost == basket.totalCost
-            && Objects.equals(products, basket.products);
+        Cart cart = (Cart) o;
+        return id == cart.id
+            && totalCost == cart.totalCost
+            && Objects.equals(products, cart.products);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class Basket implements Serializable {
 
     @Override
     public String toString() {
-        return "Basket{"
+        return "Cart{"
             + "id=" + id
             + ", products=" + products
             + ", totalCost=" + totalCost

@@ -14,7 +14,7 @@ public class Person implements Serializable {
     private String firstName;
     private String lastName;
     private Contact contact;
-    private Basket basket;
+    private Cart cart;
     private Wallet wallet;
 
     public Person() {
@@ -73,12 +73,12 @@ public class Person implements Serializable {
         this.contact = contact;
     }
 
-    public Basket getBasket() {
-        return basket;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setBasket(Basket basket) {
-        this.basket = basket;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public Wallet getWallet() {
@@ -104,13 +104,13 @@ public class Person implements Serializable {
             && Objects.equals(firstName, person.firstName)
             && Objects.equals(lastName, person.lastName)
             && Objects.equals(contact, person.contact)
-            && Objects.equals(basket, person.basket)
+            && Objects.equals(cart, person.cart)
             && Objects.equals(wallet, person.wallet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, contact, basket, wallet);
+        return Objects.hash(id, firstName, lastName, contact, cart, wallet);
     }
 
     @Override
