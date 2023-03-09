@@ -20,9 +20,10 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/products_baskets/V20220421162626__Create_table_products_baskets.sql"
+    "classpath:db/migration/person/V20220421161641__Create_table_person.sql",
+    "classpath:db/migration/cart/V20220421161946__Create_table_cart.sql"
 })
-public class ProductsBasketsTableSchemaTest {
+public class CartTableSchemaTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -30,21 +31,20 @@ public class ProductsBasketsTableSchemaTest {
     void tearDown() {
         JdbcTestUtils.dropTables(
             jdbcTemplate.getJdbcTemplate(),
-            "products_baskets"
+            "cart"
         );
     }
 
     @Test
-    @DisplayName("Failed to insert null product id value")
-    void failed_to_insert_null_product_id_value() {
+    @DisplayName("Failed to insert null total cost value")
+    void failed_to_insert_null_total_cost_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("product_id", null);
-        params.addValue("basket_id", 1);
+        params.addValue("total_cost", null);
+        params.addValue("person_id", 1);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO products_baskets(product_id, basket_id) "
-                    + "VALUES (:product_id, :basket_id)",
+                "INSERT INTO cart(total_cost, person_id) VALUES (:total_cost, :person_id)",
                 params
             )
         )
@@ -52,16 +52,15 @@ public class ProductsBasketsTableSchemaTest {
     }
 
     @Test
-    @DisplayName("Failed to insert null basket id value")
-    void failed_to_insert_null_basket_id_value() {
+    @DisplayName("Failed to insert null person id value")
+    void failed_to_insert_null_person_id_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("product_id", 1);
-        params.addValue("basket_id", null);
+        params.addValue("total_cost", 0);
+        params.addValue("person_id", null);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO products_baskets(product_id, basket_id) "
-                    + "VALUES (:product_id, :basket_id)",
+                "INSERT INTO cart(total_cost, person_id) VALUES (:total_cost, :person_id)",
                 params
             )
         )
