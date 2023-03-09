@@ -1,7 +1,6 @@
 package com.shop.integration.repositories.contextconfiguration;
 
 import com.shop.dao.ProductCategoryDao;
-import com.shop.dao.ProductsBasketsDao;
 import com.shop.repositories.ProductCategoryRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
