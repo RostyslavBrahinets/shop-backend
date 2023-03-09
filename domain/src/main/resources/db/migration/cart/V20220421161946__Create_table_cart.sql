@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS basket
+CREATE TABLE IF NOT EXISTS cart
 (
     id              SERIAL PRIMARY KEY,
     total_cost      REAL NOT NULL,
