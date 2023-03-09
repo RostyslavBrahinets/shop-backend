@@ -25,7 +25,7 @@
         <a th:href="@{/products}">Products</a>
 
         <span th:if="${role == 'ROLE_USER'}">
-            <a th:href="@{/basket}">Basket</a>
+            <a th:href="@{/templates/cart}">Cart</a>
             <a th:href="@{/wallet}">Wallet</a>
         </span>
 
@@ -45,8 +45,8 @@
 <div class="product-container"></div>
 
 <div class="add" th:if="${role == 'ROLE_USER' && inStock}">
-    <form name="add" th:action="@{/web-api/products-baskets/{id}(id=${id})}" method="post">
-        <button type="submit">Add To Basket</button>
+    <form name="add" th:action="@{/web-api/products-carts/{id}(id=${id})}" method="post">
+        <button type="submit">Add To Cart</button>
     </form>
 </div>
 

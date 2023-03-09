@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Basket</title>
+    <title>Cart</title>
 </head>
 <body>
-<h1>Basket</h1>
+<h1>Cart</h1>
 
 <form name="logout" th:action="@{/logout}" method="post">
     <div>
@@ -21,21 +21,21 @@
 <hr/>
 
 <div class="products-container"></div>
-<div class="basket-container"></div>
+<div class="cart-container"></div>
 
 <div>
     <button onclick="buy()">Buy</button>
 </div>
 
-<form name="download-report" th:action="@{/web-api/products-baskets/download-report}" method="post">
+<form name="download-report" th:action="@{/web-api/products-carts/download-report}" method="post">
     <button type="submit">Download Report</button>
 </form>
 
 <div class="buying-message"></div>
 
 <script th:inline="javascript">
-    function displayProductsInBasket() {
-        fetch('http://localhost:8080/web-api/products-baskets', {
+    function displayProductsInCart() {
+        fetch('http://localhost:8080/web-api/products-carts', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -57,7 +57,7 @@
                         const text = document.createTextNode(element);
                         const productId = ids[i].toString();
 
-                        button.addEventListener('click', () => deleteProductFromBasket(productId));
+                        button.addEventListener('click', () => deleteProductFromCart(productId));
                         button.textContent = 'Remove';
 
                         node.appendChild(text);
@@ -68,7 +68,7 @@
                     });
                 } else {
                     const node = document.createElement('div');
-                    const text = document.createTextNode('Basket is empty');
+                    const text = document.createTextNode('Cart is empty');
                     node.appendChild(text)
                     document.querySelector('.products-container').append(node);
                 }
@@ -76,8 +76,8 @@
             .catch(error => console.log('Request failed', error));
     }
 
-    function displayBasketInfo(id) {
-        fetch(`http://localhost:8080/web-api/baskets/${id}`, {
+    function displayCartInfo(id) {
+        fetch(`http://localhost:8080/web-api/carts/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -89,7 +89,7 @@
                 const node = document.createElement('div');
                 const text = document.createTextNode(`Total cost: ${data.totalCost}`);
                 node.appendChild(text);
-                document.querySelector('.basket-container').append(node);
+                document.querySelector('.cart-container').append(node);
             })
             .catch(error => console.log('Request failed', error));
     }
@@ -97,7 +97,7 @@
     function buy() {
         const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
-        fetch(`http://localhost:8080/web-api/products-baskets/buy`, {
+        fetch(`http://localhost:8080/web-api/products-carts/buy`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -117,16 +117,16 @@
                     nodeBuy.appendChild(document.createTextNode(message));
                 } else {
                     alert(data);
-                    window.location.href = '/basket';
+                    window.location.href = '/cart';
                 }
             })
             .catch(error => console.log('Request failed', error));
     }
 
-    function deleteProductFromBasket(id) {
+    function deleteProductFromCart(id) {
         const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
-        fetch(`/web-api/products-baskets/${id}/delete`, {
+        fetch(`/web-api/products-carts/${id}/delete`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -136,15 +136,15 @@
         })
             .catch(error => console.log('Request failed', error));
 
-        window.location.href = '/basket';
+        window.location.href = '/cart';
     }
 
     /*<![CDATA[*/
     let id = /*[[${id}]]*/ 0;
     /*]]>*/
 
-    displayProductsInBasket();
-    displayBasketInfo(id);
+    displayProductsInCart();
+    displayCartInfo(id);
 </script>
 </body>
 </html>
