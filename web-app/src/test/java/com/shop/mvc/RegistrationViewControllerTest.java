@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @MockBean(LoginPasswordAuthenticationProvider.class),
     @MockBean(ContactService.class),
     @MockBean(PersonRoleService.class),
-    @MockBean(BasketService.class),
+    @MockBean(CartService.class),
     @MockBean(PersonValidator.class),
     @MockBean(ContactValidator.class),
     @MockBean(StripePayment.class)

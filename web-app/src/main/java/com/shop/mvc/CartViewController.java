@@ -1,8 +1,8 @@
 package com.shop.mvc;
 
-import com.shop.models.Basket;
+import com.shop.models.Cart;
 import com.shop.models.Person;
-import com.shop.services.BasketService;
+import com.shop.services.CartService;
 import com.shop.services.PersonService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/basket")
-public class BasketViewController {
+@RequestMapping("/cart")
+public class CartViewController {
     private final PersonService personService;
-    private final BasketService basketService;
+    private final CartService cartService;
 
-    public BasketViewController(
+    public CartViewController(
         PersonService personService,
-        BasketService basketService
+        CartService cartService
     ) {
         this.personService = personService;
-        this.basketService = basketService;
+        this.cartService = cartService;
     }
 
     @GetMapping
@@ -38,8 +38,8 @@ public class BasketViewController {
         }
 
         Person person = personService.findByEmail(userDetails.getUsername());
-        Basket basket = basketService.findByPerson(person.getId());
-        model.addAttribute("id", basket.getId());
-        return "basket/index";
+        Cart cart = cartService.findByPerson(person.getId());
+        model.addAttribute("id", cart.getId());
+        return "cart/index";
     }
 }
