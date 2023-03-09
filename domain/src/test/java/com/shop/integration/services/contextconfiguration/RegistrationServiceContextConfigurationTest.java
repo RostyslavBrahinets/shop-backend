@@ -83,8 +83,8 @@ public class RegistrationServiceContextConfigurationTest {
         }
 
         @Bean
-        public BasketService basketService() {
-            return mock(BasketService.class);
+        public CartService cartService() {
+            return mock(CartService.class);
         }
 
         @Bean

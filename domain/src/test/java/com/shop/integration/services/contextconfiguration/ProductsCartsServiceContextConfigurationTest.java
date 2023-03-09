@@ -1,13 +1,13 @@
 package com.shop.integration.services.contextconfiguration;
 
-import com.shop.models.Basket;
+import com.shop.models.Cart;
 import com.shop.models.Person;
 import com.shop.models.Product;
 import com.shop.models.Wallet;
-import com.shop.repositories.ProductsBasketsRepository;
+import com.shop.repositories.ProductsCartsRepository;
 import com.shop.services.*;
 import com.shop.stripe.StripePayment;
-import com.shop.validators.BasketValidator;
+import com.shop.validators.CartValidator;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.ProductValidator;
 import com.shop.validators.WalletValidator;
@@ -29,23 +29,23 @@ import static org.mockito.Mockito.*;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
     classes = {
-        ProductsBasketsService.class,
-        ProductsBasketsServiceContextConfigurationTest.TestContextConfig.class
+        ProductsCartsService.class,
+        ProductsCartsServiceContextConfigurationTest.TestContextConfig.class
     }
 )
-public class ProductsBasketsServiceContextConfigurationTest {
+public class ProductsCartsServiceContextConfigurationTest {
     @Autowired
-    private ProductsBasketsRepository productsBasketsRepository;
+    private ProductsCartsRepository productsCartsRepository;
     @Autowired
     private ProductService productService;
     @Autowired
-    private BasketService basketService;
+    private CartService cartService;
     @Autowired
     private WalletService walletService;
     @Autowired
     private ProductValidator productValidator;
     @Autowired
-    private BasketValidator basketValidator;
+    private CartValidator cartValidator;
     @Autowired
     private PersonValidator personValidator;
     @Autowired
@@ -53,7 +53,7 @@ public class ProductsBasketsServiceContextConfigurationTest {
     @Autowired
     private StripePayment stripePayment;
     @Autowired
-    private ProductsBasketsService productsBasketsService;
+    private ProductsCartsService productsCartsService;
 
     private List<Person> people;
     private List<Product> products;
@@ -65,21 +65,21 @@ public class ProductsBasketsServiceContextConfigurationTest {
     }
 
     @Test
-    @DisplayName("Get all products in baskets")
-    void get_all_products_in_baskets() {
-        long basketId = 1;
+    @DisplayName("Get all products in carts")
+    void get_all_products_in_carts() {
+        long cartId = 1;
 
-        productsBasketsService.findAllProductsInBasket(basketId);
+        productsCartsService.findAllProductsInCart(cartId);
 
-        verify(basketValidator, atLeast(1)).validate(basketId);
-        verify(productsBasketsRepository).findAllProductsInBasket(basketId);
+        verify(cartValidator, atLeast(1)).validate(cartId);
+        verify(productsCartsRepository).findAllProductsInCart(cartId);
     }
 
     @Test
-    @DisplayName("Save product to basket")
-    void save_product_to_basket() {
+    @DisplayName("Save product to cart")
+    void save_product_to_cart() {
         long productId = 1;
-        long basketId = 1;
+        long cartId = 1;
 
         when(productService.findById(productId))
             .thenReturn(Product.of(
@@ -92,23 +92,23 @@ public class ProductsBasketsServiceContextConfigurationTest {
                 )
                 .withId(1));
 
-        when(basketService.findById(basketId))
-            .thenReturn(Basket.of(0).withId(1));
+        when(cartService.findById(cartId))
+            .thenReturn(Cart.of(0).withId(1));
 
-        basketService.update(basketId, 100);
+        cartService.update(cartId, 100);
 
-        productsBasketsService.saveProductToBasket(productId, basketId);
+        productsCartsService.saveProductToCart(productId, cartId);
 
         verify(productValidator, atLeast(1)).validate(productId, products);
-        verify(basketValidator, atLeast(1)).validate(basketId);
-        verify(productsBasketsRepository).saveProductToBasket(productId, basketId);
+        verify(cartValidator, atLeast(1)).validate(cartId);
+        verify(productsCartsRepository).saveProductToCart(productId, cartId);
     }
 
     @Test
-    @DisplayName("Delete product to basket")
-    void delete_product_from_basket() {
+    @DisplayName("Delete product to cart")
+    void delete_product_from_cart() {
         long productId = 1;
-        long basketId = 1;
+        long cartId = 1;
 
         when(productService.findById(productId))
             .thenReturn(Product.of(
@@ -121,62 +121,62 @@ public class ProductsBasketsServiceContextConfigurationTest {
                 )
                 .withId(1));
 
-        when(basketService.findById(basketId))
-            .thenReturn(Basket.of(0).withId(1));
+        when(cartService.findById(cartId))
+            .thenReturn(Cart.of(0).withId(1));
 
-        basketService.update(basketId, 100);
+        cartService.update(cartId, 100);
 
-        productsBasketsService.deleteProductFromBasket(productId, basketId);
+        productsCartsService.deleteProductFromCart(productId, cartId);
 
         verify(productValidator, atLeast(1)).validate(productId, products);
-        verify(basketValidator, atLeast(1)).validate(basketId);
-        verify(productsBasketsRepository).deleteProductFromBasket(productId, basketId);
+        verify(cartValidator, atLeast(1)).validate(cartId);
+        verify(productsCartsRepository).deleteProductFromCart(productId, cartId);
     }
 
     @Test
-    @DisplayName("Delete all products from basket")
-    void delete_all_products_from_basket() {
-        long basketId = 1;
+    @DisplayName("Delete all products from cart")
+    void delete_all_products_from_cart() {
+        long cartId = 1;
 
-        productsBasketsService.deleteProductsFromBasket(basketId);
+        productsCartsService.deleteProductsFromCart(cartId);
 
-        verify(basketValidator, atLeast(1)).validate(basketId);
-        verify(productsBasketsRepository, atLeast(1)).deleteProductsFromBasket(basketId);
+        verify(cartValidator, atLeast(1)).validate(cartId);
+        verify(productsCartsRepository, atLeast(1)).deleteProductsFromCart(cartId);
     }
 
     @Test
-    @DisplayName("Buy products in basket")
-    void buy_products_in_basket() throws StripeException {
+    @DisplayName("Buy products in cart")
+    void buy_products_in_cart() throws StripeException {
         long personId = 1;
 
         when(walletService.findByPerson(personId))
             .thenReturn(Wallet.of("123", 100).withId(1));
 
-        when(basketService.findByPerson(personId))
-            .thenReturn(Basket.of(0).withId(1));
+        when(cartService.findByPerson(personId))
+            .thenReturn(Cart.of(0).withId(1));
 
         walletService.update(1, 100);
         stripePayment.updateCustomer("123", 100);
-        basketService.update(1, 0);
+        cartService.update(1, 0);
 
-        productsBasketsService.buy(personId);
+        productsCartsService.buy(personId);
 
         verify(personValidator, atLeast(1)).validate(personId, people);
         verify(walletValidator, atLeast(1)).validateAmountOfMoney(100);
-        verify(basketValidator, atLeast(1)).validate(1);
-        verify(productsBasketsRepository, atLeast(1)).deleteProductsFromBasket(1);
+        verify(cartValidator, atLeast(1)).validate(1);
+        verify(productsCartsRepository, atLeast(1)).deleteProductsFromCart(1);
     }
 
     @TestConfiguration
     static class TestContextConfig {
         @Bean
-        public ProductsBasketsRepository productsBasketsRepository() {
-            return mock(ProductsBasketsRepository.class);
+        public ProductsCartsRepository productsCartsRepository() {
+            return mock(ProductsCartsRepository.class);
         }
 
         @Bean
-        public BasketService basketService() {
-            return mock(BasketService.class);
+        public CartService cartService() {
+            return mock(CartService.class);
         }
 
         @Bean
@@ -195,8 +195,8 @@ public class ProductsBasketsServiceContextConfigurationTest {
         }
 
         @Bean
-        public BasketValidator basketValidator() {
-            return mock(BasketValidator.class);
+        public CartValidator cartValidator() {
+            return mock(CartValidator.class);
         }
 
         @Bean

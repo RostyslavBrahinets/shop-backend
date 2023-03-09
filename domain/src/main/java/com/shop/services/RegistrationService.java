@@ -17,7 +17,7 @@ public class RegistrationService {
     private final PersonService personService;
     private final ContactService contactService;
     private final PersonRoleService personRoleService;
-    private final BasketService basketService;
+    private final CartService cartService;
     private final WalletService walletService;
     private final StripePayment stripePayment;
 
@@ -26,7 +26,7 @@ public class RegistrationService {
         PersonService personService,
         ContactService contactService,
         PersonRoleService personRoleService,
-        BasketService basketService,
+        CartService cartService,
         WalletService walletService,
         StripePayment stripePayment
     ) {
@@ -34,7 +34,7 @@ public class RegistrationService {
         this.personService = personService;
         this.contactService = contactService;
         this.personRoleService = personRoleService;
-        this.basketService = basketService;
+        this.cartService = cartService;
         this.walletService = walletService;
         this.stripePayment = stripePayment;
     }
@@ -60,7 +60,7 @@ public class RegistrationService {
             long personId = findPersonId();
             contactService.save(email, phone, password, personId);
             personRoleService.saveRoleForPerson(personId, 2);
-            basketService.save(0, personId);
+            cartService.save(0, personId);
             saveWalletForPerson(personId);
         }
     }

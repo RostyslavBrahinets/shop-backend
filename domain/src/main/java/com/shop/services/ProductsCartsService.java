@@ -1,11 +1,11 @@
 package com.shop.services;
 
-import com.shop.models.Basket;
+import com.shop.models.Cart;
 import com.shop.models.Product;
 import com.shop.models.Wallet;
-import com.shop.repositories.ProductsBasketsRepository;
+import com.shop.repositories.ProductsCartsRepository;
 import com.shop.stripe.StripePayment;
-import com.shop.validators.BasketValidator;
+import com.shop.validators.CartValidator;
 import com.shop.validators.PersonValidator;
 import com.shop.validators.ProductValidator;
 import com.shop.validators.WalletValidator;
@@ -15,92 +15,92 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProductsBasketsService {
-    private final ProductsBasketsRepository productsBasketsRepository;
-    private final BasketService basketService;
+public class ProductsCartsService {
+    private final ProductsCartsRepository productsCartsRepository;
+    private final CartService cartService;
     private final PersonService personService;
     private final ProductService productService;
     private final WalletService walletService;
     private final ProductValidator productValidator;
-    private final BasketValidator basketValidator;
+    private final CartValidator cartValidator;
     private final PersonValidator personValidator;
     private final WalletValidator walletValidator;
     private final StripePayment stripePayment;
 
-    public ProductsBasketsService(
-        ProductsBasketsRepository productsBasketsRepository,
-        BasketService basketService,
+    public ProductsCartsService(
+        ProductsCartsRepository productsCartsRepository,
+        CartService cartService,
         PersonService personService,
         ProductService productService,
         WalletService walletService,
         ProductValidator productValidator,
-        BasketValidator basketValidator,
+        CartValidator cartValidator,
         PersonValidator personValidator,
         WalletValidator walletValidator,
         StripePayment stripePayment
     ) {
-        this.productsBasketsRepository = productsBasketsRepository;
-        this.basketService = basketService;
+        this.productsCartsRepository = productsCartsRepository;
+        this.cartService = cartService;
         this.personService = personService;
         this.productService = productService;
         this.walletService = walletService;
         this.productValidator = productValidator;
-        this.basketValidator = basketValidator;
+        this.cartValidator = cartValidator;
         this.personValidator = personValidator;
         this.walletValidator = walletValidator;
         this.stripePayment = stripePayment;
     }
 
-    public List<Product> findAllProductsInBasket(long basketId) {
-        basketValidator.validate(basketId);
-        return productsBasketsRepository.findAllProductsInBasket(basketId);
+    public List<Product> findAllProductsInCart(long cartId) {
+        cartValidator.validate(cartId);
+        return productsCartsRepository.findAllProductsInCart(cartId);
     }
 
-    public long saveProductToBasket(long productId, long basketId) {
+    public long saveProductToCart(long productId, long cartId) {
         productValidator.validate(productId, productService.findAll());
-        basketValidator.validate(basketId);
-        productsBasketsRepository.saveProductToBasket(productId, basketId);
+        cartValidator.validate(cartId);
+        productsCartsRepository.saveProductToCart(productId, cartId);
 
         Product product = productService.findById(productId);
-        Basket basket = basketService.findById(basketId);
+        Cart cart = cartService.findById(cartId);
 
-        List<Product> products = basket.getProducts();
+        List<Product> products = cart.getProducts();
         products.add(product);
-        basket.setProducts(products);
+        cart.setProducts(products);
 
-        double newTotalCost = basket.getTotalCost();
+        double newTotalCost = cart.getTotalCost();
         newTotalCost += product.getPrice();
-        basketService.update(basketId, newTotalCost);
+        cartService.update(cartId, newTotalCost);
 
         return productId;
     }
 
-    public void deleteProductFromBasket(long productId, long basketId) {
+    public void deleteProductFromCart(long productId, long cartId) {
         productValidator.validate(productId, productService.findAll());
-        basketValidator.validate(basketId);
-        productsBasketsRepository.deleteProductFromBasket(productId, basketId);
+        cartValidator.validate(cartId);
+        productsCartsRepository.deleteProductFromCart(productId, cartId);
 
         Product product = productService.findById(productId);
-        Basket basket = basketService.findById(basketId);
+        Cart cart = cartService.findById(cartId);
 
-        double newTotalCost = basket.getTotalCost();
+        double newTotalCost = cart.getTotalCost();
         newTotalCost -= product.getPrice();
-        basketService.update(basketId, newTotalCost);
+        cartService.update(cartId, newTotalCost);
     }
 
-    public void deleteProductsFromBasket(long basketId) {
-        basketValidator.validate(basketId);
-        productsBasketsRepository.deleteProductsFromBasket(basketId);
+    public void deleteProductsFromCart(long cartId) {
+        cartValidator.validate(cartId);
+        productsCartsRepository.deleteProductsFromCart(cartId);
     }
 
     public void buy(long personId) throws StripeException {
         personValidator.validate(personId, personService.findAll());
 
         Wallet wallet = walletService.findByPerson(personId);
-        Basket basket = basketService.findByPerson(personId);
+        Cart cart = cartService.findByPerson(personId);
 
         double newAmountOfMoney = wallet.getAmountOfMoney();
-        newAmountOfMoney -= basket.getTotalCost();
+        newAmountOfMoney -= cart.getTotalCost();
 
         walletValidator.validateAmountOfMoney(newAmountOfMoney);
 
@@ -113,8 +113,8 @@ public class ProductsBasketsService {
         walletService.update(wallet.getId(), newAmountOfMoney);
         stripePayment.updateCustomer(wallet.getNumber(), money);
 
-        basketService.update(basket.getId(), 0);
+        cartService.update(cart.getId(), 0);
 
-        deleteProductsFromBasket(basket.getId());
+        deleteProductsFromCart(cart.getId());
     }
 }
