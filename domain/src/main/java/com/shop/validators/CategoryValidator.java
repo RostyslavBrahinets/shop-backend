@@ -2,9 +2,7 @@ package com.shop.validators;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.models.Basket;
 import com.shop.models.Category;
-import com.shop.repositories.CategoryRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

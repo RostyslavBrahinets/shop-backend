@@ -2,9 +2,9 @@ package com.shop.unit.validators;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.models.Basket;
-import com.shop.repositories.BasketRepository;
-import com.shop.validators.BasketValidator;
+import com.shop.models.Cart;
+import com.shop.repositories.CartRepository;
+import com.shop.validators.CartValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,24 +17,24 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class BasketValidatorTest {
-    private BasketValidator basketValidator;
+public class CartValidatorTest {
+    private CartValidator cartValidator;
 
     @Mock
-    private BasketRepository basketRepository;
+    private CartRepository cartRepository;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        basketValidator = new BasketValidator();
+        cartValidator = new CartValidator();
     }
 
     @Test
-    @DisplayName("Total cost products in basket validated without exceptions")
-    void total_cost_products_in_basket_validated_without_exceptions() {
+    @DisplayName("Total cost products in cart validated without exceptions")
+    void total_cost_products_in_cart_validated_without_exceptions() {
         assertDoesNotThrow(
-            () -> basketValidator.validate(0.0)
+            () -> cartValidator.validate(0.0)
         );
     }
 
@@ -43,29 +43,29 @@ public class BasketValidatorTest {
     void throw_validation_exception_because_total_cost_less_then_zero() {
         assertThrows(
             ValidationException.class,
-            () -> basketValidator.validate(-1.0)
+            () -> cartValidator.validate(-1.0)
         );
     }
 
     @Test
-    @DisplayName("Id of basket validated without exceptions")
-    void id_of_basket_validated_without_exceptions() {
-        when(basketRepository.findAll())
+    @DisplayName("Id of cart validated without exceptions")
+    void id_of_cart_validated_without_exceptions() {
+        when(cartRepository.findAll())
             .thenReturn(
-                List.of(new Basket(1, 0))
+                List.of(new Cart(1, 0))
             );
 
         assertDoesNotThrow(
-            () -> basketValidator.validate(1)
+            () -> cartValidator.validate(1)
         );
     }
 
     @Test
-    @DisplayName("Throw NotFoundException because id of basket not found")
-    void throw_not_found_exception_because_id_of_basket_not_found() {
+    @DisplayName("Throw NotFoundException because id of cart not found")
+    void throw_not_found_exception_because_id_of_cart_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> basketValidator.validate(1, List.of())
+            () -> cartValidator.validate(1, List.of())
         );
     }
 }
