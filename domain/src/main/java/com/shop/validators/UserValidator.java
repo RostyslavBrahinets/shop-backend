@@ -47,6 +47,14 @@ public class UserValidator {
         }
     }
 
+    public void validateFullName(String firstName, String lastName) {
+        if (firstName == null || firstName.isBlank()) {
+            throw new ValidationException("First name is invalid");
+        } else if (lastName == null || lastName.isBlank()) {
+            throw new ValidationException("Last name is invalid");
+        }
+    }
+
     public void validateEmail(String email) {
         if (email == null || !email.equals("admin")) {
             if (isInValidEmail(email)) {
