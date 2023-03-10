@@ -50,7 +50,7 @@ class ContactServiceTest {
 
     @Test
     @DisplayName("Empty list of contacts is returned in case when no contacts in storage")
-    void empty_list_of_baskets_is_returned_in_case_when_no_baskets_in_storage() {
+    void empty_list_of_contacts_is_returned_in_case_when_no_contacts_in_storage() {
         when(contactRepository.findAll()).thenReturn(emptyList());
 
         List<Contact> contacts = contactService.findAll();
@@ -83,8 +83,8 @@ class ContactServiceTest {
     }
 
     @Test
-    @DisplayName("Basket was found by id")
-    void basket_was_found_by_id() {
+    @DisplayName("Contact was found by id")
+    void contact_was_found_by_id() {
         when(contactRepository.findById(1)).thenReturn(
             Optional.of(
                 Contact.of(
@@ -108,7 +108,7 @@ class ContactServiceTest {
 
     @Test
     @DisplayName("Contact was found by person")
-    void basket_was_found_by_person() {
+    void contact_was_found_by_person() {
         when(contactRepository.findByPerson(1)).thenReturn(
             Optional.of(
                 Contact.of(
