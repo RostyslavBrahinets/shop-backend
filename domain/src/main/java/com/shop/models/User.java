@@ -70,6 +70,17 @@ public class User implements Serializable {
         );
     }
 
+    public static User of(
+        String firstName,
+        String lastName
+    ) {
+        return new User(
+            0,
+            firstName,
+            lastName
+        );
+    }
+
     public User withId(long id) {
         return new User(
             id,
