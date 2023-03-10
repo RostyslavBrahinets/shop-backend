@@ -16,6 +16,7 @@ public class User implements Serializable {
     private String email;
     private String phone;
     private String password;
+    private long adminNumberId;
     private Cart cart;
     private Wallet wallet;
 
@@ -28,7 +29,8 @@ public class User implements Serializable {
         String lastName,
         String email,
         String phone,
-        String password
+        String password,
+        long adminNumberId
     ) {
         this.id = id;
         this.firstName = firstName;
@@ -36,6 +38,7 @@ public class User implements Serializable {
         this.email = email;
         this.phone = phone;
         this.password = password;
+        this.adminNumberId = adminNumberId;
     }
 
     public static User of(
@@ -43,7 +46,8 @@ public class User implements Serializable {
         String lastName,
         String email,
         String phone,
-        String password
+        String password,
+        long adminNumberId
     ) {
         return new User(
             0,
@@ -51,7 +55,8 @@ public class User implements Serializable {
             lastName,
             email,
             phone,
-            password
+            password,
+            adminNumberId
         );
     }
 
@@ -62,7 +67,8 @@ public class User implements Serializable {
             this.lastName,
             this.email,
             this.phone,
-            this.password
+            this.password,
+            this.adminNumberId
         );
     }
 
@@ -114,6 +120,14 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public long getAdminNumberId() {
+        return adminNumberId;
+    }
+
+    public void setAdminNumberId(long adminNumberId) {
+        this.adminNumberId = adminNumberId;
+    }
+
     public Cart getCart() {
         return cart;
     }
@@ -147,6 +161,7 @@ public class User implements Serializable {
             && Objects.equals(email, user.email)
             && Objects.equals(phone, user.phone)
             && Objects.equals(password, user.password)
+            && adminNumberId == user.adminNumberId
             && Objects.equals(cart, user.cart)
             && Objects.equals(wallet, user.wallet);
     }
@@ -160,6 +175,7 @@ public class User implements Serializable {
             email,
             phone,
             password,
+            adminNumberId,
             cart,
             wallet
         );
