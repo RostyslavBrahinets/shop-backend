@@ -24,13 +24,13 @@
         <option>ROLE_USER</option>
         <option>ROLE_ADMIN</option>
     </select>
-    <button onclick="changeRoleForPerson()">Change</button>
+    <button onclick="changeRoleForUser()">Change</button>
 </div>
 
 <div id="changing-result"></div>
 
 <script th:inline="javascript">
-    function changeRoleForPerson() {
+    function changeRoleForUser() {
         const role = document.querySelector('#role').value.toString();
         const node = document.querySelector('#changing-result');
         node.textContent = '';
@@ -45,7 +45,7 @@
 
         const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
-        fetch(`http://localhost:8080/web-api/person-role/${id}`, {
+        fetch(`http://localhost:8080/web-api/user-role/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -18,13 +18,13 @@
 
 <hr/>
 
-<div class="person-container"></div>
-<div class="contact-container"></div>
+<div class="user-container"></div>
+<!--<div class="contact-container"></div>-->
 <div class="role-container"></div>
 
 <script th:inline="javascript">
-    function displayPersonInfo(id) {
-        fetch(`http://localhost:8080/web-api/people/${id}`, {
+    function displayUserInfo(id) {
+        fetch(`http://localhost:8080/web-api/users/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,68 +37,33 @@
                 const node = document.createElement('div');
 
                 if (error || currentId === id) {
-                    node.appendChild(document.createTextNode('Person Not Found'));
-                    document.querySelector('.person-container').append(node);
+                    node.appendChild(document.createTextNode('User Not Found'));
+                    document.querySelector('.user-container').append(node);
                 } else {
                     const divs = [];
-                    for (let i = 0; i < 2; i++) {
+                    for (let i = 0; i < 4; i++) {
                         divs.push(document.createElement('div'))
                     }
 
                     const texts = [];
                     texts.push(document.createTextNode(`First Name: ${data.firstName}`));
                     texts.push(document.createTextNode(`Last Name: ${data.lastName}`));
+                    texts.push(document.createTextNode(`Email: ${data.email}`));
+                    texts.push(document.createTextNode(`Phone: ${data.phone}`));
 
                     for (let i = 0; i < divs.length; i++) {
                         divs[i].appendChild(texts[i]);
                         node.appendChild(divs[i]);
                     }
 
-                    document.querySelector('.person-container').append(node);
+                    document.querySelector('.user-container').append(node);
                 }
-            })
-            .catch(error => console.log('Request failed', error));
-    }
-
-    function displayContactInfo(id) {
-        fetch(`http://localhost:8080/web-api/contacts/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                const error = JSON.stringify(data).includes('message');
-
-                if (error || currentId === id) {
-                    return;
-                }
-
-                const node = document.createElement('div');
-
-                const divs = [];
-                for (let i = 0; i < 3; i++) {
-                    divs.push(document.createElement('div'))
-                }
-
-                const texts = [];
-                texts.push(document.createTextNode(`Email: ${data.email}`));
-                texts.push(document.createTextNode(`Phone: ${data.phone}`));
-
-                for (let i = 0; i < 2; i++) {
-                    divs[i].appendChild(texts[i]);
-                    node.appendChild(divs[i]);
-                }
-
-                document.querySelector('.contact-container').append(node);
             })
             .catch(error => console.log('Request failed', error));
     }
 
     function displayRoleInfo(id) {
-        fetch(`http://localhost:8080/web-api/person-role/${id}`, {
+        fetch(`http://localhost:8080/web-api/user-role/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -139,8 +104,7 @@
     let id = /*[[${id}]]*/ 0;
     /*]]>*/
 
-    displayPersonInfo(id)
-    displayContactInfo(id);
+    displayUserInfo(id)
     displayRoleInfo(id);
 </script>
 </body>

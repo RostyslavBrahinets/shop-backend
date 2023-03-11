@@ -53,7 +53,7 @@
 
 <script th:inline="javascript">
     function fillFields(id) {
-        fetch(`http://localhost:8080/web-api/people/${id}`, {
+        fetch(`http://localhost:8080/web-api/users/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -64,18 +64,6 @@
             .then(data => {
                 document.querySelector('#firstName').value = data.firstName;
                 document.querySelector('#lastName').value = data.lastName;
-            })
-            .catch(error => console.log('Request failed', error));
-
-        fetch(`http://localhost:8080/web-api/contacts/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
                 document.querySelector('#phone').value = data.phone;
             })
             .catch(error => console.log('Request failed', error));
@@ -110,36 +98,22 @@
             message = document.createTextNode('Invalid Phone');
             nodePhone.appendChild(message);
         } else {
-            const bodyPerson = {
+            const bodyUser = {
                 'firstName': firstName,
-                'lastName': lastName
+                'lastName': lastName,
+                'phone': phone
             };
 
             const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
-            fetch(`http://localhost:8080/web-api/people/${id}`, {
+            fetch(`http://localhost:8080/web-api/users/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-XSRF-TOKEN': csrfToken
                 },
-                body: JSON.stringify(bodyPerson)
-            })
-                .catch(error => console.log('Request failed', error));
-
-            const bodyContacts = {
-                'phone': phone
-            };
-
-            fetch(`http://localhost:8080/web-api/contacts/${id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-XSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify(bodyContacts)
+                body: JSON.stringify(bodyUser)
             })
                 .then(response => response.json())
                 .then(data => {
