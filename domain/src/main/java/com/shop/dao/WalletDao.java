@@ -33,10 +33,10 @@ public class WalletDao {
             .stream().findAny();
     }
 
-    public Optional<Wallet> findByPerson(long personId) {
+    public Optional<Wallet> findByUser(long userId) {
         return jdbcTemplate.query(
-                "SELECT * FROM wallet WHERE person_id=:person_id",
-                Map.ofEntries(Map.entry("person_id", personId)),
+                "SELECT * FROM wallet WHERE user_id=:user_id",
+                Map.ofEntries(Map.entry("user_id", userId)),
                 new BeanPropertyRowMapper<>(Wallet.class)
             )
             .stream().findAny();
@@ -45,15 +45,15 @@ public class WalletDao {
     public void save(
         String number,
         double amountOfMoney,
-        long personId
+        long userId
     ) {
         jdbcTemplate.update(
-            "INSERT INTO wallet (number, amount_of_money, person_id)"
-                + " VALUES (:number, :amount_of_money, :person_id)",
+            "INSERT INTO wallet (number, amount_of_money, user_id)"
+                + " VALUES (:number, :amount_of_money, :user_id)",
             Map.ofEntries(
                 Map.entry("number", number),
                 Map.entry("amount_of_money", amountOfMoney),
-                Map.entry("person_id", personId)
+                Map.entry("user_id", userId)
             )
         );
     }

@@ -33,21 +33,21 @@ public class CartDao {
             .stream().findAny();
     }
 
-    public Optional<Cart> findByPerson(long personId) {
+    public Optional<Cart> findByUser(long userId) {
         return jdbcTemplate.query(
-                "SELECT * FROM cart WHERE person_id=:person_id",
-                Map.ofEntries(Map.entry("person_id", personId)),
+                "SELECT * FROM cart WHERE user_id=:user_id",
+                Map.ofEntries(Map.entry("user_id", userId)),
                 new BeanPropertyRowMapper<>(Cart.class)
             )
             .stream().findAny();
     }
 
-    public void save(double totalCost, long personId) {
+    public void save(double totalCost, long userId) {
         jdbcTemplate.update(
-            "INSERT INTO cart (total_cost, person_id) VALUES (:total_cost, :person_id)",
+            "INSERT INTO cart (total_cost, user_id) VALUES (:total_cost, :user_id)",
             Map.ofEntries(
                 Map.entry("total_cost", totalCost),
-                Map.entry("person_id", personId)
+                Map.entry("user_id", userId)
             )
         );
     }
