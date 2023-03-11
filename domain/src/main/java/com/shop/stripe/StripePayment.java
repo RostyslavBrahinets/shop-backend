@@ -1,8 +1,6 @@
 package com.shop.stripe;
 
-import com.shop.models.Contact;
-import com.shop.models.Person;
-import com.shop.services.ContactService;
+import com.shop.models.User;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
@@ -15,22 +13,18 @@ import java.util.Optional;
 
 @Component
 public class StripePayment {
-    private final ContactService contactService;
     @Value("${stripe.apikey}")
     private String stripeKey;
 
-    public StripePayment(ContactService contactService) {
-        this.contactService = contactService;
+    public StripePayment() {
     }
 
-    public Optional<Customer> saveCustomer(Person person) throws StripeException {
+    public Optional<Customer> saveCustomer(User user) throws StripeException {
         Stripe.apiKey = stripeKey;
 
-        Contact contact = contactService.findByPerson(person.getId());
-
         Map<String, Object> params = new HashMap<>();
-        params.put("name", person.getFirstName() + " " + person.getLastName());
-        params.put("email", contact.getEmail());
+        params.put("name", user.getFirstName() + " " + user.getLastName());
+        params.put("email", user.getEmail());
 
         return Optional.ofNullable(Customer.create(params));
     }
