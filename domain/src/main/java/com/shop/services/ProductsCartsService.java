@@ -6,7 +6,7 @@ import com.shop.models.Wallet;
 import com.shop.repositories.ProductsCartsRepository;
 import com.shop.stripe.StripePayment;
 import com.shop.validators.CartValidator;
-import com.shop.validators.PersonValidator;
+import com.shop.validators.UserValidator;
 import com.shop.validators.ProductValidator;
 import com.shop.validators.WalletValidator;
 import com.stripe.exception.StripeException;
@@ -18,35 +18,35 @@ import java.util.List;
 public class ProductsCartsService {
     private final ProductsCartsRepository productsCartsRepository;
     private final CartService cartService;
-    private final PersonService personService;
+    private final UserService userService;
     private final ProductService productService;
     private final WalletService walletService;
     private final ProductValidator productValidator;
     private final CartValidator cartValidator;
-    private final PersonValidator personValidator;
+    private final UserValidator userValidator;
     private final WalletValidator walletValidator;
     private final StripePayment stripePayment;
 
     public ProductsCartsService(
         ProductsCartsRepository productsCartsRepository,
         CartService cartService,
-        PersonService personService,
+        UserService userService,
         ProductService productService,
         WalletService walletService,
         ProductValidator productValidator,
         CartValidator cartValidator,
-        PersonValidator personValidator,
+        UserValidator userValidator,
         WalletValidator walletValidator,
         StripePayment stripePayment
     ) {
         this.productsCartsRepository = productsCartsRepository;
         this.cartService = cartService;
-        this.personService = personService;
+        this.userService = userService;
         this.productService = productService;
         this.walletService = walletService;
         this.productValidator = productValidator;
         this.cartValidator = cartValidator;
-        this.personValidator = personValidator;
+        this.userValidator = userValidator;
         this.walletValidator = walletValidator;
         this.stripePayment = stripePayment;
     }
@@ -93,11 +93,11 @@ public class ProductsCartsService {
         productsCartsRepository.deleteProductsFromCart(cartId);
     }
 
-    public void buy(long personId) throws StripeException {
-        personValidator.validate(personId, personService.findAll());
+    public void buy(long userId) throws StripeException {
+        userValidator.validate(userId, userService.findAll());
 
-        Wallet wallet = walletService.findByPerson(personId);
-        Cart cart = cartService.findByPerson(personId);
+        Wallet wallet = walletService.findByUser(userId);
+        Cart cart = cartService.findByUser(userId);
 
         double newAmountOfMoney = wallet.getAmountOfMoney();
         newAmountOfMoney -= cart.getTotalCost();

@@ -2,7 +2,7 @@ package com.shop.services;
 
 import com.shop.models.Wallet;
 import com.shop.repositories.WalletRepository;
-import com.shop.validators.PersonValidator;
+import com.shop.validators.UserValidator;
 import com.shop.validators.WalletValidator;
 import org.springframework.stereotype.Service;
 
@@ -13,19 +13,19 @@ import java.util.Optional;
 public class WalletService {
     private final WalletRepository walletRepository;
     private final WalletValidator walletValidator;
-    private final PersonService personService;
-    private final PersonValidator personValidator;
+    private final UserService userService;
+    private final UserValidator userValidator;
 
     public WalletService(
         WalletRepository walletRepository,
         WalletValidator walletValidator,
-        PersonService personService,
-        PersonValidator personValidator
+        UserService userService,
+        UserValidator userValidator
     ) {
         this.walletRepository = walletRepository;
         this.walletValidator = walletValidator;
-        this.personService = personService;
-        this.personValidator = personValidator;
+        this.userService = userService;
+        this.userValidator = userValidator;
     }
 
     public List<Wallet> findAll() {
@@ -38,20 +38,20 @@ public class WalletService {
         return wallet.orElseGet(Wallet::new);
     }
 
-    public Wallet findByPerson(long personId) {
-        personValidator.validate(personId, personService.findAll());
-        Optional<Wallet> wallet = walletRepository.findByPerson(personId);
+    public Wallet findByUser(long userId) {
+        userValidator.validate(userId, userService.findAll());
+        Optional<Wallet> wallet = walletRepository.findByUser(userId);
         return wallet.orElseGet(Wallet::new);
     }
 
     public Wallet save(
         String number,
         double amountOfMoney,
-        long personId
+        long userId
     ) {
         walletValidator.validate(number, amountOfMoney);
-        personValidator.validate(personId, personService.findAll());
-        return walletRepository.save(number, amountOfMoney, personId);
+        userValidator.validate(userId, userService.findAll());
+        return walletRepository.save(number, amountOfMoney, userId);
     }
 
     public Wallet update(long id, double amountOfMoney) {
