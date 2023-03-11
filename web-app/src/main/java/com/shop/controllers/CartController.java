@@ -30,9 +30,9 @@ public class CartController {
     @PostMapping
     public Cart saveCart(
         @RequestBody Cart cart,
-        @RequestBody long personId
+        @RequestBody long userId
     ) {
-        return cartService.save(cart.getTotalCost(), personId);
+        return cartService.save(cart.getTotalCost(), userId);
     }
 
     @DeleteMapping("/{id}")

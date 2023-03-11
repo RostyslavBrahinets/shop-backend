@@ -2,11 +2,11 @@ package com.shop.controllers;
 
 import com.shop.dto.ReportDto;
 import com.shop.models.Cart;
-import com.shop.models.Person;
+import com.shop.models.User;
 import com.shop.models.Product;
 import com.shop.models.Wallet;
 import com.shop.services.CartService;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import com.shop.services.ProductsCartsService;
 import com.shop.services.WalletService;
 import com.shop.utilities.PdfUtility;
@@ -28,27 +28,27 @@ public class ProductsCartsController {
     public static final String PRODUCTS_CARTS_URL = "/web-api/products-carts";
     private final ProductsCartsService productsCartsService;
     private final CartService cartService;
-    private final PersonService personService;
+    private final UserService userService;
     private final WalletService walletService;
     private final ReportDto report;
 
     public ProductsCartsController(
         ProductsCartsService productsCartsService,
         CartService cartService,
-        PersonService personService,
+        UserService userService,
         WalletService walletService,
         ReportDto report) {
         this.productsCartsService = productsCartsService;
         this.cartService = cartService;
-        this.personService = personService;
+        this.userService = userService;
         this.walletService = walletService;
         this.report = report;
     }
 
     @GetMapping
     public List<Product> findAllProductsInCart(@AuthenticationPrincipal UserDetails userDetail) {
-        Person person = personService.findByEmail(userDetail.getUsername());
-        Cart cart = cartService.findByPerson(person.getId());
+        User user = userService.findByEmail(userDetail.getUsername());
+        Cart cart = cartService.findByUser(user.getId());
         return productsCartsService.findAllProductsInCart(cart.getId());
     }
 
@@ -58,8 +58,8 @@ public class ProductsCartsController {
         @PathVariable long id,
         HttpServletResponse response
     ) throws IOException {
-        Person person = personService.findByEmail(userDetail.getUsername());
-        Cart cart = cartService.findByPerson(person.getId());
+        User user = userService.findByEmail(userDetail.getUsername());
+        Cart cart = cartService.findByUser(user.getId());
         response.sendRedirect("/cart");
         return productsCartsService.saveProductToCart(id, cart.getId());
     }
@@ -69,8 +69,8 @@ public class ProductsCartsController {
         @AuthenticationPrincipal UserDetails userDetail,
         @PathVariable long id
     ) {
-        Person person = personService.findByEmail(userDetail.getUsername());
-        Cart cart = cartService.findByPerson(person.getId());
+        User user = userService.findByEmail(userDetail.getUsername());
+        Cart cart = cartService.findByUser(user.getId());
         productsCartsService.deleteProductFromCart(id, cart.getId());
     }
 
@@ -78,8 +78,8 @@ public class ProductsCartsController {
     public String buy(
         @AuthenticationPrincipal UserDetails userDetail
     ) throws StripeException {
-        Person person = personService.findByEmail(userDetail.getUsername());
-        Cart cart = cartService.findByPerson(person.getId());
+        User user = userService.findByEmail(userDetail.getUsername());
+        Cart cart = cartService.findByUser(user.getId());
 
         List<Product> productsInCart = productsCartsService
             .findAllProductsInCart(cart.getId());
@@ -91,7 +91,7 @@ public class ProductsCartsController {
         report.setProducts(productsInCart);
         report.setTotalCost(cart.getTotalCost());
 
-        productsCartsService.buy(person.getId());
+        productsCartsService.buy(user.getId());
 
         return "Products Bought";
     }
@@ -101,8 +101,8 @@ public class ProductsCartsController {
         @AuthenticationPrincipal UserDetails userDetail,
         HttpServletResponse response
     ) throws IOException {
-        Person person = personService.findByEmail(userDetail.getUsername());
-        Wallet wallet = walletService.findByPerson(person.getId());
+        User user = userService.findByEmail(userDetail.getUsername());
+        Wallet wallet = walletService.findByUser(user.getId());
         report.setAmountOfMoney(wallet.getAmountOfMoney());
 
         response.setContentType("application/pdf");

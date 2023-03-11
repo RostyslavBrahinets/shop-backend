@@ -54,9 +54,9 @@ public class WalletController {
     @PostMapping
     public Wallet saveWallet(
         @RequestBody Wallet wallet,
-        @RequestBody int personId
+        @RequestBody int userId
     ) {
-        return walletService.save(wallet.getNumber(), wallet.getAmountOfMoney(), personId);
+        return walletService.save(wallet.getNumber(), wallet.getAmountOfMoney(), userId);
     }
 
     @DeleteMapping("/{id}")
