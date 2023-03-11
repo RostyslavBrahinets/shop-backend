@@ -1,8 +1,8 @@
 package com.shop.mvc;
 
-import com.shop.models.Person;
+import com.shop.models.User;
 import com.shop.security.LoginPasswordAuthenticationProvider;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProfileViewControllerTest {
     @MockBean
     @Autowired
-    private PersonService personService;
+    private UserService userService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,9 +44,18 @@ class ProfileViewControllerTest {
     @Test
     @DisplayName("Show profile for user")
     void show_profile_for_user() throws Exception {
-        when(personService.findByEmail("test@email.com")).thenReturn(
-            new Person(2, "John", "Smith")
-        );
+        when(userService.findByEmail("test@email.com"))
+            .thenReturn(
+                new User(
+                    2,
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    "password",
+                    2
+                )
+            );
 
         mockMvc.perform(get("/profile")
                 .with(user("test@email.com").password("user").roles("USER")))
@@ -59,9 +68,18 @@ class ProfileViewControllerTest {
     @Test
     @DisplayName("Show profile for admin")
     void show_profile_for_admin() throws Exception {
-        when(personService.findByEmail("admin")).thenReturn(
-            new Person(1, "admin", "admin")
-        );
+        when(userService.findByEmail("admin"))
+            .thenReturn(
+                new User(
+                    1,
+                    "admin",
+                    "admin",
+                    "admin",
+                    "",
+                    "password",
+                    1
+                )
+            );
 
         mockMvc.perform(get("/profile")
                 .with(user("admin").password("admin").roles("ADMIN")))
@@ -83,9 +101,18 @@ class ProfileViewControllerTest {
     @Test
     @DisplayName("Show update profile for user")
     void show_update_profile_for_user() throws Exception {
-        when(personService.findByEmail("test@email.com")).thenReturn(
-            new Person(2, "John", "Smith")
-        );
+        when(userService.findByEmail("test@email.com"))
+            .thenReturn(
+                new User(
+                    2,
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    "password",
+                    2
+                )
+            );
 
         mockMvc.perform(get("/profile/update")
                 .with(user("test@email.com").password("user").roles("USER")))
@@ -98,9 +125,18 @@ class ProfileViewControllerTest {
     @Test
     @DisplayName("Show update profile for admin")
     void show_update_profile_for_admin() throws Exception {
-        when(personService.findByEmail("admin")).thenReturn(
-            new Person(1, "admin", "admin")
-        );
+        when(userService.findByEmail("admin"))
+            .thenReturn(
+                new User(
+                    1,
+                    "admin",
+                    "admin",
+                    "admin",
+                    "",
+                    "password",
+                    1
+                )
+            );
 
         mockMvc.perform(get("/profile/update")
                 .with(user("admin").password("admin").roles("ADMIN")))

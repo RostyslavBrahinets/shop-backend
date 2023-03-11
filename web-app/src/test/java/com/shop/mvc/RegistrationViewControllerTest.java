@@ -3,8 +3,7 @@ package com.shop.mvc;
 import com.shop.security.LoginPasswordAuthenticationProvider;
 import com.shop.services.*;
 import com.shop.stripe.StripePayment;
-import com.shop.validators.ContactValidator;
-import com.shop.validators.PersonValidator;
+import com.shop.validators.UserValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +22,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @MockBeans({
     @MockBean(PasswordEncoder.class),
     @MockBean(LoginPasswordAuthenticationProvider.class),
-    @MockBean(ContactService.class),
-    @MockBean(PersonRoleService.class),
+    @MockBean(UserRoleService.class),
     @MockBean(CartService.class),
-    @MockBean(PersonValidator.class),
-    @MockBean(ContactValidator.class),
+    @MockBean(UserValidator.class),
     @MockBean(StripePayment.class)
 })
 @WebMvcTest(RegistrationViewController.class)
 class RegistrationViewControllerTest {
-//    @MockBean
-//    @Autowired
-//    private PersonService personService;
-//    @MockBean
-//    @Autowired
-//    private WalletService walletService;
-
     @Autowired
     private MockMvc mockMvc;
 

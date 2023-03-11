@@ -1,10 +1,10 @@
 package com.shop.mvc;
 
 import com.shop.models.Cart;
-import com.shop.models.Person;
+import com.shop.models.User;
 import com.shop.security.LoginPasswordAuthenticationProvider;
 import com.shop.services.CartService;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CartViewControllerTest {
     @MockBean
     @Autowired
-    private PersonService personService;
+    private UserService userService;
     @MockBean
     @Autowired
     private CartService cartService;
@@ -49,11 +49,20 @@ class CartViewControllerTest {
     @Test
     @DisplayName("Show cart for user")
     void show_cart_for_user() throws Exception {
-        when(personService.findByEmail("test@email.com")).thenReturn(
-            new Person(2, "John", "Smith")
-        );
+        when(userService.findByEmail("test@email.com"))
+            .thenReturn(
+                new User(
+                    2,
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    "password",
+                    2
+                )
+            );
 
-        when(cartService.findByPerson(2)).thenReturn(
+        when(cartService.findByUser(2)).thenReturn(
             new Cart(1, 0)
         );
 
@@ -68,9 +77,18 @@ class CartViewControllerTest {
     @Test
     @DisplayName("Cart not found for admin")
     void cart_not_found_for_admin() throws Exception {
-        when(personService.findByEmail("admin")).thenReturn(
-            new Person(1, "admin", "admin")
-        );
+        when(userService.findByEmail("admin"))
+            .thenReturn(
+                new User(
+                    1,
+                    "admin",
+                    "admin",
+                    "admin",
+                    "",
+                    "password",
+                    1
+                )
+            );
 
         mockMvc.perform(get("/cart")
                 .with(user("admin").password("admin").roles("ADMIN")))

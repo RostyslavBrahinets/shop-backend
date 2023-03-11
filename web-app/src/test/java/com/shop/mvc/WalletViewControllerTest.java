@@ -1,10 +1,10 @@
 package com.shop.mvc;
 
 import com.shop.exceptions.NotFoundException;
-import com.shop.models.Person;
+import com.shop.models.User;
 import com.shop.models.Wallet;
 import com.shop.security.LoginPasswordAuthenticationProvider;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import com.shop.services.WalletService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class WalletViewControllerTest {
     @MockBean
     @Autowired
-    private PersonService personService;
+    private UserService userService;
     @MockBean
     @Autowired
     private WalletService walletService;
@@ -50,11 +50,20 @@ class WalletViewControllerTest {
     @Test
     @DisplayName("Show wallet for user")
     void show_wallet_for_user() throws Exception {
-        when(personService.findByEmail("test@email.com")).thenReturn(
-            new Person(2, "John", "Smith")
-        );
+        when(userService.findByEmail("test@email.com"))
+            .thenReturn(
+                new User(
+                    2,
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    "password",
+                    2
+                )
+            );
 
-        when(walletService.findByPerson(2)).thenReturn(
+        when(walletService.findByUser(2)).thenReturn(
             new Wallet(1, "123", 0)
         );
 
@@ -69,11 +78,20 @@ class WalletViewControllerTest {
     @Test
     @DisplayName("Wallet not found for admin")
     void wallet_not_found_for_admin() throws Exception {
-        when(personService.findByEmail("admin")).thenReturn(
-            new Person(1, "admin", "admin")
-        );
+        when(userService.findByEmail("admin"))
+            .thenReturn(
+                new User(
+                    1,
+                    "admin",
+                    "admin",
+                    "admin",
+                    "",
+                    "password",
+                    1
+                )
+            );
 
-        when(walletService.findByPerson(1)).thenThrow(
+        when(walletService.findByUser(1)).thenThrow(
             new NotFoundException("Wallet Not Found")
         );
 

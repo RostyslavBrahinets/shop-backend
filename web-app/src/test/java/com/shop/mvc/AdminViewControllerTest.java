@@ -1,10 +1,10 @@
 package com.shop.mvc;
 
 import com.shop.models.Category;
-import com.shop.models.Person;
+import com.shop.models.User;
 import com.shop.security.LoginPasswordAuthenticationProvider;
 import com.shop.services.CategoryService;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AdminViewControllerTest {
     @MockBean
     @Autowired
-    private PersonService personService;
+    private UserService userService;
     @MockBean
     @Autowired
     private CategoryService categoryService;
@@ -81,9 +81,18 @@ class AdminViewControllerTest {
     @Test
     @DisplayName("Forbidden admin/* for user")
     void forbidden_admin_users_for_user() throws Exception {
-        when(personService.findByEmail("test@email.com")).thenReturn(
-            new Person(2, "John", "Smith")
-        );
+        when(userService.findByEmail("test@email.com"))
+            .thenReturn(
+                new User(
+                    2,
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    "password",
+                    2
+                )
+            );
 
         mockMvc.perform(get("/admin/users")
                 .with(user("test@email.com").password("user").roles("USER")))
@@ -117,9 +126,18 @@ class AdminViewControllerTest {
     @Test
     @DisplayName("Show all users for admin")
     void show_all_users_for_admin() throws Exception {
-        when(personService.findByEmail("admin")).thenReturn(
-            new Person(1, "admin", "admin")
-        );
+        when(userService.findByEmail("admin"))
+            .thenReturn(
+                new User(
+                    1,
+                    "admin",
+                    "admin",
+                    "admin",
+                    "",
+                    "password",
+                    1
+                )
+            );
 
         mockMvc.perform(get("/admin/users")
                 .with(user("admin").password("admin").roles("ADMIN")))
@@ -132,8 +150,18 @@ class AdminViewControllerTest {
     @Test
     @DisplayName("Show user by id for admin")
     void show_user_by_id_for_admin() throws Exception {
-        when(personService.findByEmail("admin"))
-            .thenReturn(new Person(1, "admin", "admin"));
+        when(userService.findByEmail("admin"))
+            .thenReturn(
+                new User(
+                    1,
+                    "admin",
+                    "admin",
+                    "admin",
+                    "",
+                    "password",
+                    1
+                )
+            );
 
         mockMvc.perform(get("/admin/users/1")
                 .with(user("admin").password("admin").roles("ADMIN")))
