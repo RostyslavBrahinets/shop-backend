@@ -23,19 +23,19 @@ public class WalletRepository {
         return walletDao.findById(id);
     }
 
-    public Optional<Wallet> findByPerson(long personId) {
-        return walletDao.findByPerson(personId);
+    public Optional<Wallet> findByUser(long userId) {
+        return walletDao.findByUser(userId);
     }
 
     public Wallet save(
         String number,
         double amountOfMoney,
-        long personId
+        long userId
     ) {
         walletDao.save(
             number,
             amountOfMoney,
-            personId
+            userId
         );
 
         return Wallet.of(number, amountOfMoney);

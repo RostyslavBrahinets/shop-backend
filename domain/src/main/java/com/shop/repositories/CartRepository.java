@@ -23,12 +23,12 @@ public class CartRepository {
         return cartDao.findById(id);
     }
 
-    public Optional<Cart> findByPerson(long personId) {
-        return cartDao.findByPerson(personId);
+    public Optional<Cart> findByUser(long userId) {
+        return cartDao.findByUser(userId);
     }
 
-    public Cart save(double totalCost, long personId) {
-        cartDao.save(totalCost, personId);
+    public Cart save(double totalCost, long userId) {
+        cartDao.save(totalCost, userId);
         return Cart.of(totalCost);
     }
 
