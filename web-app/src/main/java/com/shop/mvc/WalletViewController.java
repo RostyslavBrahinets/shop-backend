@@ -1,8 +1,8 @@
 package com.shop.mvc;
 
-import com.shop.models.Person;
+import com.shop.models.User;
 import com.shop.models.Wallet;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import com.shop.services.WalletService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/wallet")
 public class WalletViewController {
-    private final PersonService personService;
+    private final UserService userService;
     private final WalletService walletService;
 
     public WalletViewController(
-        PersonService personService,
+        UserService userService,
         WalletService walletService
     ) {
-        this.personService = personService;
+        this.userService = userService;
         this.walletService = walletService;
     }
 
@@ -37,8 +37,8 @@ public class WalletViewController {
             return "redirect:/";
         }
 
-        Person person = personService.findByEmail(userDetails.getUsername());
-        Wallet wallet = walletService.findByPerson(person.getId());
+        User user = userService.findByEmail(userDetails.getUsername());
+        Wallet wallet = walletService.findByUser(user.getId());
         model.addAttribute("id", wallet.getId());
         return "wallet/index";
     }

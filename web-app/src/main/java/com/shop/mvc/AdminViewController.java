@@ -1,9 +1,9 @@
 package com.shop.mvc;
 
 import com.shop.models.Category;
-import com.shop.models.Person;
+import com.shop.models.User;
 import com.shop.services.CategoryService;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -18,14 +18,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminViewController {
-    private final PersonService personService;
+    private final UserService userService;
     private final CategoryService categoryService;
 
     public AdminViewController(
-        PersonService personService,
+        UserService userService,
         CategoryService categoryService
     ) {
-        this.personService = personService;
+        this.userService = userService;
         this.categoryService = categoryService;
     }
 
@@ -34,8 +34,8 @@ public class AdminViewController {
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ) {
-        Person person = personService.findByEmail(userDetails.getUsername());
-        model.addAttribute("id", person.getId());
+        User user = userService.findByEmail(userDetails.getUsername());
+        model.addAttribute("id", user.getId());
         return "admin/index";
     }
 
@@ -45,8 +45,8 @@ public class AdminViewController {
         @PathVariable long id,
         Model model
     ) {
-        Person person = personService.findByEmail(userDetails.getUsername());
-        model.addAttribute("currentId", person.getId());
+        User user = userService.findByEmail(userDetails.getUsername());
+        model.addAttribute("currentId", user.getId());
         model.addAttribute("id", id);
         return "admin/find";
     }

@@ -1,9 +1,9 @@
 package com.shop.mvc;
 
 import com.shop.models.Cart;
-import com.shop.models.Person;
+import com.shop.models.User;
 import com.shop.services.CartService;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/cart")
 public class CartViewController {
-    private final PersonService personService;
+    private final UserService userService;
     private final CartService cartService;
 
     public CartViewController(
-        PersonService personService,
+        UserService userService,
         CartService cartService
     ) {
-        this.personService = personService;
+        this.userService = userService;
         this.cartService = cartService;
     }
 
@@ -37,8 +37,8 @@ public class CartViewController {
             return "redirect:/";
         }
 
-        Person person = personService.findByEmail(userDetails.getUsername());
-        Cart cart = cartService.findByPerson(person.getId());
+        User user = userService.findByEmail(userDetails.getUsername());
+        Cart cart = cartService.findByUser(user.getId());
         model.addAttribute("id", cart.getId());
         return "cart/index";
     }

@@ -1,7 +1,7 @@
 package com.shop.mvc;
 
-import com.shop.models.Person;
-import com.shop.services.PersonService;
+import com.shop.models.User;
+import com.shop.services.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/profile")
 public class ProfileViewController {
-    private final PersonService personService;
+    private final UserService userService;
 
-    public ProfileViewController(PersonService personService) {
-        this.personService = personService;
+    public ProfileViewController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
@@ -24,10 +24,10 @@ public class ProfileViewController {
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ) {
-        Person person = personService.findByEmail(userDetails.getUsername());
+        User user = userService.findByEmail(userDetails.getUsername());
         GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
 
-        model.addAttribute("id", person.getId());
+        model.addAttribute("id", user.getId());
         model.addAttribute("role", role.getAuthority());
 
         return "profile/index";
@@ -38,10 +38,10 @@ public class ProfileViewController {
         @AuthenticationPrincipal UserDetails userDetails,
         Model model
     ) {
-        Person person = personService.findByEmail(userDetails.getUsername());
+        User user = userService.findByEmail(userDetails.getUsername());
         GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
 
-        model.addAttribute("id", person.getId());
+        model.addAttribute("id", user.getId());
         model.addAttribute("role", role.getAuthority());
 
         return "profile/update";

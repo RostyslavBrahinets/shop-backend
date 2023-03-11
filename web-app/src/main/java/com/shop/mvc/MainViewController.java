@@ -1,7 +1,7 @@
 package com.shop.mvc;
 
-import com.shop.models.Person;
-import com.shop.services.PersonService;
+import com.shop.models.User;
+import com.shop.services.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainViewController {
-    private final PersonService personService;
+    private final UserService userService;
 
-    public MainViewController(PersonService personService) {
-        this.personService = personService;
+    public MainViewController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
@@ -23,10 +23,10 @@ public class MainViewController {
         Model model
     ) {
         if (userDetails != null) {
-            Person person = personService.findByEmail(userDetails.getUsername());
+            User user = userService.findByEmail(userDetails.getUsername());
             GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
 
-            model.addAttribute("id", person.getId());
+            model.addAttribute("id", user.getId());
             model.addAttribute("role", role.getAuthority());
         } else {
             model.addAttribute("id", 0L);
@@ -36,4 +36,3 @@ public class MainViewController {
         return "index";
     }
 }
-
