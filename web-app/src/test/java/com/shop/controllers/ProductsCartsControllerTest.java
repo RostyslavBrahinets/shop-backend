@@ -2,12 +2,12 @@ package com.shop.controllers;
 
 import com.shop.dto.ReportDto;
 import com.shop.models.Cart;
-import com.shop.models.Person;
+import com.shop.models.User;
 import com.shop.models.Product;
 import com.shop.models.Wallet;
 import com.shop.security.LoginPasswordAuthenticationProvider;
 import com.shop.services.CartService;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import com.shop.services.ProductsCartsService;
 import com.shop.services.WalletService;
 import org.junit.jupiter.api.DisplayName;
@@ -46,7 +46,7 @@ class ProductsCartsControllerTest {
     private CartService cartService;
     @Autowired
     @MockBean
-    private PersonService personService;
+    private UserService userService;
     @Autowired
     @MockBean
     private WalletService walletService;
@@ -57,10 +57,20 @@ class ProductsCartsControllerTest {
     @Test
     @DisplayName("All products from cart request")
     void all_products_from_cart_request() throws Exception {
-        when(personService.findByEmail("admin"))
-            .thenReturn(new Person(1, "John", "Smith"));
+        when(userService.findByEmail("test@email.com"))
+            .thenReturn(
+                new User(
+                    2,
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    "password",
+                    2
+                )
+            );
 
-        when(cartService.findByPerson(1))
+        when(cartService.findByUser(1))
             .thenReturn(new Cart(1, 0));
 
         when(productsCartsService.findAllProductsInCart(1))
@@ -79,7 +89,7 @@ class ProductsCartsControllerTest {
             );
 
         mockMvc.perform(get(PRODUCTS_CARTS_URL)
-                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(user("John").password("password").roles("USER"))
                 .with(csrf()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(APPLICATION_JSON))
@@ -89,17 +99,27 @@ class ProductsCartsControllerTest {
     @Test
     @DisplayName("Save product to cart")
     void save_product_to_cart() throws Exception {
-        when(personService.findByEmail("admin"))
-            .thenReturn(new Person(1, "John", "Smith"));
+        when(userService.findByEmail("test@email.com"))
+            .thenReturn(
+                new User(
+                    2,
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    "password",
+                    2
+                )
+            );
 
-        when(cartService.findByPerson(1))
+        when(cartService.findByUser(1))
             .thenReturn(new Cart(1, 0));
 
         when(productsCartsService.saveProductToCart(1, 1))
             .thenReturn(1L);
 
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/1")
-                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(user("John").password("password").roles("USER"))
                 .with(csrf()))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/cart"));
@@ -107,12 +127,11 @@ class ProductsCartsControllerTest {
         verify(productsCartsService).saveProductToCart(1, 1);
     }
 
-
     @Test
     @DisplayName("Product from cart not deleted because of incorrect id")
     void product_from_cart_not_deleted_because_of_incorrect_id() throws Exception {
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/id/delete")
-                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(user("John").password("password").roles("USER"))
                 .with(csrf()))
             .andExpect(status().isBadRequest());
     }
@@ -120,14 +139,24 @@ class ProductsCartsControllerTest {
     @Test
     @DisplayName("Product from cart deleted")
     void product_from_cart_deleted() throws Exception {
-        when(personService.findByEmail("admin"))
-            .thenReturn(new Person(1, "John", "Smith"));
+        when(userService.findByEmail("test@email.com"))
+            .thenReturn(
+                new User(
+                    2,
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    "password",
+                    2
+                )
+            );
 
-        when(cartService.findByPerson(1))
+        when(cartService.findByUser(1))
             .thenReturn(new Cart(1, 0));
 
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/1/delete")
-                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(user("John").password("password").roles("USER"))
                 .with(csrf()))
             .andExpect(status().isOk());
     }
@@ -135,10 +164,20 @@ class ProductsCartsControllerTest {
     @Test
     @DisplayName("Buy products in cart")
     void buy_products_in_cart() throws Exception {
-        when(personService.findByEmail("admin"))
-            .thenReturn(new Person(1, "John", "Smith"));
+        when(userService.findByEmail("test@email.com"))
+            .thenReturn(
+                new User(
+                    2,
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    "password",
+                    2
+                )
+            );
 
-        when(cartService.findByPerson(1))
+        when(cartService.findByUser(1))
             .thenReturn(new Cart(1, 0));
 
         when(productsCartsService.findAllProductsInCart(1))
@@ -157,7 +196,7 @@ class ProductsCartsControllerTest {
             );
 
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/buy")
-                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(user("John").password("password").roles("USER"))
                 .with(csrf()))
             .andExpect(status().isOk());
 
@@ -167,14 +206,24 @@ class ProductsCartsControllerTest {
     @Test
     @DisplayName("Download report")
     void download_report() throws Exception {
-        when(personService.findByEmail("admin"))
-            .thenReturn(new Person(1, "John", "Smith"));
+        when(userService.findByEmail("test@email.com"))
+            .thenReturn(
+                new User(
+                    2,
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    "password",
+                    2
+                )
+            );
 
-        when(walletService.findByPerson(1))
+        when(walletService.findByUser(1))
             .thenReturn(new Wallet(1, "123", 0));
 
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/download-report")
-                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(user("John").password("password").roles("USER"))
                 .with(csrf()))
             .andExpect(status().isOk());
     }
