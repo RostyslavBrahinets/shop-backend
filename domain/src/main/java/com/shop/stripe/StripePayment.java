@@ -1,6 +1,6 @@
 package com.shop.stripe;
 
-import com.shop.models.User;
+import com.shop.user.User;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
