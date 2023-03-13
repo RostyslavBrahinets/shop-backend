@@ -1,7 +1,8 @@
 package com.shop.integration.dao;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.dao.PersonDao;
+import com.shop.dao.AdminNumberDao;
+import com.shop.dao.UserDao;
 import com.shop.dao.WalletDao;
 import com.shop.models.Wallet;
 import org.junit.jupiter.api.AfterEach;
@@ -29,7 +30,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/person/V20220421161641__Create_table_person.sql",
+    "classpath:db/migration/admin_number/V20220421160504__Create_table_admin_number.sql",
+    "classpath:db/migration/user/V20220421161642__Create_table_user.sql",
     "classpath:db/migration/wallet/V20220421162043__Create_table_wallet.sql"
 })
 public class WalletDaoTest {
@@ -40,13 +42,37 @@ public class WalletDaoTest {
 
     @BeforeEach
     void setUp() {
-        PersonDao personDao = new PersonDao(jdbcTemplate);
+        AdminNumberDao adminNumberDao = new AdminNumberDao(jdbcTemplate);
+        adminNumberDao.save("0");
 
-        String firstName = "First Name";
-        String lastName = "Last Name";
+        UserDao userDao = new UserDao(jdbcTemplate);
 
-        personDao.save(firstName, lastName);
-        personDao.save(firstName, lastName);
+        String firstName = "John";
+        String lastName = "Smith";
+        String email1 = "test1@email.com";
+        String phone1 = "+380000000001";
+        String email2 = "test2@email.com";
+        String phone2 = "+380000000002";
+        String password = "password";
+        long adminNumberId = 1;
+
+        userDao.save(
+            firstName,
+            lastName,
+            email1,
+            phone1,
+            password,
+            adminNumberId
+        );
+
+        userDao.save(
+            firstName,
+            lastName,
+            email2,
+            phone2,
+            password,
+            adminNumberId
+        );
 
         walletDao = new WalletDao(jdbcTemplate);
     }
@@ -55,7 +81,7 @@ public class WalletDaoTest {
     void tearDown() {
         JdbcTestUtils.dropTables(
             jdbcTemplate.getJdbcTemplate(),
-            "wallet", "person"
+            "wallet", "\"user\"", "admin_number"
         );
     }
 
@@ -101,12 +127,12 @@ public class WalletDaoTest {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("wallet")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("number", "amount_of_money", "person_id")
+            .usingColumns("number", "amount_of_money", "user_id")
             .execute(
                 Map.ofEntries(
                     Map.entry("number", "123"),
                     Map.entry("amount_of_money", 0),
-                    Map.entry("person_id", 1)
+                    Map.entry("user_id", 1)
                 )
             );
 
@@ -116,29 +142,29 @@ public class WalletDaoTest {
     }
 
     @Test
-    @DisplayName("Wallet by person was not found")
-    void wallet_by_person_was_not_found() {
-        Optional<Wallet> wallet = walletDao.findByPerson(1);
+    @DisplayName("Wallet by user was not found")
+    void wallet_by_user_was_not_found() {
+        Optional<Wallet> wallet = walletDao.findByUser(1);
 
         assertThat(wallet).isEmpty();
     }
 
     @Test
-    @DisplayName("Wallet by person was found")
-    void wallet_by_person_was_found() {
+    @DisplayName("Wallet by user was found")
+    void wallet_by_user_was_found() {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("wallet")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("number", "amount_of_money", "person_id")
+            .usingColumns("number", "amount_of_money", "user_id")
             .execute(
                 Map.ofEntries(
                     Map.entry("number", "123"),
                     Map.entry("amount_of_money", 0),
-                    Map.entry("person_id", 1)
+                    Map.entry("user_id", 1)
                 )
             );
 
-        Optional<Wallet> wallet = walletDao.findByPerson(1);
+        Optional<Wallet> wallet = walletDao.findByUser(1);
 
         assertThat(wallet).get().isEqualTo(Wallet.of("123", 0).withId(1));
     }
@@ -150,19 +176,19 @@ public class WalletDaoTest {
             Map.ofEntries(
                 Map.entry("number", "123"),
                 Map.entry("amount_of_money", 0),
-                Map.entry("person_id", 1)
+                Map.entry("user_id", 1)
             ),
             Map.ofEntries(
                 Map.entry("number", "456"),
                 Map.entry("amount_of_money", 0),
-                Map.entry("person_id", 2)
+                Map.entry("user_id", 2)
             )
         );
 
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("wallet")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("number", "amount_of_money", "person_id")
+            .usingColumns("number", "amount_of_money", "user_id")
             .executeBatch(batchInsertParameters);
 
         List<Wallet> wallets = walletDao.findAll();
@@ -187,12 +213,12 @@ public class WalletDaoTest {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("wallet")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("number", "amount_of_money", "person_id")
+            .usingColumns("number", "amount_of_money", "user_id")
             .execute(
                 Map.ofEntries(
                     Map.entry("number", "123"),
                     Map.entry("amount_of_money", 0),
-                    Map.entry("person_id", 1)
+                    Map.entry("user_id", 1)
                 )
             );
 
@@ -213,12 +239,12 @@ public class WalletDaoTest {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("wallet")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("number", "amount_of_money", "person_id")
+            .usingColumns("number", "amount_of_money", "user_id")
             .execute(
                 Map.ofEntries(
                     Map.entry("number", "123"),
                     Map.entry("amount_of_money", 0),
-                    Map.entry("person_id", 1)
+                    Map.entry("user_id", 1)
                 )
             );
 

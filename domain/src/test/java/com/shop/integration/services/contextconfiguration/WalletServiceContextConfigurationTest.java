@@ -1,11 +1,11 @@
 package com.shop.integration.services.contextconfiguration;
 
-import com.shop.models.Person;
+import com.shop.models.User;
 import com.shop.models.Wallet;
 import com.shop.repositories.WalletRepository;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import com.shop.services.WalletService;
-import com.shop.validators.PersonValidator;
+import com.shop.validators.UserValidator;
 import com.shop.validators.WalletValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,17 +34,17 @@ public class WalletServiceContextConfigurationTest {
     @Autowired
     private WalletValidator walletValidator;
     @Autowired
-    private PersonValidator personValidator;
+    private UserValidator userValidator;
     @Autowired
     private WalletService walletService;
 
     private List<Wallet> wallets;
-    private List<Person> people;
+    private List<User> users;
 
     @BeforeEach
     void setUp() {
         wallets = List.of();
-        people = List.of();
+        users = List.of();
     }
 
     @Test
@@ -67,28 +67,28 @@ public class WalletServiceContextConfigurationTest {
     }
 
     @Test
-    @DisplayName("Get wallet by person")
-    void get_wallet_by_person() {
-        long personId = 1;
+    @DisplayName("Get wallet by user")
+    void get_wallet_by_user() {
+        long userId = 1;
 
-        walletService.findByPerson(personId);
+        walletService.findByUser(userId);
 
-        verify(personValidator, atLeast(1)).validate(personId, people);
-        verify(walletRepository).findByPerson(1);
+        verify(userValidator, atLeast(1)).validate(userId, users);
+        verify(walletRepository).findByUser(1);
     }
 
     @Test
     @DisplayName("Save wallet")
     void save_wallet() {
-        long personId = 1;
+        long userId = 1;
         String number = "123";
         double amountOfMoney = 0;
 
-        walletService.save(number, amountOfMoney, personId);
+        walletService.save(number, amountOfMoney, userId);
 
         verify(walletValidator, atLeast(1)).validate(number, amountOfMoney);
-        verify(personValidator, atLeast(1)).validate(personId, people);
-        verify(walletRepository).save(number, amountOfMoney, personId);
+        verify(userValidator, atLeast(1)).validate(userId, users);
+        verify(walletRepository).save(number, amountOfMoney, userId);
     }
 
     @Test
@@ -133,13 +133,13 @@ public class WalletServiceContextConfigurationTest {
         }
 
         @Bean
-        public PersonService personService() {
-            return mock(PersonService.class);
+        public UserService userService() {
+            return mock(UserService.class);
         }
 
         @Bean
-        public PersonValidator personValidator() {
-            return mock(PersonValidator.class);
+        public UserValidator userValidator() {
+            return mock(UserValidator.class);
         }
     }
 }

@@ -2,9 +2,9 @@ package com.shop.unit.services;
 
 import com.shop.models.Wallet;
 import com.shop.repositories.WalletRepository;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import com.shop.services.WalletService;
-import com.shop.validators.PersonValidator;
+import com.shop.validators.UserValidator;
 import com.shop.validators.WalletValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,9 +26,9 @@ class WalletServiceTest {
     @Mock
     private WalletValidator walletValidator;
     @Mock
-    private PersonService personService;
+    private UserService userService;
     @Mock
-    private PersonValidator personValidator;
+    private UserValidator userValidator;
 
     private WalletService walletService;
 
@@ -39,8 +39,8 @@ class WalletServiceTest {
         walletService = new WalletService(
             walletRepository,
             walletValidator,
-            personService,
-            personValidator
+            userService,
+            userValidator
         );
     }
 
@@ -92,13 +92,13 @@ class WalletServiceTest {
     }
 
     @Test
-    @DisplayName("Wallet was found by person")
-    void wallet_was_found_by_person() {
-        when(walletRepository.findByPerson(1)).thenReturn(
+    @DisplayName("Wallet was found by user")
+    void wallet_was_found_by_user() {
+        when(walletRepository.findByUser(1)).thenReturn(
             Optional.of(Wallet.of("123", 0).withId(1))
         );
 
-        Wallet wallet = walletService.findByPerson(1);
+        Wallet wallet = walletService.findByUser(1);
 
         assertThat(wallet).isEqualTo(new Wallet(1, "123", 0));
     }

@@ -46,25 +46,25 @@ public class WalletRepositoryContextConfigurationTest {
     }
 
     @Test
-    @DisplayName("Get wallet by person")
-    void get_wallet_by_person() {
-        long personId = 1;
+    @DisplayName("Get wallet by user")
+    void get_wallet_by_user() {
+        long userId = 1;
 
-        walletRepository.findByPerson(personId);
+        walletRepository.findByUser(userId);
 
-        verify(walletDao).findByPerson(personId);
+        verify(walletDao).findByUser(userId);
     }
 
     @Test
     @DisplayName("Save wallet")
     void save_wallet() {
-        long personId = 1;
+        long userId = 1;
         String number = "123";
         double amountOfMoney = 0;
 
-        walletRepository.save(number, amountOfMoney, personId);
+        walletRepository.save(number, amountOfMoney, userId);
 
-        verify(walletDao).save(number, amountOfMoney, personId);
+        verify(walletDao).save(number, amountOfMoney, userId);
     }
 
     @Test
