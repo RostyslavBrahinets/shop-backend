@@ -1,9 +1,9 @@
-package com.shop.unit.validators;
+package com.shop.registration;
 
-import com.shop.models.AdminNumber;
-import com.shop.validators.AdminNumberValidator;
-import com.shop.validators.RegistrationValidator;
-import com.shop.validators.UserValidator;
+import com.shop.admin_number.AdminNumber;
+import com.shop.admin_number.AdminNumberValidator;
+import com.shop.registration.RegistrationValidator;
+import com.shop.user.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

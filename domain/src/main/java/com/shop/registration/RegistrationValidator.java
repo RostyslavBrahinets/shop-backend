@@ -1,8 +1,10 @@
-package com.shop.validators;
+package com.shop.registration;
 
+import com.shop.admin_number.AdminNumberValidator;
 import com.shop.exceptions.ValidationException;
-import com.shop.models.AdminNumber;
-import com.shop.models.User;
+import com.shop.admin_number.AdminNumber;
+import com.shop.user.User;
+import com.shop.user.UserValidator;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

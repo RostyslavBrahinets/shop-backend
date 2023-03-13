@@ -1,10 +1,13 @@
-package com.shop.integration.services.contextconfiguration;
+package com.shop.registration;
 
-import com.shop.models.AdminNumber;
-import com.shop.models.User;
-import com.shop.services.*;
+import com.shop.admin_number.AdminNumber;
+import com.shop.admin_number.AdminNumberService;
+import com.shop.cart.CartService;
+import com.shop.user.User;
 import com.shop.stripe.StripePayment;
-import com.shop.validators.RegistrationValidator;
+import com.shop.user.UserService;
+import com.shop.user_role.UserRoleService;
+import com.shop.wallet.WalletService;
 import com.stripe.exception.StripeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
