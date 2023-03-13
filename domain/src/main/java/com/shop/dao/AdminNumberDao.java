@@ -1,7 +1,6 @@
 package com.shop.dao;
 
 import com.shop.models.AdminNumber;
-import com.shop.models.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -32,5 +31,12 @@ public class AdminNumberDao {
                 new BeanPropertyRowMapper<>(AdminNumber.class)
             )
             .stream().findAny();
+    }
+
+    public void save(String number) {
+        jdbcTemplate.update(
+            "INSERT INTO admin_number (number) VALUES (:number)",
+            Map.ofEntries(Map.entry("number", number))
+        );
     }
 }
