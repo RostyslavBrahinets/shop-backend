@@ -1,6 +1,7 @@
 package com.shop.services;
 
-import com.shop.models.Person;
+import com.shop.models.AdminNumber;
+import com.shop.models.User;
 import com.shop.models.Wallet;
 import com.shop.stripe.StripePayment;
 import com.shop.validators.RegistrationValidator;
@@ -14,26 +15,26 @@ import java.util.Optional;
 @Service
 public class RegistrationService {
     private final RegistrationValidator registrationValidator;
-    private final PersonService personService;
-    private final ContactService contactService;
-    private final PersonRoleService personRoleService;
+    private final UserService userService;
+    private final AdminNumberService adminNumberService;
+    private final UserRoleService userRoleService;
     private final CartService cartService;
     private final WalletService walletService;
     private final StripePayment stripePayment;
 
     public RegistrationService(
         RegistrationValidator registrationValidator,
-        PersonService personService,
-        ContactService contactService,
-        PersonRoleService personRoleService,
+        UserService userService,
+        AdminNumberService adminNumberService,
+        UserRoleService userRoleService,
         CartService cartService,
         WalletService walletService,
         StripePayment stripePayment
     ) {
         this.registrationValidator = registrationValidator;
-        this.personService = personService;
-        this.contactService = contactService;
-        this.personRoleService = personRoleService;
+        this.userService = userService;
+        this.adminNumberService = adminNumberService;
+        this.userRoleService = userRoleService;
         this.cartService = cartService;
         this.walletService = walletService;
         this.stripePayment = stripePayment;
@@ -44,7 +45,8 @@ public class RegistrationService {
         String lastName,
         String email,
         String phone,
-        String password
+        String password,
+        String adminNumber
     ) throws StripeException {
         boolean validData = registrationValidator.isValidData(
             firstName,
@@ -52,32 +54,54 @@ public class RegistrationService {
             email,
             phone,
             password,
-            contactService.findAll()
+            adminNumber,
+            userService.findAll(),
+            adminNumberService.findAll()
         );
 
+        long adminNumberId = findAdminNumberId(adminNumber);
+
         if (validData) {
-            personService.save(firstName, lastName);
-            long personId = findPersonId();
-            contactService.save(email, phone, password, personId);
-            personRoleService.saveRoleForPerson(personId, 2);
-            cartService.save(0, personId);
-            saveWalletForPerson(personId);
+            userService.save(
+                firstName,
+                lastName,
+                email,
+                phone,
+                password,
+                adminNumberId
+            );
+
+            userRoleService.saveRoleForUser(findUserId(), 2);
+            cartService.save(0, findUserId());
+            saveWalletForUser(findUserId());
         }
     }
 
-    private long findPersonId() {
-        List<Person> people = personService.findAll();
-        return people.get(people.size() - 1).getId();
+    private long findAdminNumberId(String adminNumber) {
+        List<AdminNumber> adminNumbers = adminNumberService.findAll();
+
+        for (AdminNumber number : adminNumbers) {
+            if (number.getNumber().equals(adminNumber)) {
+                return number.getId();
+            }
+        }
+
+        return 0;
     }
 
-    private void saveWalletForPerson(long personId) throws StripeException {
+    private long findUserId() {
+        List<User> users = userService.findAll();
+        return users.get(users.size() - 1).getId();
+    }
+
+    private void saveWalletForUser(long userId) throws StripeException {
         Optional<Customer> customer = stripePayment
-            .saveCustomer(personService.findById(personId));
+            .saveCustomer(userService.findById(userId));
         if (customer.isPresent()) {
             Wallet wallet = new Wallet();
             wallet.setNumber(customer.get().getId());
             wallet.setAmountOfMoney(customer.get().getBalance());
-            walletService.save(wallet.getNumber(), wallet.getAmountOfMoney(), personId);
+            walletService.save(wallet.getNumber(), wallet.getAmountOfMoney(), userId);
         }
     }
 }
