@@ -1,7 +1,9 @@
 package com.shop.services;
 
+import com.shop.models.AdminNumber;
 import com.shop.models.User;
 import com.shop.repositories.UserRepository;
+import com.shop.validators.AdminNumberValidator;
 import com.shop.validators.UserValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,15 +15,21 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final UserValidator userValidator;
+    private final AdminNumberValidator adminNumberValidator;
+    private final AdminNumberService adminNumberService;
     private final PasswordEncoder passwordEncoder;
 
     public UserService(
         UserRepository userRepository,
         UserValidator userValidator,
+        AdminNumberValidator adminNumberValidator,
+        AdminNumberService adminNumberService,
         PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
         this.userValidator = userValidator;
+        this.adminNumberValidator = adminNumberValidator;
+        this.adminNumberService = adminNumberService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -57,6 +65,9 @@ public class UserService {
             password,
             userRepository.findAll()
         );
+
+        List<AdminNumber> adminNumbers = adminNumberService.findAll();
+        adminNumberValidator.validate(adminNumberId, adminNumbers);
 
         return userRepository.save(
             firstName,
