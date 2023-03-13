@@ -47,7 +47,7 @@ public class ProductRepositoryContextConfigurationTest {
 
     @Test
     @DisplayName("Get product by barcode")
-    void get_product_by_person() {
+    void get_product_by_barcode() {
         String barcode = "123";
 
         productRepository.findByBarcode(barcode);

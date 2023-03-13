@@ -29,7 +29,7 @@ public class RoleRepositoryContextConfigurationTest {
 
     @Test
     @DisplayName("Get role by name")
-    void get_basket_by_person() {
+    void get_role_by_name() {
         String name = "name";
 
         roleRepository.findByName(name);
