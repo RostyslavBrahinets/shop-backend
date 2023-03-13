@@ -1,10 +1,12 @@
-package com.shop.services;
+package com.shop.product_category;
 
-import com.shop.models.Category;
-import com.shop.models.Product;
-import com.shop.repositories.ProductCategoryRepository;
-import com.shop.validators.CategoryValidator;
-import com.shop.validators.ProductValidator;
+import com.shop.category.Category;
+import com.shop.category.CategoryService;
+import com.shop.product.Product;
+import com.shop.product.ProductService;
+import com.shop.product_category.ProductCategoryRepository;
+import com.shop.category.CategoryValidator;
+import com.shop.product.ProductValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

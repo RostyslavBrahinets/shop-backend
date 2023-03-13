@@ -1,13 +1,13 @@
-package com.shop.integration.services.contextconfiguration;
+package com.shop.products_category;
 
-import com.shop.models.Category;
-import com.shop.models.Product;
-import com.shop.repositories.ProductCategoryRepository;
-import com.shop.services.CategoryService;
-import com.shop.services.ProductCategoryService;
-import com.shop.services.ProductService;
-import com.shop.validators.CategoryValidator;
-import com.shop.validators.ProductValidator;
+import com.shop.category.Category;
+import com.shop.product.Product;
+import com.shop.product_category.ProductCategoryRepository;
+import com.shop.category.CategoryService;
+import com.shop.product_category.ProductCategoryService;
+import com.shop.product.ProductService;
+import com.shop.category.CategoryValidator;
+import com.shop.product.ProductValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
