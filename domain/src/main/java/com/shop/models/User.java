@@ -9,7 +9,7 @@ import java.util.Objects;
 @Component
 public class User implements Serializable {
     @Serial
-    private static final long serialVersionUID = 8L;
+    private static final long serialVersionUID = 2L;
     private long id;
     private String firstName;
     private String lastName;
