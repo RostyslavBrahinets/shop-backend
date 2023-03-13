@@ -1,10 +1,11 @@
-package com.shop.services;
+package com.shop.user;
 
-import com.shop.models.AdminNumber;
-import com.shop.models.User;
-import com.shop.repositories.UserRepository;
-import com.shop.validators.AdminNumberValidator;
-import com.shop.validators.UserValidator;
+import com.shop.admin_number.AdminNumber;
+import com.shop.admin_number.AdminNumberService;
+import com.shop.user.User;
+import com.shop.user.UserRepository;
+import com.shop.admin_number.AdminNumberValidator;
+import com.shop.user.UserValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

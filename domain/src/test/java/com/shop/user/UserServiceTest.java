@@ -1,11 +1,11 @@
-package com.shop.unit.services;
+package com.shop.user;
 
-import com.shop.models.User;
-import com.shop.repositories.UserRepository;
-import com.shop.services.AdminNumberService;
-import com.shop.services.UserService;
-import com.shop.validators.AdminNumberValidator;
-import com.shop.validators.UserValidator;
+import com.shop.user.User;
+import com.shop.user.UserRepository;
+import com.shop.admin_number.AdminNumberService;
+import com.shop.user.UserService;
+import com.shop.admin_number.AdminNumberValidator;
+import com.shop.user.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,5 +1,7 @@
-package com.shop.models;
+package com.shop.user;
 
+import com.shop.cart.Cart;
+import com.shop.wallet.Wallet;
 import org.springframework.stereotype.Component;
 
 import java.io.Serial;

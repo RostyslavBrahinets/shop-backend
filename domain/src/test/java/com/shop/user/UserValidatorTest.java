@@ -1,10 +1,10 @@
-package com.shop.unit.validators;
+package com.shop.user;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.models.User;
-import com.shop.repositories.UserRepository;
-import com.shop.validators.UserValidator;
+import com.shop.user.User;
+import com.shop.user.UserRepository;
+import com.shop.user.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

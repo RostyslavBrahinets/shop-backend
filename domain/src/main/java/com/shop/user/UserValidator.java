@@ -1,8 +1,8 @@
-package com.shop.validators;
+package com.shop.user;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.models.User;
+import com.shop.user.User;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

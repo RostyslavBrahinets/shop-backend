@@ -1,6 +1,6 @@
-package com.shop.repositories;
+package com.shop.user;
 
-import com.shop.models.User;
+import com.shop.user.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
