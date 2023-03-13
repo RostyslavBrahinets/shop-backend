@@ -31,6 +31,8 @@ public class AdminNumberValidator {
     public void validate(String number, List<AdminNumber> adminNumbers) {
         if (number == null || number.isBlank()) {
             throw new ValidationException("Number of admin is invalid");
+        } else if (number.length() < 8) {
+            throw new ValidationException("Number of admin is short");
         }
 
         List<String> numbers = new ArrayList<>();
