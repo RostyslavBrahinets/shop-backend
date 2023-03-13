@@ -27,7 +27,8 @@ public class RegistrationController {
             registrationDto.getLastName(),
             registrationDto.getEmail(),
             registrationDto.getPhone(),
-            registrationDto.getPassword()
+            registrationDto.getPassword(),
+            registrationDto.getAdminNumber()
         );
 
         return "Successful Registration";
