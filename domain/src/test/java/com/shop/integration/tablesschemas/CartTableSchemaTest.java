@@ -20,7 +20,8 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/person/V20220421161641__Create_table_person.sql",
+    "classpath:db/migration/admin_number/V20220421160504__Create_table_admin_number.sql",
+    "classpath:db/migration/user/V20220421161642__Create_table_user.sql",
     "classpath:db/migration/cart/V20220421161946__Create_table_cart.sql"
 })
 public class CartTableSchemaTest {
@@ -40,11 +41,11 @@ public class CartTableSchemaTest {
     void failed_to_insert_null_total_cost_value() {
         var params = new MapSqlParameterSource();
         params.addValue("total_cost", null);
-        params.addValue("person_id", 1);
+        params.addValue("user_id", 1);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO cart(total_cost, person_id) VALUES (:total_cost, :person_id)",
+                "INSERT INTO cart(total_cost, user_id) VALUES (:total_cost, :user_id)",
                 params
             )
         )
@@ -52,15 +53,15 @@ public class CartTableSchemaTest {
     }
 
     @Test
-    @DisplayName("Failed to insert null person id value")
-    void failed_to_insert_null_person_id_value() {
+    @DisplayName("Failed to insert null user id value")
+    void failed_to_insert_null_user_id_value() {
         var params = new MapSqlParameterSource();
         params.addValue("total_cost", 0);
-        params.addValue("person_id", null);
+        params.addValue("user_id", null);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO cart(total_cost, person_id) VALUES (:total_cost, :person_id)",
+                "INSERT INTO cart(total_cost, user_id) VALUES (:total_cost, :user_id)",
                 params
             )
         )

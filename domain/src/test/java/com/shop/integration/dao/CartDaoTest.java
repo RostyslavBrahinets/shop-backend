@@ -1,8 +1,9 @@
 package com.shop.integration.dao;
 
 import com.shop.configs.DatabaseConfig;
+import com.shop.dao.AdminNumberDao;
 import com.shop.dao.CartDao;
-import com.shop.dao.PersonDao;
+import com.shop.dao.UserDao;
 import com.shop.models.Cart;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +30,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/person/V20220421161641__Create_table_person.sql",
+    "classpath:db/migration/admin_number/V20220421160504__Create_table_admin_number.sql",
+    "classpath:db/migration/user/V20220421161642__Create_table_user.sql",
     "classpath:db/migration/cart/V20220421161946__Create_table_cart.sql"
 })
 public class CartDaoTest {
@@ -40,13 +42,37 @@ public class CartDaoTest {
 
     @BeforeEach
     void setUp() {
-        PersonDao personDao = new PersonDao(jdbcTemplate);
+        AdminNumberDao adminNumberDao = new AdminNumberDao(jdbcTemplate);
+        adminNumberDao.save("0");
 
-        String firstName = "First Name";
-        String lastName = "Last Name";
+        UserDao userDao = new UserDao(jdbcTemplate);
 
-        personDao.save(firstName, lastName);
-        personDao.save(firstName, lastName);
+        String firstName = "John";
+        String lastName = "Smith";
+        String email1 = "test1@email.com";
+        String phone1 = "+380000000001";
+        String email2 = "test2@email.com";
+        String phone2 = "+380000000002";
+        String password = "password";
+        long adminNumberId = 1;
+
+        userDao.save(
+            firstName,
+            lastName,
+            email1,
+            phone1,
+            password,
+            adminNumberId
+        );
+
+        userDao.save(
+            firstName,
+            lastName,
+            email2,
+            phone2,
+            password,
+            adminNumberId
+        );
 
         cartDao = new CartDao(jdbcTemplate);
     }
@@ -55,7 +81,7 @@ public class CartDaoTest {
     void tearDown() {
         JdbcTestUtils.dropTables(
             jdbcTemplate.getJdbcTemplate(),
-            "cart", "person"
+            "cart", "\"user\"", "admin_number"
         );
     }
 
@@ -101,10 +127,10 @@ public class CartDaoTest {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("total_cost", "person_id")
+            .usingColumns("total_cost", "user_id")
             .execute(Map.ofEntries(
                 Map.entry("total_cost", 0),
-                Map.entry("person_id", 1)
+                Map.entry("user_id", 1)
             ));
 
         Optional<Cart> cart = cartDao.findById(1);
@@ -113,28 +139,28 @@ public class CartDaoTest {
     }
 
     @Test
-    @DisplayName("Cart by person was not found")
-    void cart_by_person_was_not_found() {
-        Optional<Cart> cart = cartDao.findByPerson(1);
+    @DisplayName("Cart by user was not found")
+    void cart_by_user_was_not_found() {
+        Optional<Cart> cart = cartDao.findByUser(2);
 
         assertThat(cart).isEmpty();
     }
 
     @Test
-    @DisplayName("Cart by person was found")
-    void cart_by_person_was_found() {
+    @DisplayName("Cart by user was found")
+    void cart_by_user_was_found() {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("total_cost", "person_id")
+            .usingColumns("total_cost", "user_id")
             .execute(
                 Map.ofEntries(
                     Map.entry("total_cost", 0),
-                    Map.entry("person_id", 1)
+                    Map.entry("user_id", 1)
                 )
             );
 
-        Optional<Cart> cart = cartDao.findByPerson(1);
+        Optional<Cart> cart = cartDao.findByUser(1);
 
         assertThat(cart).get().isEqualTo(Cart.of(0).withId(1));
     }
@@ -145,18 +171,18 @@ public class CartDaoTest {
         var batchInsertParameters = SqlParameterSourceUtils.createBatch(
             Map.ofEntries(
                 Map.entry("total_cost", 0),
-                Map.entry("person_id", 1)
+                Map.entry("user_id", 1)
             ),
             Map.ofEntries(
                 Map.entry("total_cost", 0),
-                Map.entry("person_id", 2)
+                Map.entry("user_id", 2)
             )
         );
 
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("total_cost", "person_id")
+            .usingColumns("total_cost", "user_id")
             .executeBatch(batchInsertParameters);
 
         List<Cart> carts = cartDao.findAll();
@@ -181,11 +207,11 @@ public class CartDaoTest {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("total_cost", "person_id")
+            .usingColumns("total_cost", "user_id")
             .execute(
                 Map.ofEntries(
                     Map.entry("total_cost", 0),
-                    Map.entry("person_id", 1)
+                    Map.entry("user_id", 1)
                 )
             );
 
@@ -206,11 +232,11 @@ public class CartDaoTest {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("total_cost", "person_id")
+            .usingColumns("total_cost", "user_id")
             .execute(
                 Map.ofEntries(
                     Map.entry("total_cost", 0),
-                    Map.entry("person_id", 1)
+                    Map.entry("user_id", 1)
                 )
             );
 

@@ -1,12 +1,12 @@
 package com.shop.integration.services.contextconfiguration;
 
 import com.shop.models.Cart;
-import com.shop.models.Person;
+import com.shop.models.User;
 import com.shop.repositories.CartRepository;
 import com.shop.services.CartService;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import com.shop.validators.CartValidator;
-import com.shop.validators.PersonValidator;
+import com.shop.validators.UserValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,9 +33,9 @@ public class CartServiceContextConfigurationTest {
     @Autowired
     private CartValidator cartValidator;
     @Autowired
-    private PersonService personService;
+    private UserService userService;
     @Autowired
-    private PersonValidator personValidator;
+    private UserValidator userValidator;
     @Autowired
     private CartService cartService;
 
@@ -59,29 +59,29 @@ public class CartServiceContextConfigurationTest {
     }
 
     @Test
-    @DisplayName("Get cart by person")
-    void get_cart_by_person() {
-        long personId = 1;
-        List<Person> people = personService.findAll();
+    @DisplayName("Get cart by user")
+    void get_cart_by_user() {
+        long userId = 1;
+        List<User> users = userService.findAll();
 
-        cartService.findByPerson(personId);
+        cartService.findByUser(userId);
 
-        verify(personValidator, atLeast(1)).validate(personId, people);
-        verify(cartRepository).findByPerson(personId);
+        verify(userValidator, atLeast(1)).validate(userId, users);
+        verify(cartRepository).findByUser(userId);
     }
 
     @Test
     @DisplayName("Save cart")
     void save_cart() {
-        long personId = 1;
+        long userId = 1;
         double totalCost = 0;
-        List<Person> people = personService.findAll();
+        List<User> users = userService.findAll();
 
-        cartService.save(totalCost, personId);
+        cartService.save(totalCost, userId);
 
         verify(cartValidator, atLeast(1)).validate(totalCost);
-        verify(personValidator, atLeast(1)).validate(personId, people);
-        verify(cartRepository).save(totalCost, personId);
+        verify(userValidator, atLeast(1)).validate(userId, users);
+        verify(cartRepository).save(totalCost, userId);
     }
 
     @Test
@@ -126,13 +126,13 @@ public class CartServiceContextConfigurationTest {
         }
 
         @Bean
-        public PersonService personService() {
-            return mock(PersonService.class);
+        public UserService userService() {
+            return mock(UserService.class);
         }
 
         @Bean
-        public PersonValidator personValidator() {
-            return mock(PersonValidator.class);
+        public UserValidator userValidator() {
+            return mock(UserValidator.class);
         }
     }
 }

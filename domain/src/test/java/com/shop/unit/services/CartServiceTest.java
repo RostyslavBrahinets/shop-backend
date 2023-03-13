@@ -3,9 +3,9 @@ package com.shop.unit.services;
 import com.shop.models.Cart;
 import com.shop.repositories.CartRepository;
 import com.shop.services.CartService;
-import com.shop.services.PersonService;
+import com.shop.services.UserService;
 import com.shop.validators.CartValidator;
-import com.shop.validators.PersonValidator;
+import com.shop.validators.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,9 +26,9 @@ class CartServiceTest {
     @Mock
     private CartValidator cartValidator;
     @Mock
-    private PersonService personService;
+    private UserService userService;
     @Mock
-    private PersonValidator personValidator;
+    private UserValidator userValidator;
 
     private CartService cartService;
 
@@ -39,8 +39,8 @@ class CartServiceTest {
         cartService = new CartService(
             cartRepository,
             cartValidator,
-            personService,
-            personValidator
+            userService,
+            userValidator
         );
     }
 
@@ -68,7 +68,7 @@ class CartServiceTest {
 
     @Test
     @DisplayName("Empty list of carts is returned in case when no carts in storage")
-    void empty_list_of_bcarts_is_returned_in_case_when_no_carts_in_storage() {
+    void empty_list_of_carts_is_returned_in_case_when_no_carts_in_storage() {
         when(cartRepository.findAll()).thenReturn(emptyList());
 
         List<Cart> carts = cartService.findAll();
@@ -103,13 +103,13 @@ class CartServiceTest {
     }
 
     @Test
-    @DisplayName("Cart was found by person")
-    void cart_was_found_by_person() {
-        when(cartRepository.findByPerson(1)).thenReturn(
+    @DisplayName("Cart was found by user")
+    void cart_was_found_by_user() {
+        when(cartRepository.findByUser(1)).thenReturn(
             Optional.of(Cart.of(0).withId(1))
         );
 
-        Cart cart = cartService.findByPerson(1);
+        Cart cart = cartService.findByUser(1);
 
         assertThat(cart).isEqualTo(new Cart(1, 0));
     }

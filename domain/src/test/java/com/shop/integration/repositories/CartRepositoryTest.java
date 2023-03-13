@@ -1,10 +1,12 @@
 package com.shop.integration.repositories;
 
 import com.shop.configs.DatabaseConfig;
+import com.shop.dao.AdminNumberDao;
 import com.shop.dao.CartDao;
-import com.shop.dao.PersonDao;
+import com.shop.dao.UserDao;
 import com.shop.models.Cart;
 import com.shop.repositories.CartRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.jdbc.JdbcTestUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +34,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     CartRepositoryTest.TestContextConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/person/V20220421161641__Create_table_person.sql",
+    "classpath:db/migration/admin_number/V20220421160504__Create_table_admin_number.sql",
+    "classpath:db/migration/user/V20220421161642__Create_table_user.sql",
     "classpath:db/migration/cart/V20220421161946__Create_table_cart.sql"
 })
 public class CartRepositoryTest {
@@ -44,15 +48,45 @@ public class CartRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        PersonDao personDao = new PersonDao(namedParameterJdbcTemplate);
+        AdminNumberDao adminNumberDao = new AdminNumberDao(namedParameterJdbcTemplate);
+        adminNumberDao.save("0");
 
-        String firstName = "First Name";
-        String lastName = "Last Name";
+        UserDao userDao = new UserDao(namedParameterJdbcTemplate);
 
-        personDao.save(firstName, lastName);
-        personDao.save(firstName, lastName);
+        String firstName = "John";
+        String lastName = "Smith";
+        String email1 = "test1@email.com";
+        String phone1 = "+380000000001";
+        String email2 = "test2@email.com";
+        String phone2 = "+380000000002";
+        String password = "password";
+        long adminNumberId = 1;
 
-        namedParameterJdbcTemplate.getJdbcTemplate().execute("TRUNCATE TABLE cart");
+        userDao.save(
+            firstName,
+            lastName,
+            email1,
+            phone1,
+            password,
+            adminNumberId
+        );
+
+        userDao.save(
+            firstName,
+            lastName,
+            email2,
+            phone2,
+            password,
+            adminNumberId
+        );
+    }
+
+    @AfterEach
+    void tearDown() {
+        JdbcTestUtils.dropTables(
+            namedParameterJdbcTemplate.getJdbcTemplate(),
+            "cart", "\"user\"", "admin_number"
+        );
     }
 
     @Test

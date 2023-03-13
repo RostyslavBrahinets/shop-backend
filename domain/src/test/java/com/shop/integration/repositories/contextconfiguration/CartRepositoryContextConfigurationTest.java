@@ -46,24 +46,24 @@ public class CartRepositoryContextConfigurationTest {
     }
 
     @Test
-    @DisplayName("Get cart by person")
-    void get_cart_by_person() {
-        long personId = 1;
+    @DisplayName("Get cart by user")
+    void get_cart_by_user() {
+        long userId = 2;
 
-        cartRepository.findByPerson(personId);
+        cartRepository.findByUser(userId);
 
-        verify(cartDao).findByPerson(personId);
+        verify(cartDao).findByUser(userId);
     }
 
     @Test
     @DisplayName("Save cart")
     void save_cart() {
-        long personId = 1;
+        long userId = 2;
         double totalCost = 0;
 
-        cartRepository.save(totalCost, personId);
+        cartRepository.save(totalCost, userId);
 
-        verify(cartDao).save(totalCost, personId);
+        verify(cartDao).save(totalCost, userId);
     }
 
     @Test
