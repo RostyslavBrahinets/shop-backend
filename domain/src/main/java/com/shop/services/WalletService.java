@@ -51,13 +51,22 @@ public class WalletService {
     ) {
         walletValidator.validate(number, amountOfMoney);
         userValidator.validate(userId, userService.findAll());
-        return walletRepository.save(number, amountOfMoney, userId);
+        walletRepository.save(number, amountOfMoney, userId);
+        return Wallet.of(number, amountOfMoney).withId(walletRepository.findAll().size() + 1);
     }
 
     public Wallet update(long id, double amountOfMoney) {
         walletValidator.validate(id, walletRepository.findAll());
         walletValidator.validateAmountOfMoney(amountOfMoney);
-        return walletRepository.update(id, amountOfMoney);
+        walletRepository.update(id, amountOfMoney);
+
+        Optional<Wallet> wallet = walletRepository.findById(id);
+        String number = "";
+        if (wallet.isPresent()) {
+            number = wallet.get().getNumber();
+        }
+
+        return Wallet.of(number, amountOfMoney).withId(id);
     }
 
     public void delete(long id) {

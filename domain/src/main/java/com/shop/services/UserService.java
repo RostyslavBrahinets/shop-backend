@@ -69,7 +69,16 @@ public class UserService {
         List<AdminNumber> adminNumbers = adminNumberService.findAll();
         adminNumberValidator.validate(adminNumberId, adminNumbers);
 
-        return userRepository.save(
+        userRepository.save(
+            firstName,
+            lastName,
+            email,
+            phone,
+            passwordEncoder.encode(password),
+            adminNumberId
+        );
+
+        return User.of(
             firstName,
             lastName,
             email,
@@ -86,7 +95,8 @@ public class UserService {
     ) {
         userValidator.validate(id, userRepository.findAll());
         userValidator.validateFullName(firstName, lastName);
-        return userRepository.update(id, firstName, lastName);
+        userRepository.update(id, firstName, lastName);
+        return User.of(firstName, lastName).withId(id);
     }
 
     public void delete(long id) {

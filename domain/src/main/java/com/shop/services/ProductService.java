@@ -53,7 +53,9 @@ public class ProductService {
         byte[] image
     ) {
         productValidator.validate(name, describe, price, barcode, productRepository.findAll());
-        return productRepository.save(name, describe, price, barcode, inStock, image);
+        productRepository.save(name, describe, price, barcode, inStock, image);
+        return Product.of(name, describe, price, barcode, inStock, image)
+            .withId(productRepository.findAll().size() + 1);
     }
 
     public void delete(String barcode) {

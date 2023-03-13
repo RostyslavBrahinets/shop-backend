@@ -39,7 +39,8 @@ public class CategoryService {
 
     public Category save(String name) {
         categoryValidator.validateCategory(name);
-        return categoryRepository.save(name);
+        categoryRepository.save(name);
+        return Category.of(name).withId(categoryRepository.findAll().size() + 1);
     }
 
     public void delete(String name) {

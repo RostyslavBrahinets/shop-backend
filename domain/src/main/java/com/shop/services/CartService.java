@@ -47,13 +47,15 @@ public class CartService {
     public Cart save(double totalCost, long userId) {
         cartValidator.validate(totalCost);
         userValidator.validate(userId, userService.findAll());
-        return cartRepository.save(totalCost, userId);
+        cartRepository.save(totalCost, userId);
+        return Cart.of(totalCost).withId(cartRepository.findAll().size() + 1);
     }
 
     public Cart update(long id, double totalCost) {
         cartValidator.validate(id);
         cartValidator.validate(totalCost);
-        return cartRepository.update(id, totalCost);
+        cartRepository.update(id, totalCost);
+        return Cart.of(totalCost).withId(id);
     }
 
     public void delete(long id) {
