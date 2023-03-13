@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS "user"
     email           VARCHAR(256) NOT NULL UNIQUE,
     phone           VARCHAR(32)  NOT NULL UNIQUE,
     password        VARCHAR(256) NOT NULL,
-    admin_number_id INTEGER UNIQUE,
+    admin_number_id INTEGER,
     CONSTRAINT fk_admin_number
         FOREIGN KEY (admin_number_id)
             REFERENCES admin_number (id)
