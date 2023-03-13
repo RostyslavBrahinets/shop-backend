@@ -10,12 +10,6 @@ import java.util.List;
 
 @Component
 public class AdminNumberValidator {
-    public void validateAdminNumber(String number) {
-        if (number == null || number.isBlank()) {
-            throw new ValidationException("Id of AdminNumber is invalid");
-        }
-    }
-
     public void validate(long id, List<AdminNumber> adminNumbers) {
         List<Long> ids = new ArrayList<>();
 
@@ -43,6 +37,12 @@ public class AdminNumberValidator {
 
         if (!numbers.contains(number)) {
             throw new NotFoundException("AdminNumber not found");
+        }
+    }
+
+    public void validateAdminNumber(String number) {
+        if (number == null || number.isBlank()) {
+            throw new ValidationException("Number of AdminNumber is invalid");
         }
     }
 }
