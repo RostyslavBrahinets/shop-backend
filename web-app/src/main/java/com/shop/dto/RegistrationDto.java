@@ -9,6 +9,7 @@ public class RegistrationDto {
     private String email;
     private String phone;
     private String password;
+    private String adminNumber;
 
     public String getFirstName() {
         return firstName;
@@ -48,5 +49,13 @@ public class RegistrationDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAdminNumber() {
+        return adminNumber;
+    }
+
+    public void setAdminNumber(String adminNumber) {
+        this.adminNumber = adminNumber;
     }
 }
