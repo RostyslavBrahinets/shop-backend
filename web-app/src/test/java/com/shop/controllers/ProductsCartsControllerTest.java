@@ -89,7 +89,7 @@ class ProductsCartsControllerTest {
             );
 
         mockMvc.perform(get(PRODUCTS_CARTS_URL)
-                .with(user("John").password("password").roles("USER"))
+                .with(user("test@email.com").password("password").roles("USER"))
                 .with(csrf()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(APPLICATION_JSON))
@@ -119,7 +119,7 @@ class ProductsCartsControllerTest {
             .thenReturn(1L);
 
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/1")
-                .with(user("John").password("password").roles("USER"))
+                .with(user("test@email.com").password("password").roles("USER"))
                 .with(csrf()))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/cart"));
@@ -131,7 +131,7 @@ class ProductsCartsControllerTest {
     @DisplayName("Product from cart not deleted because of incorrect id")
     void product_from_cart_not_deleted_because_of_incorrect_id() throws Exception {
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/id/delete")
-                .with(user("John").password("password").roles("USER"))
+                .with(user("test@email.com").password("password").roles("USER"))
                 .with(csrf()))
             .andExpect(status().isBadRequest());
     }
@@ -156,7 +156,7 @@ class ProductsCartsControllerTest {
             .thenReturn(new Cart(1, 0));
 
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/1/delete")
-                .with(user("John").password("password").roles("USER"))
+                .with(user("test@email.com").password("password").roles("USER"))
                 .with(csrf()))
             .andExpect(status().isOk());
     }
@@ -196,7 +196,7 @@ class ProductsCartsControllerTest {
             );
 
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/buy")
-                .with(user("John").password("password").roles("USER"))
+                .with(user("test@email.com").password("password").roles("USER"))
                 .with(csrf()))
             .andExpect(status().isOk());
 
@@ -223,7 +223,7 @@ class ProductsCartsControllerTest {
             .thenReturn(new Wallet(1, "123", 0));
 
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/download-report")
-                .with(user("John").password("password").roles("USER"))
+                .with(user("test@email.com").password("password").roles("USER"))
                 .with(csrf()))
             .andExpect(status().isOk());
     }
