@@ -2,7 +2,9 @@ package com.shop.unit.services;
 
 import com.shop.models.User;
 import com.shop.repositories.UserRepository;
+import com.shop.services.AdminNumberService;
 import com.shop.services.UserService;
+import com.shop.validators.AdminNumberValidator;
 import com.shop.validators.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +27,10 @@ class UserServiceTest {
     @Mock
     private UserValidator userValidator;
     @Mock
+    private AdminNumberValidator adminNumberValidator;
+    @Mock
+    private AdminNumberService adminNumberService;
+    @Mock
     private PasswordEncoder passwordEncoder;
 
     private UserService userService;
@@ -36,6 +42,8 @@ class UserServiceTest {
         userService = new UserService(
             userRepository,
             userValidator,
+            adminNumberValidator,
+            adminNumberService,
             passwordEncoder
         );
     }
