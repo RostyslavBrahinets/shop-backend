@@ -1,10 +1,12 @@
 package com.shop.dao;
 
 import com.shop.models.AdminNumber;
+import com.shop.models.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -14,6 +16,13 @@ public class AdminNumberDao {
 
     public AdminNumberDao(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<AdminNumber> findAll() {
+        return jdbcTemplate.query(
+            "SELECT * FROM admin_number",
+            new BeanPropertyRowMapper<>(AdminNumber.class)
+        );
     }
 
     public Optional<AdminNumber> findByNumber(String number) {
