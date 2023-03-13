@@ -1,56 +1,77 @@
 package com.shop.repositories;
 
-import com.shop.dao.WalletDao;
 import com.shop.models.Wallet;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
 public class WalletRepository {
-    private final WalletDao walletDao;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public WalletRepository(WalletDao walletDao) {
-        this.walletDao = walletDao;
+    public WalletRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Wallet> findAll() {
-        return walletDao.findAll();
+        return jdbcTemplate.query(
+            "SELECT * FROM wallet",
+            new BeanPropertyRowMapper<>(Wallet.class)
+        );
     }
 
     public Optional<Wallet> findById(long id) {
-        return walletDao.findById(id);
+        return jdbcTemplate.query(
+                "SELECT * FROM wallet WHERE id=:id",
+                Map.ofEntries(Map.entry("id", id)),
+                new BeanPropertyRowMapper<>(Wallet.class)
+            )
+            .stream().findAny();
     }
 
     public Optional<Wallet> findByUser(long userId) {
-        return walletDao.findByUser(userId);
+        return jdbcTemplate.query(
+                "SELECT * FROM wallet WHERE user_id=:user_id",
+                Map.ofEntries(Map.entry("user_id", userId)),
+                new BeanPropertyRowMapper<>(Wallet.class)
+            )
+            .stream().findAny();
     }
 
-    public Wallet save(
+    public void save(
         String number,
         double amountOfMoney,
         long userId
     ) {
-        walletDao.save(
-            number,
-            amountOfMoney,
-            userId
+        jdbcTemplate.update(
+            "INSERT INTO wallet (number, amount_of_money, user_id)"
+                + " VALUES (:number, :amount_of_money, :user_id)",
+            Map.ofEntries(
+                Map.entry("number", number),
+                Map.entry("amount_of_money", amountOfMoney),
+                Map.entry("user_id", userId)
+            )
         );
-
-        return Wallet.of(number, amountOfMoney);
     }
 
-    public Wallet update(long id, double amountOfMoney) {
-        walletDao.update(id, amountOfMoney);
-        return Wallet.of("", amountOfMoney).withId(id);
+    public void update(long id, double amountOfMoney) {
+        jdbcTemplate.update(
+            "UPDATE wallet SET amount_of_money=:amount_of_money WHERE id=:id",
+            Map.ofEntries(
+                Map.entry("amount_of_money", amountOfMoney),
+                Map.entry("id", id)
+            )
+        );
     }
 
     public void delete(long id) {
-        walletDao.delete(id);
-    }
-
-    public int count() {
-        return walletDao.findAll().size();
+        jdbcTemplate.update(
+            "DELETE FROM wallet WHERE id=:id",
+            Map.ofEntries(Map.entry("id", id))
+        );
     }
 }

@@ -1,33 +1,48 @@
 package com.shop.repositories;
 
-import com.shop.dao.ProductDao;
 import com.shop.models.Product;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
 public class ProductRepository {
-    private final ProductDao productDao;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public ProductRepository(ProductDao productDao) {
-        this.productDao = productDao;
+    public ProductRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Product> findAll() {
-        return productDao.findAll();
+        return jdbcTemplate.query(
+            "SELECT * FROM product",
+            new BeanPropertyRowMapper<>(Product.class)
+        );
     }
 
     public Optional<Product> findById(long id) {
-        return productDao.findById(id);
+        return jdbcTemplate.query(
+                "SELECT * FROM product WHERE id=:id",
+                Map.ofEntries(Map.entry("id", id)),
+                new BeanPropertyRowMapper<>(Product.class)
+            )
+            .stream().findAny();
     }
 
     public Optional<Product> findByBarcode(String barcode) {
-        return productDao.findByBarcode(barcode);
+        return jdbcTemplate.query(
+                "SELECT * FROM product WHERE barcode=:barcode",
+                Map.ofEntries(Map.entry("barcode", barcode)),
+                new BeanPropertyRowMapper<>(Product.class)
+            )
+            .stream().findAny();
     }
 
-    public Product save(
+    public void save(
         String name,
         String describe,
         double price,
@@ -35,19 +50,34 @@ public class ProductRepository {
         boolean inStock,
         byte[] image
     ) {
-        productDao.save(name, describe, price, barcode, inStock, image);
-        return Product.of(name, describe, price, barcode, inStock, image);
+        jdbcTemplate.update(
+            "INSERT INTO product (name, describe, price, barcode, in_stock, image) "
+                + "VALUES (:name, :describe, :price, :barcode, :in_stock, :image)",
+            Map.ofEntries(
+                Map.entry("name", name),
+                Map.entry("describe", describe),
+                Map.entry("price", price),
+                Map.entry("barcode", barcode),
+                Map.entry("in_stock", inStock),
+                Map.entry("image", image)
+            )
+        );
     }
 
     public void delete(String barcode) {
-        productDao.delete(barcode);
+        jdbcTemplate.update(
+            "DELETE FROM product WHERE barcode=:barcode",
+            Map.ofEntries(Map.entry("barcode", barcode))
+        );
     }
 
     public void saveImageForProduct(byte[] image, long id) {
-        productDao.saveImageForProduct(image, id);
-    }
-
-    public int count() {
-        return productDao.findAll().size();
+        jdbcTemplate.update(
+            "UPDATE product SET image=:image WHERE id=:id",
+            Map.ofEntries(
+                Map.entry("image", image),
+                Map.entry("id", id)
+            )
+        );
     }
 }

@@ -1,20 +1,27 @@
 package com.shop.repositories;
 
-import com.shop.dao.RoleDao;
 import com.shop.models.Role;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
 public class RoleRepository {
-    private final RoleDao roleDao;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public RoleRepository(RoleDao roleDao) {
-        this.roleDao = roleDao;
+    public RoleRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public Optional<Role> findByName(String name) {
-        return roleDao.findByName(name);
+        return jdbcTemplate.query(
+                "SELECT * FROM role WHERE name=:name",
+                Map.ofEntries(Map.entry("name", name)),
+                new BeanPropertyRowMapper<>(Role.class)
+            )
+            .stream().findAny();
     }
 }

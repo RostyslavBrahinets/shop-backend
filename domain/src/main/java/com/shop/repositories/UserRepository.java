@@ -1,33 +1,48 @@
 package com.shop.repositories;
 
-import com.shop.dao.UserDao;
 import com.shop.models.User;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
 public class UserRepository {
-    private final UserDao userDao;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public UserRepository(UserDao userDao) {
-        this.userDao = userDao;
+    public UserRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<User> findAll() {
-        return userDao.findAll();
+        return jdbcTemplate.query(
+            "SELECT * FROM \"user\"",
+            new BeanPropertyRowMapper<>(User.class)
+        );
     }
 
     public Optional<User> findById(long id) {
-        return userDao.findById(id);
+        return jdbcTemplate.query(
+                "SELECT * FROM \"user\" WHERE id=:id",
+                Map.ofEntries(Map.entry("id", id)),
+                new BeanPropertyRowMapper<>(User.class)
+            )
+            .stream().findAny();
     }
 
     public Optional<User> findByEmail(String email) {
-        return userDao.findByEmail(email);
+        return jdbcTemplate.query(
+                "SELECT * FROM \"user\" WHERE email=:email",
+                Map.ofEntries(Map.entry("email", email)),
+                new BeanPropertyRowMapper<>(User.class)
+            )
+            .stream().findAny();
     }
 
-    public User save(
+    public void save(
         String firstName,
         String lastName,
         String email,
@@ -35,44 +50,35 @@ public class UserRepository {
         String password,
         long adminNumberId
     ) {
-        userDao.save(
-            firstName,
-            lastName,
-            email,
-            phone,
-            password,
-            adminNumberId
-        );
-
-        return User.of(
-            firstName,
-            lastName,
-            email,
-            phone,
-            password,
-            adminNumberId
+        jdbcTemplate.update(
+            "INSERT INTO \"user\" (first_name, last_name, email, phone, password, admin_number_id)"
+                + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number_id)",
+            Map.ofEntries(
+                Map.entry("first_name", firstName),
+                Map.entry("last_name", lastName),
+                Map.entry("email", email),
+                Map.entry("phone", phone),
+                Map.entry("password", password),
+                Map.entry("admin_number_id", adminNumberId)
+            )
         );
     }
 
-    public User update(
-        long id,
-        String firstName,
-        String lastName
-    ) {
-        userDao.update(
-            id,
-            firstName,
-            lastName
+    public void update(long id, String firstName, String lastName) {
+        jdbcTemplate.update(
+            "UPDATE \"user\" SET first_name=:first_name, last_name=:last_name WHERE id=:id",
+            Map.ofEntries(
+                Map.entry("first_name", firstName),
+                Map.entry("last_name", lastName),
+                Map.entry("id", id)
+            )
         );
-
-        return User.of(firstName, lastName).withId(id);
     }
 
     public void delete(long id) {
-        userDao.delete(id);
-    }
-
-    public int count() {
-        return userDao.findAll().size();
+        jdbcTemplate.update(
+            "DELETE FROM \"user\" WHERE id=:id",
+            Map.ofEntries(Map.entry("id", id))
+        );
     }
 }
