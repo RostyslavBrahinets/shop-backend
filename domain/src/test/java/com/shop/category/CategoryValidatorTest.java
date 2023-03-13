@@ -1,10 +1,10 @@
-package com.shop.unit.validators;
+package com.shop.category;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.models.Category;
-import com.shop.repositories.CategoryRepository;
-import com.shop.validators.CategoryValidator;
+import com.shop.category.Category;
+import com.shop.category.CategoryRepository;
+import com.shop.category.CategoryValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

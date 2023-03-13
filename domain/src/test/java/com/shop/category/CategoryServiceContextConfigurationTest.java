@@ -1,9 +1,5 @@
-package com.shop.integration.services.contextconfiguration;
+package com.shop.category;
 
-import com.shop.models.Category;
-import com.shop.repositories.CategoryRepository;
-import com.shop.services.CategoryService;
-import com.shop.validators.CategoryValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

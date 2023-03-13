@@ -1,6 +1,6 @@
-package com.shop.repositories;
+package com.shop.category;
 
-import com.shop.models.Category;
+import com.shop.category.Category;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package com.shop.models;
+package com.shop.category;
 
 import org.springframework.stereotype.Component;
 
