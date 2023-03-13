@@ -1,7 +1,7 @@
-package com.shop.services;
+package com.shop.role;
 
-import com.shop.models.Role;
-import com.shop.repositories.RoleRepository;
+import com.shop.role.Role;
+import com.shop.role.RoleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

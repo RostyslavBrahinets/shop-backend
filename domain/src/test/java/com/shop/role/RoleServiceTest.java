@@ -1,8 +1,8 @@
-package com.shop.unit.services;
+package com.shop.role;
 
-import com.shop.models.Role;
-import com.shop.repositories.RoleRepository;
-import com.shop.services.RoleService;
+import com.shop.role.Role;
+import com.shop.role.RoleRepository;
+import com.shop.role.RoleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.shop.validators;
+package com.shop.role;
 
 import com.shop.exceptions.NotFoundException;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.shop.models;
+package com.shop.role;
 
 import org.springframework.stereotype.Component;
 
