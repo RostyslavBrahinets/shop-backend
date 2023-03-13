@@ -1,9 +1,10 @@
-package com.shop.services;
+package com.shop.user_role;
 
-import com.shop.models.Role;
-import com.shop.repositories.UserRoleRepository;
-import com.shop.validators.UserValidator;
-import com.shop.validators.RoleValidator;
+import com.shop.role.Role;
+import com.shop.user_role.UserRoleRepository;
+import com.shop.user.UserService;
+import com.shop.user.UserValidator;
+import com.shop.role.RoleValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

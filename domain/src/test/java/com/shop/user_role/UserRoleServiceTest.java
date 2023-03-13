@@ -1,10 +1,10 @@
-package com.shop.unit.services;
+package com.shop.user_role;
 
-import com.shop.repositories.UserRoleRepository;
-import com.shop.services.UserRoleService;
-import com.shop.services.UserService;
-import com.shop.validators.UserValidator;
-import com.shop.validators.RoleValidator;
+import com.shop.user_role.UserRoleRepository;
+import com.shop.user_role.UserRoleService;
+import com.shop.user.UserService;
+import com.shop.user.UserValidator;
+import com.shop.role.RoleValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
