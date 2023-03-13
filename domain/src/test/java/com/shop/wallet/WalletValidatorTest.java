@@ -1,10 +1,10 @@
-package com.shop.unit.validators;
+package com.shop.wallet;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.models.Wallet;
-import com.shop.repositories.WalletRepository;
-import com.shop.validators.WalletValidator;
+import com.shop.wallet.Wallet;
+import com.shop.wallet.WalletRepository;
+import com.shop.wallet.WalletValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

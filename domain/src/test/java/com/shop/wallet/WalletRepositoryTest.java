@@ -1,10 +1,10 @@
-package com.shop.integration.repositories;
+package com.shop.wallet;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.repositories.AdminNumberRepository;
-import com.shop.repositories.UserRepository;
-import com.shop.repositories.WalletRepository;
-import com.shop.models.Wallet;
+import com.shop.admin_number.AdminNumberRepository;
+import com.shop.user.UserRepository;
+import com.shop.wallet.WalletRepository;
+import com.shop.wallet.Wallet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

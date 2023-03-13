@@ -1,4 +1,4 @@
-package com.shop.models;
+package com.shop.wallet;
 
 import org.springframework.stereotype.Component;
 

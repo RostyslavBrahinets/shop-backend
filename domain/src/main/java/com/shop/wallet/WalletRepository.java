@@ -1,6 +1,6 @@
-package com.shop.repositories;
+package com.shop.wallet;
 
-import com.shop.models.Wallet;
+import com.shop.wallet.Wallet;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;

@@ -1,8 +1,8 @@
-package com.shop.validators;
+package com.shop.wallet;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.models.Wallet;
+import com.shop.wallet.Wallet;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

@@ -1,11 +1,11 @@
-package com.shop.unit.services;
+package com.shop.wallet;
 
-import com.shop.models.Wallet;
-import com.shop.repositories.WalletRepository;
-import com.shop.services.UserService;
-import com.shop.services.WalletService;
-import com.shop.validators.UserValidator;
-import com.shop.validators.WalletValidator;
+import com.shop.wallet.Wallet;
+import com.shop.wallet.WalletRepository;
+import com.shop.user.UserService;
+import com.shop.wallet.WalletService;
+import com.shop.user.UserValidator;
+import com.shop.wallet.WalletValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
