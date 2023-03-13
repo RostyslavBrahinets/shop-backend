@@ -1,22 +1,23 @@
 package com.shop.validators;
 
 import com.shop.exceptions.ValidationException;
-import com.shop.models.Contact;
+import com.shop.models.AdminNumber;
+import com.shop.models.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class RegistrationValidator {
-    private final PersonValidator personValidator;
-    private final ContactValidator contactValidator;
+    private final UserValidator userValidator;
+    private final AdminNumberValidator adminNumberValidator;
 
     public RegistrationValidator(
-        PersonValidator personValidator,
-        ContactValidator contactValidator
+        UserValidator userValidator,
+        AdminNumberValidator adminNumberValidator
     ) {
-        this.personValidator = personValidator;
-        this.contactValidator = contactValidator;
+        this.userValidator = userValidator;
+        this.adminNumberValidator = adminNumberValidator;
     }
 
     public boolean isValidData(
@@ -25,10 +26,23 @@ public class RegistrationValidator {
         String email,
         String phone,
         String password,
-        List<Contact> contacts
+        String adminNumber,
+        List<User> users,
+        List<AdminNumber> adminNumbers
     ) throws ValidationException {
-        personValidator.validate(firstName, lastName);
-        contactValidator.validate(email, phone, password, contacts);
+        userValidator.validate(
+            firstName,
+            lastName,
+            email,
+            phone,
+            password,
+            users
+        );
+
+        adminNumberValidator.validate(
+            adminNumber,
+            adminNumbers
+        );
 
         return true;
     }
