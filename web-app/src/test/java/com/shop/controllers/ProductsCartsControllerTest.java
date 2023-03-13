@@ -70,7 +70,7 @@ class ProductsCartsControllerTest {
                 )
             );
 
-        when(cartService.findByUser(1))
+        when(cartService.findByUser(2))
             .thenReturn(new Cart(1, 0));
 
         when(productsCartsService.findAllProductsInCart(1))
@@ -112,7 +112,7 @@ class ProductsCartsControllerTest {
                 )
             );
 
-        when(cartService.findByUser(1))
+        when(cartService.findByUser(2))
             .thenReturn(new Cart(1, 0));
 
         when(productsCartsService.saveProductToCart(1, 1))
@@ -152,7 +152,7 @@ class ProductsCartsControllerTest {
                 )
             );
 
-        when(cartService.findByUser(1))
+        when(cartService.findByUser(2))
             .thenReturn(new Cart(1, 0));
 
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/1/delete")
@@ -177,7 +177,7 @@ class ProductsCartsControllerTest {
                 )
             );
 
-        when(cartService.findByUser(1))
+        when(cartService.findByUser(2))
             .thenReturn(new Cart(1, 0));
 
         when(productsCartsService.findAllProductsInCart(1))
@@ -200,7 +200,7 @@ class ProductsCartsControllerTest {
                 .with(csrf()))
             .andExpect(status().isOk());
 
-        verify(productsCartsService).buy(1);
+        verify(productsCartsService).buy(2);
     }
 
     @Test
@@ -219,7 +219,7 @@ class ProductsCartsControllerTest {
                 )
             );
 
-        when(walletService.findByUser(1))
+        when(walletService.findByUser(2))
             .thenReturn(new Wallet(1, "123", 0));
 
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/download-report")
