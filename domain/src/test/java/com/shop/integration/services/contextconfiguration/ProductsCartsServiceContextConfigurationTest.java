@@ -1,15 +1,15 @@
 package com.shop.integration.services.contextconfiguration;
 
 import com.shop.models.Cart;
-import com.shop.models.Person;
 import com.shop.models.Product;
+import com.shop.models.User;
 import com.shop.models.Wallet;
 import com.shop.repositories.ProductsCartsRepository;
 import com.shop.services.*;
 import com.shop.stripe.StripePayment;
 import com.shop.validators.CartValidator;
-import com.shop.validators.PersonValidator;
 import com.shop.validators.ProductValidator;
+import com.shop.validators.UserValidator;
 import com.shop.validators.WalletValidator;
 import com.stripe.exception.StripeException;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +47,7 @@ public class ProductsCartsServiceContextConfigurationTest {
     @Autowired
     private CartValidator cartValidator;
     @Autowired
-    private PersonValidator personValidator;
+    private UserValidator userValidator;
     @Autowired
     private WalletValidator walletValidator;
     @Autowired
@@ -55,12 +55,12 @@ public class ProductsCartsServiceContextConfigurationTest {
     @Autowired
     private ProductsCartsService productsCartsService;
 
-    private List<Person> people;
+    private List<User> users;
     private List<Product> products;
 
     @BeforeEach
     void setUp() {
-        people = List.of();
+        users = List.of();
         products = List.of();
     }
 
@@ -147,21 +147,21 @@ public class ProductsCartsServiceContextConfigurationTest {
     @Test
     @DisplayName("Buy products in cart")
     void buy_products_in_cart() throws StripeException {
-        long personId = 1;
+        long userId = 1;
 
-        when(walletService.findByPerson(personId))
+        when(walletService.findByUser(userId))
             .thenReturn(Wallet.of("123", 100).withId(1));
 
-        when(cartService.findByPerson(personId))
+        when(cartService.findByUser(userId))
             .thenReturn(Cart.of(0).withId(1));
 
         walletService.update(1, 100);
         stripePayment.updateCustomer("123", 100);
         cartService.update(1, 0);
 
-        productsCartsService.buy(personId);
+        productsCartsService.buy(userId);
 
-        verify(personValidator, atLeast(1)).validate(personId, people);
+        verify(userValidator, atLeast(1)).validate(userId, users);
         verify(walletValidator, atLeast(1)).validateAmountOfMoney(100);
         verify(cartValidator, atLeast(1)).validate(1);
         verify(productsCartsRepository, atLeast(1)).deleteProductsFromCart(1);
@@ -200,13 +200,13 @@ public class ProductsCartsServiceContextConfigurationTest {
         }
 
         @Bean
-        public PersonService personService() {
-            return mock(PersonService.class);
+        public UserService userService() {
+            return mock(UserService.class);
         }
 
         @Bean
-        public PersonValidator personValidator() {
-            return mock(PersonValidator.class);
+        public UserValidator userValidator() {
+            return mock(UserValidator.class);
         }
 
         @Bean
