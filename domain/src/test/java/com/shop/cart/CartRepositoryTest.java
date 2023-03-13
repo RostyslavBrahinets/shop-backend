@@ -1,10 +1,10 @@
-package com.shop.integration.repositories;
+package com.shop.cart;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.repositories.AdminNumberRepository;
-import com.shop.repositories.CartRepository;
-import com.shop.repositories.UserRepository;
-import com.shop.models.Cart;
+import com.shop.admin_number.AdminNumberRepository;
+import com.shop.cart.CartRepository;
+import com.shop.user.UserRepository;
+import com.shop.cart.Cart;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,8 +1,8 @@
-package com.shop.validators;
+package com.shop.cart;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.models.Cart;
+import com.shop.cart.Cart;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

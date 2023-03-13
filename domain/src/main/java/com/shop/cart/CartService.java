@@ -1,9 +1,7 @@
-package com.shop.services;
+package com.shop.cart;
 
-import com.shop.models.Cart;
-import com.shop.repositories.CartRepository;
-import com.shop.validators.CartValidator;
-import com.shop.validators.UserValidator;
+import com.shop.user.UserService;
+import com.shop.user.UserValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

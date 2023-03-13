@@ -1,12 +1,8 @@
-package com.shop.integration.services.contextconfiguration;
+package com.shop.cart;
 
-import com.shop.models.Cart;
-import com.shop.models.User;
-import com.shop.repositories.CartRepository;
-import com.shop.services.CartService;
-import com.shop.services.UserService;
-import com.shop.validators.CartValidator;
-import com.shop.validators.UserValidator;
+import com.shop.user.User;
+import com.shop.user.UserService;
+import com.shop.user.UserValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

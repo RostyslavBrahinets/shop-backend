@@ -1,6 +1,6 @@
-package com.shop.repositories;
+package com.shop.cart;
 
-import com.shop.models.Cart;
+import com.shop.cart.Cart;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;

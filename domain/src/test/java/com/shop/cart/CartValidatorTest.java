@@ -1,10 +1,10 @@
-package com.shop.unit.validators;
+package com.shop.cart;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.models.Cart;
-import com.shop.repositories.CartRepository;
-import com.shop.validators.CartValidator;
+import com.shop.cart.Cart;
+import com.shop.cart.CartRepository;
+import com.shop.cart.CartValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
