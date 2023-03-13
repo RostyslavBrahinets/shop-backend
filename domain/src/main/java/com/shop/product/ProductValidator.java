@@ -1,8 +1,8 @@
-package com.shop.validators;
+package com.shop.product;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.models.Product;
+import com.shop.product.Product;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

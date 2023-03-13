@@ -1,8 +1,8 @@
-package com.shop.integration.repositories;
+package com.shop.product;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.repositories.ProductRepository;
-import com.shop.models.Product;
+import com.shop.product.ProductRepository;
+import com.shop.product.Product;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

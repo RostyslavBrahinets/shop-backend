@@ -1,11 +1,11 @@
-package com.shop.unit.services;
+package com.shop.product;
 
-import com.shop.models.Category;
-import com.shop.models.Product;
-import com.shop.repositories.ProductCategoryRepository;
-import com.shop.repositories.ProductRepository;
-import com.shop.services.ProductService;
-import com.shop.validators.ProductValidator;
+import com.shop.category.Category;
+import com.shop.product.Product;
+import com.shop.product_category.ProductCategoryRepository;
+import com.shop.product.ProductRepository;
+import com.shop.product.ProductService;
+import com.shop.product.ProductValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

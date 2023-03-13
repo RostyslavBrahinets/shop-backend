@@ -1,5 +1,6 @@
-package com.shop.models;
+package com.shop.product;
 
+import com.shop.category.Category;
 import org.springframework.stereotype.Component;
 
 import java.io.Serial;
