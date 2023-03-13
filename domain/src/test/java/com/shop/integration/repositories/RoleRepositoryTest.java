@@ -1,70 +1,70 @@
 package com.shop.integration.repositories;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.dao.RoleDao;
-import com.shop.models.Role;
 import com.shop.repositories.RoleRepository;
+import com.shop.models.Role;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.jdbc.JdbcTestUtils;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@DataJdbcTest
-@EnableAutoConfiguration
+@JdbcTest
 @ContextConfiguration(classes = {
-    DatabaseConfig.class,
-    RoleRepositoryTest.TestContextConfig.class
+    DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/role/V20220505172953__Create_table_role.sql",
-    "classpath:db/migration/role/V20220505173022__Insert_data_to_table_role.sql"
+    "classpath:db/migration/role/V20220505172953__Create_table_role.sql"
 })
 public class RoleRepositoryTest {
     @Autowired
+    private NamedParameterJdbcTemplate jdbcTemplate;
+
     private RoleRepository roleRepository;
 
+    @BeforeEach
+    void setUp() {
+        roleRepository = new RoleRepository(jdbcTemplate);
+    }
+
+    @AfterEach
+    void tearDown() {
+        JdbcTestUtils.dropTables(
+            jdbcTemplate.getJdbcTemplate(),
+            "role"
+        );
+    }
+
     @Test
-    @DisplayName("Role was not found")
-    @DirtiesContext
-    void role_was_not_found() {
-        Optional<Role> role = roleRepository.findByName("role");
+    @DisplayName("Role by name was not found")
+    void role_by_name_was_not_found() {
+        Optional<Role> role = roleRepository.findByName("name");
 
         assertThat(role).isEmpty();
     }
 
     @Test
-    @DisplayName("Role was found")
-    @DirtiesContext
-    void role_was_found() {
-        Optional<Role> role = roleRepository.findByName("ROLE_ADMIN");
+    @DisplayName("Role by name was found")
+    void role_by_name_was_found() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("role")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name")
+            .execute(Map.ofEntries(Map.entry("name", "name")));
 
-        assertThat(role).get().isEqualTo(Role.of("ROLE_ADMIN").withId(1));
-    }
+        Optional<Role> role = roleRepository.findByName("name");
 
-    @TestConfiguration
-    static class TestContextConfig {
-        @Autowired
-        private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-        @Bean
-        public RoleDao roleDao() {
-            return new RoleDao(namedParameterJdbcTemplate);
-        }
-
-        @Bean
-        public RoleRepository roleRepository(RoleDao roleDao) {
-            return new RoleRepository(roleDao);
-        }
+        assertThat(role).get().isEqualTo(Role.of("name").withId(1));
     }
 }

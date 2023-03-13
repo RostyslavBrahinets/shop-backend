@@ -1,120 +1,85 @@
 package com.shop.integration.repositories;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.dao.ProductDao;
-import com.shop.models.Product;
 import com.shop.repositories.ProductRepository;
+import com.shop.models.Product;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.jdbc.JdbcTestUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@DataJdbcTest
-@EnableAutoConfiguration
+@JdbcTest
 @ContextConfiguration(classes = {
-    DatabaseConfig.class,
-    ProductRepositoryTest.TestContextConfig.class
+    DatabaseConfig.class
 })
 @Sql(scripts = {
     "classpath:db/migration/product/V20220421162205__Create_table_product.sql"
 })
 public class ProductRepositoryTest {
-
     @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private NamedParameterJdbcTemplate jdbcTemplate;
 
-    @Autowired
     private ProductRepository productRepository;
 
     @BeforeEach
     void setUp() {
-        namedParameterJdbcTemplate.getJdbcTemplate().execute("TRUNCATE TABLE product");
+        productRepository = new ProductRepository(jdbcTemplate);
+    }
+
+    @AfterEach
+    void tearDown() {
+        JdbcTestUtils.dropTables(
+            jdbcTemplate.getJdbcTemplate(),
+            "product"
+        );
+    }
+
+    private int fetchProductsCount() {
+        return JdbcTestUtils.countRowsInTable(
+            jdbcTemplate.getJdbcTemplate(),
+            "product"
+        );
     }
 
     @Test
-    @DisplayName("No products in database")
-    void no_history_records_in_db() {
-        int productsCount = productRepository.count();
-
-        assertThat(productsCount).isZero();
-    }
-
-    @Test
-    @DisplayName("Nothing happened when trying to delete not existing product")
-    void nothing_happened_when_trying_to_delete_not_existing_product() {
-        assertThatCode(() -> productRepository.delete("123"))
-            .doesNotThrowAnyException();
-    }
-
-    @Test
-    @DisplayName("Product was deleted")
-    @DirtiesContext
-    void product_was_deleted() {
+    @DisplayName("Save product")
+    void save_product() {
         productRepository.save(
             "name",
             "describe",
-            100,
+            0,
             "123",
             true,
             new byte[]{1, 1, 1}
         );
 
-        assertThat(productRepository.count()).isEqualTo(1);
+        var productsCount = fetchProductsCount();
 
-        productRepository.delete("123");
-
-        assertThat(productRepository.count()).isZero();
-    }
-
-    @Test
-    @DisplayName("Save product and check product data")
-    @DirtiesContext
-    void save_product_and_check_product_data() {
-        productRepository.save(
-            "name",
-            "describe",
-            100,
-            "123",
-            true,
-            new byte[]{1, 1, 1}
-        );
-        var savedProduct = productRepository.findById(productRepository.count());
-        Product product = null;
-        if (savedProduct.isPresent()) {
-            product = savedProduct.get();
-        }
-
-        assertThat(product).extracting(Product::getId).isEqualTo(1L);
-        assertThat(product).extracting(Product::getName).isEqualTo("name");
-        assertThat(product).extracting(Product::getDescribe).isEqualTo("describe");
-        assertThat(product).extracting(Product::getPrice).isEqualTo(100.0);
-        assertThat(product).extracting(Product::getBarcode).isEqualTo("123");
-        assertThat(product).extracting(Product::isInStock).isEqualTo(true);
-        assertThat(product).extracting(Product::getImage).isEqualTo(new byte[]{1, 1, 1});
+        assertThat(productsCount).isEqualTo(1);
     }
 
     @Test
     @DisplayName("Save multiple products")
-    @DirtiesContext
     void save_multiple_products() {
         productRepository.save(
             "name",
             "describe",
-            100,
+            0,
             "123",
             true,
             new byte[]{1, 1, 1}
@@ -122,43 +87,90 @@ public class ProductRepositoryTest {
         productRepository.save(
             "name",
             "describe",
-            100,
+            0,
             "456",
             true,
             new byte[]{1, 1, 1}
         );
 
-        assertThat(productRepository.count()).isEqualTo(2);
+        var productsCount = fetchProductsCount();
+
+        assertThat(productsCount).isEqualTo(2);
     }
 
     @Test
-    @DisplayName("Product was not found")
-    void product_was_not_found() {
+    @DisplayName("Product by id was not found")
+    void product_by_id_was_not_found() {
         Optional<Product> product = productRepository.findById(1);
 
         assertThat(product).isEmpty();
     }
 
     @Test
-    @DisplayName("Product was found")
-    @DirtiesContext
-    void product_was_found() {
-        productRepository.save(
-            "name",
-            "describe",
-            100,
-            "123",
-            true,
-            new byte[]{1, 1, 1}
-        );
+    @DisplayName("Product by id was found")
+    void product_by_id_was_found() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("product")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("name", "name"),
+                    Map.entry("describe", "describe"),
+                    Map.entry("price", 0),
+                    Map.entry("barcode", "123"),
+                    Map.entry("in_stock", true),
+                    Map.entry("image", new byte[]{1, 1, 1})
+                )
+            );
 
-        Optional<Product> product = productRepository.findById(productRepository.count());
+        Optional<Product> product = productRepository.findById(1);
 
         assertThat(product).get().isEqualTo(
             Product.of(
                     "name",
                     "describe",
-                    100,
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1));
+    }
+
+    @Test
+    @DisplayName("Product by barcode was not found")
+    void product_by_barcode_was_not_found() {
+        Optional<Product> product = productRepository.findByBarcode("123");
+
+        assertThat(product).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Product by barcode was found")
+    void product_by_barcode_was_found() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("product")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("name", "name"),
+                    Map.entry("describe", "describe"),
+                    Map.entry("price", 0),
+                    Map.entry("barcode", "123"),
+                    Map.entry("in_stock", true),
+                    Map.entry("image", new byte[]{1, 1, 1})
+                )
+            );
+
+        Optional<Product> product = productRepository.findByBarcode("123");
+
+        assertThat(product).get().isEqualTo(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
                     "123",
                     true,
                     new byte[]{1, 1, 1}
@@ -168,33 +180,40 @@ public class ProductRepositoryTest {
 
     @Test
     @DisplayName("Find all products")
-    @DirtiesContext
     void find_all_products() {
-        productRepository.save(
-            "name",
-            "describe",
-            100,
-            "123",
-            true,
-            new byte[]{1, 1, 1}
-        );
-        productRepository.save(
-            "name",
-            "describe",
-            100,
-            "456",
-            true,
-            new byte[]{1, 1, 1}
+        var batchInsertParameters = SqlParameterSourceUtils.createBatch(
+            Map.ofEntries(
+                Map.entry("name", "name"),
+                Map.entry("describe", "describe"),
+                Map.entry("price", 0),
+                Map.entry("barcode", "123"),
+                Map.entry("in_stock", true),
+                Map.entry("image", new byte[]{1, 1, 1})
+            ),
+            Map.ofEntries(
+                Map.entry("name", "name"),
+                Map.entry("describe", "describe"),
+                Map.entry("price", 0),
+                Map.entry("barcode", "456"),
+                Map.entry("in_stock", true),
+                Map.entry("image", new byte[]{1, 1, 1})
+            )
         );
 
-        var products = productRepository.findAll();
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("product")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
+            .executeBatch(batchInsertParameters);
+
+        List<Product> products = productRepository.findAll();
 
         assertThat(products).isEqualTo(
             List.of(
                 Product.of(
                         "name",
                         "describe",
-                        100,
+                        0,
                         "123",
                         true,
                         new byte[]{1, 1, 1}
@@ -203,7 +222,7 @@ public class ProductRepositoryTest {
                 Product.of(
                         "name",
                         "describe",
-                        100,
+                        0,
                         "456",
                         true,
                         new byte[]{1, 1, 1}
@@ -213,19 +232,67 @@ public class ProductRepositoryTest {
         );
     }
 
-    @TestConfiguration
-    static class TestContextConfig {
-        @Autowired
-        private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    @Test
+    @DisplayName("Product not deleted in case when not exists")
+    void product_not_deleted_in_case_when_not_exists() {
+        assertThatCode(() -> productRepository.delete("123")).doesNotThrowAnyException();
+    }
 
-        @Bean
-        public ProductDao productDao() {
-            return new ProductDao(namedParameterJdbcTemplate);
-        }
+    @Test
+    @DisplayName("Product deleted")
+    void product_deleted() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("product")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("name", "name"),
+                    Map.entry("describe", "describe"),
+                    Map.entry("price", 0),
+                    Map.entry("barcode", "123"),
+                    Map.entry("in_stock", true),
+                    Map.entry("image", new byte[]{1, 1, 1})
+                )
+            );
 
-        @Bean
-        public ProductRepository basketRepository(ProductDao productDao) {
-            return new ProductRepository(productDao);
-        }
+        var productsCountBeforeDeletion = fetchProductsCount();
+
+        assertThat(productsCountBeforeDeletion).isEqualTo(1);
+
+        productRepository.delete("123");
+
+        var productsCount = fetchProductsCount();
+
+        assertThat(productsCount).isZero();
+    }
+
+    @Test
+    @DisplayName("Save image for product")
+    void save_image_for_product() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("product")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("name", "name"),
+                    Map.entry("describe", "describe"),
+                    Map.entry("price", 0),
+                    Map.entry("barcode", "123"),
+                    Map.entry("in_stock", true),
+                    Map.entry("image", new byte[]{1, 1, 1})
+                )
+            );
+
+        productRepository.saveImageForProduct(new byte[]{127, 127, 127}, 1);
+
+        var updatedBasket = jdbcTemplate.queryForObject(
+            "SELECT image FROM product WHERE id=:id",
+            Map.ofEntries(Map.entry("id", 1)),
+            byte[].class
+        );
+
+        assertThat(updatedBasket).isEqualTo(new byte[]{127, 127, 127});
     }
 }

@@ -1,37 +1,33 @@
 package com.shop.integration.repositories;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.dao.AdminNumberDao;
-import com.shop.dao.UserDao;
-import com.shop.dao.WalletDao;
-import com.shop.models.Wallet;
+import com.shop.repositories.AdminNumberRepository;
+import com.shop.repositories.UserRepository;
 import com.shop.repositories.WalletRepository;
+import com.shop.models.Wallet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@DataJdbcTest
-@EnableAutoConfiguration
+@JdbcTest
 @ContextConfiguration(classes = {
-    DatabaseConfig.class,
-    WalletRepositoryTest.TestContextConfig.class
+    DatabaseConfig.class
 })
 @Sql(scripts = {
     "classpath:db/migration/admin_number/V20220421160504__Create_table_admin_number.sql",
@@ -39,19 +35,17 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     "classpath:db/migration/wallet/V20220421162043__Create_table_wallet.sql"
 })
 public class WalletRepositoryTest {
-
     @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private NamedParameterJdbcTemplate jdbcTemplate;
 
-    @Autowired
     private WalletRepository walletRepository;
 
     @BeforeEach
     void setUp() {
-        AdminNumberDao adminNumberDao = new AdminNumberDao(namedParameterJdbcTemplate);
-        adminNumberDao.save("0");
+        AdminNumberRepository adminNumberRepository = new AdminNumberRepository(jdbcTemplate);
+        adminNumberRepository.save("0");
 
-        UserDao userDao = new UserDao(namedParameterJdbcTemplate);
+        UserRepository userRepository = new UserRepository(jdbcTemplate);
 
         String firstName = "John";
         String lastName = "Smith";
@@ -62,7 +56,7 @@ public class WalletRepositoryTest {
         String password = "password";
         long adminNumberId = 1;
 
-        userDao.save(
+        userRepository.save(
             firstName,
             lastName,
             email1,
@@ -71,7 +65,7 @@ public class WalletRepositoryTest {
             adminNumberId
         );
 
-        userDao.save(
+        userRepository.save(
             firstName,
             lastName,
             email2,
@@ -79,97 +73,125 @@ public class WalletRepositoryTest {
             password,
             adminNumberId
         );
+
+        walletRepository = new WalletRepository(jdbcTemplate);
     }
 
     @AfterEach
     void tearDown() {
         JdbcTestUtils.dropTables(
-            namedParameterJdbcTemplate.getJdbcTemplate(),
+            jdbcTemplate.getJdbcTemplate(),
             "wallet", "\"user\"", "admin_number"
         );
     }
 
-    @Test
-    @DisplayName("No wallets in database")
-    void no_history_records_in_db() {
-        int walletsCount = walletRepository.count();
-
-        assertThat(walletsCount).isZero();
+    private int fetchWalletsCount() {
+        return JdbcTestUtils.countRowsInTable(
+            jdbcTemplate.getJdbcTemplate(),
+            "wallet"
+        );
     }
 
     @Test
-    @DisplayName("Nothing happened when trying to delete not existing wallet")
-    void nothing_happened_when_trying_to_delete_not_existing_wallet() {
-        assertThatCode(() -> walletRepository.delete(1))
-            .doesNotThrowAnyException();
-    }
-
-    @Test
-    @DisplayName("Wallet was deleted")
-    @DirtiesContext
-    void wallet_was_deleted() {
+    @DisplayName("Save wallet")
+    void save_wallet() {
         walletRepository.save("123", 0, 1);
 
-        assertThat(walletRepository.count()).isEqualTo(1);
+        var walletsCount = fetchWalletsCount();
 
-        walletRepository.delete(walletRepository.count());
-
-        assertThat(walletRepository.count()).isZero();
-    }
-
-    @Test
-    @DisplayName("Save wallet and check wallet data")
-    @DirtiesContext
-    void save_wallet_and_check_wallet_data() {
-        walletRepository.save("123", 0, 1);
-        var savedWallet = walletRepository.findById(walletRepository.count());
-        Wallet wallet = null;
-        if (savedWallet.isPresent()) {
-            wallet = savedWallet.get();
-        }
-
-        assertThat(wallet).extracting(Wallet::getId).isEqualTo(1L);
-        assertThat(wallet).extracting(Wallet::getNumber).isEqualTo("123");
-        assertThat(wallet).extracting(Wallet::getAmountOfMoney).isEqualTo(0.0);
+        assertThat(walletsCount).isEqualTo(1);
     }
 
     @Test
     @DisplayName("Save multiple wallets")
-    @DirtiesContext
     void save_multiple_wallets() {
         walletRepository.save("123", 0, 1);
         walletRepository.save("456", 0, 2);
 
-        assertThat(walletRepository.count()).isEqualTo(2);
+        var walletsCount = fetchWalletsCount();
+
+        assertThat(walletsCount).isEqualTo(2);
     }
 
     @Test
-    @DisplayName("Wallet was not found")
-    void wallet_was_not_found() {
+    @DisplayName("Wallet by id was not found")
+    void wallet_by_id_was_not_found() {
         Optional<Wallet> wallet = walletRepository.findById(1);
 
         assertThat(wallet).isEmpty();
     }
 
     @Test
-    @DisplayName("Wallet was found")
-    @DirtiesContext
-    void wallet_was_found() {
-        walletRepository.save("123", 0, 1);
+    @DisplayName("Wallet by id was found")
+    void wallet_by_id_was_found() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("wallet")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("number", "amount_of_money", "user_id")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("number", "123"),
+                    Map.entry("amount_of_money", 0),
+                    Map.entry("user_id", 1)
+                )
+            );
 
-        Optional<Wallet> wallet = walletRepository.findById(walletRepository.count());
+        Optional<Wallet> wallet = walletRepository.findById(1);
+
+        assertThat(wallet).get().isEqualTo(Wallet.of("123", 0).withId(1));
+    }
+
+    @Test
+    @DisplayName("Wallet by user was not found")
+    void wallet_by_user_was_not_found() {
+        Optional<Wallet> wallet = walletRepository.findByUser(1);
+
+        assertThat(wallet).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Wallet by user was found")
+    void wallet_by_user_was_found() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("wallet")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("number", "amount_of_money", "user_id")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("number", "123"),
+                    Map.entry("amount_of_money", 0),
+                    Map.entry("user_id", 1)
+                )
+            );
+
+        Optional<Wallet> wallet = walletRepository.findByUser(1);
 
         assertThat(wallet).get().isEqualTo(Wallet.of("123", 0).withId(1));
     }
 
     @Test
     @DisplayName("Find all wallets")
-    @DirtiesContext
     void find_all_wallets() {
-        walletRepository.save("123", 0, 1);
-        walletRepository.save("456", 0, 2);
+        var batchInsertParameters = SqlParameterSourceUtils.createBatch(
+            Map.ofEntries(
+                Map.entry("number", "123"),
+                Map.entry("amount_of_money", 0),
+                Map.entry("user_id", 1)
+            ),
+            Map.ofEntries(
+                Map.entry("number", "456"),
+                Map.entry("amount_of_money", 0),
+                Map.entry("user_id", 2)
+            )
+        );
 
-        var wallets = walletRepository.findAll();
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("wallet")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("number", "amount_of_money", "user_id")
+            .executeBatch(batchInsertParameters);
+
+        List<Wallet> wallets = walletRepository.findAll();
 
         assertThat(wallets).isEqualTo(
             List.of(
@@ -179,19 +201,61 @@ public class WalletRepositoryTest {
         );
     }
 
-    @TestConfiguration
-    static class TestContextConfig {
-        @Autowired
-        private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    @Test
+    @DisplayName("Wallet not deleted in case when not exists")
+    void wallet_not_deleted_in_case_when_not_exists() {
+        assertThatCode(() -> walletRepository.delete(1)).doesNotThrowAnyException();
+    }
 
-        @Bean
-        public WalletDao walletDao() {
-            return new WalletDao(namedParameterJdbcTemplate);
-        }
+    @Test
+    @DisplayName("Wallet deleted")
+    void wallet_deleted() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("wallet")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("number", "amount_of_money", "user_id")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("number", "123"),
+                    Map.entry("amount_of_money", 0),
+                    Map.entry("user_id", 1)
+                )
+            );
 
-        @Bean
-        public WalletRepository walletRepository(WalletDao walletDao) {
-            return new WalletRepository(walletDao);
-        }
+        var walletsCountBeforeDeletion = fetchWalletsCount();
+
+        assertThat(walletsCountBeforeDeletion).isEqualTo(1);
+
+        walletRepository.delete(1);
+
+        var walletsCount = fetchWalletsCount();
+
+        assertThat(walletsCount).isZero();
+    }
+
+    @Test
+    @DisplayName("Wallet updated")
+    void wallet_updated() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("wallet")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("number", "amount_of_money", "user_id")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("number", "123"),
+                    Map.entry("amount_of_money", 0),
+                    Map.entry("user_id", 1)
+                )
+            );
+
+        walletRepository.update(1, 100);
+
+        var updatedWallet = jdbcTemplate.queryForObject(
+            "SELECT amount_of_money FROM wallet WHERE id=:id",
+            Map.ofEntries(Map.entry("id", 1)),
+            Double.class
+        );
+
+        assertThat(updatedWallet).isEqualTo(100);
     }
 }

@@ -1,7 +1,7 @@
-package com.shop.integration.dao;
+package com.shop.integration.repositories;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.dao.ProductsCartsDao;
+import com.shop.repositories.ProductsCartsRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,15 +28,15 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     "classpath:db/migration/products_carts/V20220421162626__Create_table_products_carts.sql",
     "classpath:db/migration/product/V20220421162205__Create_table_product.sql"
 })
-public class ProductsCartsDaoTest {
+public class ProductsCartsRepositoryTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
-    private ProductsCartsDao productsCartsDao;
+    private ProductsCartsRepository productsCartsRepository;
 
     @BeforeEach
     void setUp() {
-        productsCartsDao = new ProductsCartsDao(jdbcTemplate);
+        productsCartsRepository = new ProductsCartsRepository(jdbcTemplate);
     }
 
     @AfterEach
@@ -67,7 +67,7 @@ public class ProductsCartsDaoTest {
                 )
             );
 
-        productsCartsDao.findAllProductsInCart(1);
+        productsCartsRepository.findAllProductsInCart(1);
 
         var productsCartsCount = fetchProductsCartsCount();
 
@@ -77,7 +77,7 @@ public class ProductsCartsDaoTest {
     @Test
     @DisplayName("Save product to cart")
     void save_product_to_cart() {
-        productsCartsDao.saveProductToCart(1, 1);
+        productsCartsRepository.saveProductToCart(1, 1);
 
         var productsCartsCount = fetchProductsCartsCount();
 
@@ -87,8 +87,8 @@ public class ProductsCartsDaoTest {
     @Test
     @DisplayName("Save multiple product to cart")
     void save_multiple_product_to_cart() {
-        productsCartsDao.saveProductToCart(1, 1);
-        productsCartsDao.saveProductToCart(2, 1);
+        productsCartsRepository.saveProductToCart(1, 1);
+        productsCartsRepository.saveProductToCart(2, 1);
 
         var productsCartsCount = fetchProductsCartsCount();
 
@@ -98,7 +98,7 @@ public class ProductsCartsDaoTest {
     @Test
     @DisplayName("Products from cart not deleted in case when not exists")
     void products_from_cart_not_deleted_in_case_when_not_exists() {
-        assertThatCode(() -> productsCartsDao
+        assertThatCode(() -> productsCartsRepository
             .deleteProductsFromCart(1))
             .doesNotThrowAnyException();
     }
@@ -125,7 +125,7 @@ public class ProductsCartsDaoTest {
 
         assertThat(productsCartsCountBeforeDeletion).isEqualTo(2);
 
-        productsCartsDao.deleteProductsFromCart(1);
+        productsCartsRepository.deleteProductsFromCart(1);
 
         var productsCartsCount = fetchProductsCartsCount();
 

@@ -1,7 +1,7 @@
-package com.shop.integration.dao;
+package com.shop.integration.repositories;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.dao.ProductCategoryDao;
+import com.shop.repositories.ProductCategoryRepository;
 import com.shop.models.Category;
 import com.shop.models.Product;
 import org.junit.jupiter.api.AfterEach;
@@ -32,15 +32,15 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     "classpath:db/migration/product/V20220421162205__Create_table_product.sql",
     "classpath:db/migration/category/V20220421162204__Create_table_category.sql"
 })
-public class ProductCategoryDaoTest {
+public class ProductCategoryRepositoryTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
-    private ProductCategoryDao productCategoryDao;
+    private ProductCategoryRepository productCategoryRepository;
 
     @BeforeEach
     void setUp() {
-        productCategoryDao = new ProductCategoryDao(jdbcTemplate);
+        productCategoryRepository = new ProductCategoryRepository(jdbcTemplate);
     }
 
     @AfterEach
@@ -92,7 +92,7 @@ public class ProductCategoryDaoTest {
                 Map.entry("category_id", 1)
             ));
 
-        List<Product> products = productCategoryDao.findAllProductsInCategory(1);
+        List<Product> products = productCategoryRepository.findAllProductsInCategory(1);
 
         assertThat(products).isEqualTo(
             List.of(
@@ -141,7 +141,7 @@ public class ProductCategoryDaoTest {
                 Map.entry("category_id", 1)
             ));
 
-        Optional<Category> category = productCategoryDao.findCategoryForProduct(1);
+        Optional<Category> category = productCategoryRepository.findCategoryForProduct(1);
 
         assertThat(category).get().isEqualTo(
             Category.of("name").withId(1)
@@ -151,7 +151,7 @@ public class ProductCategoryDaoTest {
     @Test
     @DisplayName("Save product to category")
     void save_product_to_category() {
-        productCategoryDao.saveProductToCategory(1, 1);
+        productCategoryRepository.saveProductToCategory(1, 1);
 
         var productCategoryCount = fetchProductCategoryCount();
 
@@ -161,8 +161,8 @@ public class ProductCategoryDaoTest {
     @Test
     @DisplayName("Save multiple products to category")
     void save_multiple_products_to_category() {
-        productCategoryDao.saveProductToCategory(1, 1);
-        productCategoryDao.saveProductToCategory(2, 1);
+        productCategoryRepository.saveProductToCategory(1, 1);
+        productCategoryRepository.saveProductToCategory(2, 1);
 
         var productCategoryCount = fetchProductCategoryCount();
 
@@ -172,13 +172,13 @@ public class ProductCategoryDaoTest {
     @Test
     @DisplayName("Delete product from category")
     void delete_product_from_category() {
-        productCategoryDao.saveProductToCategory(1, 1);
+        productCategoryRepository.saveProductToCategory(1, 1);
 
         var productCategoryCount = fetchProductCategoryCount();
 
         assertThat(productCategoryCount).isEqualTo(1);
 
-        productCategoryDao.deleteProductFromCategory(1, 1);
+        productCategoryRepository.deleteProductFromCategory(1, 1);
 
         productCategoryCount = fetchProductCategoryCount();
 
