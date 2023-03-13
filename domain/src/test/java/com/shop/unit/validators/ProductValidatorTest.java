@@ -32,7 +32,7 @@ public class ProductValidatorTest {
 
     @Test
     @DisplayName("Product validated without exceptions")
-    void contact_validated_without_exceptions() {
+    void product_validated_without_exceptions() {
         assertDoesNotThrow(
             () -> productValidator.validate("name", "describe", 0, "123", List.of())
         );

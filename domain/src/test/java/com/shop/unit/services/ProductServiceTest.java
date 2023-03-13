@@ -42,7 +42,7 @@ class ProductServiceTest {
 
     @Test
     @DisplayName("Product was saved for with correct input")
-    void person_was_saved_with_correct_input() {
+    void product_was_saved_with_correct_input() {
         when(productRepository.save(
             "name",
             "describe",

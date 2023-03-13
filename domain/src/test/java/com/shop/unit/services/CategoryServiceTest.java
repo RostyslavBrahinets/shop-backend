@@ -84,8 +84,8 @@ class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("Category was found by person")
-    void category_was_found_by_person() {
+    @DisplayName("Category was found by user")
+    void category_was_found_by_user() {
         when(categoryRepository.findByName("name")).thenReturn(
             Optional.of(Category.of("name").withId(1))
         );
