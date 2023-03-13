@@ -1,15 +1,12 @@
 package com.shop.unit.validators;
 
-import com.shop.models.Contact;
-import com.shop.repositories.ContactRepository;
-import com.shop.repositories.PersonRepository;
-import com.shop.validators.ContactValidator;
-import com.shop.validators.PersonValidator;
+import com.shop.models.AdminNumber;
+import com.shop.validators.AdminNumberValidator;
 import com.shop.validators.RegistrationValidator;
+import com.shop.validators.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
@@ -19,24 +16,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RegistrationValidatorTest {
     private RegistrationValidator registrationValidator;
-    private PersonValidator personValidator;
-    private ContactValidator contactValidator;
-
-    @Mock
-    private PersonRepository personRepository;
-    @Mock
-    private ContactRepository contactRepository;
+    private UserValidator userValidator;
+    private AdminNumberValidator adminNumberValidator;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        personValidator = new PersonValidator();
-        contactValidator = new ContactValidator();
+        userValidator = new UserValidator();
+        adminNumberValidator = new AdminNumberValidator();
 
         registrationValidator = new RegistrationValidator(
-            personValidator,
-            contactValidator
+            userValidator,
+            adminNumberValidator
         );
     }
 
@@ -44,15 +36,20 @@ public class RegistrationValidatorTest {
     @DisplayName("Registration data validated without exceptions")
     void registration_data_validated_without_exceptions() {
         assertDoesNotThrow(
-            () -> personValidator.validate("John", "Smith")
-        );
-
-        assertDoesNotThrow(
-            () -> contactValidator.validate(
+            () -> userValidator.validate(
+                "John",
+                "Smith",
                 "test@email.com",
                 "+380000000000",
                 "password",
                 List.of()
+            )
+        );
+
+        assertDoesNotThrow(
+            () -> adminNumberValidator.validate(
+                "12345678",
+                List.of(AdminNumber.of("12345678").withId(1))
             )
         );
 
@@ -63,7 +60,9 @@ public class RegistrationValidatorTest {
                 "test@email.com",
                 "+380000000000",
                 "password",
-                List.of()
+                "12345678",
+                List.of(),
+                List.of(AdminNumber.of("12345678").withId(1))
             )
         );
     }
