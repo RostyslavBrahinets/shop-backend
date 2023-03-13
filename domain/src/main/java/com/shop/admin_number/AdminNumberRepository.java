@@ -1,6 +1,6 @@
-package com.shop.repositories;
+package com.shop.admin_number;
 
-import com.shop.models.AdminNumber;
+import com.shop.admin_number.AdminNumber;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;

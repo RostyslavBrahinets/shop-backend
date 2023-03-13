@@ -1,4 +1,4 @@
-package com.shop.models;
+package com.shop.admin_number;
 
 import org.springframework.stereotype.Component;
 

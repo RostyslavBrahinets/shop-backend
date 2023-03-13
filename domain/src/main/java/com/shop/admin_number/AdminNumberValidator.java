@@ -1,8 +1,8 @@
-package com.shop.validators;
+package com.shop.admin_number;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.models.AdminNumber;
+import com.shop.admin_number.AdminNumber;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

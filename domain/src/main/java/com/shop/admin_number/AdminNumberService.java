@@ -1,7 +1,7 @@
-package com.shop.services;
+package com.shop.admin_number;
 
-import com.shop.models.AdminNumber;
-import com.shop.repositories.AdminNumberRepository;
+import com.shop.admin_number.AdminNumber;
+import com.shop.admin_number.AdminNumberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
