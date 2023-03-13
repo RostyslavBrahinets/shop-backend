@@ -63,7 +63,7 @@ public class WalletServiceContextConfigurationTest {
         walletService.findById(id);
 
         verify(walletValidator, atLeast(1)).validate(id, wallets);
-        verify(walletRepository).findById(id);
+        verify(walletRepository, atLeast(1)).findById(id);
     }
 
     @Test

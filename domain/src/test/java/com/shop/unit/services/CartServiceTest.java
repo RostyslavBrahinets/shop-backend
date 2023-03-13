@@ -47,21 +47,9 @@ class CartServiceTest {
     @Test
     @DisplayName("Cart was saved for with correct input")
     void cart_was_saved_with_correct_input() {
-        when(cartRepository.save(0, 1))
-            .thenReturn(Cart.of(0).withId(1));
-
         Cart savedCart = cartService.save(0, 1);
 
-        assertThat(savedCart).isEqualTo(new Cart(1, 0));
-    }
-
-    @Test
-    @DisplayName("Cart was not saved for with incorrect input")
-    void cart_was_not_saved_with_incorrect_input() {
-        when(cartRepository.save(0, 1))
-            .thenReturn(Cart.of(0).withId(1));
-
-        Cart savedCart = cartService.save(0, 1);
+        verify(cartRepository).save(0, 1);
 
         assertThat(savedCart).isEqualTo(new Cart(1, 0));
     }

@@ -39,10 +39,9 @@ class CategoryServiceTest {
     @Test
     @DisplayName("Category was saved for with correct input")
     void category_was_saved_with_correct_input() {
-        when(categoryRepository.save("name"))
-            .thenReturn(Category.of("name").withId(1));
-
         Category savedCategory = categoryService.save("name");
+
+        verify(categoryRepository).save("name");
 
         assertThat(savedCategory).isEqualTo(new Category(1, "name"));
     }

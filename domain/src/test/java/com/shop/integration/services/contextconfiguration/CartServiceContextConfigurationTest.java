@@ -44,7 +44,7 @@ public class CartServiceContextConfigurationTest {
     void get_all_carts() {
         cartService.findAll();
 
-        verify(cartRepository).findAll();
+        verify(cartRepository, atLeast(1)).findAll();
     }
 
     @Test

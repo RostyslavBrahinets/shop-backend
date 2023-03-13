@@ -47,10 +47,9 @@ class WalletServiceTest {
     @Test
     @DisplayName("Wallet was saved for with correct input")
     void wallet_was_saved_with_correct_input() {
-        when(walletRepository.save("123", 0, 1))
-            .thenReturn(Wallet.of("123", 0).withId(1));
-
         Wallet savedWallet = walletService.save("123", 0, 1);
+
+        verify(walletRepository).save("123", 0, 1);
 
         assertThat(savedWallet).isEqualTo(new Wallet(1, "123", 0));
     }

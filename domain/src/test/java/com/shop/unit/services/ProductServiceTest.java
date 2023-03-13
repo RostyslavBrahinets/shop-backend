@@ -43,24 +43,16 @@ class ProductServiceTest {
     @Test
     @DisplayName("Product was saved for with correct input")
     void product_was_saved_with_correct_input() {
-        when(productRepository.save(
-            "name",
+        Product savedProduct = productService.save("name",
             "describe",
             100,
             "123",
             true,
             new byte[]{1, 1, 1}
-        ))
-            .thenReturn(Product.of(
-                "name",
-                "describe",
-                100,
-                "123",
-                true,
-                new byte[]{1, 1, 1}
-            ).withId(1));
+        );
 
-        Product savedProduct = productService.save("name",
+        verify(productRepository).save(
+            "name",
             "describe",
             100,
             "123",
