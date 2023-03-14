@@ -2,7 +2,7 @@ package com.shop.mvc;
 
 import com.shop.cart.Cart;
 import com.shop.user.User;
-import com.shop.security.LoginPasswordAuthenticationProvider;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.cart.CartService;
 import com.shop.user.UserService;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @MockBeans({
     @MockBean(PasswordEncoder.class),
-    @MockBean(LoginPasswordAuthenticationProvider.class)
+    @MockBean(SignInPasswordAuthenticationProvider.class)
 })
 @WebMvcTest(CartViewController.class)
 class CartViewControllerTest {
@@ -38,12 +38,12 @@ class CartViewControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("Redirect guest from cart to login")
-    void redirect_guest_from_cart_to_login() throws Exception {
+    @DisplayName("Redirect guest from cart to sign in")
+    void redirect_guest_from_cart_to_sign_in() throws Exception {
         mockMvc.perform(get("/cart")
                 .with(anonymous()))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("http://localhost/login"));
+            .andExpect(redirectedUrl("http://localhost/sign-in"));
     }
 
     @Test

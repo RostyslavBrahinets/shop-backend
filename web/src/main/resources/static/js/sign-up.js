@@ -76,7 +76,7 @@ function signUp() {
                         nodeEmail.appendChild(document.createTextNode(message));
                     }
                 } else {
-                    window.location.href = '/login';
+                    window.location.href = '/sign-in';
                 }
             })
             .catch(error => console.log('Request failed', error));

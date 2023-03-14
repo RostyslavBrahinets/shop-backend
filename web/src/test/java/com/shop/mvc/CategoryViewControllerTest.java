@@ -1,6 +1,6 @@
 package com.shop.mvc;
 
-import com.shop.security.LoginPasswordAuthenticationProvider;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @MockBeans({
     @MockBean(PasswordEncoder.class),
-    @MockBean(LoginPasswordAuthenticationProvider.class)
+    @MockBean(SignInPasswordAuthenticationProvider.class)
 })
 @WebMvcTest(CategoryViewController.class)
 class CategoryViewControllerTest {

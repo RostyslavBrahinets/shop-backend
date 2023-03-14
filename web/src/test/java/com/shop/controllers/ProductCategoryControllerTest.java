@@ -1,7 +1,7 @@
 package com.shop.controllers;
 
 import com.shop.product.Product;
-import com.shop.security.LoginPasswordAuthenticationProvider;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.product_category.ProductCategoryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @MockBeans({
     @MockBean(PasswordEncoder.class),
-    @MockBean(LoginPasswordAuthenticationProvider.class)
+    @MockBean(SignInPasswordAuthenticationProvider.class)
 })
 @WebMvcTest(ProductCategoryController.class)
 class ProductCategoryControllerTest {

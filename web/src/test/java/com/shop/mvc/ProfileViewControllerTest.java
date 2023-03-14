@@ -1,7 +1,7 @@
 package com.shop.mvc;
 
 import com.shop.user.User;
-import com.shop.security.LoginPasswordAuthenticationProvider;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.user.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @MockBeans({
     @MockBean(PasswordEncoder.class),
-    @MockBean(LoginPasswordAuthenticationProvider.class)
+    @MockBean(SignInPasswordAuthenticationProvider.class)
 })
 @WebMvcTest(ProfileViewController.class)
 class ProfileViewControllerTest {
@@ -33,12 +33,12 @@ class ProfileViewControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("Redirect guest from profile to login")
-    void redirect_guest_from_profile_to_login() throws Exception {
+    @DisplayName("Redirect guest from profile to sign in")
+    void redirect_guest_from_profile_to_sign_in() throws Exception {
         mockMvc.perform(get("/profile")
                 .with(anonymous()))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("http://localhost/login"));
+            .andExpect(redirectedUrl("http://localhost/sign-in"));
     }
 
     @Test
@@ -90,12 +90,12 @@ class ProfileViewControllerTest {
     }
 
     @Test
-    @DisplayName("Redirect guest from update profile to login")
-    void redirect_guest_from_update_profile_to_login() throws Exception {
+    @DisplayName("Redirect guest from update profile to sign in")
+    void redirect_guest_from_update_profile_to_sign_in() throws Exception {
         mockMvc.perform(get("/profile/update")
                 .with(anonymous()))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("http://localhost/login"));
+            .andExpect(redirectedUrl("http://localhost/sign-in"));
     }
 
     @Test

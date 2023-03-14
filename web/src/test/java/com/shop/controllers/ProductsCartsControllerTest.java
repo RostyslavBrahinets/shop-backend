@@ -5,7 +5,7 @@ import com.shop.cart.Cart;
 import com.shop.user.User;
 import com.shop.product.Product;
 import com.shop.wallet.Wallet;
-import com.shop.security.LoginPasswordAuthenticationProvider;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.cart.CartService;
 import com.shop.user.UserService;
 import com.shop.products_carts.ProductsCartsService;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @MockBeans({
     @MockBean(PasswordEncoder.class),
-    @MockBean(LoginPasswordAuthenticationProvider.class),
+    @MockBean(SignInPasswordAuthenticationProvider.class),
     @MockBean(ReportDto.class)
 })
 @WebMvcTest(ProductsCartsController.class)

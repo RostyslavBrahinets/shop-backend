@@ -2,7 +2,7 @@ package com.shop.mvc;
 
 import com.shop.category.Category;
 import com.shop.user.User;
-import com.shop.security.LoginPasswordAuthenticationProvider;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.category.CategoryService;
 import com.shop.user.UserService;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @MockBeans({
     @MockBean(PasswordEncoder.class),
-    @MockBean(LoginPasswordAuthenticationProvider.class)
+    @MockBean(SignInPasswordAuthenticationProvider.class)
 })
 @WebMvcTest(AdminViewController.class)
 class AdminViewControllerTest {
@@ -40,42 +40,42 @@ class AdminViewControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("Redirect from admin/* to login for guest")
-    void redirect_from_admin_users_to_login_guest() throws Exception {
+    @DisplayName("Redirect from admin/* to sign in for guest")
+    void redirect_from_admin_users_to_sign_in_guest() throws Exception {
         mockMvc.perform(get("/admin/users")
                 .with(anonymous()))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("http://localhost/login"));
+            .andExpect(redirectedUrl("http://localhost/sign-in"));
 
         mockMvc.perform(get("/admin/users/1")
                 .with(anonymous()))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("http://localhost/login"));
+            .andExpect(redirectedUrl("http://localhost/sign-in"));
 
         mockMvc.perform(get("/admin/users/1/update-role")
                 .with(anonymous()))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("http://localhost/login"));
+            .andExpect(redirectedUrl("http://localhost/sign-in"));
 
         mockMvc.perform(get("/admin/products/add")
                 .with(anonymous()))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("http://localhost/login"));
+            .andExpect(redirectedUrl("http://localhost/sign-in"));
 
         mockMvc.perform(get("/admin/products/delete")
                 .with(anonymous()))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("http://localhost/login"));
+            .andExpect(redirectedUrl("http://localhost/sign-in"));
 
         mockMvc.perform(get("/admin/categories/add")
                 .with(anonymous()))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("http://localhost/login"));
+            .andExpect(redirectedUrl("http://localhost/sign-in"));
 
         mockMvc.perform(get("/admin/categories/delete")
                 .with(anonymous()))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("http://localhost/login"));
+            .andExpect(redirectedUrl("http://localhost/sign-in"));
     }
 
     @Test

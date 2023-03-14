@@ -3,7 +3,7 @@ package com.shop.mvc;
 import com.shop.exceptions.NotFoundException;
 import com.shop.user.User;
 import com.shop.wallet.Wallet;
-import com.shop.security.LoginPasswordAuthenticationProvider;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.user.UserService;
 import com.shop.wallet.WalletService;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @MockBeans({
     @MockBean(PasswordEncoder.class),
-    @MockBean(LoginPasswordAuthenticationProvider.class)
+    @MockBean(SignInPasswordAuthenticationProvider.class)
 })
 @WebMvcTest(WalletViewController.class)
 class WalletViewControllerTest {
@@ -39,12 +39,12 @@ class WalletViewControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("Redirect guest from wallet to login")
-    void redirect_guest_from_wallet_to_login() throws Exception {
+    @DisplayName("Redirect guest from wallet to sign in")
+    void redirect_guest_from_wallet_to_sign_in() throws Exception {
         mockMvc.perform(get("/wallet")
                 .with(anonymous()))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("http://localhost/login"));
+            .andExpect(redirectedUrl("http://localhost/sign-in"));
     }
 
     @Test

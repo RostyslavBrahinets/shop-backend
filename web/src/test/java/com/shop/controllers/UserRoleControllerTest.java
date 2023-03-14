@@ -2,7 +2,7 @@ package com.shop.controllers;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.role.Role;
-import com.shop.security.LoginPasswordAuthenticationProvider;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.user_role.UserRoleService;
 import com.shop.role.RoleService;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @MockBeans({
     @MockBean(PasswordEncoder.class),
-    @MockBean(LoginPasswordAuthenticationProvider.class),
+    @MockBean(SignInPasswordAuthenticationProvider.class),
     @MockBean(RoleService.class)
 })
 @WebMvcTest(UserRoleController.class)

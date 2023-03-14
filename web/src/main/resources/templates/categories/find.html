@@ -7,7 +7,7 @@
 <body>
 <h1>Products</h1>
 
-<form name="logout" th:action="@{/logout}" method="post">
+<form name="sign-out" th:action="@{/sign-out}" method="post">
     <div>
         <a th:href="@{/}">Main</a>
 
@@ -25,7 +25,7 @@
 
         <span th:if="${role == 'ROLE_USER' || role == 'ROLE_ADMIN'}">
             <a th:href="@{/profile}">Profile</a>
-            <button type="submit">Log Out</button>
+            <button type="submit">Sign Out</button>
         </span>
     </div>
 </form>

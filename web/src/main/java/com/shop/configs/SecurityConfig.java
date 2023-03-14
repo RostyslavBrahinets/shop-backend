@@ -1,6 +1,6 @@
 package com.shop.configs;
 
-import com.shop.security.LoginPasswordAuthenticationProvider;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,10 +20,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     void configureGlobal(
         AuthenticationManagerBuilder auth,
-        LoginPasswordAuthenticationProvider loginPasswordAuthenticationProvider
+        SignInPasswordAuthenticationProvider signInPasswordAuthenticationProvider
     ) throws Exception {
         auth
-            .authenticationProvider(loginPasswordAuthenticationProvider)
+            .authenticationProvider(signInPasswordAuthenticationProvider)
             .jdbcAuthentication()
             .passwordEncoder(passwordEncoder);
     }
@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated()
             .and()
             .formLogin()
-            .loginPage("/login")
+            .loginPage("/sign-in")
             .usernameParameter("email")
             .passwordParameter("password")
             .defaultSuccessUrl("/", true)
@@ -53,8 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .invalidateHttpSession(true)
             .clearAuthentication(true)
             .deleteCookies("JSESSIONID")
-            .logoutUrl("/logout")
-            .logoutSuccessUrl("/login?logout")
+            .logoutUrl("/sign-out")
+            .logoutSuccessUrl("/sign-in?sign-out")
             .permitAll();
     }
 }

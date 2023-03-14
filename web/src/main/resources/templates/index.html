@@ -8,12 +8,12 @@
 <h1>Shop</h1>
 
 <div th:if="${role == 'ROLE_GUEST'}">
-    <form name="login" th:action="@{/login}" method="get">
-        <button type="submit">Log In</button>
+    <form name="sign-in" th:action="@{/sign-in}" method="get">
+        <button type="submit">Sign In</button>
     </form>
 </div>
 
-<form name="logout" th:action="@{/logout}" method="post">
+<form name="sign-out" th:action="@{/sign-out}" method="post">
     <div>
         <span th:if="${role == 'ROLE_ADMIN'}">
             <a th:href="@{/admin/users}">Admin</a>
@@ -29,7 +29,7 @@
 
         <span th:if="${role == 'ROLE_USER' || role == 'ROLE_ADMIN'}">
             <a th:href="@{/profile}">Profile</a>
-            <button type="submit">Log Out</button>
+            <button type="submit">Sign Out</button>
         </span>
     </div>
 </form>

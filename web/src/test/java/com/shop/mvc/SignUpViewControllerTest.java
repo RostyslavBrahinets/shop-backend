@@ -1,7 +1,7 @@
 package com.shop.mvc;
 
 import com.shop.cart.CartService;
-import com.shop.security.LoginPasswordAuthenticationProvider;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.stripe.StripePayment;
 import com.shop.user.UserValidator;
 import com.shop.user_role.UserRoleService;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @MockBeans({
     @MockBean(PasswordEncoder.class),
-    @MockBean(LoginPasswordAuthenticationProvider.class),
+    @MockBean(SignInPasswordAuthenticationProvider.class),
     @MockBean(UserRoleService.class),
     @MockBean(CartService.class),
     @MockBean(UserValidator.class),

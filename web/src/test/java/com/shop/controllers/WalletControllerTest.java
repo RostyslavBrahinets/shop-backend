@@ -1,7 +1,7 @@
 package com.shop.controllers;
 
 import com.shop.wallet.Wallet;
-import com.shop.security.LoginPasswordAuthenticationProvider;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.wallet.WalletService;
 import com.shop.stripe.StripePayment;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @MockBeans({
     @MockBean(PasswordEncoder.class),
-    @MockBean(LoginPasswordAuthenticationProvider.class),
+    @MockBean(SignInPasswordAuthenticationProvider.class),
     @MockBean(StripePayment.class)
 })
 @WebMvcTest(WalletController.class)

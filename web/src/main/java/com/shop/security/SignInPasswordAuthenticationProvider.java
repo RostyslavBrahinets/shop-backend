@@ -17,12 +17,12 @@ import java.util.Objects;
 
 @Primary
 @Component
-public class LoginPasswordAuthenticationProvider implements AuthenticationProvider {
+public class SignInPasswordAuthenticationProvider implements AuthenticationProvider {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final Logger logger = LoggerFactory.getLogger(LoginPasswordAuthenticationProvider.class);
+    private final Logger logger = LoggerFactory.getLogger(SignInPasswordAuthenticationProvider.class);
 
-    public LoginPasswordAuthenticationProvider(
+    public SignInPasswordAuthenticationProvider(
         UserDetailsService userDetailsService,
         PasswordEncoder passwordEncoder
     ) {
