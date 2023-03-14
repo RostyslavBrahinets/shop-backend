@@ -1,9 +1,8 @@
-package com.shop.controllers;
+package com.shop.user_role;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.role.Role;
 import com.shop.security.SignInPasswordAuthenticationProvider;
-import com.shop.user_role.UserRoleService;
 import com.shop.role.RoleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.shop.controllers.UserRoleController.USER_ROLE_URL;
+import static com.shop.user_role.UserRoleController.USER_ROLE_URL;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

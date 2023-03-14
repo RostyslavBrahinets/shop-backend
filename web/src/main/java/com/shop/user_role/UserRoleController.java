@@ -1,8 +1,6 @@
-package com.shop.controllers;
+package com.shop.user_role;
 
-import com.shop.dto.RoleDto;
 import com.shop.role.Role;
-import com.shop.user_role.UserRoleService;
 import com.shop.role.RoleService;
 import org.springframework.web.bind.annotation.*;
 
