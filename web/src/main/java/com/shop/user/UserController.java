@@ -1,8 +1,5 @@
-package com.shop.controllers;
+package com.shop.user;
 
-import com.shop.dto.UserDto;
-import com.shop.user.User;
-import com.shop.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,8 +1,9 @@
-package com.shop.controllers;
+package com.shop.user;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.user.User;
 import com.shop.security.SignInPasswordAuthenticationProvider;
+import com.shop.user.UserController;
 import com.shop.user.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.shop.controllers.UserController.USERS_URL;
+import static com.shop.user.UserController.USERS_URL;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
