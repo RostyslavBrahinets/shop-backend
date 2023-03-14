@@ -1,4 +1,4 @@
-package com.shop.mvc;
+package com.shop.profile;
 
 import com.shop.user.User;
 import com.shop.user.UserService;

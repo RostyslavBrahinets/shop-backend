@@ -1,5 +1,6 @@
-package com.shop.mvc;
+package com.shop.profile;
 
+import com.shop.profile.ProfileViewController;
 import com.shop.user.User;
 import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.user.UserService;
