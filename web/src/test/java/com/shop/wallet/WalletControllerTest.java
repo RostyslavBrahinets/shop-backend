@@ -1,8 +1,6 @@
-package com.shop.controllers;
+package com.shop.wallet;
 
-import com.shop.wallet.Wallet;
 import com.shop.security.SignInPasswordAuthenticationProvider;
-import com.shop.wallet.WalletService;
 import com.shop.stripe.StripePayment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.shop.controllers.WalletController.WALLETS_URL;
+import static com.shop.wallet.WalletController.WALLETS_URL;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

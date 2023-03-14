@@ -1,7 +1,5 @@
-package com.shop.controllers;
+package com.shop.wallet;
 
-import com.shop.wallet.Wallet;
-import com.shop.wallet.WalletService;
 import com.shop.stripe.StripePayment;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;

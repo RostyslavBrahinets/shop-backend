@@ -1,11 +1,9 @@
-package com.shop.mvc;
+package com.shop.wallet;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.user.User;
-import com.shop.wallet.Wallet;
 import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.user.UserService;
-import com.shop.wallet.WalletService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
