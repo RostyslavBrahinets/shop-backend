@@ -1,4 +1,4 @@
-package com.shop.mvc;
+package com.shop.admin;
 
 import com.shop.category.Category;
 import com.shop.user.User;

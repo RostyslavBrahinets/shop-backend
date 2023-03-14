@@ -1,5 +1,6 @@
-package com.shop.mvc;
+package com.shop.admin;
 
+import com.shop.admin.AdminViewController;
 import com.shop.category.Category;
 import com.shop.user.User;
 import com.shop.security.SignInPasswordAuthenticationProvider;
