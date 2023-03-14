@@ -1,4 +1,4 @@
-package com.shop.dto;
+package com.shop.sign_up;
 
 import org.springframework.stereotype.Component;
 

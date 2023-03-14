@@ -1,7 +1,8 @@
-package com.shop.mvc;
+package com.shop.sign_up;
 
 import com.shop.cart.CartService;
 import com.shop.security.SignInPasswordAuthenticationProvider;
+import com.shop.sign_up.SignUpViewController;
 import com.shop.stripe.StripePayment;
 import com.shop.user.UserValidator;
 import com.shop.user_role.UserRoleService;

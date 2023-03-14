@@ -1,7 +1,5 @@
-package com.shop.controllers;
+package com.shop.sign_up;
 
-import com.shop.dto.SignUpDto;
-import com.shop.sign_up.SignUpService;
 import com.stripe.exception.StripeException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
