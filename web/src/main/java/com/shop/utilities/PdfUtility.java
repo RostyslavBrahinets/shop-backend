@@ -5,7 +5,7 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import com.shop.dto.ReportDto;
+import com.shop.report.ReportDto;
 import com.shop.product.Product;
 
 import javax.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package com.shop.dto;
+package com.shop.report;
 
 import com.shop.product.Product;
 import org.springframework.stereotype.Component;
