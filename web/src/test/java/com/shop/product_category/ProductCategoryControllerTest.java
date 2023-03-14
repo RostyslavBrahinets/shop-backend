@@ -1,6 +1,7 @@
-package com.shop.controllers;
+package com.shop.product_category;
 
 import com.shop.product.Product;
+import com.shop.product_category.ProductCategoryController;
 import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.product_category.ProductCategoryService;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.shop.controllers.ProductCategoryController.PRODUCT_CATEGORY_URL;
+import static com.shop.product_category.ProductCategoryController.PRODUCT_CATEGORY_URL;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

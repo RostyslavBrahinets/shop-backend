@@ -1,4 +1,4 @@
-package com.shop.dto;
+package com.shop.product_category;
 
 import org.springframework.stereotype.Component;
 

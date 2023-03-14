@@ -1,8 +1,6 @@
-package com.shop.controllers;
+package com.shop.product_category;
 
-import com.shop.dto.ProductCategoryDto;
 import com.shop.product.Product;
-import com.shop.product_category.ProductCategoryService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
