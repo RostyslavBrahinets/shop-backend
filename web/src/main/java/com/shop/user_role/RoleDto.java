@@ -1,4 +1,4 @@
-package com.shop.dto;
+package com.shop.user_role;
 
 import org.springframework.stereotype.Component;
 
