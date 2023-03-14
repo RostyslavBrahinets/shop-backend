@@ -1,7 +1,8 @@
-package com.shop.controllers;
+package com.shop.products_carts;
 
-import com.shop.dto.ReportDto;
+import com.shop.report.ReportDto;
 import com.shop.cart.Cart;
+import com.shop.products_carts.ProductsCartsController;
 import com.shop.user.User;
 import com.shop.product.Product;
 import com.shop.wallet.Wallet;
@@ -21,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.shop.controllers.ProductsCartsController.PRODUCTS_CARTS_URL;
+import static com.shop.products_carts.ProductsCartsController.PRODUCTS_CARTS_URL;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
