@@ -1,4 +1,4 @@
-package com.shop.mvc;
+package com.shop.category;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

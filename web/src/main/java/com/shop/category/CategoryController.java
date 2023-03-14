@@ -1,7 +1,5 @@
-package com.shop.controllers;
+package com.shop.category;
 
-import com.shop.category.Category;
-import com.shop.category.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

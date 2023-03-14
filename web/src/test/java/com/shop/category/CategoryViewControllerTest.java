@@ -1,5 +1,6 @@
-package com.shop.mvc;
+package com.shop.category;
 
+import com.shop.category.CategoryViewController;
 import com.shop.security.SignInPasswordAuthenticationProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

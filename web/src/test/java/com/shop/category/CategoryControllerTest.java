@@ -1,6 +1,7 @@
-package com.shop.controllers;
+package com.shop.category;
 
 import com.shop.category.Category;
+import com.shop.category.CategoryController;
 import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.category.CategoryService;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static com.shop.controllers.CategoryController.CATEGORIES_URL;
+import static com.shop.category.CategoryController.CATEGORIES_URL;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
