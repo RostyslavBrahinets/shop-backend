@@ -1,7 +1,5 @@
-package com.shop.controllers;
+package com.shop.cart;
 
-import com.shop.cart.Cart;
-import com.shop.cart.CartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

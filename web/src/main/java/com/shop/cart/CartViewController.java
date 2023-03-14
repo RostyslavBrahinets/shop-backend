@@ -1,4 +1,4 @@
-package com.shop.mvc;
+package com.shop.cart;
 
 import com.shop.cart.Cart;
 import com.shop.user.User;

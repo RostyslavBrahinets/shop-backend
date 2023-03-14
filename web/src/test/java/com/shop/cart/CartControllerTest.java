@@ -1,5 +1,6 @@
-package com.shop.controllers;
+package com.shop.cart;
 
+import com.shop.cart.CartController;
 import com.shop.exceptions.NotFoundException;
 import com.shop.cart.Cart;
 import com.shop.security.SignInPasswordAuthenticationProvider;
@@ -15,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.shop.controllers.CartController.CARTS_URL;
+import static com.shop.cart.CartController.CARTS_URL;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;

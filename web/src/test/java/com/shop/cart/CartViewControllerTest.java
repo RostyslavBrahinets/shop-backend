@@ -1,6 +1,7 @@
-package com.shop.mvc;
+package com.shop.cart;
 
 import com.shop.cart.Cart;
+import com.shop.cart.CartViewController;
 import com.shop.user.User;
 import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.cart.CartService;
