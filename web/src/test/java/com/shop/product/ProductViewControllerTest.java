@@ -1,6 +1,7 @@
-package com.shop.mvc;
+package com.shop.product;
 
 import com.shop.product.Product;
+import com.shop.product.ProductViewController;
 import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.product.ProductService;
 import org.junit.jupiter.api.DisplayName;

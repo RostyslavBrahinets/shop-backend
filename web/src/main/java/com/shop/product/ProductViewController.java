@@ -1,7 +1,5 @@
-package com.shop.mvc;
+package com.shop.product;
 
-import com.shop.product.Product;
-import com.shop.product.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;

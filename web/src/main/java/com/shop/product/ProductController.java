@@ -1,7 +1,5 @@
-package com.shop.controllers;
+package com.shop.product;
 
-import com.shop.product.Product;
-import com.shop.product.ProductService;
 import com.shop.utilities.ImageUtility;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.bind.annotation.*;
