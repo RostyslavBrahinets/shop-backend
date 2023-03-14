@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class RegistrationViewController {
-    @GetMapping("/registration")
-    public String registration(@AuthenticationPrincipal UserDetails userDetails) {
+public class SignUpViewController {
+    @GetMapping("/sign-up")
+    public String signUp(@AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails != null) {
             GrantedAuthority role = userDetails.getAuthorities().stream().toList().get(0);
             String authority = role.getAuthority();
@@ -21,6 +21,6 @@ public class RegistrationViewController {
             }
         }
 
-        return "registration";
+        return "sign-up";
     }
 }

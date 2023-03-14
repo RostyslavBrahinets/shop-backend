@@ -3,7 +3,7 @@ package com.shop.dto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RegistrationDto {
+public class SignUpDto {
     private String firstName;
     private String lastName;
     private String email;

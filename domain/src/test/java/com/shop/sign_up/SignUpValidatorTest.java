@@ -1,8 +1,7 @@
-package com.shop.registration;
+package com.shop.sign_up;
 
 import com.shop.admin_number.AdminNumber;
 import com.shop.admin_number.AdminNumberValidator;
-import com.shop.registration.RegistrationValidator;
 import com.shop.user.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,8 +13,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RegistrationValidatorTest {
-    private RegistrationValidator registrationValidator;
+public class SignUpValidatorTest {
+    private SignUpValidator signUpValidator;
     private UserValidator userValidator;
     private AdminNumberValidator adminNumberValidator;
 
@@ -26,15 +25,15 @@ public class RegistrationValidatorTest {
         userValidator = new UserValidator();
         adminNumberValidator = new AdminNumberValidator();
 
-        registrationValidator = new RegistrationValidator(
+        signUpValidator = new SignUpValidator(
             userValidator,
             adminNumberValidator
         );
     }
 
     @Test
-    @DisplayName("Registration data validated without exceptions")
-    void registration_data_validated_without_exceptions() {
+    @DisplayName("Sign up data validated without exceptions")
+    void sign_up_data_validated_without_exceptions() {
         assertDoesNotThrow(
             () -> userValidator.validate(
                 "John",
@@ -54,7 +53,7 @@ public class RegistrationValidatorTest {
         );
 
         assertTrue(
-            () -> registrationValidator.isValidData(
+            () -> signUpValidator.isValidData(
                 "John",
                 "Smith",
                 "test@email.com",

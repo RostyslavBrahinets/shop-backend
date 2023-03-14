@@ -1,4 +1,4 @@
-package com.shop.registration;
+package com.shop.sign_up;
 
 import com.shop.admin_number.AdminNumber;
 import com.shop.admin_number.AdminNumberService;
@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RegistrationService {
-    private final RegistrationValidator registrationValidator;
+public class SignUpService {
+    private final SignUpValidator signUpValidator;
     private final UserService userService;
     private final AdminNumberService adminNumberService;
     private final UserRoleService userRoleService;
@@ -26,8 +26,8 @@ public class RegistrationService {
     private final WalletService walletService;
     private final StripePayment stripePayment;
 
-    public RegistrationService(
-        RegistrationValidator registrationValidator,
+    public SignUpService(
+        SignUpValidator signUpValidator,
         UserService userService,
         AdminNumberService adminNumberService,
         UserRoleService userRoleService,
@@ -35,7 +35,7 @@ public class RegistrationService {
         WalletService walletService,
         StripePayment stripePayment
     ) {
-        this.registrationValidator = registrationValidator;
+        this.signUpValidator = signUpValidator;
         this.userService = userService;
         this.adminNumberService = adminNumberService;
         this.userRoleService = userRoleService;
@@ -44,7 +44,7 @@ public class RegistrationService {
         this.stripePayment = stripePayment;
     }
 
-    public void registration(
+    public void signUp(
         String firstName,
         String lastName,
         String email,
@@ -52,7 +52,7 @@ public class RegistrationService {
         String password,
         String adminNumber
     ) throws StripeException {
-        boolean validData = registrationValidator.isValidData(
+        boolean validData = signUpValidator.isValidData(
             firstName,
             lastName,
             email,

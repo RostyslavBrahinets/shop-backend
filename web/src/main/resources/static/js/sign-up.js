@@ -1,4 +1,4 @@
-function registration() {
+function signUp() {
     const firstName = document.querySelector('#firstName').value;
     const lastName = document.querySelector('#lastName').value;
     const email = document.querySelector('#email').value;
@@ -44,7 +44,7 @@ function registration() {
         message = document.createTextNode('Confirm Password Don\'t Equals Password');
         nodeConfirmPassword.appendChild(message);
     } else {
-        const bodyRegistration = {
+        const bodySignUp = {
             'firstName': firstName,
             'lastName': lastName,
             'email': email,
@@ -54,14 +54,14 @@ function registration() {
 
         const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 
-        fetch(`http://localhost:8080/web-api/registration`, {
+        fetch(`http://localhost:8080/web-api/sign-up`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'X-XSRF-TOKEN': csrfToken
             },
-            body: JSON.stringify(bodyRegistration)
+            body: JSON.stringify(bodySignUp)
         })
             .then(response => response.text())
             .then(data => {

@@ -1,4 +1,4 @@
-package com.shop.registration;
+package com.shop.sign_up;
 
 import com.shop.admin_number.AdminNumber;
 import com.shop.admin_number.AdminNumberService;
@@ -26,19 +26,19 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
     classes = {
-        RegistrationService.class,
-        RegistrationServiceContextConfigurationTest.TestContextConfig.class
+        SignUpService.class,
+        SignUpServiceContextConfigurationTest.TestContextConfig.class
     }
 )
-public class RegistrationServiceContextConfigurationTest {
+public class SignUpServiceContextConfigurationTest {
     @Autowired
-    private RegistrationService registrationService;
+    private SignUpService signUpService;
     @Autowired
-    private RegistrationValidator registrationValidator;
+    private SignUpValidator signUpValidator;
 
     @Test
-    @DisplayName("Registration")
-    void registration() throws StripeException {
+    @DisplayName("Sign Up")
+    void signUp() throws StripeException {
         String firstName = "John";
         String lastName = "Smith";
         String email = "test@email.com";
@@ -48,7 +48,7 @@ public class RegistrationServiceContextConfigurationTest {
         List<User> users = List.of();
         List<AdminNumber> adminNumbers = List.of();
 
-        registrationService.registration(
+        signUpService.signUp(
             firstName,
             lastName,
             email,
@@ -57,7 +57,7 @@ public class RegistrationServiceContextConfigurationTest {
             adminNumber
         );
 
-        verify(registrationValidator).isValidData(
+        verify(signUpValidator).isValidData(
             firstName,
             lastName,
             email,
@@ -72,8 +72,8 @@ public class RegistrationServiceContextConfigurationTest {
     @TestConfiguration
     static class TestContextConfig {
         @Bean
-        public RegistrationValidator registrationValidator() {
-            return mock(RegistrationValidator.class);
+        public SignUpValidator signUpValidator() {
+            return mock(SignUpValidator.class);
         }
 
         @Bean

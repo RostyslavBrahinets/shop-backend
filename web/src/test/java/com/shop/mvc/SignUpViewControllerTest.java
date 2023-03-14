@@ -28,34 +28,34 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @MockBean(UserValidator.class),
     @MockBean(StripePayment.class)
 })
-@WebMvcTest(RegistrationViewController.class)
-class RegistrationViewControllerTest {
+@WebMvcTest(SignUpViewController.class)
+class SignUpViewControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("Show registration page for guest")
-    void show_registration_page_for_guest() throws Exception {
-        mockMvc.perform(get("/registration")
+    @DisplayName("Show sign up page for guest")
+    void show_sign_up_page_for_guest() throws Exception {
+        mockMvc.perform(get("/sign-up")
                 .with(anonymous()))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(TEXT_HTML))
-            .andExpect(view().name("registration"));
+            .andExpect(view().name("sign-up"));
     }
 
     @Test
-    @DisplayName("Redirect from registration page to main page for user")
-    void redirect_from_registration_page_to_main_page_for_user() throws Exception {
-        mockMvc.perform(get("/registration")
+    @DisplayName("Redirect from sign up page to main page for user")
+    void redirect_from_sign_up_page_to_main_page_for_user() throws Exception {
+        mockMvc.perform(get("/sign-up")
                 .with(user("test@email.com").password("user").roles("USER")))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/"));
     }
 
     @Test
-    @DisplayName("Redirect from registration page to main page for admin")
-    void redirect_from_registration_page_to_main_page_for_admin() throws Exception {
-        mockMvc.perform(get("/registration")
+    @DisplayName("Redirect from sign up page to main page for admin")
+    void redirect_from_sign_up_page_to_main_page_for_admin() throws Exception {
+        mockMvc.perform(get("/sign-up")
                 .with(user("admin").password("admin").roles("ADMIN")))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/"));

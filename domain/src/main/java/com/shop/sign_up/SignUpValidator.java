@@ -1,4 +1,4 @@
-package com.shop.registration;
+package com.shop.sign_up;
 
 import com.shop.admin_number.AdminNumberValidator;
 import com.shop.exceptions.ValidationException;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class RegistrationValidator {
+public class SignUpValidator {
     private final UserValidator userValidator;
     private final AdminNumberValidator adminNumberValidator;
 
-    public RegistrationValidator(
+    public SignUpValidator(
         UserValidator userValidator,
         AdminNumberValidator adminNumberValidator
     ) {
