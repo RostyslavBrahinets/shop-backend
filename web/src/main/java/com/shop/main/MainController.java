@@ -1,4 +1,4 @@
-package com.shop.controllers;
+package com.shop.main;
 
 import com.shop.product.Product;
 import com.shop.product.ProductService;

@@ -1,5 +1,6 @@
-package com.shop.controllers;
+package com.shop.main;
 
+import com.shop.main.MainController;
 import com.shop.product.Product;
 import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.product.ProductService;
