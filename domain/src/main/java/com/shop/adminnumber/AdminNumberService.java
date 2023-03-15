@@ -8,9 +8,14 @@ import java.util.Optional;
 @Service
 public class AdminNumberService {
     private final AdminNumberRepository adminNumberRepository;
+    private final AdminNumberValidator adminNumberValidator;
 
-    public AdminNumberService(AdminNumberRepository adminNumberRepository) {
+    public AdminNumberService(
+        AdminNumberRepository adminNumberRepository,
+        AdminNumberValidator adminNumberValidator
+    ) {
         this.adminNumberRepository = adminNumberRepository;
+        this.adminNumberValidator = adminNumberValidator;
     }
 
     public List<AdminNumber> findAll() {
@@ -18,6 +23,7 @@ public class AdminNumberService {
     }
 
     public AdminNumber findByNumber(String number) {
+        adminNumberValidator.validate(number, adminNumberRepository.findAll());
         Optional<AdminNumber> adminNumber = adminNumberRepository.findByNumber(number);
         return adminNumber.orElseGet(AdminNumber::new);
     }
