@@ -47,4 +47,11 @@ public class AdminNumberRepository {
             Map.ofEntries(Map.entry("number", number))
         );
     }
+
+    public void delete(String number) {
+        jdbcTemplate.update(
+            "DELETE FROM admin_number WHERE number=:number",
+            Map.ofEntries(Map.entry("number", number))
+        );
+    }
 }
