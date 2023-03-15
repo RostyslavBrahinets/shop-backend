@@ -1,10 +1,8 @@
 package com.shop.wallet;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.admin_number.AdminNumberRepository;
+import com.shop.adminnumber.AdminNumberRepository;
 import com.shop.user.UserRepository;
-import com.shop.wallet.WalletRepository;
-import com.shop.wallet.Wallet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +28,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/admin_number/V20220421160504__Create_table_admin_number.sql",
+    "classpath:db/migration/adminnumber/V20220421160504__Create_table_admin_number.sql",
     "classpath:db/migration/user/V20220421161642__Create_table_user.sql",
     "classpath:db/migration/wallet/V20220421162043__Create_table_wallet.sql"
 })

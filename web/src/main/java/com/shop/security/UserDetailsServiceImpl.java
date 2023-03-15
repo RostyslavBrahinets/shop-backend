@@ -1,7 +1,7 @@
 package com.shop.security;
 
 import com.shop.role.Role;
-import com.shop.user_role.UserRoleService;
+import com.shop.userrole.UserRoleService;
 import com.shop.user.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

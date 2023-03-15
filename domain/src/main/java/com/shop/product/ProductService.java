@@ -1,7 +1,7 @@
 package com.shop.product;
 
 import com.shop.category.Category;
-import com.shop.product_category.ProductCategoryRepository;
+import com.shop.productcategory.ProductCategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

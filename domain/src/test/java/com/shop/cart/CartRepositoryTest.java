@@ -1,10 +1,8 @@
 package com.shop.cart;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.admin_number.AdminNumberRepository;
-import com.shop.cart.CartRepository;
+import com.shop.adminnumber.AdminNumberRepository;
 import com.shop.user.UserRepository;
-import com.shop.cart.Cart;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +28,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/admin_number/V20220421160504__Create_table_admin_number.sql",
+    "classpath:db/migration/adminnumber/V20220421160504__Create_table_admin_number.sql",
     "classpath:db/migration/user/V20220421161642__Create_table_user.sql",
     "classpath:db/migration/cart/V20220421161946__Create_table_cart.sql"
 })

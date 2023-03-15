@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/admin_number/V20220421160504__Create_table_admin_number.sql",
+        "classpath:db/migration/adminnumber/V20220421160504__Create_table_admin_number.sql",
     "classpath:db/migration/user/V20220421161642__Create_table_user.sql",
     "classpath:db/migration/wallet/V20220421162043__Create_table_wallet.sql"
 })
