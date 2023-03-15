@@ -23,6 +23,15 @@ public class AdminNumberRepository {
         );
     }
 
+    public Optional<AdminNumber> findById(long id) {
+        return jdbcTemplate.query(
+                "SELECT * FROM admin_number WHERE id=:id",
+                Map.ofEntries(Map.entry("id", id)),
+                new BeanPropertyRowMapper<>(AdminNumber.class)
+            )
+            .stream().findAny();
+    }
+
     public Optional<AdminNumber> findByNumber(String number) {
         return jdbcTemplate.query(
                 "SELECT * FROM admin_number WHERE number=:number",
