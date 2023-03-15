@@ -33,4 +33,10 @@ public class AdminNumberService {
         Optional<AdminNumber> adminNumber = adminNumberRepository.findByNumber(number);
         return adminNumber.orElseGet(AdminNumber::new);
     }
+
+    public AdminNumber save(String number) {
+        adminNumberValidator.validateAdminNumber(number);
+        adminNumberRepository.save(number);
+        return AdminNumber.of(number).withId(adminNumberRepository.findAll().size() + 1);
+    }
 }
