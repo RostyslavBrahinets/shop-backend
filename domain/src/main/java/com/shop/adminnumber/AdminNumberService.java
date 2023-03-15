@@ -39,4 +39,9 @@ public class AdminNumberService {
         adminNumberRepository.save(number);
         return AdminNumber.of(number).withId(adminNumberRepository.findAll().size() + 1);
     }
+
+    public void delete(String number) {
+        adminNumberValidator.validate(number, adminNumberRepository.findAll());
+        adminNumberRepository.delete(number);
+    }
 }
