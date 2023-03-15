@@ -22,6 +22,12 @@ public class AdminNumberService {
         return adminNumberRepository.findAll();
     }
 
+    public AdminNumber findById(long id) {
+        adminNumberValidator.validate(id, adminNumberRepository.findAll());
+        Optional<AdminNumber> adminNumber = adminNumberRepository.findById(id);
+        return adminNumber.orElseGet(AdminNumber::new);
+    }
+
     public AdminNumber findByNumber(String number) {
         adminNumberValidator.validate(number, adminNumberRepository.findAll());
         Optional<AdminNumber> adminNumber = adminNumberRepository.findByNumber(number);
