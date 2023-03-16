@@ -1,7 +1,5 @@
 package com.shop.user;
 
-import com.shop.cart.Cart;
-import com.shop.wallet.Wallet;
 import org.springframework.stereotype.Component;
 
 import java.io.Serial;
@@ -19,8 +17,6 @@ public class User implements Serializable {
     private String phone;
     private String password;
     private long adminNumberId;
-    private Cart cart;
-    private Wallet wallet;
 
     public User() {
     }
@@ -151,22 +147,6 @@ public class User implements Serializable {
         this.adminNumberId = adminNumberId;
     }
 
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
-    public Wallet getWallet() {
-        return wallet;
-    }
-
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -190,9 +170,7 @@ public class User implements Serializable {
             email,
             phone,
             password,
-            adminNumberId,
-            cart,
-            wallet
+            adminNumberId
         );
     }
 
