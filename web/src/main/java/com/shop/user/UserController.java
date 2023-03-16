@@ -45,8 +45,8 @@ public class UserController {
         @RequestBody UserDto user
     ) {
         User updatedUser = new User();
-        updatedUser.setFirstName(user.getFirstName());
-        updatedUser.setLastName(user.getLastName());
+        updatedUser.setFirstName(user.firstName());
+        updatedUser.setLastName(user.lastName());
         return userService.update(id, updatedUser.getFirstName(), updatedUser.getLastName());
     }
 
