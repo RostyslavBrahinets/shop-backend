@@ -139,23 +139,16 @@ public class Product implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Product product = (Product) o;
-        return id == product.id
-            && price == product.price
-            && inStock == product.inStock
-            && Objects.equals(name, product.name)
-            && Objects.equals(describe, product.describe)
-            && Objects.equals(barcode, product.barcode)
-            && category == product.category
-            && Arrays.equals(image, product.image);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product that = (Product) o;
+        return Objects.equals(id, that.id)
+            && price == that.price
+            && inStock == that.inStock
+            && Objects.equals(name, that.name)
+            && Objects.equals(describe, that.describe)
+            && Objects.equals(barcode, that.barcode)
+            && Arrays.equals(image, that.image);
     }
 
     @Override

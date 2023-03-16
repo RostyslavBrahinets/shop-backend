@@ -64,18 +64,12 @@ public class Cart implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Cart cart = (Cart) o;
-        return id == cart.id
-            && totalCost == cart.totalCost
-            && Objects.equals(products, cart.products);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cart that = (Cart) o;
+        return Objects.equals(id, that.id)
+            && Objects.equals(totalCost, that.totalCost)
+            && Objects.equals(products, that.products);
     }
 
     @Override

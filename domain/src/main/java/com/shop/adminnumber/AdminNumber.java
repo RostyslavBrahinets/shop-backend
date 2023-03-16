@@ -47,17 +47,11 @@ public class AdminNumber implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        AdminNumber adminNumber = (AdminNumber) o;
-        return id == adminNumber.id
-            && Objects.equals(number, adminNumber.number);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AdminNumber that = (AdminNumber) o;
+        return Objects.equals(id, that.id)
+            && Objects.equals(number, that.number);
     }
 
     @Override

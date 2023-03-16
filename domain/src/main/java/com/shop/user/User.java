@@ -169,24 +169,16 @@ public class User implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        User user = (User) o;
-        return id == user.id
-            && Objects.equals(firstName, user.firstName)
-            && Objects.equals(lastName, user.lastName)
-            && Objects.equals(email, user.email)
-            && Objects.equals(phone, user.phone)
-            && Objects.equals(password, user.password)
-            && adminNumberId == user.adminNumberId
-            && Objects.equals(cart, user.cart)
-            && Objects.equals(wallet, user.wallet);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User that = (User) o;
+        return Objects.equals(id, that.id)
+            && Objects.equals(firstName, that.firstName)
+            && Objects.equals(lastName, that.lastName)
+            && Objects.equals(email, that.email)
+            && Objects.equals(phone, that.phone)
+            && Objects.equals(password, that.password)
+            && adminNumberId == that.adminNumberId;
     }
 
     @Override

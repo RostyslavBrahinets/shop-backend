@@ -64,18 +64,12 @@ public class Wallet implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Wallet wallet = (Wallet) o;
-        return id == wallet.id
-            && Double.compare(amountOfMoney, wallet.amountOfMoney) == 0
-            && Objects.equals(number, wallet.number);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Wallet that = (Wallet) o;
+        return Objects.equals(id, that.id)
+            && amountOfMoney == that.amountOfMoney
+            && Objects.equals(number, that.number);
     }
 
     @Override
