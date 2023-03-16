@@ -40,9 +40,7 @@ public class User implements Serializable {
         String password,
         long adminNumberId
     ) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this(id, firstName, lastName);
         this.email = email;
         this.phone = phone;
         this.password = password;
