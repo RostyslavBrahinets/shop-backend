@@ -31,7 +31,7 @@ public class UserRoleController {
         @PathVariable long id,
         @RequestBody RoleDto roleDto
     ) {
-        Role role = roleService.findByName(roleDto.getRole());
+        Role role = roleService.findByName(roleDto.role());
         userRoleService.updateRoleForUser(id, role.getId());
         return "Role Successfully Changed";
     }
