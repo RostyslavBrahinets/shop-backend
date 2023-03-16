@@ -1,7 +1,6 @@
 package com.shop.cart;
 
 import com.shop.product.Product;
-import org.springframework.stereotype.Component;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Component
 public class Cart implements Serializable {
     @Serial
     private static final long serialVersionUID = 4L;

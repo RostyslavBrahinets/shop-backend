@@ -1,12 +1,9 @@
 package com.shop.adminnumber;
 
-import org.springframework.stereotype.Component;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Component
 public class AdminNumber implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

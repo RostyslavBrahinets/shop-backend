@@ -1,12 +1,9 @@
 package com.shop.category;
 
-import org.springframework.stereotype.Component;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Component
 public class Category implements Serializable {
     @Serial
     private static final long serialVersionUID = 7L;

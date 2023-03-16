@@ -1,12 +1,9 @@
 package com.shop.wallet;
 
-import org.springframework.stereotype.Component;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Component
 public class Wallet implements Serializable {
     @Serial
     private static final long serialVersionUID = 3L;

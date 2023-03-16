@@ -1,13 +1,10 @@
 package com.shop.product;
 
-import org.springframework.stereotype.Component;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
-@Component
 public class Product implements Serializable {
     @Serial
     private static final long serialVersionUID = 5L;
