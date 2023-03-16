@@ -1,12 +1,10 @@
 package com.shop.report;
 
 import com.shop.product.Product;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class ReportDto {
     private List<Product> products;
     private double totalCost;
