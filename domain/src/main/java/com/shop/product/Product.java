@@ -1,6 +1,5 @@
 package com.shop.product;
 
-import com.shop.category.Category;
 import org.springframework.stereotype.Component;
 
 import java.io.Serial;
@@ -17,7 +16,6 @@ public class Product implements Serializable {
     private String describe;
     private double price;
     private String barcode;
-    private Category category;
     private boolean inStock;
     private byte[] image;
 
@@ -113,14 +111,6 @@ public class Product implements Serializable {
         this.barcode = barcode;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
     public boolean isInStock() {
         return inStock;
     }
@@ -153,7 +143,7 @@ public class Product implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, name, describe, barcode, price, category, inStock);
+        int result = Objects.hash(id, name, describe, price, barcode, inStock);
         result = 31 * result + Arrays.hashCode(image);
         return result;
     }
