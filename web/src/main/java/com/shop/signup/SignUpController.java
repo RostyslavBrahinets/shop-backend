@@ -21,12 +21,12 @@ public class SignUpController {
         @RequestBody SignUpDto signUpDto
     ) throws StripeException {
         signUpService.signUp(
-            signUpDto.getFirstName(),
-            signUpDto.getLastName(),
-            signUpDto.getEmail(),
-            signUpDto.getPhone(),
-            signUpDto.getPassword(),
-            signUpDto.getAdminNumber()
+            signUpDto.firstName(),
+            signUpDto.lastName(),
+            signUpDto.email(),
+            signUpDto.phone(),
+            signUpDto.password(),
+            signUpDto.adminNumber()
         );
 
         return "Successful Sign Up";
