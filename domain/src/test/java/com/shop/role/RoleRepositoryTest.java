@@ -1,8 +1,6 @@
 package com.shop.role;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.role.RoleRepository;
-import com.shop.role.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
