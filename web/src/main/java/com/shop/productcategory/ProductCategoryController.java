@@ -25,8 +25,8 @@ public class ProductCategoryController {
         @RequestBody ProductCategoryDto productCategoryDto
     ) {
         productCategoryService.saveProductToCategory(
-            productCategoryDto.getBarcode(),
-            productCategoryDto.getCategory()
+            productCategoryDto.barcode(),
+            productCategoryDto.category()
         );
     }
 }
