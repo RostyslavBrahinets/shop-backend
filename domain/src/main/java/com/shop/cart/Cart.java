@@ -14,6 +14,7 @@ public class Cart implements Serializable {
     private long id;
     private List<Product> products;
     private double totalCost;
+    private long userId;
 
     public Cart() {
         this.products = new ArrayList<>();
@@ -21,19 +22,21 @@ public class Cart implements Serializable {
 
     public Cart(
         long id,
-        double totalCost
+        double totalCost,
+        long userId
     ) {
         this.id = id;
-        this.products = new ArrayList<>();
         this.totalCost = totalCost;
+        this.products = new ArrayList<>();
+        this.userId = userId;
     }
 
-    public static Cart of(double totalCost) {
-        return new Cart(0, totalCost);
+    public static Cart of(double totalCost, long userId) {
+        return new Cart(0, totalCost, userId);
     }
 
     public Cart withId(long id) {
-        return new Cart(id, this.totalCost);
+        return new Cart(id, this.totalCost, this.userId);
     }
 
     public long getId() {
@@ -60,6 +63,14 @@ public class Cart implements Serializable {
         this.totalCost = totalCost;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,12 +78,13 @@ public class Cart implements Serializable {
         Cart that = (Cart) o;
         return Objects.equals(id, that.id)
             && Objects.equals(totalCost, that.totalCost)
-            && Objects.equals(products, that.products);
+            && Objects.equals(products, that.products)
+            && Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, products, totalCost);
+        return Objects.hash(id, products, totalCost, userId);
     }
 
     @Override
