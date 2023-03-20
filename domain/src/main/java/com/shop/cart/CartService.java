@@ -42,22 +42,22 @@ public class CartService {
         return cart.orElseGet(Cart::new);
     }
 
-    public Cart save(double totalCost, long userId) {
-        cartValidator.validate(totalCost);
-        userValidator.validate(userId, userService.findAll());
-        cartRepository.save(totalCost, userId);
-        return Cart.of(totalCost).withId(cartRepository.findAll().size() + 1);
+    public Cart save(Cart cart) {
+        cartValidator.validate(cart.getTotalCost());
+        userValidator.validate(cart.getUserId(), userService.findAll());
+        cartRepository.save(cart.getTotalCost(), cart.getUserId());
+        return Cart.of(cart.getTotalCost(), 0).withId(cartRepository.findAll().size() + 1);
     }
 
-    public Cart update(long id, double totalCost) {
-        cartValidator.validate(id);
-        cartValidator.validate(totalCost);
-        cartRepository.update(id, totalCost);
-        return Cart.of(totalCost).withId(id);
+    public Cart update(Cart cart) {
+        cartValidator.validate(cart.getId());
+        cartValidator.validate(cart.getTotalCost());
+        cartRepository.update(cart.getId(), cart.getTotalCost());
+        return Cart.of(cart.getTotalCost(), 0).withId(cart.getId());
     }
 
-    public void delete(long id) {
-        cartValidator.validate(id);
-        cartRepository.delete(id);
+    public void delete(Cart cart) {
+        cartValidator.validate(cart.getId());
+        cartRepository.delete(cart.getId());
     }
 }

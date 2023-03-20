@@ -26,16 +26,13 @@ public class CartController {
     }
 
     @PostMapping
-    public Cart saveCart(
-        @RequestBody Cart cart,
-        @RequestBody long userId
-    ) {
-        return cartService.save(cart.getTotalCost(), userId);
+    public Cart saveCart(@RequestBody Cart cart) {
+        return cartService.save(cart);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCart(@PathVariable long id) {
-        cartService.delete(id);
+        cartService.delete(Cart.of(0, 0).withId(id));
     }
 }

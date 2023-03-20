@@ -76,7 +76,7 @@ public class SignUpService {
             );
 
             userRoleService.saveRoleForUser(findUserId(), 2);
-            cartService.save(0, findUserId());
+            cartService.save(Cart.of(0, findUserId()));
             saveWalletForUser(findUserId());
         }
     }

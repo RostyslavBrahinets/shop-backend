@@ -47,7 +47,7 @@ class CartServiceTest {
     @Test
     @DisplayName("Cart was saved for with correct input")
     void cart_was_saved_with_correct_input() {
-        Cart savedCart = cartService.save(0, 1);
+        Cart savedCart = cartService.save(Cart.of(0, 1));
 
         verify(cartRepository).save(0, 1);
 
@@ -105,7 +105,7 @@ class CartServiceTest {
     @Test
     @DisplayName("Cart was deleted")
     void cart_was_deleted() {
-        cartService.delete(1);
+        cartService.delete(Cart.of(0, 0).withId(1));
         verify(cartRepository).delete(1);
     }
 }
