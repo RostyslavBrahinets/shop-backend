@@ -63,6 +63,10 @@ public class ProductService {
         return product;
     }
 
+    public Product update(Product product) {
+        return new Product();
+    }
+
     public void delete(Product product) {
         productValidator.validate(product.getBarcode(), productRepository.findAll());
 
