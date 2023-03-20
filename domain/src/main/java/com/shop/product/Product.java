@@ -56,6 +56,18 @@ public class Product implements Serializable {
         );
     }
 
+    public static Product of(String barcode) {
+        return new Product(
+            0,
+            null,
+            null,
+            0,
+            barcode,
+            false,
+            null
+        );
+    }
+
     public Product withId(long id) {
         return new Product(
             id,
