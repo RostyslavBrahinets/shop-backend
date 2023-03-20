@@ -43,33 +43,31 @@ public class WalletService {
         return wallet.orElseGet(Wallet::new);
     }
 
-    public Wallet save(
-        String number,
-        double amountOfMoney,
-        long userId
-    ) {
-        walletValidator.validate(number, amountOfMoney);
-        userValidator.validate(userId, userService.findAll());
-        walletRepository.save(number, amountOfMoney, userId);
-        return Wallet.of(number, amountOfMoney).withId(walletRepository.findAll().size() + 1);
+    public Wallet save(Wallet wallet) {
+        walletValidator.validate(wallet.getNumber(), wallet.getAmountOfMoney());
+        userValidator.validate(wallet.getUserId(), userService.findAll());
+        walletRepository.save(wallet.getNumber(), wallet.getAmountOfMoney(), wallet.getUserId());
+        wallet.setId(walletRepository.findAll().size() + 1);
+        return wallet;
     }
 
-    public Wallet update(long id, double amountOfMoney) {
-        walletValidator.validate(id, walletRepository.findAll());
-        walletValidator.validateAmountOfMoney(amountOfMoney);
-        walletRepository.update(id, amountOfMoney);
+    public Wallet update(Wallet wallet) {
+        walletValidator.validate(wallet.getId(), walletRepository.findAll());
+        walletValidator.validateAmountOfMoney(wallet.getAmountOfMoney());
+        walletRepository.update(wallet.getId(), wallet.getAmountOfMoney());
 
-        Optional<Wallet> wallet = walletRepository.findById(id);
+        Optional<Wallet> walletOptional = walletRepository.findById(wallet.getId());
         String number = "";
-        if (wallet.isPresent()) {
-            number = wallet.get().getNumber();
+        if (walletOptional.isPresent()) {
+            number = walletOptional.get().getNumber();
         }
+        wallet.setNumber(number);
 
-        return Wallet.of(number, amountOfMoney).withId(id);
+        return wallet;
     }
 
-    public void delete(long id) {
-        walletValidator.validate(id, walletRepository.findAll());
-        walletRepository.delete(id);
+    public void delete(Wallet wallet) {
+        walletValidator.validate(wallet.getId(), walletRepository.findAll());
+        walletRepository.delete(wallet.getId());
     }
 }

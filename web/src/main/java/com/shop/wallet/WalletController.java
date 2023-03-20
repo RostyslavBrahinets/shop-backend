@@ -43,7 +43,14 @@ public class WalletController {
             );
 
             wallet.setAmountOfMoney(amountOfMoney);
-            updatedWallet = walletService.update(wallet.getId(), wallet.getAmountOfMoney());
+            updatedWallet = walletService.update(
+                Wallet.of(
+                        wallet.getNumber(),
+                        wallet.getAmountOfMoney(),
+                        wallet.getUserId()
+                    )
+                    .withId(wallet.getId())
+            );
         }
 
         return updatedWallet;
@@ -51,15 +58,20 @@ public class WalletController {
 
     @PostMapping
     public Wallet saveWallet(
-        @RequestBody Wallet wallet,
-        @RequestBody int userId
+        @RequestBody Wallet wallet
     ) {
-        return walletService.save(wallet.getNumber(), wallet.getAmountOfMoney(), userId);
+        return walletService.save(
+            Wallet.of(
+                wallet.getNumber(),
+                wallet.getAmountOfMoney(),
+                wallet.getUserId()
+            )
+        );
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteWallet(@PathVariable int id) {
-        walletService.delete(id);
+        walletService.delete(Wallet.of(null, 0, 0).withId(id));
     }
 }

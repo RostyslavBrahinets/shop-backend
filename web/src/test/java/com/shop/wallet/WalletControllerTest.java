@@ -45,8 +45,8 @@ class WalletControllerTest {
             )
         );
 
-        when(walletService.update(1, 100)).thenReturn(
-            new Wallet(1, "123", 100)
+        when(walletService.update(Wallet.of("123", 100, 0).withId(1))).thenReturn(
+            new Wallet(1, "123", 100, 0)
         );
 
         mockMvc.perform(get(WALLETS_URL)
@@ -70,7 +70,7 @@ class WalletControllerTest {
     @DisplayName("Wallet found")
     void wallet_found() throws Exception {
         when(walletService.findById(1))
-            .thenReturn(new Wallet(1, "123", 0));
+            .thenReturn(new Wallet(1, "123", 0, 0));
 
         mockMvc.perform(get(WALLETS_URL + "/1")
                 .with(user("admin").password("admin").roles("ADMIN"))

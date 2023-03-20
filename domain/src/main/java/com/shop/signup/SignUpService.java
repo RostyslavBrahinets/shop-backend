@@ -108,7 +108,13 @@ public class SignUpService {
             Wallet wallet = new Wallet();
             wallet.setNumber(customer.get().getId());
             wallet.setAmountOfMoney(customer.get().getBalance());
-            walletService.save(wallet.getNumber(), wallet.getAmountOfMoney(), userId);
+            walletService.save(
+                Wallet.of(
+                    wallet.getNumber(),
+                    wallet.getAmountOfMoney(),
+                    userId
+                )
+            );
         }
     }
 }

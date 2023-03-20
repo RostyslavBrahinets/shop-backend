@@ -44,7 +44,7 @@ class WalletServiceTest {
     @Test
     @DisplayName("Wallet was saved for with correct input")
     void wallet_was_saved_with_correct_input() {
-        Wallet savedWallet = walletService.save("123", 0, 1);
+        Wallet savedWallet = walletService.save(Wallet.of("123", 0, 1));
 
         verify(walletRepository).save("123", 0, 1);
 
@@ -102,7 +102,7 @@ class WalletServiceTest {
     @Test
     @DisplayName("Wallet was deleted")
     void wallet_was_deleted() {
-        walletService.delete(1);
+        walletService.delete(Wallet.of(null, 0, 0).withId(1));
         verify(walletRepository).delete(1);
     }
 }

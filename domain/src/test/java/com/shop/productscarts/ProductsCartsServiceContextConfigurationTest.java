@@ -157,7 +157,7 @@ public class ProductsCartsServiceContextConfigurationTest {
         when(cartService.findByUser(User.of(null, null).withId(userId)))
             .thenReturn(Cart.of(0, 0).withId(1));
 
-        walletService.update(1, 100);
+        walletService.update(Wallet.of("123", 100, userId).withId(1));
         stripePayment.updateCustomer("123", 100);
         cartService.update(Cart.of(0, 0).withId(1));
 

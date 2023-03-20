@@ -114,7 +114,7 @@ public class ProductsCartsService {
         }
         long money = Long.parseLong(splitMoney[0] + splitMoney[1]) * -1;
 
-        walletService.update(wallet.getId(), newAmountOfMoney);
+        walletService.update(Wallet.of(null, newAmountOfMoney, userId).withId(wallet.getId()));
         stripePayment.updateCustomer(wallet.getNumber(), money);
 
         cartService.update(Cart.of(0, 0).withId(cart.getId()));

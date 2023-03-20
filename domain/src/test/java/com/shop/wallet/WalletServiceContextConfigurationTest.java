@@ -80,7 +80,7 @@ public class WalletServiceContextConfigurationTest {
         String number = "123";
         double amountOfMoney = 0;
 
-        walletService.save(number, amountOfMoney, userId);
+        walletService.save(Wallet.of(number, amountOfMoney, userId));
 
         verify(walletValidator, atLeast(1)).validate(number, amountOfMoney);
         verify(userValidator, atLeast(1)).validate(userId, users);
@@ -93,7 +93,7 @@ public class WalletServiceContextConfigurationTest {
         long id = 1;
         double amountOfMoney = 100;
 
-        walletService.update(id, amountOfMoney);
+        walletService.update(Wallet.of(null, amountOfMoney, 0).withId(id));
 
         verify(walletValidator, atLeast(1)).validate(id, wallets);
         verify(walletValidator, atLeast(1)).validateAmountOfMoney(amountOfMoney);
@@ -105,7 +105,7 @@ public class WalletServiceContextConfigurationTest {
     void delete_wallet() {
         long id = 1;
 
-        walletService.delete(id);
+        walletService.delete(Wallet.of(null, 0, 0).withId(id));
 
         verify(walletValidator, atLeast(1)).validate(id, wallets);
         verify(walletRepository).delete(id);
