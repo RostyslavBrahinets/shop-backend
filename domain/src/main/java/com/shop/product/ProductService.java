@@ -41,34 +41,46 @@ public class ProductService {
         return product.orElseGet(Product::new);
     }
 
-    public Product save(
-        String name,
-        String describe,
-        double price,
-        String barcode,
-        boolean inStock,
-        byte[] image
-    ) {
-        productValidator.validate(name, describe, price, barcode, productRepository.findAll());
-        productRepository.save(name, describe, price, barcode, inStock, image);
-        return Product.of(name, describe, price, barcode, inStock, image)
-            .withId(productRepository.findAll().size() + 1);
+    public Product save(Product product) {
+        productValidator.validate(
+            product.getName(),
+            product.getDescribe(),
+            product.getPrice(),
+            product.getBarcode(),
+            productRepository.findAll());
+
+        productRepository.save(
+            product.getName(),
+            product.getDescribe(),
+            product.getPrice(),
+            product.getBarcode(),
+            product.isInStock(),
+            product.getImage()
+        );
+
+        product.setId(productRepository.findAll().size() + 1);
+
+        return product;
     }
 
-    public void delete(String barcode) {
-        productValidator.validate(barcode, productRepository.findAll());
+    public void delete(Product product) {
+        productValidator.validate(product.getBarcode(), productRepository.findAll());
 
-        Optional<Product> product = productRepository.findByBarcode(barcode);
+        Optional<Product> productOptional = productRepository.findByBarcode(product.getBarcode());
 
-        if (product.isPresent()) {
-            Optional<Category> category = productCategoryRepository.findCategoryForProduct(product.get().getId());
-            category.ifPresent(value -> productCategoryRepository.deleteProductFromCategory(
-                product.get().getId(),
-                value.getId())
+        if (productOptional.isPresent()) {
+            Optional<Category> category = productCategoryRepository
+                .findCategoryForProduct(productOptional.get().getId());
+            category.ifPresent(
+                value -> productCategoryRepository
+                    .deleteProductFromCategory(
+                        productOptional.get().getId(),
+                        value.getId()
+                    )
             );
         }
 
-        productRepository.delete(barcode);
+        productRepository.delete(product.getBarcode());
     }
 
     public void saveImageForProduct(byte[] image, long id) {

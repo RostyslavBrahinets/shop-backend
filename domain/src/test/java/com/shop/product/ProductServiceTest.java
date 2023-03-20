@@ -39,12 +39,15 @@ class ProductServiceTest {
     @Test
     @DisplayName("Product was saved for with correct input")
     void product_was_saved_with_correct_input() {
-        Product savedProduct = productService.save("name",
-            "describe",
-            100,
-            "123",
-            true,
-            new byte[]{1, 1, 1}
+        Product savedProduct = productService.save(
+            Product.of(
+                "name",
+                "describe",
+                100,
+                "123",
+                true,
+                new byte[]{1, 1, 1}
+            )
         );
 
         verify(productRepository).save(
@@ -183,7 +186,7 @@ class ProductServiceTest {
         when(productCategoryRepository.findCategoryForProduct(productId))
             .thenReturn(Optional.of(Category.of("name").withId(1)));
 
-        productService.delete(barcode);
+        productService.delete(Product.of(barcode));
 
         verify(productValidator, atLeast(1)).validate(barcode, List.of());
         verify(productRepository).findByBarcode(barcode);

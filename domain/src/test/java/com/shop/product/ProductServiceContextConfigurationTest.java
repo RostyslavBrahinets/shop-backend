@@ -81,7 +81,16 @@ public class ProductServiceContextConfigurationTest {
         boolean inStock = true;
         byte[] image = {1, 1, 1};
 
-        productService.save(name, describe, price, barcode, inStock, image);
+        productService.save(
+            Product.of(
+                name,
+                describe,
+                price,
+                barcode,
+                inStock,
+                image
+            )
+        );
 
         verify(productValidator, atLeast(1)).validate(name, describe, price, barcode, products);
         verify(productRepository).save(name, describe, price, barcode, inStock, image);
@@ -110,7 +119,7 @@ public class ProductServiceContextConfigurationTest {
         when(productCategoryRepository.findCategoryForProduct(productId))
             .thenReturn(Optional.of(Category.of("name").withId(1)));
 
-        productService.delete(barcode);
+        productService.delete(Product.of(barcode));
 
         verify(productValidator, atLeast(1)).validate(barcode, products);
         verify(productRepository, atLeast(1)).findByBarcode(barcode);

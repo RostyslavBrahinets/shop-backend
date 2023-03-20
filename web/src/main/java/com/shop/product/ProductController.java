@@ -36,23 +36,28 @@ public class ProductController {
     public Product saveProduct(@RequestBody Product product) throws IOException {
         if (product.getImage().length > 0) {
             return productService.save(
+                Product.of(
+                    product.getName(),
+                    product.getDescribe(),
+                    product.getPrice(),
+                    product.getBarcode(),
+                    product.isInStock(),
+                    product.getImage()
+                )
+            );
+        }
+
+        product = productService.save(
+            Product.of(
                 product.getName(),
                 product.getDescribe(),
                 product.getPrice(),
                 product.getBarcode(),
                 product.isInStock(),
                 product.getImage()
-            );
-        }
-
-        product = productService.save(
-            product.getName(),
-            product.getDescribe(),
-            product.getPrice(),
-            product.getBarcode(),
-            product.isInStock(),
-            product.getImage()
+            )
         );
+
         Product newProduct = productService.findByBarcode(product.getBarcode());
         String imagePath = Objects.requireNonNull(getClass().getClassLoader().getResource(
             "static/images/empty.jpg"
@@ -65,7 +70,7 @@ public class ProductController {
 
     @PostMapping("/{barcode}")
     public String deleteProduct(@PathVariable String barcode) {
-        productService.delete(barcode);
+        productService.delete(Product.of(barcode));
         return "Product Successfully Deleted";
     }
 
