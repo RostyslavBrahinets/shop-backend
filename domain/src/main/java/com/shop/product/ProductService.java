@@ -1,6 +1,7 @@
 package com.shop.product;
 
 import com.shop.category.Category;
+import com.shop.interfaces.ServiceInterface;
 import com.shop.productcategory.ProductCategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
-public class ProductService {
+public class ProductService implements ServiceInterface<Product> {
     private final ProductRepository productRepository;
     private final ProductValidator productValidator;
     private final ProductCategoryRepository productCategoryRepository;
@@ -25,22 +26,19 @@ public class ProductService {
         this.productCategoryRepository = productCategoryRepository;
     }
 
+    @Override
     public List<Product> findAll() {
         return productRepository.findAll();
     }
 
+    @Override
     public Product findById(long id) {
         productValidator.validate(id, productRepository.findAll());
         Optional<Product> product = productRepository.findById(id);
         return product.orElseGet(Product::new);
     }
 
-    public Product findByBarcode(String barcode) {
-        productValidator.validate(barcode, productRepository.findAll());
-        Optional<Product> product = productRepository.findByBarcode(barcode);
-        return product.orElseGet(Product::new);
-    }
-
+    @Override
     public Product save(Product product) {
         productValidator.validate(
             product.getName(),
@@ -63,10 +61,12 @@ public class ProductService {
         return product;
     }
 
+    @Override
     public Product update(Product product) {
         return new Product();
     }
 
+    @Override
     public void delete(Product product) {
         productValidator.validate(product.getBarcode(), productRepository.findAll());
 
@@ -85,6 +85,12 @@ public class ProductService {
         }
 
         productRepository.delete(product.getBarcode());
+    }
+
+    public Product findByBarcode(String barcode) {
+        productValidator.validate(barcode, productRepository.findAll());
+        Optional<Product> product = productRepository.findByBarcode(barcode);
+        return product.orElseGet(Product::new);
     }
 
     public void saveImageForProduct(byte[] image, long id) {
