@@ -3,6 +3,7 @@ package com.shop.user;
 import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberService;
 import com.shop.adminnumber.AdminNumberValidator;
+import com.shop.interfaces.ServiceInterface;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements ServiceInterface<User> {
     private final UserRepository userRepository;
     private final UserValidator userValidator;
     private final AdminNumberValidator adminNumberValidator;
@@ -31,10 +32,12 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
+    @Override
     public User findById(long id) {
         userValidator.validate(id, userRepository.findAll());
         Optional<User> user = userRepository.findById(id);
@@ -47,6 +50,7 @@ public class UserService {
         return user.orElseGet(User::new);
     }
 
+    @Override
     public User save(User user) {
         userValidator.validate(
             user.getFirstName(),
@@ -72,6 +76,7 @@ public class UserService {
         return user;
     }
 
+    @Override
     public User update(User user) {
         userValidator.validate(user.getId(), userRepository.findAll());
         userValidator.validateFullName(user.getFirstName(), user.getLastName());
@@ -79,6 +84,7 @@ public class UserService {
         return user;
     }
 
+    @Override
     public void delete(User user) {
         userValidator.validate(user.getId(), userRepository.findAll());
         userRepository.delete(user.getId());
