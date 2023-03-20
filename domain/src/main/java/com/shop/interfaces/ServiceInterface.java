@@ -9,5 +9,7 @@ public interface ServiceInterface<T> {
 
     T save(T object);
 
+    T update(T object);
+
     void delete(T object);
 }
