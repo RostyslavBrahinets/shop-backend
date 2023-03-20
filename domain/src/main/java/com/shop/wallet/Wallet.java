@@ -10,6 +10,7 @@ public class Wallet implements Serializable {
     private long id;
     private String number;
     private double amountOfMoney;
+    private long userId;
 
     public Wallet() {
     }
@@ -17,22 +18,25 @@ public class Wallet implements Serializable {
     public Wallet(
         long id,
         String number,
-        double amountOfMoney
+        double amountOfMoney,
+        long userId
     ) {
         this.id = id;
         this.number = number;
         this.amountOfMoney = amountOfMoney;
+        this.userId = userId;
     }
 
     public static Wallet of(
         String number,
-        double amountOfMoney
+        double amountOfMoney,
+        long userId
     ) {
-        return new Wallet(0, number, amountOfMoney);
+        return new Wallet(0, number, amountOfMoney, userId);
     }
 
     public Wallet withId(long id) {
-        return new Wallet(id, this.number, this.amountOfMoney);
+        return new Wallet(id, this.number, this.amountOfMoney, this.userId);
     }
 
     public long getId() {
@@ -59,19 +63,28 @@ public class Wallet implements Serializable {
         this.amountOfMoney = amountOfMoney;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Wallet that = (Wallet) o;
-        return Objects.equals(id, that.id)
+        return id == that.id
             && amountOfMoney == that.amountOfMoney
-            && Objects.equals(number, that.number);
+            && Objects.equals(number, that.number)
+            && userId == that.userId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, amountOfMoney);
+        return Objects.hash(id, number, amountOfMoney, userId);
     }
 
     @Override
