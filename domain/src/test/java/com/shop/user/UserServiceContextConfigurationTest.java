@@ -81,7 +81,7 @@ public class UserServiceContextConfigurationTest {
         String firstName = "John";
         String lastName = "Smith";
 
-        userService.update(id, firstName, lastName);
+        userService.update(User.of(firstName, lastName).withId(id));
 
         verify(userValidator, atLeast(1)).validate(id, users);
         verify(userValidator, atLeast(1)).validateFullName(firstName, lastName);
@@ -93,7 +93,7 @@ public class UserServiceContextConfigurationTest {
     void delete_user() {
         long id = 1;
 
-        userService.delete(id);
+        userService.delete(User.of(null, null).withId(id));
 
         verify(userValidator, atLeast(1)).validate(id, users);
         verify(userRepository).delete(id);

@@ -68,12 +68,14 @@ public class SignUpService {
 
         if (validData) {
             userService.save(
-                firstName,
-                lastName,
-                email,
-                phone,
-                password,
-                adminNumberId
+                User.of(
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    password,
+                    adminNumberId
+                )
             );
 
             userRoleService.saveRoleForUser(findUserId(), 2);

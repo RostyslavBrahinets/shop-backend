@@ -47,58 +47,40 @@ public class UserService {
         return user.orElseGet(User::new);
     }
 
-    public User save(
-        String firstName,
-        String lastName,
-        String email,
-        String phone,
-        String password,
-        long adminNumberId
-    ) {
+    public User save(User user) {
         userValidator.validate(
-            firstName,
-            lastName,
-            email,
-            phone,
-            password,
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(),
+            user.getPhone(),
+            passwordEncoder.encode(user.getPassword()),
             userRepository.findAll()
         );
 
         List<AdminNumber> adminNumbers = adminNumberService.findAll();
-        adminNumberValidator.validate(adminNumberId, adminNumbers);
+        adminNumberValidator.validate(user.getAdminNumberId(), adminNumbers);
 
         userRepository.save(
-            firstName,
-            lastName,
-            email,
-            phone,
-            passwordEncoder.encode(password),
-            adminNumberId
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(),
+            user.getPhone(),
+            passwordEncoder.encode(user.getPassword()),
+            user.getAdminNumberId()
         );
 
-        return User.of(
-            firstName,
-            lastName,
-            email,
-            phone,
-            passwordEncoder.encode(password),
-            adminNumberId
-        );
+        return user;
     }
 
-    public User update(
-        long id,
-        String firstName,
-        String lastName
-    ) {
-        userValidator.validate(id, userRepository.findAll());
-        userValidator.validateFullName(firstName, lastName);
-        userRepository.update(id, firstName, lastName);
-        return User.of(firstName, lastName).withId(id);
+    public User update(User user) {
+        userValidator.validate(user.getId(), userRepository.findAll());
+        userValidator.validateFullName(user.getFirstName(), user.getLastName());
+        userRepository.update(user.getId(), user.getFirstName(), user.getLastName());
+        return user;
     }
 
-    public void delete(long id) {
-        userValidator.validate(id, userRepository.findAll());
-        userRepository.delete(id);
+    public void delete(User user) {
+        userValidator.validate(user.getId(), userRepository.findAll());
+        userRepository.delete(user.getId());
     }
 }

@@ -30,12 +30,14 @@ public class UserController {
         @RequestBody User user
     ) {
         return userService.save(
-            user.getFirstName(),
-            user.getLastName(),
-            user.getEmail(),
-            user.getPhone(),
-            user.getPassword(),
-            user.getAdminNumberId()
+            User.of(
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getPassword(),
+                user.getAdminNumberId()
+            )
         );
     }
 
@@ -47,12 +49,18 @@ public class UserController {
         User updatedUser = new User();
         updatedUser.setFirstName(user.firstName());
         updatedUser.setLastName(user.lastName());
-        return userService.update(id, updatedUser.getFirstName(), updatedUser.getLastName());
+        return userService.update(
+            User.of(
+                    updatedUser.getFirstName(),
+                    updatedUser.getLastName()
+                )
+                .withId(id)
+        );
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
-        userService.delete(id);
+        userService.delete(User.of(null, null).withId(id));
     }
 }
