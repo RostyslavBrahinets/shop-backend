@@ -2,9 +2,6 @@ package com.shop.cart;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.cart.Cart;
-import com.shop.cart.CartRepository;
-import com.shop.cart.CartValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,7 +49,7 @@ public class CartValidatorTest {
     void id_of_cart_validated_without_exceptions() {
         when(cartRepository.findAll())
             .thenReturn(
-                List.of(new Cart(1, 0))
+                List.of(new Cart(1, 0, 0))
             );
 
         assertDoesNotThrow(

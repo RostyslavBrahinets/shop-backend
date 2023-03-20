@@ -1,10 +1,7 @@
 package com.shop.cart;
 
-import com.shop.cart.CartController;
 import com.shop.exceptions.NotFoundException;
-import com.shop.cart.Cart;
 import com.shop.security.SignInPasswordAuthenticationProvider;
-import com.shop.cart.CartService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +41,7 @@ class CartControllerTest {
     void all_carts_request() throws Exception {
         when(cartService.findAll()).thenReturn(
             List.of(
-                new Cart(1, 0)
+                new Cart(1, 0, 1)
             )
         );
 
@@ -81,7 +78,7 @@ class CartControllerTest {
     @DisplayName("Cart found")
     void cart_found() throws Exception {
         when(cartService.findById(1))
-            .thenReturn(new Cart(1, 0));
+            .thenReturn(new Cart(1, 0, 1));
 
         mockMvc.perform(get(CARTS_URL + "/1")
                 .with(user("admin").password("admin").roles("ADMIN"))

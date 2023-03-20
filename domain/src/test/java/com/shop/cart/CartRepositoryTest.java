@@ -1,7 +1,7 @@
 package com.shop.cart;
 
-import com.shop.configs.DatabaseConfig;
 import com.shop.adminnumber.AdminNumberRepository;
+import com.shop.configs.DatabaseConfig;
 import com.shop.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -133,7 +133,7 @@ public class CartRepositoryTest {
 
         Optional<Cart> cart = cartRepository.findById(1);
 
-        assertThat(cart).get().isEqualTo(Cart.of(0).withId(1));
+        assertThat(cart).get().isEqualTo(Cart.of(0, 1).withId(1));
     }
 
     @Test
@@ -160,7 +160,7 @@ public class CartRepositoryTest {
 
         Optional<Cart> cart = cartRepository.findByUser(1);
 
-        assertThat(cart).get().isEqualTo(Cart.of(0).withId(1));
+        assertThat(cart).get().isEqualTo(Cart.of(0, 1).withId(1));
     }
 
     @Test
@@ -187,8 +187,8 @@ public class CartRepositoryTest {
 
         assertThat(carts).isEqualTo(
             List.of(
-                Cart.of(0).withId(1),
-                Cart.of(0).withId(2)
+                Cart.of(0, 1).withId(1),
+                Cart.of(0, 2).withId(2)
             )
         );
     }

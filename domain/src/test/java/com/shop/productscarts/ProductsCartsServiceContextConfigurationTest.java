@@ -95,7 +95,7 @@ public class ProductsCartsServiceContextConfigurationTest {
                 .withId(1));
 
         when(cartService.findById(cartId))
-            .thenReturn(Cart.of(0).withId(1));
+            .thenReturn(Cart.of(0, 0).withId(1));
 
         cartService.update(Cart.of(100, 0).withId(cartId));
 
@@ -124,7 +124,7 @@ public class ProductsCartsServiceContextConfigurationTest {
                 .withId(1));
 
         when(cartService.findById(cartId))
-            .thenReturn(Cart.of(0).withId(1));
+            .thenReturn(Cart.of(0, 0).withId(1));
 
         cartService.update(Cart.of(100, 0).withId(cartId));
 

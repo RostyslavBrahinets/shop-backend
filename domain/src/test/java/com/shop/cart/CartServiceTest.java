@@ -48,7 +48,7 @@ class CartServiceTest {
 
         verify(cartRepository).save(0, 1);
 
-        assertThat(savedCart).isEqualTo(new Cart(1, 0));
+        assertThat(savedCart).isEqualTo(new Cart(1, 0, 0));
     }
 
     @Test
@@ -66,37 +66,37 @@ class CartServiceTest {
     void list_of_carts_is_returned_in_case_when_carts_are_exists_in_storage() {
         when(cartRepository.findAll()).thenReturn(
             List.of(
-                Cart.of(0).withId(1)
+                Cart.of(0, 0).withId(1)
             )
         );
 
         List<Cart> carts = cartService.findAll();
 
-        assertThat(carts).isEqualTo(List.of(new Cart(1, 0)));
+        assertThat(carts).isEqualTo(List.of(new Cart(1, 0, 0)));
     }
 
     @Test
     @DisplayName("Cart was found by id")
     void cart_was_found_by_id() {
         when(cartRepository.findById(1)).thenReturn(
-            Optional.of(Cart.of(0).withId(1))
+            Optional.of(Cart.of(0, 0).withId(1))
         );
 
         Cart cart = cartService.findById(1);
 
-        assertThat(cart).isEqualTo(new Cart(1, 0));
+        assertThat(cart).isEqualTo(new Cart(1, 0, 0));
     }
 
     @Test
     @DisplayName("Cart was found by user")
     void cart_was_found_by_user() {
         when(cartRepository.findByUser(1)).thenReturn(
-            Optional.of(Cart.of(0).withId(1))
+            Optional.of(Cart.of(0, 0).withId(1))
         );
 
         Cart cart = cartService.findByUser(User.of(null, null).withId(1));
 
-        assertThat(cart).isEqualTo(new Cart(1, 0));
+        assertThat(cart).isEqualTo(new Cart(1, 0, 0));
     }
 
     @Test
