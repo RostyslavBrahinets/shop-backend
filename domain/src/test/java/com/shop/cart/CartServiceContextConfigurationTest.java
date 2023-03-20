@@ -73,7 +73,7 @@ public class CartServiceContextConfigurationTest {
         double totalCost = 0;
         List<User> users = userService.findAll();
 
-        cartService.save(totalCost, userId);
+        cartService.save(Cart.of(totalCost, userId));
 
         verify(cartValidator, atLeast(1)).validate(totalCost);
         verify(userValidator, atLeast(1)).validate(userId, users);
@@ -86,7 +86,7 @@ public class CartServiceContextConfigurationTest {
         long id = 1;
         double totalCost = 100;
 
-        cartService.update(id, totalCost);
+        cartService.update(Cart.of(totalCost, 0).withId(id));
 
         verify(cartValidator, atLeast(1)).validate(id);
         verify(cartValidator, atLeast(1)).validate(totalCost);
@@ -98,7 +98,7 @@ public class CartServiceContextConfigurationTest {
     void delete_cart() {
         long id = 1;
 
-        cartService.delete(id);
+        cartService.delete(Cart.of(0, 0).withId(id));
 
         verify(cartValidator, atLeast(1)).validate(id);
         verify(cartRepository).delete(id);
