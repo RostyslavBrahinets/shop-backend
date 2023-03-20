@@ -1,10 +1,7 @@
 package com.shop.cart;
 
-import com.shop.cart.Cart;
-import com.shop.cart.CartRepository;
-import com.shop.cart.CartService;
+import com.shop.user.User;
 import com.shop.user.UserService;
-import com.shop.cart.CartValidator;
 import com.shop.user.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -97,7 +94,7 @@ class CartServiceTest {
             Optional.of(Cart.of(0).withId(1))
         );
 
-        Cart cart = cartService.findByUser(1);
+        Cart cart = cartService.findByUser(User.of(null, null).withId(1));
 
         assertThat(cart).isEqualTo(new Cart(1, 0));
     }

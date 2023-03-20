@@ -69,8 +69,8 @@ class ProductsCartsControllerTest {
                 )
             );
 
-        when(cartService.findByUser(2))
-            .thenReturn(new Cart(1, 0));
+        when(cartService.findByUser(User.of(null, null).withId(2)))
+            .thenReturn(new Cart(1, 0, 2));
 
         when(productsCartsService.findAllProductsInCart(1))
             .thenReturn(
@@ -111,8 +111,8 @@ class ProductsCartsControllerTest {
                 )
             );
 
-        when(cartService.findByUser(2))
-            .thenReturn(new Cart(1, 0));
+        when(cartService.findByUser(User.of(null, null).withId(2)))
+            .thenReturn(new Cart(1, 0, 2));
 
         when(productsCartsService.saveProductToCart(1, 1))
             .thenReturn(1L);
@@ -151,8 +151,8 @@ class ProductsCartsControllerTest {
                 )
             );
 
-        when(cartService.findByUser(2))
-            .thenReturn(new Cart(1, 0));
+        when(cartService.findByUser(User.of(null, null).withId(2)))
+            .thenReturn(new Cart(1, 0, 2));
 
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/1/delete")
                 .with(user("test@email.com").password("password").roles("USER"))
@@ -176,8 +176,8 @@ class ProductsCartsControllerTest {
                 )
             );
 
-        when(cartService.findByUser(2))
-            .thenReturn(new Cart(1, 0));
+        when(cartService.findByUser(User.of(null, null).withId(2)))
+            .thenReturn(new Cart(1, 0, 2));
 
         when(productsCartsService.findAllProductsInCart(1))
             .thenReturn(

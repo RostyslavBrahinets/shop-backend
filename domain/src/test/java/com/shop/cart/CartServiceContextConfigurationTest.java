@@ -60,7 +60,7 @@ public class CartServiceContextConfigurationTest {
         long userId = 1;
         List<User> users = userService.findAll();
 
-        cartService.findByUser(userId);
+        cartService.findByUser(User.of(null, null).withId(userId));
 
         verify(userValidator, atLeast(1)).validate(userId, users);
         verify(cartRepository).findByUser(userId);

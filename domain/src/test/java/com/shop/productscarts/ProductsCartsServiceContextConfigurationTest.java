@@ -2,15 +2,15 @@ package com.shop.productscarts;
 
 import com.shop.cart.Cart;
 import com.shop.cart.CartService;
+import com.shop.cart.CartValidator;
 import com.shop.product.Product;
 import com.shop.product.ProductService;
+import com.shop.product.ProductValidator;
+import com.shop.stripe.StripePayment;
 import com.shop.user.User;
 import com.shop.user.UserService;
-import com.shop.wallet.Wallet;
-import com.shop.stripe.StripePayment;
-import com.shop.cart.CartValidator;
-import com.shop.product.ProductValidator;
 import com.shop.user.UserValidator;
+import com.shop.wallet.Wallet;
 import com.shop.wallet.WalletService;
 import com.shop.wallet.WalletValidator;
 import com.stripe.exception.StripeException;
@@ -154,8 +154,8 @@ public class ProductsCartsServiceContextConfigurationTest {
         when(walletService.findByUser(userId))
             .thenReturn(Wallet.of("123", 100).withId(1));
 
-        when(cartService.findByUser(userId))
-            .thenReturn(Cart.of(0).withId(1));
+        when(cartService.findByUser(User.of(null, null).withId(userId)))
+            .thenReturn(Cart.of(0, 0).withId(1));
 
         walletService.update(1, 100);
         stripePayment.updateCustomer("123", 100);

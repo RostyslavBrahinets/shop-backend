@@ -1,5 +1,6 @@
 package com.shop.cart;
 
+import com.shop.user.User;
 import com.shop.user.UserService;
 import com.shop.user.UserValidator;
 import org.springframework.stereotype.Service;
@@ -36,9 +37,9 @@ public class CartService {
         return cart.orElseGet(Cart::new);
     }
 
-    public Cart findByUser(long userId) {
-        userValidator.validate(userId, userService.findAll());
-        Optional<Cart> cart = cartRepository.findByUser(userId);
+    public Cart findByUser(User user) {
+        userValidator.validate(user.getId(), userService.findAll());
+        Optional<Cart> cart = cartRepository.findByUser(user.getId());
         return cart.orElseGet(Cart::new);
     }
 

@@ -1,14 +1,14 @@
 package com.shop.productscarts;
 
-import com.shop.report.ReportDto;
 import com.shop.cart.Cart;
-import com.shop.user.User;
-import com.shop.product.Product;
-import com.shop.wallet.Wallet;
 import com.shop.cart.CartService;
+import com.shop.product.Product;
+import com.shop.report.ReportDto;
+import com.shop.user.User;
 import com.shop.user.UserService;
-import com.shop.wallet.WalletService;
 import com.shop.utilities.PdfUtility;
+import com.shop.wallet.Wallet;
+import com.shop.wallet.WalletService;
 import com.stripe.exception.StripeException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,7 +36,8 @@ public class ProductsCartsController {
         CartService cartService,
         UserService userService,
         WalletService walletService,
-        ReportDto report) {
+        ReportDto report
+    ) {
         this.productsCartsService = productsCartsService;
         this.cartService = cartService;
         this.userService = userService;
@@ -47,7 +48,7 @@ public class ProductsCartsController {
     @GetMapping
     public List<Product> findAllProductsInCart(@AuthenticationPrincipal UserDetails userDetail) {
         User user = userService.findByEmail(userDetail.getUsername());
-        Cart cart = cartService.findByUser(user.getId());
+        Cart cart = cartService.findByUser(User.of(null, null).withId(user.getId()));
         return productsCartsService.findAllProductsInCart(cart.getId());
     }
 
@@ -58,7 +59,7 @@ public class ProductsCartsController {
         HttpServletResponse response
     ) throws IOException {
         User user = userService.findByEmail(userDetail.getUsername());
-        Cart cart = cartService.findByUser(user.getId());
+        Cart cart = cartService.findByUser(User.of(null, null).withId(user.getId()));
         response.sendRedirect("/cart");
         return productsCartsService.saveProductToCart(id, cart.getId());
     }
@@ -69,7 +70,7 @@ public class ProductsCartsController {
         @PathVariable long id
     ) {
         User user = userService.findByEmail(userDetail.getUsername());
-        Cart cart = cartService.findByUser(user.getId());
+        Cart cart = cartService.findByUser(User.of(null, null).withId(user.getId()));
         productsCartsService.deleteProductFromCart(id, cart.getId());
     }
 
@@ -78,7 +79,7 @@ public class ProductsCartsController {
         @AuthenticationPrincipal UserDetails userDetail
     ) throws StripeException {
         User user = userService.findByEmail(userDetail.getUsername());
-        Cart cart = cartService.findByUser(user.getId());
+        Cart cart = cartService.findByUser(User.of(null, null).withId(user.getId()));
 
         List<Product> productsInCart = productsCartsService
             .findAllProductsInCart(cart.getId());

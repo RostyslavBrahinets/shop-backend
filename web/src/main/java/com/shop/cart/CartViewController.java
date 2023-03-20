@@ -1,8 +1,6 @@
 package com.shop.cart;
 
-import com.shop.cart.Cart;
 import com.shop.user.User;
-import com.shop.cart.CartService;
 import com.shop.user.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,7 +36,7 @@ public class CartViewController {
         }
 
         User user = userService.findByEmail(userDetails.getUsername());
-        Cart cart = cartService.findByUser(user.getId());
+        Cart cart = cartService.findByUser(User.of(null, null).withId(user.getId()));
         model.addAttribute("id", cart.getId());
         return "cart/index";
     }
