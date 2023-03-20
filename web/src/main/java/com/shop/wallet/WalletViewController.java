@@ -1,9 +1,7 @@
 package com.shop.wallet;
 
 import com.shop.user.User;
-import com.shop.wallet.Wallet;
 import com.shop.user.UserService;
-import com.shop.wallet.WalletService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,7 +36,7 @@ public class WalletViewController {
         }
 
         User user = userService.findByEmail(userDetails.getUsername());
-        Wallet wallet = walletService.findByUser(user.getId());
+        Wallet wallet = walletService.findByUser(User.of(null, null).withId(user.getId()));
         model.addAttribute("id", wallet.getId());
         return "wallet/index";
     }

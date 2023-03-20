@@ -1,10 +1,8 @@
 package com.shop.wallet;
 
+import com.shop.user.User;
 import com.shop.user.UserService;
-import com.shop.wallet.Wallet;
-import com.shop.wallet.WalletRepository;
 import com.shop.user.UserValidator;
-import com.shop.wallet.WalletValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,9 +37,9 @@ public class WalletService {
         return wallet.orElseGet(Wallet::new);
     }
 
-    public Wallet findByUser(long userId) {
-        userValidator.validate(userId, userService.findAll());
-        Optional<Wallet> wallet = walletRepository.findByUser(userId);
+    public Wallet findByUser(User user) {
+        userValidator.validate(user.getId(), userService.findAll());
+        Optional<Wallet> wallet = walletRepository.findByUser(user.getId());
         return wallet.orElseGet(Wallet::new);
     }
 

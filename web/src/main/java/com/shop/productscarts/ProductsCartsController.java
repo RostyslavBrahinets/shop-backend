@@ -102,7 +102,7 @@ public class ProductsCartsController {
         HttpServletResponse response
     ) throws IOException {
         User user = userService.findByEmail(userDetail.getUsername());
-        Wallet wallet = walletService.findByUser(user.getId());
+        Wallet wallet = walletService.findByUser(User.of(null, null).withId(user.getId()));
         report.setAmountOfMoney(wallet.getAmountOfMoney());
 
         response.setContentType("application/pdf");

@@ -1,8 +1,8 @@
 package com.shop.wallet;
 
 import com.shop.exceptions.NotFoundException;
-import com.shop.user.User;
 import com.shop.security.SignInPasswordAuthenticationProvider;
+import com.shop.user.User;
 import com.shop.user.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,8 +61,8 @@ class WalletViewControllerTest {
                 )
             );
 
-        when(walletService.findByUser(2)).thenReturn(
-            new Wallet(1, "123", 0)
+        when(walletService.findByUser(User.of(null, null).withId(2))).thenReturn(
+            new Wallet(1, "123", 0, 2)
         );
 
         mockMvc.perform(get("/wallet")
@@ -89,7 +89,7 @@ class WalletViewControllerTest {
                 )
             );
 
-        when(walletService.findByUser(1)).thenThrow(
+        when(walletService.findByUser(User.of(null, null).withId(1))).thenThrow(
             new NotFoundException("Wallet Not Found")
         );
 

@@ -100,7 +100,7 @@ public class ProductsCartsService {
     public void buy(long userId) throws StripeException {
         userValidator.validate(userId, userService.findAll());
 
-        Wallet wallet = walletService.findByUser(userId);
+        Wallet wallet = walletService.findByUser(User.of(null, null).withId(userId));
         Cart cart = cartService.findByUser(User.of(null, null).withId(userId));
 
         double newAmountOfMoney = wallet.getAmountOfMoney();

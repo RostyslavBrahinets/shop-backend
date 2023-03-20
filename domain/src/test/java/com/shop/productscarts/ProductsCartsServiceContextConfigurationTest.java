@@ -151,8 +151,8 @@ public class ProductsCartsServiceContextConfigurationTest {
     void buy_products_in_cart() throws StripeException {
         long userId = 1;
 
-        when(walletService.findByUser(userId))
-            .thenReturn(Wallet.of("123", 100).withId(1));
+        when(walletService.findByUser(User.of(null, null).withId(userId)))
+            .thenReturn(Wallet.of("123", 100, userId).withId(1));
 
         when(cartService.findByUser(User.of(null, null).withId(userId)))
             .thenReturn(Cart.of(0, 0).withId(1));

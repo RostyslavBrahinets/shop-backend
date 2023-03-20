@@ -218,8 +218,8 @@ class ProductsCartsControllerTest {
                 )
             );
 
-        when(walletService.findByUser(2))
-            .thenReturn(new Wallet(1, "123", 0));
+        when(walletService.findByUser(User.of(null, null).withId(2)))
+            .thenReturn(new Wallet(1, "123", 0, 2));
 
         mockMvc.perform(post(PRODUCTS_CARTS_URL + "/download-report")
                 .with(user("test@email.com").password("password").roles("USER"))
