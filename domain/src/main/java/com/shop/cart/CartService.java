@@ -1,5 +1,6 @@
 package com.shop.cart;
 
+import com.shop.interfaces.ServiceInterface;
 import com.shop.user.User;
 import com.shop.user.UserService;
 import com.shop.user.UserValidator;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CartService {
+public class CartService implements ServiceInterface<Cart> {
     private final CartRepository cartRepository;
     private final CartValidator cartValidator;
     private final UserService userService;
@@ -27,22 +28,19 @@ public class CartService {
         this.userValidator = userValidator;
     }
 
+    @Override
     public List<Cart> findAll() {
         return cartRepository.findAll();
     }
 
+    @Override
     public Cart findById(long id) {
         cartValidator.validate(id);
         Optional<Cart> cart = cartRepository.findById(id);
         return cart.orElseGet(Cart::new);
     }
 
-    public Cart findByUser(User user) {
-        userValidator.validate(user.getId(), userService.findAll());
-        Optional<Cart> cart = cartRepository.findByUser(user.getId());
-        return cart.orElseGet(Cart::new);
-    }
-
+    @Override
     public Cart save(Cart cart) {
         cartValidator.validate(cart.getTotalCost());
         userValidator.validate(cart.getUserId(), userService.findAll());
@@ -50,6 +48,7 @@ public class CartService {
         return Cart.of(cart.getTotalCost(), 0).withId(cartRepository.findAll().size() + 1);
     }
 
+    @Override
     public Cart update(Cart cart) {
         cartValidator.validate(cart.getId());
         cartValidator.validate(cart.getTotalCost());
@@ -57,8 +56,15 @@ public class CartService {
         return Cart.of(cart.getTotalCost(), 0).withId(cart.getId());
     }
 
+    @Override
     public void delete(Cart cart) {
         cartValidator.validate(cart.getId());
         cartRepository.delete(cart.getId());
+    }
+
+    public Cart findByUser(User user) {
+        userValidator.validate(user.getId(), userService.findAll());
+        Optional<Cart> cart = cartRepository.findByUser(user.getId());
+        return cart.orElseGet(Cart::new);
     }
 }
