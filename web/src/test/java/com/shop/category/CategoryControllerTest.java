@@ -1,9 +1,6 @@
 package com.shop.category;
 
-import com.shop.category.Category;
-import com.shop.category.CategoryController;
 import com.shop.security.SignInPasswordAuthenticationProvider;
-import com.shop.category.CategoryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

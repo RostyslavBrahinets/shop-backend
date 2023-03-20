@@ -1,9 +1,5 @@
 package com.shop.category;
 
-import com.shop.category.Category;
-import com.shop.category.CategoryRepository;
-import com.shop.category.CategoryService;
-import com.shop.category.CategoryValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
