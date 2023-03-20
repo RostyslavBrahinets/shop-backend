@@ -44,6 +44,11 @@ public class CategoryService {
             .withId(categoryRepository.findAll().size() + 1);
     }
 
+    @Override
+    public Category update(Category category) {
+        return new Category();
+    }
+
     public void delete(Category category) {
         categoryValidator.validate(category.getName(), categoryRepository.findAll());
         categoryRepository.delete(category.getName());
