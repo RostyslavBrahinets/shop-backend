@@ -35,7 +35,7 @@ class AdminNumberServiceTest {
     @Test
     @DisplayName("Number of admin was saved for with correct input")
     void number_of_admin_was_saved_with_correct_input() {
-        AdminNumber savedAdminNumber = adminNumberService.save("12345678");
+        AdminNumber savedAdminNumber = adminNumberService.save(AdminNumber.of("12345678"));
 
         verify(adminNumberRepository).save("12345678");
 
@@ -85,7 +85,7 @@ class AdminNumberServiceTest {
             Optional.of(AdminNumber.of("12345678").withId(1))
         );
 
-        AdminNumber adminNumber = adminNumberService.findByNumber("12345678");
+        AdminNumber adminNumber = adminNumberService.findByNumber(AdminNumber.of("12345678"));
 
         assertThat(adminNumber).isEqualTo(new AdminNumber(1, "12345678"));
     }
@@ -93,7 +93,7 @@ class AdminNumberServiceTest {
     @Test
     @DisplayName("Number of admin was deleted")
     void number_of_admin_was_deleted() {
-        adminNumberService.delete("12345678");
+        adminNumberService.delete(AdminNumber.of("12345678"));
         verify(adminNumberRepository).delete("12345678");
     }
 }

@@ -1,5 +1,6 @@
 package com.shop.user;
 
+import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberService;
 import com.shop.adminnumber.AdminNumberValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +41,7 @@ public class UserServiceContextConfigurationTest {
     void setUp() {
         users = List.of();
 
-        adminNumberService.save("12345678");
+        adminNumberService.save(AdminNumber.of("12345678"));
     }
 
     @Test

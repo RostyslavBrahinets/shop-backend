@@ -28,20 +28,20 @@ public class AdminNumberService {
         return adminNumber.orElseGet(AdminNumber::new);
     }
 
-    public AdminNumber findByNumber(String number) {
-        adminNumberValidator.validate(number, adminNumberRepository.findAll());
-        Optional<AdminNumber> adminNumber = adminNumberRepository.findByNumber(number);
-        return adminNumber.orElseGet(AdminNumber::new);
+    public AdminNumber findByNumber(AdminNumber adminNumber) {
+        adminNumberValidator.validate(adminNumber.getNumber(), adminNumberRepository.findAll());
+        Optional<AdminNumber> adminNumberOptional = adminNumberRepository.findByNumber(adminNumber.getNumber());
+        return adminNumberOptional.orElseGet(AdminNumber::new);
     }
 
-    public AdminNumber save(String number) {
-        adminNumberValidator.validateAdminNumber(number);
-        adminNumberRepository.save(number);
-        return AdminNumber.of(number).withId(adminNumberRepository.findAll().size() + 1);
+    public AdminNumber save(AdminNumber adminNumber) {
+        adminNumberValidator.validateAdminNumber(adminNumber.getNumber());
+        adminNumberRepository.save(adminNumber.getNumber());
+        return AdminNumber.of(adminNumber.getNumber()).withId(adminNumberRepository.findAll().size() + 1);
     }
 
-    public void delete(String number) {
-        adminNumberValidator.validate(number, adminNumberRepository.findAll());
-        adminNumberRepository.delete(number);
+    public void delete(AdminNumber adminNumber) {
+        adminNumberValidator.validate(adminNumber.getNumber(), adminNumberRepository.findAll());
+        adminNumberRepository.delete(adminNumber.getNumber());
     }
 }

@@ -60,7 +60,7 @@ public class AdminNumberServiceContextConfigurationTest {
     void get_number_of_admin_by_number() {
         String number = "12345678";
 
-        adminNumberService.findByNumber(number);
+        adminNumberService.findByNumber(AdminNumber.of(number));
 
         verify(adminNumberValidator, atLeast(1)).validate(number, adminNumbers);
         verify(adminNumberRepository).findByNumber(number);
@@ -71,7 +71,7 @@ public class AdminNumberServiceContextConfigurationTest {
     void save_number_of_admin() {
         String number = "12345678";
 
-        adminNumberService.save(number);
+        adminNumberService.save(AdminNumber.of(number));
 
         verify(adminNumberValidator, atLeast(1)).validateAdminNumber(number);
         verify(adminNumberRepository).save(number);
@@ -82,7 +82,7 @@ public class AdminNumberServiceContextConfigurationTest {
     void delete_number_of_admin_by_number() {
         String number = "12345678";
 
-        adminNumberService.delete(number);
+        adminNumberService.delete(AdminNumber.of(number));
 
         verify(adminNumberValidator, atLeast(1)).validate(number, adminNumbers);
         verify(adminNumberRepository).delete(number);
