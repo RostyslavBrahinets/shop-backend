@@ -2,9 +2,6 @@ package com.shop.wallet;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.wallet.Wallet;
-import com.shop.wallet.WalletRepository;
-import com.shop.wallet.WalletValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -86,10 +83,7 @@ public class WalletValidatorTest {
     @DisplayName("Id of wallet validated without exceptions")
     void id_of_wallet_validated_without_exceptions() {
         List<Wallet> wallets = List.of(
-            Wallet.of(
-                "123",
-                0
-            ).withId(1)
+            Wallet.of("123", 0, 0).withId(1)
         );
 
         when(walletRepository.findAll()).thenReturn(wallets);

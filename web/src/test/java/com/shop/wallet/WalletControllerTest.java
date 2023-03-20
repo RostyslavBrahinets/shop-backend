@@ -41,7 +41,7 @@ class WalletControllerTest {
     void all_wallets_request() throws Exception {
         when(walletService.findAll()).thenReturn(
             List.of(
-                new Wallet(1, "123", 0)
+                new Wallet(1, "123", 0, 0)
             )
         );
 

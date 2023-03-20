@@ -1,7 +1,7 @@
 package com.shop.wallet;
 
-import com.shop.configs.DatabaseConfig;
 import com.shop.adminnumber.AdminNumberRepository;
+import com.shop.configs.DatabaseConfig;
 import com.shop.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -136,7 +136,7 @@ public class WalletRepositoryTest {
 
         Optional<Wallet> wallet = walletRepository.findById(1);
 
-        assertThat(wallet).get().isEqualTo(Wallet.of("123", 0).withId(1));
+        assertThat(wallet).get().isEqualTo(Wallet.of("123", 0, 1).withId(1));
     }
 
     @Test
@@ -164,7 +164,7 @@ public class WalletRepositoryTest {
 
         Optional<Wallet> wallet = walletRepository.findByUser(1);
 
-        assertThat(wallet).get().isEqualTo(Wallet.of("123", 0).withId(1));
+        assertThat(wallet).get().isEqualTo(Wallet.of("123", 0, 1).withId(1));
     }
 
     @Test
@@ -193,8 +193,8 @@ public class WalletRepositoryTest {
 
         assertThat(wallets).isEqualTo(
             List.of(
-                Wallet.of("123", 0).withId(1),
-                Wallet.of("456", 0).withId(2)
+                Wallet.of("123", 0, 1).withId(1),
+                Wallet.of("456", 0, 2).withId(2)
             )
         );
     }

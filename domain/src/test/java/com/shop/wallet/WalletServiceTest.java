@@ -48,7 +48,7 @@ class WalletServiceTest {
 
         verify(walletRepository).save("123", 0, 1);
 
-        assertThat(savedWallet).isEqualTo(new Wallet(1, "123", 0));
+        assertThat(savedWallet).isEqualTo(new Wallet(1, "123", 0, 1));
     }
 
     @Test
@@ -66,37 +66,37 @@ class WalletServiceTest {
     void list_of_wallets_is_returned_in_case_when_wallets_are_exists_in_storage() {
         when(walletRepository.findAll()).thenReturn(
             List.of(
-                Wallet.of("123", 0).withId(1)
+                Wallet.of("123", 0, 0).withId(1)
             )
         );
 
         List<Wallet> wallets = walletService.findAll();
 
-        assertThat(wallets).isEqualTo(List.of(new Wallet(1, "123", 0)));
+        assertThat(wallets).isEqualTo(List.of(new Wallet(1, "123", 0, 0)));
     }
 
     @Test
     @DisplayName("Wallet was found by id")
     void basket_was_found_by_id() {
         when(walletRepository.findById(1)).thenReturn(
-            Optional.of(Wallet.of("123", 0).withId(1))
+            Optional.of(Wallet.of("123", 0, 0).withId(1))
         );
 
         Wallet wallet = walletService.findById(1);
 
-        assertThat(wallet).isEqualTo(new Wallet(1, "123", 0));
+        assertThat(wallet).isEqualTo(new Wallet(1, "123", 0, 0));
     }
 
     @Test
     @DisplayName("Wallet was found by user")
     void wallet_was_found_by_user() {
         when(walletRepository.findByUser(1)).thenReturn(
-            Optional.of(Wallet.of("123", 0).withId(1))
+            Optional.of(Wallet.of("123", 0, 0).withId(1))
         );
 
         Wallet wallet = walletService.findByUser(User.of(null, null).withId(1));
 
-        assertThat(wallet).isEqualTo(new Wallet(1, "123", 0));
+        assertThat(wallet).isEqualTo(new Wallet(1, "123", 0, 0));
     }
 
     @Test
