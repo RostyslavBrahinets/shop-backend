@@ -39,7 +39,7 @@ class CategoryServiceTest {
     @Test
     @DisplayName("Category was saved for with correct input")
     void category_was_saved_with_correct_input() {
-        Category savedCategory = categoryService.save("name");
+        Category savedCategory = categoryService.save(Category.of("name"));
 
         verify(categoryRepository).save("name");
 
@@ -97,7 +97,7 @@ class CategoryServiceTest {
     @Test
     @DisplayName("Category was deleted")
     void category_was_deleted() {
-        categoryService.delete("name");
+        categoryService.delete(Category.of("name"));
         verify(categoryRepository).delete("name");
     }
 }

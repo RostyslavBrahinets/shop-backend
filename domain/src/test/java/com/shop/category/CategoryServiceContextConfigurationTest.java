@@ -71,7 +71,7 @@ public class CategoryServiceContextConfigurationTest {
     void save_category() {
         String name = "name";
 
-        categoryService.save(name);
+        categoryService.save(Category.of(name));
 
         verify(categoryValidator, atLeast(1)).validateCategory(name);
         verify(categoryRepository).save(name);
@@ -82,7 +82,7 @@ public class CategoryServiceContextConfigurationTest {
     void delete_category_by_name() {
         String name = "name";
 
-        categoryService.delete(name);
+        categoryService.delete(Category.of(name));
 
         verify(categoryValidator, atLeast(1)).validate(name, categories);
         verify(categoryRepository).delete(name);

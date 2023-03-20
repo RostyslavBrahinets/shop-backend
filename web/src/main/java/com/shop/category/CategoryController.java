@@ -26,12 +26,12 @@ public class CategoryController {
 
     @PostMapping
     public Category saveCategory(@RequestBody Category category) {
-        return categoryService.save(category.getName());
+        return categoryService.save(Category.of(category.getName()));
     }
 
     @PostMapping("/{name}")
     public String deleteCategory(@PathVariable String name) {
-        categoryService.delete(name);
+        categoryService.delete(Category.of(name));
         return "Category Successfully Deleted";
     }
 }

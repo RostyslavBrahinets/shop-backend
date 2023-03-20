@@ -37,14 +37,15 @@ public class CategoryService {
         return category.orElseGet(Category::new);
     }
 
-    public Category save(String name) {
-        categoryValidator.validateCategory(name);
-        categoryRepository.save(name);
-        return Category.of(name).withId(categoryRepository.findAll().size() + 1);
+    public Category save(Category category) {
+        categoryValidator.validateCategory(category.getName());
+        categoryRepository.save(category.getName());
+        return Category.of(category.getName())
+            .withId(categoryRepository.findAll().size() + 1);
     }
 
-    public void delete(String name) {
-        categoryValidator.validate(name, categoryRepository.findAll());
-        categoryRepository.delete(name);
+    public void delete(Category category) {
+        categoryValidator.validate(category.getName(), categoryRepository.findAll());
+        categoryRepository.delete(category.getName());
     }
 }
