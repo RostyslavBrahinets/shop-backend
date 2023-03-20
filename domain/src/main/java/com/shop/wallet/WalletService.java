@@ -1,5 +1,6 @@
 package com.shop.wallet;
 
+import com.shop.interfaces.ServiceInterface;
 import com.shop.user.User;
 import com.shop.user.UserService;
 import com.shop.user.UserValidator;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class WalletService {
+public class WalletService implements ServiceInterface<Wallet> {
     private final WalletRepository walletRepository;
     private final WalletValidator walletValidator;
     private final UserService userService;
@@ -27,22 +28,19 @@ public class WalletService {
         this.userValidator = userValidator;
     }
 
+    @Override
     public List<Wallet> findAll() {
         return walletRepository.findAll();
     }
 
+    @Override
     public Wallet findById(long id) {
         walletValidator.validate(id, walletRepository.findAll());
         Optional<Wallet> wallet = walletRepository.findById(id);
         return wallet.orElseGet(Wallet::new);
     }
 
-    public Wallet findByUser(User user) {
-        userValidator.validate(user.getId(), userService.findAll());
-        Optional<Wallet> wallet = walletRepository.findByUser(user.getId());
-        return wallet.orElseGet(Wallet::new);
-    }
-
+    @Override
     public Wallet save(Wallet wallet) {
         walletValidator.validate(wallet.getNumber(), wallet.getAmountOfMoney());
         userValidator.validate(wallet.getUserId(), userService.findAll());
@@ -51,6 +49,7 @@ public class WalletService {
         return wallet;
     }
 
+    @Override
     public Wallet update(Wallet wallet) {
         walletValidator.validate(wallet.getId(), walletRepository.findAll());
         walletValidator.validateAmountOfMoney(wallet.getAmountOfMoney());
@@ -66,8 +65,15 @@ public class WalletService {
         return wallet;
     }
 
+    @Override
     public void delete(Wallet wallet) {
         walletValidator.validate(wallet.getId(), walletRepository.findAll());
         walletRepository.delete(wallet.getId());
+    }
+
+    public Wallet findByUser(User user) {
+        userValidator.validate(user.getId(), userService.findAll());
+        Optional<Wallet> wallet = walletRepository.findByUser(user.getId());
+        return wallet.orElseGet(Wallet::new);
     }
 }
