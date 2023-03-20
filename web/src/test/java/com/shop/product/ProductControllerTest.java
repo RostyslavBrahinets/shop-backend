@@ -1,10 +1,7 @@
 package com.shop.product;
 
 import com.shop.exceptions.NotFoundException;
-import com.shop.product.Product;
-import com.shop.product.ProductController;
 import com.shop.security.SignInPasswordAuthenticationProvider;
-import com.shop.product.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
