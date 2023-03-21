@@ -37,7 +37,7 @@ class CategoryServiceTest {
     void category_was_saved_with_correct_input() {
         Category savedCategory = categoryService.save(Category.of("name"));
 
-        verify(categoryRepository).save("name");
+        verify(categoryRepository).save(Category.of("name").withId(1));
 
         assertThat(savedCategory).isEqualTo(new Category(1, "name"));
     }
@@ -94,6 +94,6 @@ class CategoryServiceTest {
     @DisplayName("Category was deleted")
     void category_was_deleted() {
         categoryService.delete(Category.of("name"));
-        verify(categoryRepository).delete("name");
+        verify(categoryRepository).delete(Category.of("name"));
     }
 }

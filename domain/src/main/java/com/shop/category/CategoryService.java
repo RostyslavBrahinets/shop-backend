@@ -34,9 +34,9 @@ public class CategoryService implements ServiceInterface<Category> {
     @Override
     public Category save(Category category) {
         categoryValidator.validateCategory(category.getName());
-        categoryRepository.save(category.getName());
-        return Category.of(category.getName())
-            .withId(categoryRepository.findAll().size() + 1);
+        categoryRepository.save(category);
+        category.setId(categoryRepository.findAll().size() + 1);
+        return category;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class CategoryService implements ServiceInterface<Category> {
     @Override
     public void delete(Category category) {
         categoryValidator.validate(category.getName(), categoryRepository.findAll());
-        categoryRepository.delete(category.getName());
+        categoryRepository.delete(category);
     }
 
     public Category findByName(String name) {

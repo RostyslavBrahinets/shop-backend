@@ -74,7 +74,7 @@ public class CategoryServiceContextConfigurationTest {
         categoryService.save(Category.of(name));
 
         verify(categoryValidator, atLeast(1)).validateCategory(name);
-        verify(categoryRepository).save(name);
+        verify(categoryRepository).save(Category.of(name).withId(1));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class CategoryServiceContextConfigurationTest {
         categoryService.delete(Category.of(name));
 
         verify(categoryValidator, atLeast(1)).validate(name, categories);
-        verify(categoryRepository).delete(name);
+        verify(categoryRepository).delete(Category.of(name));
     }
 
     @TestConfiguration

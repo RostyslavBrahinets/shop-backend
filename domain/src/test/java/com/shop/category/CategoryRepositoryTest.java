@@ -1,8 +1,6 @@
 package com.shop.category;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.category.CategoryRepository;
-import com.shop.category.Category;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,7 +57,7 @@ public class CategoryRepositoryTest {
     @Test
     @DisplayName("Save category")
     void save_category() {
-        categoryRepository.save("name");
+        categoryRepository.save(Category.of("name"));
 
         var categoriesCount = fetchCategoriesCount();
 
@@ -69,8 +67,8 @@ public class CategoryRepositoryTest {
     @Test
     @DisplayName("Save multiple categories")
     void save_multiple_categories() {
-        categoryRepository.save("name1");
-        categoryRepository.save("name2");
+        categoryRepository.save(Category.of("name1"));
+        categoryRepository.save(Category.of("name2"));
 
         var categoriesCount = fetchCategoriesCount();
 
@@ -148,7 +146,7 @@ public class CategoryRepositoryTest {
     @Test
     @DisplayName("Category not deleted in case when not exists")
     void category_not_deleted_in_case_when_not_exists() {
-        assertThatCode(() -> categoryRepository.delete("name")).doesNotThrowAnyException();
+        assertThatCode(() -> categoryRepository.delete(Category.of("name"))).doesNotThrowAnyException();
     }
 
     @Test
@@ -164,7 +162,7 @@ public class CategoryRepositoryTest {
 
         assertThat(categoriesCountBeforeDeletion).isEqualTo(1);
 
-        categoryRepository.delete("name");
+        categoryRepository.delete(Category.of("name"));
 
         var categoriesCount = fetchCategoriesCount();
 

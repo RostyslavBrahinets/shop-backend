@@ -42,17 +42,17 @@ public class CategoryRepository {
             .stream().findAny();
     }
 
-    public void save(String name) {
+    public void save(Category category) {
         jdbcTemplate.update(
             "INSERT INTO category (name) VALUES (:name)",
-            Map.ofEntries(Map.entry("name", name))
+            Map.ofEntries(Map.entry("name", category.getName()))
         );
     }
 
-    public void delete(String name) {
+    public void delete(Category category) {
         jdbcTemplate.update(
             "DELETE FROM category WHERE name=:name",
-            Map.ofEntries(Map.entry("name", name))
+            Map.ofEntries(Map.entry("name", category.getName()))
         );
     }
 }
