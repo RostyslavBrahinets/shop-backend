@@ -57,6 +57,9 @@ public class ProductRepository {
         );
     }
 
+    public void update(Product product) {
+    }
+
     public void delete(Product product) {
         jdbcTemplate.update(
             "DELETE FROM product WHERE barcode=:barcode",
