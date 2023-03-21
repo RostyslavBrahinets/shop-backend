@@ -3,6 +3,7 @@ package com.shop.wallet;
 import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberRepository;
 import com.shop.configs.DatabaseConfig;
+import com.shop.user.User;
 import com.shop.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,21 +57,25 @@ public class WalletRepositoryTest {
         long adminNumberId = 1;
 
         userRepository.save(
-            firstName,
-            lastName,
-            email1,
-            phone1,
-            password,
-            adminNumberId
+            User.of(
+                firstName,
+                lastName,
+                email1,
+                phone1,
+                password,
+                adminNumberId
+            )
         );
 
         userRepository.save(
-            firstName,
-            lastName,
-            email2,
-            phone2,
-            password,
-            adminNumberId
+            User.of(
+                firstName,
+                lastName,
+                email2,
+                phone2,
+                password,
+                adminNumberId
+            )
         );
 
         walletRepository = new WalletRepository(jdbcTemplate);

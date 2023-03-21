@@ -33,52 +33,36 @@ public class UserRepository {
             .stream().findAny();
     }
 
-    public Optional<User> findByEmail(String email) {
-        return jdbcTemplate.query(
-                "SELECT * FROM \"user\" WHERE email=:email",
-                Map.ofEntries(Map.entry("email", email)),
-                new BeanPropertyRowMapper<>(User.class)
-            )
-            .stream().findAny();
-    }
-
-    public void save(
-        String firstName,
-        String lastName,
-        String email,
-        String phone,
-        String password,
-        long adminNumberId
-    ) {
+    public void save(User user) {
         jdbcTemplate.update(
             "INSERT INTO \"user\" (first_name, last_name, email, phone, password, admin_number_id)"
                 + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number_id)",
             Map.ofEntries(
-                Map.entry("first_name", firstName),
-                Map.entry("last_name", lastName),
-                Map.entry("email", email),
-                Map.entry("phone", phone),
-                Map.entry("password", password),
-                Map.entry("admin_number_id", adminNumberId)
+                Map.entry("first_name", user.getFirstName()),
+                Map.entry("last_name", user.getLastName()),
+                Map.entry("email", user.getEmail()),
+                Map.entry("phone", user.getPhone()),
+                Map.entry("password", user.getPassword()),
+                Map.entry("admin_number_id", user.getAdminNumberId())
             )
         );
     }
 
-    public void update(long id, String firstName, String lastName) {
+    public void update(User user) {
         jdbcTemplate.update(
             "UPDATE \"user\" SET first_name=:first_name, last_name=:last_name WHERE id=:id",
             Map.ofEntries(
-                Map.entry("first_name", firstName),
-                Map.entry("last_name", lastName),
-                Map.entry("id", id)
+                Map.entry("first_name", user.getFirstName()),
+                Map.entry("last_name", user.getLastName()),
+                Map.entry("id", user.getId())
             )
         );
     }
 
-    public void delete(long id) {
+    public void delete(User user) {
         jdbcTemplate.update(
             "DELETE FROM \"user\" WHERE id=:id",
-            Map.ofEntries(Map.entry("id", id))
+            Map.ofEntries(Map.entry("id", user.getId()))
         );
     }
 }

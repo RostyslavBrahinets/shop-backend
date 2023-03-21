@@ -85,7 +85,7 @@ public class UserServiceContextConfigurationTest {
 
         verify(userValidator, atLeast(1)).validate(id, users);
         verify(userValidator, atLeast(1)).validateFullName(firstName, lastName);
-        verify(userRepository).update(id, firstName, lastName);
+        verify(userRepository).update(User.of(firstName, lastName).withId(1));
     }
 
     @Test
@@ -96,7 +96,7 @@ public class UserServiceContextConfigurationTest {
         userService.delete(User.of(null, null).withId(id));
 
         verify(userValidator, atLeast(1)).validate(id, users);
-        verify(userRepository).delete(id);
+        verify(userRepository).delete(User.of(null, null).withId(1));
     }
 
     @TestConfiguration

@@ -152,6 +152,6 @@ class UserServiceTest {
     @DisplayName("User was deleted")
     void user_was_deleted() {
         userService.delete(User.of(null, null).withId(1));
-        verify(userRepository).delete(1);
+        verify(userRepository).delete(User.of(null, null).withId(1));
     }
 }

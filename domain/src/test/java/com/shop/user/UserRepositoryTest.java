@@ -65,12 +65,14 @@ public class UserRepositoryTest {
     @DisplayName("Save user")
     void save_user() {
         userRepository.save(
-            "John",
-            "Smith",
-            "test@email.com",
-            "+380000000000",
-            "password",
-            1
+            User.of(
+                "John",
+                "Smith",
+                "test@email.com",
+                "+380000000000",
+                "password",
+                1
+            )
         );
 
         var usersCount = fetchUsersCount();
@@ -82,21 +84,25 @@ public class UserRepositoryTest {
     @DisplayName("Save multiple users")
     void save_multiple_users() {
         userRepository.save(
-            "John",
-            "Smith",
-            "test1@email.com",
-            "+380000000001",
-            "password",
-            1
+            User.of(
+                "John",
+                "Smith",
+                "test1@email.com",
+                "+380000000001",
+                "password",
+                1
+            )
         );
 
         userRepository.save(
-            "John",
-            "Smith",
-            "test2@email.com",
-            "+380000000002",
-            "password",
-            2
+            User.of(
+                "John",
+                "Smith",
+                "test2@email.com",
+                "+380000000002",
+                "password",
+                2
+            )
         );
 
         var usersCount = fetchUsersCount();
@@ -258,7 +264,7 @@ public class UserRepositoryTest {
     @Test
     @DisplayName("User not deleted in case when not exists")
     void user_not_deleted_in_case_when_not_exists() {
-        assertThatCode(() -> userRepository.delete(1)).doesNotThrowAnyException();
+        assertThatCode(() -> userRepository.delete(User.of(null, null).withId(1))).doesNotThrowAnyException();
     }
 
     @Test
@@ -290,7 +296,7 @@ public class UserRepositoryTest {
 
         assertThat(usersCountBeforeDeletion).isEqualTo(1);
 
-        userRepository.delete(1);
+        userRepository.delete(User.of(null, null).withId(1));
 
         var usersCount = fetchUsersCount();
 
@@ -322,7 +328,7 @@ public class UserRepositoryTest {
                 )
             );
 
-        userRepository.update(1, "Alex", "Smith");
+        userRepository.update(User.of("Alex", "Smith").withId(1));
 
         var updatedUser = jdbcTemplate.queryForObject(
             "SELECT first_name FROM \"user\" WHERE id=:id",

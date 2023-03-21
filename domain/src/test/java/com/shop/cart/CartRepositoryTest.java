@@ -57,21 +57,25 @@ public class CartRepositoryTest {
         long adminNumberId = 1;
 
         userRepository.save(
-            firstName,
-            lastName,
-            email1,
-            phone1,
-            password,
-            adminNumberId
+            User.of(
+                firstName,
+                lastName,
+                email1,
+                phone1,
+                password,
+                adminNumberId
+            )
         );
 
         userRepository.save(
-            firstName,
-            lastName,
-            email2,
-            phone2,
-            password,
-            adminNumberId
+            User.of(
+                firstName,
+                lastName,
+                email2,
+                phone2,
+                password,
+                adminNumberId
+            )
         );
 
         cartRepository = new CartRepository(jdbcTemplate);

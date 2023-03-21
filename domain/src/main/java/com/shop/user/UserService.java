@@ -63,16 +63,7 @@ public class UserService implements ServiceInterface<User> {
 
         List<AdminNumber> adminNumbers = adminNumberService.findAll();
         adminNumberValidator.validate(user.getAdminNumberId(), adminNumbers);
-
-        userRepository.save(
-            user.getFirstName(),
-            user.getLastName(),
-            user.getEmail(),
-            user.getPhone(),
-            passwordEncoder.encode(user.getPassword()),
-            user.getAdminNumberId()
-        );
-
+        userRepository.save(user);
         return user;
     }
 
@@ -80,13 +71,13 @@ public class UserService implements ServiceInterface<User> {
     public User update(User user) {
         userValidator.validate(user.getId(), userRepository.findAll());
         userValidator.validateFullName(user.getFirstName(), user.getLastName());
-        userRepository.update(user.getId(), user.getFirstName(), user.getLastName());
+        userRepository.update(user);
         return user;
     }
 
     @Override
     public void delete(User user) {
         userValidator.validate(user.getId(), userRepository.findAll());
-        userRepository.delete(user.getId());
+        userRepository.delete(user);
     }
 }
