@@ -1,8 +1,6 @@
 package com.shop.product;
 
 import com.shop.configs.DatabaseConfig;
-import com.shop.product.ProductRepository;
-import com.shop.product.Product;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -60,12 +58,14 @@ public class ProductRepositoryTest {
     @DisplayName("Save product")
     void save_product() {
         productRepository.save(
-            "name",
-            "describe",
-            0,
-            "123",
-            true,
-            new byte[]{1, 1, 1}
+            Product.of(
+                "name",
+                "describe",
+                0,
+                "123",
+                true,
+                new byte[]{1, 1, 1}
+            )
         );
 
         var productsCount = fetchProductsCount();
@@ -77,20 +77,24 @@ public class ProductRepositoryTest {
     @DisplayName("Save multiple products")
     void save_multiple_products() {
         productRepository.save(
-            "name",
-            "describe",
-            0,
-            "123",
-            true,
-            new byte[]{1, 1, 1}
+            Product.of(
+                "name",
+                "describe",
+                0,
+                "123",
+                true,
+                new byte[]{1, 1, 1}
+            )
         );
         productRepository.save(
-            "name",
-            "describe",
-            0,
-            "456",
-            true,
-            new byte[]{1, 1, 1}
+            Product.of(
+                "name",
+                "describe",
+                0,
+                "456",
+                true,
+                new byte[]{1, 1, 1}
+            )
         );
 
         var productsCount = fetchProductsCount();
@@ -235,7 +239,7 @@ public class ProductRepositoryTest {
     @Test
     @DisplayName("Product not deleted in case when not exists")
     void product_not_deleted_in_case_when_not_exists() {
-        assertThatCode(() -> productRepository.delete("123")).doesNotThrowAnyException();
+        assertThatCode(() -> productRepository.delete(Product.of("123"))).doesNotThrowAnyException();
     }
 
     @Test
@@ -260,7 +264,7 @@ public class ProductRepositoryTest {
 
         assertThat(productsCountBeforeDeletion).isEqualTo(1);
 
-        productRepository.delete("123");
+        productRepository.delete(Product.of("123"));
 
         var productsCount = fetchProductsCount();
 

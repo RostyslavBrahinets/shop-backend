@@ -45,19 +45,11 @@ public class ProductService implements ServiceInterface<Product> {
             product.getDescribe(),
             product.getPrice(),
             product.getBarcode(),
-            productRepository.findAll());
-
-        productRepository.save(
-            product.getName(),
-            product.getDescribe(),
-            product.getPrice(),
-            product.getBarcode(),
-            product.isInStock(),
-            product.getImage()
+            productRepository.findAll()
         );
 
+        productRepository.save(product);
         product.setId(productRepository.findAll().size() + 1);
-
         return product;
     }
 
@@ -84,7 +76,7 @@ public class ProductService implements ServiceInterface<Product> {
             );
         }
 
-        productRepository.delete(product.getBarcode());
+        productRepository.delete(product);
     }
 
     public Product findByBarcode(String barcode) {

@@ -51,22 +51,27 @@ class ProductServiceTest {
         );
 
         verify(productRepository).save(
-            "name",
-            "describe",
-            100,
-            "123",
-            true,
-            new byte[]{1, 1, 1}
+            Product.of(
+                    "name",
+                    "describe",
+                    100,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1)
         );
 
-        assertThat(savedProduct).isEqualTo(new Product(
-            1,
-            "name",
-            "describe",
-            100,
-            "123",
-            true,
-            new byte[]{1, 1, 1})
+        assertThat(savedProduct).isEqualTo(
+            new Product(
+                1,
+                "name",
+                "describe",
+                100,
+                "123",
+                true,
+                new byte[]{1, 1, 1}
+            )
         );
     }
 
@@ -192,7 +197,7 @@ class ProductServiceTest {
         verify(productRepository).findByBarcode(barcode);
         verify(productCategoryRepository).findCategoryForProduct(productId);
         verify(productCategoryRepository).deleteProductFromCategory(productId, categoryId);
-        verify(productRepository).delete(barcode);
+        verify(productRepository).delete(Product.of(barcode));
     }
 
     @Test

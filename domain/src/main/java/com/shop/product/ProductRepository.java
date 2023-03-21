@@ -42,32 +42,25 @@ public class ProductRepository {
             .stream().findAny();
     }
 
-    public void save(
-        String name,
-        String describe,
-        double price,
-        String barcode,
-        boolean inStock,
-        byte[] image
-    ) {
+    public void save(Product product) {
         jdbcTemplate.update(
             "INSERT INTO product (name, describe, price, barcode, in_stock, image) "
                 + "VALUES (:name, :describe, :price, :barcode, :in_stock, :image)",
             Map.ofEntries(
-                Map.entry("name", name),
-                Map.entry("describe", describe),
-                Map.entry("price", price),
-                Map.entry("barcode", barcode),
-                Map.entry("in_stock", inStock),
-                Map.entry("image", image)
+                Map.entry("name", product.getName()),
+                Map.entry("describe", product.getDescribe()),
+                Map.entry("price", product.getPrice()),
+                Map.entry("barcode", product.getBarcode()),
+                Map.entry("in_stock", product.isInStock()),
+                Map.entry("image", product.getImage())
             )
         );
     }
 
-    public void delete(String barcode) {
+    public void delete(Product product) {
         jdbcTemplate.update(
             "DELETE FROM product WHERE barcode=:barcode",
-            Map.ofEntries(Map.entry("barcode", barcode))
+            Map.ofEntries(Map.entry("barcode", product.getBarcode()))
         );
     }
 

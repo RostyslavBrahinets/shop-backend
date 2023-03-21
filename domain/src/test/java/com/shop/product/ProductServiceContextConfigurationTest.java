@@ -92,8 +92,19 @@ public class ProductServiceContextConfigurationTest {
             )
         );
 
-        verify(productValidator, atLeast(1)).validate(name, describe, price, barcode, products);
-        verify(productRepository).save(name, describe, price, barcode, inStock, image);
+        verify(productValidator, atLeast(1))
+            .validate(name, describe, price, barcode, products);
+        verify(productRepository).save(
+            Product.of(
+                    name,
+                    describe,
+                    price,
+                    barcode,
+                    inStock,
+                    image
+                )
+                .withId(1)
+        );
     }
 
     @Test
@@ -125,7 +136,7 @@ public class ProductServiceContextConfigurationTest {
         verify(productRepository, atLeast(1)).findByBarcode(barcode);
         verify(productCategoryRepository).findCategoryForProduct(productId);
         verify(productCategoryRepository).deleteProductFromCategory(productId, categoryId);
-        verify(productRepository).delete(barcode);
+        verify(productRepository).delete(Product.of(barcode));
     }
 
     @Test
