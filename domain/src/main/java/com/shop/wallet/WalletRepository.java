@@ -1,5 +1,6 @@
 package com.shop.wallet;
 
+import com.shop.interfaces.RepositoryInterface;
 import com.shop.user.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -10,13 +11,14 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class WalletRepository {
+public class WalletRepository implements RepositoryInterface<Wallet> {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public WalletRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
     public List<Wallet> findAll() {
         return jdbcTemplate.query(
             "SELECT * FROM wallet",
@@ -24,6 +26,7 @@ public class WalletRepository {
         );
     }
 
+    @Override
     public Optional<Wallet> findById(long id) {
         return jdbcTemplate.query(
                 "SELECT * FROM wallet WHERE id=:id",
@@ -33,15 +36,7 @@ public class WalletRepository {
             .stream().findAny();
     }
 
-    public Optional<Wallet> findByUser(User user) {
-        return jdbcTemplate.query(
-                "SELECT * FROM wallet WHERE user_id=:user_id",
-                Map.ofEntries(Map.entry("user_id", user.getId())),
-                new BeanPropertyRowMapper<>(Wallet.class)
-            )
-            .stream().findAny();
-    }
-
+    @Override
     public void save(Wallet wallet) {
         jdbcTemplate.update(
             "INSERT INTO wallet (number, amount_of_money, user_id)"
@@ -54,6 +49,7 @@ public class WalletRepository {
         );
     }
 
+    @Override
     public void update(Wallet wallet) {
         jdbcTemplate.update(
             "UPDATE wallet SET amount_of_money=:amount_of_money WHERE id=:id",
@@ -64,10 +60,20 @@ public class WalletRepository {
         );
     }
 
+    @Override
     public void delete(Wallet wallet) {
         jdbcTemplate.update(
             "DELETE FROM wallet WHERE id=:id",
             Map.ofEntries(Map.entry("id", wallet.getId()))
         );
+    }
+
+    public Optional<Wallet> findByUser(User user) {
+        return jdbcTemplate.query(
+                "SELECT * FROM wallet WHERE user_id=:user_id",
+                Map.ofEntries(Map.entry("user_id", user.getId())),
+                new BeanPropertyRowMapper<>(Wallet.class)
+            )
+            .stream().findAny();
     }
 }
