@@ -1,15 +1,16 @@
 package com.shop.interfaces;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RepositoryInterface<T> {
     List<T> findAll();
 
-    T findById(long id);
+    Optional<T> findById(long id);
 
-    T save(T object);
+    void save(T object);
 
-    T update(T object);
+    void update(T object);
 
     void delete(T object);
 }
