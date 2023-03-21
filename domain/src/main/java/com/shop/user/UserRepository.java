@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -46,7 +45,7 @@ public class UserRepository implements RepositoryInterface<User> {
                 Map.entry("last_name", user.getLastName()),
                 Map.entry("email", user.getEmail()),
                 Map.entry("phone", user.getPhone()),
-                Map.entry("password", Arrays.toString(user.getPassword())),
+                Map.entry("password", String.copyValueOf(user.getPassword())),
                 Map.entry("admin_number_id", user.getAdminNumberId())
             )
         );

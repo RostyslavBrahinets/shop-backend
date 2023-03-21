@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,7 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return new User(
             Objects.requireNonNull(userService.findByEmail(email)).getEmail(),
-            Arrays.toString(userService.findByEmail(email).getPassword()),
+            String.copyValueOf(userService.findByEmail(email).getPassword()),
             grantedAuthorities
         );
     }
