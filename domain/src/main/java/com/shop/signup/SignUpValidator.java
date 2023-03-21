@@ -41,7 +41,7 @@ public class SignUpValidator {
             users
         );
 
-        adminNumberValidator.validate(
+        adminNumberValidator.validateAdminNumberForSignUp(
             adminNumber,
             adminNumbers
         );
