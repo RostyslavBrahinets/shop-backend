@@ -1,6 +1,6 @@
 package com.shop.product;
 
-import com.shop.product.Product;
+import com.shop.interfaces.RepositoryInterface;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,13 +10,14 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class ProductRepository {
+public class ProductRepository implements RepositoryInterface<Product> {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public ProductRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
     public List<Product> findAll() {
         return jdbcTemplate.query(
             "SELECT * FROM product",
@@ -24,6 +25,7 @@ public class ProductRepository {
         );
     }
 
+    @Override
     public Optional<Product> findById(long id) {
         return jdbcTemplate.query(
                 "SELECT * FROM product WHERE id=:id",
@@ -33,15 +35,7 @@ public class ProductRepository {
             .stream().findAny();
     }
 
-    public Optional<Product> findByBarcode(String barcode) {
-        return jdbcTemplate.query(
-                "SELECT * FROM product WHERE barcode=:barcode",
-                Map.ofEntries(Map.entry("barcode", barcode)),
-                new BeanPropertyRowMapper<>(Product.class)
-            )
-            .stream().findAny();
-    }
-
+    @Override
     public void save(Product product) {
         jdbcTemplate.update(
             "INSERT INTO product (name, describe, price, barcode, in_stock, image) "
@@ -57,14 +51,25 @@ public class ProductRepository {
         );
     }
 
+    @Override
     public void update(Product product) {
     }
 
+    @Override
     public void delete(Product product) {
         jdbcTemplate.update(
             "DELETE FROM product WHERE barcode=:barcode",
             Map.ofEntries(Map.entry("barcode", product.getBarcode()))
         );
+    }
+
+    public Optional<Product> findByBarcode(String barcode) {
+        return jdbcTemplate.query(
+                "SELECT * FROM product WHERE barcode=:barcode",
+                Map.ofEntries(Map.entry("barcode", barcode)),
+                new BeanPropertyRowMapper<>(Product.class)
+            )
+            .stream().findAny();
     }
 
     public void saveImageForProduct(byte[] image, long id) {
