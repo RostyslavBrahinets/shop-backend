@@ -48,6 +48,9 @@ public class AdminNumberRepository {
         );
     }
 
+    public void update(AdminNumber adminNumber) {
+    }
+
     public void delete(AdminNumber adminNumber) {
         jdbcTemplate.update(
             "DELETE FROM admin_number WHERE number=:number",
