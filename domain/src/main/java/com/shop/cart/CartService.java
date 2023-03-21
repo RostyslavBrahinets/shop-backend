@@ -64,7 +64,7 @@ public class CartService implements ServiceInterface<Cart> {
 
     public Cart findByUser(User user) {
         userValidator.validate(user.getId(), userService.findAll());
-        Optional<Cart> cart = cartRepository.findByUser(user.getId());
+        Optional<Cart> cart = cartRepository.findByUser(user);
         return cart.orElseGet(Cart::new);
     }
 }

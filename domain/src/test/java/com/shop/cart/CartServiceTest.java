@@ -90,7 +90,7 @@ class CartServiceTest {
     @Test
     @DisplayName("Cart was found by user")
     void cart_was_found_by_user() {
-        when(cartRepository.findByUser(1)).thenReturn(
+        when(cartRepository.findByUser(User.of(null, null).withId(1))).thenReturn(
             Optional.of(Cart.of(0, 0).withId(1))
         );
 

@@ -3,6 +3,7 @@ package com.shop.cart;
 import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberRepository;
 import com.shop.configs.DatabaseConfig;
+import com.shop.user.User;
 import com.shop.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -140,7 +141,7 @@ public class CartRepositoryTest {
     @Test
     @DisplayName("Cart by user was not found")
     void cart_by_user_was_not_found() {
-        Optional<Cart> cart = cartRepository.findByUser(2);
+        Optional<Cart> cart = cartRepository.findByUser(User.of(null, null).withId(2));
 
         assertThat(cart).isEmpty();
     }
@@ -159,7 +160,7 @@ public class CartRepositoryTest {
                 )
             );
 
-        Optional<Cart> cart = cartRepository.findByUser(1);
+        Optional<Cart> cart = cartRepository.findByUser(User.of(null, null).withId(1));
 
         assertThat(cart).get().isEqualTo(Cart.of(0, 1).withId(1));
     }

@@ -1,6 +1,6 @@
 package com.shop.cart;
 
-import com.shop.cart.Cart;
+import com.shop.user.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -67,5 +67,14 @@ public class CartRepository {
             "DELETE FROM cart WHERE id=:id",
             Map.ofEntries(Map.entry("id", id))
         );
+    }
+
+    public Optional<Cart> findByUser(User user) {
+        return jdbcTemplate.query(
+                "SELECT * FROM cart WHERE user_id=:user_id",
+                Map.ofEntries(Map.entry("user_id", user.getId())),
+                new BeanPropertyRowMapper<>(Cart.class)
+            )
+            .stream().findAny();
     }
 }
