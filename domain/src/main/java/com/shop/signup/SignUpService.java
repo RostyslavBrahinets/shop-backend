@@ -93,7 +93,7 @@ public class SignUpService {
             }
         }
 
-        return 0;
+        return 1;
     }
 
     private long findUserId() {
