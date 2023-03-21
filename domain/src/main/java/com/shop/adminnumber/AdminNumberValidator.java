@@ -46,4 +46,26 @@ public class AdminNumberValidator {
             throw new ValidationException("Number of AdminNumber is invalid");
         }
     }
+
+    public void validateAdminNumberForSignUp(
+        String number,
+        List<AdminNumber> adminNumbers
+    ) {
+        if (number == null) {
+            return;
+        }
+
+        validate(number, adminNumbers);
+    }
+
+    public void validateAdminNumberIdForSignUp(
+        long adminNumberId,
+        List<AdminNumber> adminNumbers
+    ) {
+        if (adminNumberId == 0) {
+            return;
+        }
+
+        validate(adminNumberId, adminNumbers);
+    }
 }
