@@ -1,5 +1,6 @@
 package com.shop.cart;
 
+import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberRepository;
 import com.shop.configs.DatabaseConfig;
 import com.shop.user.UserRepository;
@@ -41,7 +42,7 @@ public class CartRepositoryTest {
     @BeforeEach
     void setUp() {
         AdminNumberRepository adminNumberRepository = new AdminNumberRepository(jdbcTemplate);
-        adminNumberRepository.save("0");
+        adminNumberRepository.save(AdminNumber.of("0"));
 
         UserRepository userRepository = new UserRepository(jdbcTemplate);
 

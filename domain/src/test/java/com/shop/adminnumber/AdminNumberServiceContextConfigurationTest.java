@@ -74,7 +74,7 @@ public class AdminNumberServiceContextConfigurationTest {
         adminNumberService.save(AdminNumber.of(number));
 
         verify(adminNumberValidator, atLeast(1)).validateAdminNumber(number);
-        verify(adminNumberRepository).save(number);
+        verify(adminNumberRepository).save(AdminNumber.of(number));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class AdminNumberServiceContextConfigurationTest {
         adminNumberService.delete(AdminNumber.of(number));
 
         verify(adminNumberValidator, atLeast(1)).validate(number, adminNumbers);
-        verify(adminNumberRepository).delete(number);
+        verify(adminNumberRepository).delete(AdminNumber.of(number));
     }
 
     @TestConfiguration

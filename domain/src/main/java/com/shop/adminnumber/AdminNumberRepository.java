@@ -41,17 +41,17 @@ public class AdminNumberRepository {
             .stream().findAny();
     }
 
-    public void save(String number) {
+    public void save(AdminNumber adminNumber) {
         jdbcTemplate.update(
             "INSERT INTO admin_number (number) VALUES (:number)",
-            Map.ofEntries(Map.entry("number", number))
+            Map.ofEntries(Map.entry("number", adminNumber.getNumber()))
         );
     }
 
-    public void delete(String number) {
+    public void delete(AdminNumber adminNumber) {
         jdbcTemplate.update(
             "DELETE FROM admin_number WHERE number=:number",
-            Map.ofEntries(Map.entry("number", number))
+            Map.ofEntries(Map.entry("number", adminNumber.getNumber()))
         );
     }
 }

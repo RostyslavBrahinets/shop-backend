@@ -1,5 +1,6 @@
 package com.shop.user;
 
+import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberRepository;
 import com.shop.configs.DatabaseConfig;
 import org.junit.jupiter.api.AfterEach;
@@ -41,8 +42,8 @@ public class UserRepositoryTest {
         userRepository = new UserRepository(jdbcTemplate);
 
         AdminNumberRepository adminNumberRepository = new AdminNumberRepository(jdbcTemplate);
-        adminNumberRepository.save("12345678");
-        adminNumberRepository.save("87654321");
+        adminNumberRepository.save(AdminNumber.of("12345678"));
+        adminNumberRepository.save(AdminNumber.of("87654321"));
     }
 
     @AfterEach

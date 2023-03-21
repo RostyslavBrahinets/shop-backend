@@ -34,7 +34,7 @@ public class AdminNumberService implements ServiceInterface<AdminNumber> {
     @Override
     public AdminNumber save(AdminNumber adminNumber) {
         adminNumberValidator.validateAdminNumber(adminNumber.getNumber());
-        adminNumberRepository.save(adminNumber.getNumber());
+        adminNumberRepository.save(AdminNumber.of(adminNumber.getNumber()));
         return AdminNumber.of(adminNumber.getNumber()).withId(adminNumberRepository.findAll().size() + 1);
     }
 
@@ -46,7 +46,7 @@ public class AdminNumberService implements ServiceInterface<AdminNumber> {
     @Override
     public void delete(AdminNumber adminNumber) {
         adminNumberValidator.validate(adminNumber.getNumber(), adminNumberRepository.findAll());
-        adminNumberRepository.delete(adminNumber.getNumber());
+        adminNumberRepository.delete(AdminNumber.of(adminNumber.getNumber()));
     }
 
     public AdminNumber findByNumber(AdminNumber adminNumber) {

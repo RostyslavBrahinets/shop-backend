@@ -37,7 +37,7 @@ class AdminNumberServiceTest {
     void number_of_admin_was_saved_with_correct_input() {
         AdminNumber savedAdminNumber = adminNumberService.save(AdminNumber.of("12345678"));
 
-        verify(adminNumberRepository).save("12345678");
+        verify(adminNumberRepository).save(AdminNumber.of("12345678"));
 
         assertThat(savedAdminNumber).isEqualTo(new AdminNumber(1, "12345678"));
     }
@@ -94,6 +94,6 @@ class AdminNumberServiceTest {
     @DisplayName("Number of admin was deleted")
     void number_of_admin_was_deleted() {
         adminNumberService.delete(AdminNumber.of("12345678"));
-        verify(adminNumberRepository).delete("12345678");
+        verify(adminNumberRepository).delete(AdminNumber.of("12345678"));
     }
 }

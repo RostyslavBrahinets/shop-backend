@@ -57,7 +57,7 @@ public class AdminNumberRepositoryTest {
     @Test
     @DisplayName("Save number of admin")
     void save_number_of_admin() {
-        adminNumberRepository.save("12345678");
+        adminNumberRepository.save(AdminNumber.of("12345678"));
 
         var adminNumbersCount = fetchCategoriesCount();
 
@@ -67,8 +67,8 @@ public class AdminNumberRepositoryTest {
     @Test
     @DisplayName("Save multiple numbers of admins")
     void save_multiple_numbers_of_admins() {
-        adminNumberRepository.save("12345678");
-        adminNumberRepository.save("87654321");
+        adminNumberRepository.save(AdminNumber.of("12345678"));
+        adminNumberRepository.save(AdminNumber.of("87654321"));
 
         var adminNumbersCount = fetchCategoriesCount();
 
@@ -146,7 +146,7 @@ public class AdminNumberRepositoryTest {
     @Test
     @DisplayName("Number of admin not deleted in case when not exists")
     void number_of_admin_not_deleted_in_case_when_not_exists() {
-        assertThatCode(() -> adminNumberRepository.delete("12345678")).doesNotThrowAnyException();
+        assertThatCode(() -> adminNumberRepository.delete(AdminNumber.of("12345678"))).doesNotThrowAnyException();
     }
 
     @Test
@@ -162,7 +162,7 @@ public class AdminNumberRepositoryTest {
 
         assertThat(adminNumbersCountBeforeDeletion).isEqualTo(1);
 
-        adminNumberRepository.delete("12345678");
+        adminNumberRepository.delete(AdminNumber.of("12345678"));
 
         var adminNumbersCount = fetchCategoriesCount();
 
