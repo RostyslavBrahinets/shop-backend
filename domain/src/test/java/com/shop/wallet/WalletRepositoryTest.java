@@ -99,7 +99,7 @@ public class WalletRepositoryTest {
     @Test
     @DisplayName("Save wallet")
     void save_wallet() {
-        walletRepository.save("123", 0, 1);
+        walletRepository.save(Wallet.of("123", 0, 1));
 
         var walletsCount = fetchWalletsCount();
 
@@ -109,8 +109,8 @@ public class WalletRepositoryTest {
     @Test
     @DisplayName("Save multiple wallets")
     void save_multiple_wallets() {
-        walletRepository.save("123", 0, 1);
-        walletRepository.save("456", 0, 2);
+        walletRepository.save(Wallet.of("123", 0, 1));
+        walletRepository.save(Wallet.of("456", 0, 2));
 
         var walletsCount = fetchWalletsCount();
 
@@ -208,7 +208,10 @@ public class WalletRepositoryTest {
     @Test
     @DisplayName("Wallet not deleted in case when not exists")
     void wallet_not_deleted_in_case_when_not_exists() {
-        assertThatCode(() -> walletRepository.delete(1)).doesNotThrowAnyException();
+        assertThatCode(() -> walletRepository.delete(
+            Wallet.of(null, 0, 0).withId(1))
+        )
+            .doesNotThrowAnyException();
     }
 
     @Test
@@ -230,7 +233,7 @@ public class WalletRepositoryTest {
 
         assertThat(walletsCountBeforeDeletion).isEqualTo(1);
 
-        walletRepository.delete(1);
+        walletRepository.delete(Wallet.of("123", 0, 1).withId(1));
 
         var walletsCount = fetchWalletsCount();
 
@@ -252,7 +255,7 @@ public class WalletRepositoryTest {
                 )
             );
 
-        walletRepository.update(1, 100);
+        walletRepository.update(Wallet.of("123", 100, 1).withId(1));
 
         var updatedWallet = jdbcTemplate.queryForObject(
             "SELECT amount_of_money FROM wallet WHERE id=:id",

@@ -84,7 +84,7 @@ public class WalletServiceContextConfigurationTest {
 
         verify(walletValidator, atLeast(1)).validate(number, amountOfMoney);
         verify(userValidator, atLeast(1)).validate(userId, users);
-        verify(walletRepository).save(number, amountOfMoney, userId);
+        verify(walletRepository).save(Wallet.of(number, amountOfMoney, userId).withId(1));
     }
 
     @Test
@@ -93,11 +93,11 @@ public class WalletServiceContextConfigurationTest {
         long id = 1;
         double amountOfMoney = 100;
 
-        walletService.update(Wallet.of(null, amountOfMoney, 0).withId(id));
+        walletService.update(Wallet.of("", amountOfMoney, 0).withId(id));
 
         verify(walletValidator, atLeast(1)).validate(id, wallets);
         verify(walletValidator, atLeast(1)).validateAmountOfMoney(amountOfMoney);
-        verify(walletRepository).update(1, amountOfMoney);
+        verify(walletRepository).update(Wallet.of("", amountOfMoney, 0).withId(id));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class WalletServiceContextConfigurationTest {
         walletService.delete(Wallet.of(null, 0, 0).withId(id));
 
         verify(walletValidator, atLeast(1)).validate(id, wallets);
-        verify(walletRepository).delete(id);
+        verify(walletRepository).delete(Wallet.of(null, 0, 0).withId(id));
     }
 
     @TestConfiguration

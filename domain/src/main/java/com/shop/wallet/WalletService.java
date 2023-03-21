@@ -44,7 +44,7 @@ public class WalletService implements ServiceInterface<Wallet> {
     public Wallet save(Wallet wallet) {
         walletValidator.validate(wallet.getNumber(), wallet.getAmountOfMoney());
         userValidator.validate(wallet.getUserId(), userService.findAll());
-        walletRepository.save(wallet.getNumber(), wallet.getAmountOfMoney(), wallet.getUserId());
+        walletRepository.save(wallet);
         wallet.setId(walletRepository.findAll().size() + 1);
         return wallet;
     }
@@ -53,7 +53,7 @@ public class WalletService implements ServiceInterface<Wallet> {
     public Wallet update(Wallet wallet) {
         walletValidator.validate(wallet.getId(), walletRepository.findAll());
         walletValidator.validateAmountOfMoney(wallet.getAmountOfMoney());
-        walletRepository.update(wallet.getId(), wallet.getAmountOfMoney());
+        walletRepository.update(wallet);
 
         Optional<Wallet> walletOptional = walletRepository.findById(wallet.getId());
         String number = "";
@@ -68,7 +68,7 @@ public class WalletService implements ServiceInterface<Wallet> {
     @Override
     public void delete(Wallet wallet) {
         walletValidator.validate(wallet.getId(), walletRepository.findAll());
-        walletRepository.delete(wallet.getId());
+        walletRepository.delete(wallet);
     }
 
     public Wallet findByUser(User user) {

@@ -42,36 +42,32 @@ public class WalletRepository {
             .stream().findAny();
     }
 
-    public void save(
-        String number,
-        double amountOfMoney,
-        long userId
-    ) {
+    public void save(Wallet wallet) {
         jdbcTemplate.update(
             "INSERT INTO wallet (number, amount_of_money, user_id)"
                 + " VALUES (:number, :amount_of_money, :user_id)",
             Map.ofEntries(
-                Map.entry("number", number),
-                Map.entry("amount_of_money", amountOfMoney),
-                Map.entry("user_id", userId)
+                Map.entry("number", wallet.getNumber()),
+                Map.entry("amount_of_money", wallet.getAmountOfMoney()),
+                Map.entry("user_id", wallet.getUserId())
             )
         );
     }
 
-    public void update(long id, double amountOfMoney) {
+    public void update(Wallet wallet) {
         jdbcTemplate.update(
             "UPDATE wallet SET amount_of_money=:amount_of_money WHERE id=:id",
             Map.ofEntries(
-                Map.entry("amount_of_money", amountOfMoney),
-                Map.entry("id", id)
+                Map.entry("amount_of_money", wallet.getAmountOfMoney()),
+                Map.entry("id", wallet.getId())
             )
         );
     }
 
-    public void delete(long id) {
+    public void delete(Wallet wallet) {
         jdbcTemplate.update(
             "DELETE FROM wallet WHERE id=:id",
-            Map.ofEntries(Map.entry("id", id))
+            Map.ofEntries(Map.entry("id", wallet.getId()))
         );
     }
 }
