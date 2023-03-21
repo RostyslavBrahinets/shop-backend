@@ -49,6 +49,9 @@ public class CategoryRepository {
         );
     }
 
+    public void update(Category category) {
+    }
+
     public void delete(Category category) {
         jdbcTemplate.update(
             "DELETE FROM category WHERE name=:name",
