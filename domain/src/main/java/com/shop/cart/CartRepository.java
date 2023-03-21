@@ -1,5 +1,6 @@
 package com.shop.cart;
 
+import com.shop.interfaces.RepositoryInterface;
 import com.shop.user.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -10,13 +11,14 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class CartRepository {
+public class CartRepository implements RepositoryInterface<Cart> {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public CartRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
     public List<Cart> findAll() {
         return jdbcTemplate.query(
             "SELECT * FROM cart",
@@ -24,6 +26,7 @@ public class CartRepository {
         );
     }
 
+    @Override
     public Optional<Cart> findById(long id) {
         return jdbcTemplate.query(
                 "SELECT * FROM cart WHERE id=:id",
@@ -33,6 +36,7 @@ public class CartRepository {
             .stream().findAny();
     }
 
+    @Override
     public void save(Cart cart) {
         jdbcTemplate.update(
             "INSERT INTO cart (total_cost, user_id) VALUES (:total_cost, :user_id)",
@@ -43,6 +47,7 @@ public class CartRepository {
         );
     }
 
+    @Override
     public void update(Cart cart) {
         jdbcTemplate.update(
             "UPDATE cart SET total_cost=:total_cost WHERE id=:id",
@@ -53,6 +58,7 @@ public class CartRepository {
         );
     }
 
+    @Override
     public void delete(Cart cart) {
         jdbcTemplate.update(
             "DELETE FROM cart WHERE id=:id",
