@@ -27,7 +27,7 @@ public class SignUpValidator {
         String lastName,
         String email,
         String phone,
-        String password,
+        char[] password,
         String adminNumber,
         List<User> users,
         List<AdminNumber> adminNumbers

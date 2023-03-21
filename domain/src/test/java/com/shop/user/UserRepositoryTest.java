@@ -70,7 +70,7 @@ public class UserRepositoryTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+        new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 1
             )
         );
@@ -89,7 +89,7 @@ public class UserRepositoryTest {
                 "Smith",
                 "test1@email.com",
                 "+380000000001",
-                "password",
+                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 1
             )
         );
@@ -100,7 +100,7 @@ public class UserRepositoryTest {
                 "Smith",
                 "test2@email.com",
                 "+380000000002",
-                "password",
+                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 2
             )
         );
@@ -151,7 +151,7 @@ public class UserRepositoryTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 1
             ).withId(1));
     }
@@ -197,7 +197,7 @@ public class UserRepositoryTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 1
             ).withId(1));
     }
@@ -246,7 +246,7 @@ public class UserRepositoryTest {
                     "Smith",
                     "test1@email.com",
                     "+380000000001",
-                    "password",
+                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     1
                 ).withId(1),
                 User.of(
@@ -254,7 +254,7 @@ public class UserRepositoryTest {
                     "Smith",
                     "test2@email.com",
                     "+380000000002",
-                    "password",
+                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     2
                 ).withId(2)
             )

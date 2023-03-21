@@ -25,7 +25,7 @@ public class SignUpController {
             signUpDto.lastName(),
             signUpDto.email(),
             signUpDto.phone(),
-            signUpDto.password(),
+            signUpDto.password().toCharArray(),
             signUpDto.adminNumber()
         );
 

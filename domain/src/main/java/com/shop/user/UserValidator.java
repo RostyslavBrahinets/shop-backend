@@ -2,7 +2,6 @@ package com.shop.user;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.user.User;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class UserValidator {
         String lastName,
         String email,
         String phone,
-        String password,
+        char[] password,
         List<User> users
     ) {
         if (firstName == null || firstName.isBlank()) {
@@ -30,7 +29,7 @@ public class UserValidator {
             throw new ValidationException("Phone is invalid");
         } else if (isPhoneAlreadyInUse(phone, users)) {
             throw new ValidationException("Phone is already in use");
-        } else if (password == null || password.isBlank()) {
+        } else if (password == null || password.length == 0) {
             throw new ValidationException("Password is invalid");
         }
     }

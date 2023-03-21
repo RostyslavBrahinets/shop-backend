@@ -1,8 +1,8 @@
 package com.shop.security;
 
 import com.shop.role.Role;
-import com.shop.userrole.UserRoleService;
 import com.shop.user.UserService;
+import com.shop.userrole.UserRoleService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return new User(
             Objects.requireNonNull(userService.findByEmail(email)).getEmail(),
-            userService.findByEmail(email).getPassword(),
+            Arrays.toString(userService.findByEmail(email).getPassword()),
             grantedAuthorities
         );
     }

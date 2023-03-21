@@ -55,7 +55,7 @@ class MainViewControllerTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 2
             )
         );
@@ -80,7 +80,7 @@ class MainViewControllerTest {
                     "admin",
                     "admin",
                     "",
-                    "password",
+                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     1
                 )
             );

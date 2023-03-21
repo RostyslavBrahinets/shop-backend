@@ -1,13 +1,13 @@
 package com.shop.productscarts;
 
-import com.shop.report.ReportDto;
 import com.shop.cart.Cart;
-import com.shop.user.User;
-import com.shop.product.Product;
-import com.shop.wallet.Wallet;
-import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.cart.CartService;
+import com.shop.product.Product;
+import com.shop.report.ReportDto;
+import com.shop.security.SignInPasswordAuthenticationProvider;
+import com.shop.user.User;
 import com.shop.user.UserService;
+import com.shop.wallet.Wallet;
 import com.shop.wallet.WalletService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,7 +64,7 @@ class ProductsCartsControllerTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    "password",
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     2
                 )
             );
@@ -106,7 +106,7 @@ class ProductsCartsControllerTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    "password",
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     2
                 )
             );
@@ -146,7 +146,7 @@ class ProductsCartsControllerTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    "password",
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     2
                 )
             );
@@ -171,7 +171,7 @@ class ProductsCartsControllerTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    "password",
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     2
                 )
             );
@@ -213,7 +213,7 @@ class ProductsCartsControllerTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    "password",
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     2
                 )
             );

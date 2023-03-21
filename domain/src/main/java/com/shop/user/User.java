@@ -2,6 +2,7 @@ package com.shop.user;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class User implements Serializable {
@@ -12,7 +13,7 @@ public class User implements Serializable {
     private String lastName;
     private String email;
     private String phone;
-    private String password;
+    private char[] password;
     private long adminNumberId;
 
     public User() {
@@ -34,7 +35,7 @@ public class User implements Serializable {
         String lastName,
         String email,
         String phone,
-        String password,
+        char[] password,
         long adminNumberId
     ) {
         this(id, firstName, lastName);
@@ -49,7 +50,7 @@ public class User implements Serializable {
         String lastName,
         String email,
         String phone,
-        String password,
+        char[] password,
         long adminNumberId
     ) {
         return new User(
@@ -126,11 +127,11 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    public String getPassword() {
+    public char[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(char[] password) {
         this.password = password;
     }
 
@@ -152,7 +153,7 @@ public class User implements Serializable {
             && Objects.equals(lastName, that.lastName)
             && Objects.equals(email, that.email)
             && Objects.equals(phone, that.phone)
-            && Objects.equals(password, that.password)
+            && Arrays.equals(password, that.password)
             && adminNumberId == that.adminNumberId;
     }
 
@@ -164,7 +165,7 @@ public class User implements Serializable {
             lastName,
             email,
             phone,
-            password,
+            Arrays.hashCode(password),
             adminNumberId
         );
     }

@@ -2,9 +2,6 @@ package com.shop.user;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.user.User;
-import com.shop.user.UserRepository;
-import com.shop.user.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +37,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -56,7 +53,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -72,7 +69,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -88,7 +85,7 @@ public class UserValidatorTest {
                 null,
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -104,7 +101,7 @@ public class UserValidatorTest {
                 "",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -121,7 +118,7 @@ public class UserValidatorTest {
                 "Smith",
                 null,
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -137,7 +134,7 @@ public class UserValidatorTest {
                 "Smith",
                 "",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -153,7 +150,7 @@ public class UserValidatorTest {
                 "Smith",
                 "@email.com",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of())
         );
     }
@@ -168,7 +165,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test.email.com",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -184,7 +181,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test@email",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -200,7 +197,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test@.com",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -216,7 +213,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 1
             )
         );
@@ -230,7 +227,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 users
             )
         );
@@ -246,7 +243,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test@email.com",
                 null,
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -262,7 +259,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test@email.com",
                 "",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -278,7 +275,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test@email.com",
                 "380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -294,7 +291,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test@email.com",
                 "+380",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -326,7 +323,7 @@ public class UserValidatorTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "",
+                new char[]{},
                 List.of()
             )
         );
@@ -340,7 +337,7 @@ public class UserValidatorTest {
             "Smith",
             "test@email.com",
             "+380000000000",
-            "password",
+            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
             1
         ).withId(1);
 
@@ -362,7 +359,7 @@ public class UserValidatorTest {
             "Smith",
             "test@email.com",
             null,
-            "password",
+            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
             1
         ).withId(1);
 
@@ -385,7 +382,7 @@ public class UserValidatorTest {
             "Smith",
             "test@email.com",
             "",
-            "password",
+            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
             1
         ).withId(1);
 
@@ -408,7 +405,7 @@ public class UserValidatorTest {
             "Smith",
             "test@email.com",
             "380000000000",
-            "password",
+            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
             1
         ).withId(1);
 
@@ -431,7 +428,7 @@ public class UserValidatorTest {
             "Smith",
             "test@email.com",
             "+380",
-            "password",
+            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
             1
         ).withId(1);
 
@@ -455,7 +452,7 @@ public class UserValidatorTest {
             "Smith",
             "test@email.com",
             "+380000000000",
-            "password",
+            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
             1
         ));
 

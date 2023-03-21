@@ -53,7 +53,7 @@ class ProfileViewControllerTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    "password",
+                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     2
                 )
             );
@@ -77,7 +77,7 @@ class ProfileViewControllerTest {
                     "admin",
                     "admin",
                     "",
-                    "password",
+                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     1
                 )
             );
@@ -110,7 +110,7 @@ class ProfileViewControllerTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    "password",
+                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     2
                 )
             );
@@ -134,7 +134,7 @@ class ProfileViewControllerTest {
                     "admin",
                     "admin",
                     "",
-                    "password",
+                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     1
                 )
             );

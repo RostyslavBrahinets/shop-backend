@@ -43,7 +43,7 @@ public class SignUpServiceContextConfigurationTest {
         String lastName = "Smith";
         String email = "test@email.com";
         String phone = "+380000000000";
-        String password = "password";
+        char[] password = {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
         String adminNumber = "12345678";
         List<User> users = List.of();
         List<AdminNumber> adminNumbers = List.of();

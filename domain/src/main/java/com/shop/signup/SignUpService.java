@@ -50,7 +50,7 @@ public class SignUpService {
         String lastName,
         String email,
         String phone,
-        String password,
+        char[] password,
         String adminNumber
     ) throws StripeException {
         boolean validData = signUpValidator.isValidData(

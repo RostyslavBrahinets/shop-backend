@@ -40,7 +40,7 @@ public class SignUpValidatorTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 List.of()
             )
         );
@@ -58,7 +58,7 @@ public class SignUpValidatorTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 "12345678",
                 List.of(),
                 List.of(AdminNumber.of("12345678").withId(1))

@@ -53,7 +53,7 @@ public class WalletRepositoryTest {
         String phone1 = "+380000000001";
         String email2 = "test2@email.com";
         String phone2 = "+380000000002";
-        String password = "password";
+        char[] password = {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
         long adminNumberId = 1;
 
         userRepository.save(

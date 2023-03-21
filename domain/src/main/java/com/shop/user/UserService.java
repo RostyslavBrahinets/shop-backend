@@ -7,6 +7,7 @@ import com.shop.interfaces.ServiceInterface;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,9 +58,11 @@ public class UserService implements ServiceInterface<User> {
             user.getLastName(),
             user.getEmail(),
             user.getPhone(),
-            passwordEncoder.encode(user.getPassword()),
+            user.getPassword(),
             userRepository.findAll()
         );
+
+        user.setPassword(passwordEncoder.encode(Arrays.toString(user.getPassword())).toCharArray());
 
         List<AdminNumber> adminNumbers = adminNumberService.findAll();
         adminNumberValidator.validate(user.getAdminNumberId(), adminNumbers);

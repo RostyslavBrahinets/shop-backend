@@ -64,7 +64,7 @@ class UserServiceTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    "password",
+                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     1
                 ).withId(1)
             )
@@ -80,7 +80,7 @@ class UserServiceTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    "password",
+                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     1
                 )
             )
@@ -97,7 +97,7 @@ class UserServiceTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    "password",
+                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     1
                 ).withId(1)
             )
@@ -111,7 +111,7 @@ class UserServiceTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 1
             )
         );
@@ -127,7 +127,7 @@ class UserServiceTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    "password",
+                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     1
                 ).withId(1)
             )
@@ -142,7 +142,7 @@ class UserServiceTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                "password",
+                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 1
             )
         );
