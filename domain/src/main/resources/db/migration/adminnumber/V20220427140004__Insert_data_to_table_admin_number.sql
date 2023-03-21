@@ -1,3 +1,3 @@
 INSERT INTO admin_number (number)
-VALUES ('89258371'),
-       ('89258372');
+VALUES ('0'),
+       ('89258371');
