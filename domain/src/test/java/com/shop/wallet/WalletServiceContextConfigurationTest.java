@@ -70,7 +70,7 @@ public class WalletServiceContextConfigurationTest {
         walletService.findByUser(User.of(null, null).withId(userId));
 
         verify(userValidator, atLeast(1)).validate(userId, users);
-        verify(walletRepository).findByUser(1);
+        verify(walletRepository).findByUser(User.of(null, null).withId(userId));
     }
 
     @Test

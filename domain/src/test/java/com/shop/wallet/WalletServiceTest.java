@@ -90,7 +90,7 @@ class WalletServiceTest {
     @Test
     @DisplayName("Wallet was found by user")
     void wallet_was_found_by_user() {
-        when(walletRepository.findByUser(1)).thenReturn(
+        when(walletRepository.findByUser(User.of(null, null).withId(1))).thenReturn(
             Optional.of(Wallet.of("123", 0, 0).withId(1))
         );
 

@@ -1,6 +1,6 @@
 package com.shop.wallet;
 
-import com.shop.wallet.Wallet;
+import com.shop.user.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -33,10 +33,10 @@ public class WalletRepository {
             .stream().findAny();
     }
 
-    public Optional<Wallet> findByUser(long userId) {
+    public Optional<Wallet> findByUser(User user) {
         return jdbcTemplate.query(
                 "SELECT * FROM wallet WHERE user_id=:user_id",
-                Map.ofEntries(Map.entry("user_id", userId)),
+                Map.ofEntries(Map.entry("user_id", user.getId())),
                 new BeanPropertyRowMapper<>(Wallet.class)
             )
             .stream().findAny();

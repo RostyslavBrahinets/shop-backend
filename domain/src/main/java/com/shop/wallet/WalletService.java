@@ -73,7 +73,7 @@ public class WalletService implements ServiceInterface<Wallet> {
 
     public Wallet findByUser(User user) {
         userValidator.validate(user.getId(), userService.findAll());
-        Optional<Wallet> wallet = walletRepository.findByUser(user.getId());
+        Optional<Wallet> wallet = walletRepository.findByUser(user);
         return wallet.orElseGet(Wallet::new);
     }
 }

@@ -148,7 +148,7 @@ public class WalletRepositoryTest {
     @Test
     @DisplayName("Wallet by user was not found")
     void wallet_by_user_was_not_found() {
-        Optional<Wallet> wallet = walletRepository.findByUser(1);
+        Optional<Wallet> wallet = walletRepository.findByUser(User.of(null, null).withId(1));
 
         assertThat(wallet).isEmpty();
     }
@@ -168,7 +168,7 @@ public class WalletRepositoryTest {
                 )
             );
 
-        Optional<Wallet> wallet = walletRepository.findByUser(1);
+        Optional<Wallet> wallet = walletRepository.findByUser(User.of(null, null).withId(1));
 
         assertThat(wallet).get().isEqualTo(Wallet.of("123", 0, 1).withId(1));
     }
