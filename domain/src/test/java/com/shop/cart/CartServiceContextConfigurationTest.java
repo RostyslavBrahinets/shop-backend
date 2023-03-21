@@ -77,7 +77,7 @@ public class CartServiceContextConfigurationTest {
 
         verify(cartValidator, atLeast(1)).validate(totalCost);
         verify(userValidator, atLeast(1)).validate(userId, users);
-        verify(cartRepository).save(totalCost, userId);
+        verify(cartRepository).save(Cart.of(totalCost, userId).withId(1));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class CartServiceContextConfigurationTest {
 
         verify(cartValidator, atLeast(1)).validate(id);
         verify(cartValidator, atLeast(1)).validate(totalCost);
-        verify(cartRepository).update(1, totalCost);
+        verify(cartRepository).update(Cart.of(totalCost, 0).withId(id));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class CartServiceContextConfigurationTest {
         cartService.delete(Cart.of(0, 0).withId(id));
 
         verify(cartValidator, atLeast(1)).validate(id);
-        verify(cartRepository).delete(id);
+        verify(cartRepository).delete(Cart.of(0, 0).withId(id));
     }
 
     @TestConfiguration

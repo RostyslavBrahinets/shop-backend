@@ -33,39 +33,30 @@ public class CartRepository {
             .stream().findAny();
     }
 
-    public Optional<Cart> findByUser(long userId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM cart WHERE user_id=:user_id",
-                Map.ofEntries(Map.entry("user_id", userId)),
-                new BeanPropertyRowMapper<>(Cart.class)
-            )
-            .stream().findAny();
-    }
-
-    public void save(double totalCost, long userId) {
+    public void save(Cart cart) {
         jdbcTemplate.update(
             "INSERT INTO cart (total_cost, user_id) VALUES (:total_cost, :user_id)",
             Map.ofEntries(
-                Map.entry("total_cost", totalCost),
-                Map.entry("user_id", userId)
+                Map.entry("total_cost", cart.getTotalCost()),
+                Map.entry("user_id", cart.getUserId())
             )
         );
     }
 
-    public void update(long id, double totalCost) {
+    public void update(Cart cart) {
         jdbcTemplate.update(
             "UPDATE cart SET total_cost=:total_cost WHERE id=:id",
             Map.ofEntries(
-                Map.entry("total_cost", totalCost),
-                Map.entry("id", id)
+                Map.entry("total_cost", cart.getTotalCost()),
+                Map.entry("id", cart.getId())
             )
         );
     }
 
-    public void delete(long id) {
+    public void delete(Cart cart) {
         jdbcTemplate.update(
             "DELETE FROM cart WHERE id=:id",
-            Map.ofEntries(Map.entry("id", id))
+            Map.ofEntries(Map.entry("id", cart.getId()))
         );
     }
 

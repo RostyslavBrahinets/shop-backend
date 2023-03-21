@@ -44,22 +44,23 @@ public class CartService implements ServiceInterface<Cart> {
     public Cart save(Cart cart) {
         cartValidator.validate(cart.getTotalCost());
         userValidator.validate(cart.getUserId(), userService.findAll());
-        cartRepository.save(cart.getTotalCost(), cart.getUserId());
-        return Cart.of(cart.getTotalCost(), 0).withId(cartRepository.findAll().size() + 1);
+        cartRepository.save(cart);
+        cart.setId(cartRepository.findAll().size() + 1);
+        return cart;
     }
 
     @Override
     public Cart update(Cart cart) {
         cartValidator.validate(cart.getId());
         cartValidator.validate(cart.getTotalCost());
-        cartRepository.update(cart.getId(), cart.getTotalCost());
-        return Cart.of(cart.getTotalCost(), 0).withId(cart.getId());
+        cartRepository.update(cart);
+        return cart;
     }
 
     @Override
     public void delete(Cart cart) {
         cartValidator.validate(cart.getId());
-        cartRepository.delete(cart.getId());
+        cartRepository.delete(cart);
     }
 
     public Cart findByUser(User user) {

@@ -44,11 +44,11 @@ class CartServiceTest {
     @Test
     @DisplayName("Cart was saved for with correct input")
     void cart_was_saved_with_correct_input() {
-        Cart savedCart = cartService.save(Cart.of(0, 1));
+        Cart savedCart = cartService.save(Cart.of(0, 1).withId(1));
 
-        verify(cartRepository).save(0, 1);
+        verify(cartRepository).save(Cart.of(0, 1).withId(1));
 
-        assertThat(savedCart).isEqualTo(new Cart(1, 0, 0));
+        assertThat(savedCart).isEqualTo(new Cart(1, 0, 1));
     }
 
     @Test
@@ -103,6 +103,6 @@ class CartServiceTest {
     @DisplayName("Cart was deleted")
     void cart_was_deleted() {
         cartService.delete(Cart.of(0, 0).withId(1));
-        verify(cartRepository).delete(1);
+        verify(cartRepository).delete(Cart.of(0, 0).withId(1));
     }
 }

@@ -95,7 +95,7 @@ public class CartRepositoryTest {
     @Test
     @DisplayName("Save cart")
     void save_cart() {
-        cartRepository.save(0, 1);
+        cartRepository.save(Cart.of(0, 1));
 
         var cartsCount = fetchCartsCount();
 
@@ -105,8 +105,8 @@ public class CartRepositoryTest {
     @Test
     @DisplayName("Save multiple carts")
     void save_multiple_carts() {
-        cartRepository.save(0, 1);
-        cartRepository.save(0, 2);
+        cartRepository.save(Cart.of(0, 1));
+        cartRepository.save(Cart.of(0, 2));
 
         var cartsCount = fetchCartsCount();
 
@@ -198,7 +198,7 @@ public class CartRepositoryTest {
     @Test
     @DisplayName("Cart not deleted in case when not exists")
     void cart_not_deleted_in_case_when_not_exists() {
-        assertThatCode(() -> cartRepository.delete(1)).doesNotThrowAnyException();
+        assertThatCode(() -> cartRepository.delete(Cart.of(0, 0).withId(1))).doesNotThrowAnyException();
     }
 
     @Test
@@ -219,7 +219,7 @@ public class CartRepositoryTest {
 
         assertThat(cartsCountBeforeDeletion).isEqualTo(1);
 
-        cartRepository.delete(1);
+        cartRepository.delete(Cart.of(0, 1).withId(1));
 
         var cartsCount = fetchCartsCount();
 
@@ -240,7 +240,7 @@ public class CartRepositoryTest {
                 )
             );
 
-        cartRepository.update(1, 100);
+        cartRepository.update(Cart.of(100, 1).withId(1));
 
         var updatedCart = jdbcTemplate.queryForObject(
             "SELECT total_cost FROM cart WHERE id=:id",
