@@ -25,12 +25,12 @@ public class WalletController {
     }
 
     @GetMapping
-    public List<Wallet> findAllWallets() {
+    public List<Wallet> findAll() {
         return walletService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Wallet findByIdWallet(@PathVariable long id) throws StripeException {
+    public Wallet findById(@PathVariable long id) throws StripeException {
         Wallet wallet = walletService.findById(id);
         Optional<Customer> customer = stripePayment
             .findByIdCustomer(walletService.findById(id).getNumber());
@@ -57,7 +57,7 @@ public class WalletController {
     }
 
     @PostMapping
-    public Wallet saveWallet(
+    public Wallet save(
         @RequestBody Wallet wallet
     ) {
         return walletService.save(
@@ -71,7 +71,7 @@ public class WalletController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteWallet(@PathVariable int id) {
+    public void delete(@PathVariable int id) {
         walletService.delete(Wallet.of(null, 0, 0).withId(id));
     }
 }

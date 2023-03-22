@@ -15,22 +15,22 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> findAllCategories() {
+    public List<Category> findAll() {
         return categoryService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Category findByIdCategory(@PathVariable long id) {
+    public Category findById(@PathVariable long id) {
         return categoryService.findById(id);
     }
 
     @PostMapping
-    public Category saveCategory(@RequestBody Category category) {
+    public Category save(@RequestBody Category category) {
         return categoryService.save(Category.of(category.getName()));
     }
 
     @PostMapping("/{name}")
-    public String deleteCategory(@PathVariable String name) {
+    public String delete(@PathVariable String name) {
         categoryService.delete(Category.of(name));
         return "Category Successfully Deleted";
     }

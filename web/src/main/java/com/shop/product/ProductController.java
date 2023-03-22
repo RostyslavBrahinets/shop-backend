@@ -23,17 +23,17 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> findAllProducts() {
+    public List<Product> findAll() {
         return productService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Product findByIdProduct(@PathVariable long id) {
+    public Product findById(@PathVariable long id) {
         return productService.findById(id);
     }
 
     @PostMapping
-    public Product saveProduct(@RequestBody Product product) throws IOException {
+    public Product save(@RequestBody Product product) throws IOException {
         if (product.getImage().length > 0) {
             return productService.save(
                 Product.of(
@@ -69,7 +69,7 @@ public class ProductController {
     }
 
     @PostMapping("/{barcode}")
-    public String deleteProduct(@PathVariable String barcode) {
+    public String delete(@PathVariable String barcode) {
         productService.delete(Product.of(barcode));
         return "Product Successfully Deleted";
     }

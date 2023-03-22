@@ -16,23 +16,23 @@ public class CartController {
     }
 
     @GetMapping
-    public List<Cart> findAllCarts() {
+    public List<Cart> findAll() {
         return cartService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Cart findByIdCart(@PathVariable long id) {
+    public Cart findById(@PathVariable long id) {
         return cartService.findById(id);
     }
 
     @PostMapping
-    public Cart saveCart(@RequestBody Cart cart) {
+    public Cart save(@RequestBody Cart cart) {
         return cartService.save(cart);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCart(@PathVariable long id) {
+    public void delete(@PathVariable long id) {
         cartService.delete(Cart.of(0, 0).withId(id));
     }
 }
