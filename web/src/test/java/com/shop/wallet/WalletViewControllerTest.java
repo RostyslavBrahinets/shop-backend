@@ -57,7 +57,7 @@ class WalletViewControllerTest {
                     "test@email.com",
                     "+380000000000",
                     new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    2
+                    null
                 )
             );
 
@@ -85,7 +85,7 @@ class WalletViewControllerTest {
                     "admin",
                     "",
                     new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    1
+                    null
                 )
             );
 

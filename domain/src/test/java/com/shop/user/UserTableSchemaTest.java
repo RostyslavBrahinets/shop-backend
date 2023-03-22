@@ -44,12 +44,12 @@ public class UserTableSchemaTest {
         params.addValue("email", "test@email.com");
         params.addValue("phone", "+380000000000");
         params.addValue("password", "password");
-        params.addValue("admin_number_id", 1);
+        params.addValue("admin_number", "12345678");
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO \"user\"(first_name, last_name, email, phone, password, admin_number_id) "
-                    + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number_id)",
+                "INSERT INTO \"user\"(first_name, last_name, email, phone, password, admin_number) "
+                    + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number)",
                 params
             )
         )
@@ -65,12 +65,12 @@ public class UserTableSchemaTest {
         params.addValue("email", "test@email.com");
         params.addValue("phone", "+380000000000");
         params.addValue("password", "password");
-        params.addValue("admin_number_id", 1);
+        params.addValue("admin_number", "12345678");
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO \"user\"(first_name, last_name, email, phone, password, admin_number_id) "
-                    + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number_id)",
+                "INSERT INTO \"user\"(first_name, last_name, email, phone, password, admin_number) "
+                    + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number)",
                 params
             )
         )
@@ -86,12 +86,12 @@ public class UserTableSchemaTest {
         params.addValue("email", null);
         params.addValue("phone", "+380000000000");
         params.addValue("password", "password");
-        params.addValue("admin_number_id", 1);
+        params.addValue("admin_number", "12345678");
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO \"user\"(first_name, last_name, email, phone, password, admin_number_id) "
-                    + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number_id)",
+                "INSERT INTO \"user\"(first_name, last_name, email, phone, password, admin_number) "
+                    + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number)",
                 params
             )
         )
@@ -107,12 +107,12 @@ public class UserTableSchemaTest {
         params.addValue("email", "test@email.com");
         params.addValue("phone", null);
         params.addValue("password", "password");
-        params.addValue("admin_number_id", 1);
+        params.addValue("admin_number", "12345678");
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO \"user\"(first_name, last_name, email, phone, password, admin_number_id) "
-                    + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number_id)",
+                "INSERT INTO \"user\"(first_name, last_name, email, phone, password, admin_number) "
+                    + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number)",
                 params
             )
         )
@@ -128,12 +128,12 @@ public class UserTableSchemaTest {
         params.addValue("email", "test@email.com");
         params.addValue("phone", "+380000000000");
         params.addValue("password", null);
-        params.addValue("admin_number_id", 1);
+        params.addValue("admin_number", "12345678");
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO \"user\"(first_name, last_name, email, phone, password, admin_number_id) "
-                    + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number_id)",
+                "INSERT INTO \"user\"(first_name, last_name, email, phone, password, admin_number) "
+                    + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number)",
                 params
             )
         )

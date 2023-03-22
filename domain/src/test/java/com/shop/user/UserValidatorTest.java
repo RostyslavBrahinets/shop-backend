@@ -214,7 +214,7 @@ public class UserValidatorTest {
                 "test@email.com",
                 "+380000000000",
                 new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                1
+                "12345678"
             )
         );
 
@@ -338,7 +338,7 @@ public class UserValidatorTest {
             "test@email.com",
             "+380000000000",
             new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            1
+            "12345678"
         ).withId(1);
 
         when(userRepository.findById(1))
@@ -360,7 +360,7 @@ public class UserValidatorTest {
             "test@email.com",
             null,
             new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            1
+            "12345678"
         ).withId(1);
 
         when(userRepository.findById(1))
@@ -383,7 +383,7 @@ public class UserValidatorTest {
             "test@email.com",
             "",
             new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            1
+            "12345678"
         ).withId(1);
 
         when(userRepository.findById(1))
@@ -406,7 +406,7 @@ public class UserValidatorTest {
             "test@email.com",
             "380000000000",
             new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            1
+            "12345678"
         ).withId(1);
 
         when(userRepository.findById(1))
@@ -429,7 +429,7 @@ public class UserValidatorTest {
             "test@email.com",
             "+380",
             new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            1
+            "12345678"
         ).withId(1);
 
         when(userRepository.findById(1))
@@ -453,7 +453,7 @@ public class UserValidatorTest {
             "test@email.com",
             "+380000000000",
             new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            1
+            "12345678"
         ));
 
         when(userRepository.findAll()).thenReturn(users);

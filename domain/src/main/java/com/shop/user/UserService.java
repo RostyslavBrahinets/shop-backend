@@ -64,7 +64,7 @@ public class UserService implements ServiceInterface<User> {
         user.setPassword(passwordEncoder.encode(String.copyValueOf(user.getPassword())).toCharArray());
 
         List<AdminNumber> adminNumbers = adminNumberService.findAll();
-        adminNumberValidator.validateAdminNumberIdForSignUp(user.getAdminNumberId(), adminNumbers);
+        adminNumberValidator.validateAdminNumberForSignUp(user.getAdminNumber(), adminNumbers);
         userRepository.save(user);
         return user;
     }

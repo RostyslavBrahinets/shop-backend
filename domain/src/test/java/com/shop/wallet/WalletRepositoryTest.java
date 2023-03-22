@@ -54,7 +54,7 @@ public class WalletRepositoryTest {
         String email2 = "test2@email.com";
         String phone2 = "+380000000002";
         char[] password = {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        long adminNumberId = 1;
+        String adminNumber = "12345678";
 
         userRepository.save(
             User.of(
@@ -63,7 +63,7 @@ public class WalletRepositoryTest {
                 email1,
                 phone1,
                 password,
-                adminNumberId
+                adminNumber
             )
         );
 
@@ -74,7 +74,7 @@ public class WalletRepositoryTest {
                 email2,
                 phone2,
                 password,
-                adminNumberId
+                adminNumber
             )
         );
 

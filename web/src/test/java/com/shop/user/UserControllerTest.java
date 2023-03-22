@@ -1,10 +1,7 @@
 package com.shop.user;
 
 import com.shop.exceptions.NotFoundException;
-import com.shop.user.User;
 import com.shop.security.SignInPasswordAuthenticationProvider;
-import com.shop.user.UserController;
-import com.shop.user.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +47,8 @@ class UserControllerTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    1
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    "12345678"
                 )
             )
         );
@@ -96,8 +93,8 @@ class UserControllerTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    1
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    "12345678"
                 )
             );
 

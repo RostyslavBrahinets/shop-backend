@@ -38,15 +38,15 @@ public class UserRepository implements RepositoryInterface<User> {
     @Override
     public void save(User user) {
         jdbcTemplate.update(
-            "INSERT INTO \"user\" (first_name, last_name, email, phone, password, admin_number_id)"
-                + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number_id)",
+            "INSERT INTO \"user\" (first_name, last_name, email, phone, password, admin_number)"
+                + "VALUES (:first_name, :last_name, :email, :phone, :password, :admin_number)",
             Map.ofEntries(
                 Map.entry("first_name", user.getFirstName()),
                 Map.entry("last_name", user.getLastName()),
                 Map.entry("email", user.getEmail()),
                 Map.entry("phone", user.getPhone()),
                 Map.entry("password", String.copyValueOf(user.getPassword())),
-                Map.entry("admin_number_id", user.getAdminNumberId())
+                Map.entry("admin_number", user.getAdminNumber())
             )
         );
     }

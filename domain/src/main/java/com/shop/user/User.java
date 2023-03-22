@@ -14,7 +14,7 @@ public class User implements Serializable {
     private String email;
     private String phone;
     private char[] password;
-    private long adminNumberId;
+    private String adminNumber;
 
     public User() {
     }
@@ -36,13 +36,13 @@ public class User implements Serializable {
         String email,
         String phone,
         char[] password,
-        long adminNumberId
+        String adminNumber
     ) {
         this(id, firstName, lastName);
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.adminNumberId = adminNumberId;
+        this.adminNumber = adminNumber;
     }
 
     public static User of(
@@ -51,7 +51,7 @@ public class User implements Serializable {
         String email,
         String phone,
         char[] password,
-        long adminNumberId
+        String adminNumber
     ) {
         return new User(
             0,
@@ -60,7 +60,7 @@ public class User implements Serializable {
             email,
             phone,
             password,
-            adminNumberId
+            adminNumber
         );
     }
 
@@ -83,7 +83,7 @@ public class User implements Serializable {
             this.email,
             this.phone,
             this.password,
-            this.adminNumberId
+            this.adminNumber
         );
     }
 
@@ -135,12 +135,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public long getAdminNumberId() {
-        return adminNumberId;
+    public String getAdminNumber() {
+        return adminNumber;
     }
 
-    public void setAdminNumberId(long adminNumberId) {
-        this.adminNumberId = adminNumberId;
+    public void setAdminNumber(String adminNumber) {
+        this.adminNumber = adminNumber;
     }
 
     @Override
@@ -154,7 +154,7 @@ public class User implements Serializable {
             && Objects.equals(email, that.email)
             && Objects.equals(phone, that.phone)
             && Arrays.equals(password, that.password)
-            && adminNumberId == that.adminNumberId;
+            && Objects.equals(adminNumber, that.adminNumber);
     }
 
     @Override
@@ -166,7 +166,7 @@ public class User implements Serializable {
             email,
             phone,
             Arrays.hashCode(password),
-            adminNumberId
+            adminNumber
         );
     }
 
@@ -178,6 +178,7 @@ public class User implements Serializable {
             + ", lastName='" + lastName + '\''
             + ", email='" + email + '\''
             + ", phone='" + phone + '\''
+            + ", adminNumber='" + adminNumber + '\''
             + '}';
     }
 }

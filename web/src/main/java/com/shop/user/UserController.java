@@ -36,7 +36,7 @@ public class UserController {
                 user.getEmail(),
                 user.getPhone(),
                 user.getPassword(),
-                user.getAdminNumberId()
+                user.getAdminNumber()
             )
         );
     }

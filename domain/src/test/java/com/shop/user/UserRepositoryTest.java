@@ -70,8 +70,8 @@ public class UserRepositoryTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-        new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                1
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                "12345678"
             )
         );
 
@@ -89,8 +89,8 @@ public class UserRepositoryTest {
                 "Smith",
                 "test1@email.com",
                 "+380000000001",
-                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                1
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                "12345678"
             )
         );
 
@@ -100,8 +100,8 @@ public class UserRepositoryTest {
                 "Smith",
                 "test2@email.com",
                 "+380000000002",
-                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                2
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                "87654321"
             )
         );
 
@@ -130,7 +130,7 @@ public class UserRepositoryTest {
                 "email",
                 "phone",
                 "password",
-                "admin_number_id"
+                "admin_number"
             )
             .execute(
                 Map.ofEntries(
@@ -139,7 +139,7 @@ public class UserRepositoryTest {
                     Map.entry("email", "test@email.com"),
                     Map.entry("phone", "+380000000000"),
                     Map.entry("password", "password"),
-                    Map.entry("admin_number_id", 1)
+                    Map.entry("admin_number", "12345678")
                 )
             );
 
@@ -151,8 +151,8 @@ public class UserRepositoryTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                1
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                "12345678"
             ).withId(1));
     }
 
@@ -176,7 +176,7 @@ public class UserRepositoryTest {
                 "email",
                 "phone",
                 "password",
-                "admin_number_id"
+                "admin_number"
             )
             .execute(
                 Map.ofEntries(
@@ -185,7 +185,7 @@ public class UserRepositoryTest {
                     Map.entry("email", "test@email.com"),
                     Map.entry("phone", "+380000000000"),
                     Map.entry("password", "password"),
-                    Map.entry("admin_number_id", 1)
+                    Map.entry("admin_number", "12345678")
                 )
             );
 
@@ -197,8 +197,8 @@ public class UserRepositoryTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                1
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                "12345678"
             ).withId(1));
     }
 
@@ -212,7 +212,7 @@ public class UserRepositoryTest {
                 Map.entry("email", "test1@email.com"),
                 Map.entry("phone", "+380000000001"),
                 Map.entry("password", "password"),
-                Map.entry("admin_number_id", 1)
+                Map.entry("admin_number", "12345678")
             ),
             Map.ofEntries(
                 Map.entry("first_name", "John"),
@@ -220,7 +220,7 @@ public class UserRepositoryTest {
                 Map.entry("email", "test2@email.com"),
                 Map.entry("phone", "+380000000002"),
                 Map.entry("password", "password"),
-                Map.entry("admin_number_id", 2)
+                Map.entry("admin_number", "87654321")
             )
         );
 
@@ -233,7 +233,7 @@ public class UserRepositoryTest {
                 "email",
                 "phone",
                 "password",
-                "admin_number_id"
+                "admin_number"
             )
             .executeBatch(batchInsertParameters);
 
@@ -246,16 +246,16 @@ public class UserRepositoryTest {
                     "Smith",
                     "test1@email.com",
                     "+380000000001",
-                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    1
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    "12345678"
                 ).withId(1),
                 User.of(
                     "John",
                     "Smith",
                     "test2@email.com",
                     "+380000000002",
-                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    2
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    "87654321"
                 ).withId(2)
             )
         );
@@ -279,7 +279,7 @@ public class UserRepositoryTest {
                 "email",
                 "phone",
                 "password",
-                "admin_number_id"
+                "admin_number"
             )
             .execute(
                 Map.ofEntries(
@@ -288,7 +288,7 @@ public class UserRepositoryTest {
                     Map.entry("email", "test@email.com"),
                     Map.entry("phone", "+380000000000"),
                     Map.entry("password", "password"),
-                    Map.entry("admin_number_id", 1)
+                    Map.entry("admin_number", "12345678")
                 )
             );
 
@@ -315,7 +315,7 @@ public class UserRepositoryTest {
                 "email",
                 "phone",
                 "password",
-                "admin_number_id"
+                "admin_number"
             )
             .execute(
                 Map.ofEntries(
@@ -324,7 +324,7 @@ public class UserRepositoryTest {
                     Map.entry("email", "test@email.com"),
                     Map.entry("phone", "+380000000000"),
                     Map.entry("password", "password"),
-                    Map.entry("admin_number_id", 1)
+                    Map.entry("admin_number", "12345678")
                 )
             );
 

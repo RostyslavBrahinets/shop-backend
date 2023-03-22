@@ -64,8 +64,6 @@ public class SignUpService {
             adminNumberService.findAll()
         );
 
-        long adminNumberId = findAdminNumberId(adminNumber);
-
         if (validData) {
             userService.save(
                 User.of(
@@ -74,7 +72,7 @@ public class SignUpService {
                     email,
                     phone,
                     password,
-                    adminNumberId
+                    adminNumber
                 )
             );
 
