@@ -7,7 +7,7 @@ import java.util.List;
 @RestController
 @RequestMapping(CategoryController.CATEGORIES_URL)
 public class CategoryController {
-    public static final String CATEGORIES_URL = "/web-api/categories";
+    public static final String CATEGORIES_URL = "/api/categories";
     private final CategoryService categoryService;
 
     public CategoryController(CategoryService categoryService) {

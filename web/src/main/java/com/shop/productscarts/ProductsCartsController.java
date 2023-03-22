@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ProductsCartsController.PRODUCTS_CARTS_URL)
 public class ProductsCartsController {
-    public static final String PRODUCTS_CARTS_URL = "/web-api/products-carts";
+    public static final String PRODUCTS_CARTS_URL = "/api/products-carts";
     private final ProductsCartsService productsCartsService;
     private final CartService cartService;
     private final UserService userService;

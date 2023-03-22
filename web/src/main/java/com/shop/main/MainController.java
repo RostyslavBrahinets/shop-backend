@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping(MainController.MAIN_URL)
 public class MainController {
-    public static final String MAIN_URL = "/web-api";
+    public static final String MAIN_URL = "/api";
     private final ProductService productService;
 
     public MainController(ProductService productService) {

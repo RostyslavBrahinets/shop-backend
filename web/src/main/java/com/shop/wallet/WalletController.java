@@ -12,7 +12,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping(WalletController.WALLETS_URL)
 public class WalletController {
-    public static final String WALLETS_URL = "/web-api/wallets";
+    public static final String WALLETS_URL = "/api/wallets";
     private final WalletService walletService;
     private final StripePayment stripePayment;
 
