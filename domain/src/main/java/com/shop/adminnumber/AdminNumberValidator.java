@@ -57,15 +57,4 @@ public class AdminNumberValidator {
 
         validate(number, adminNumbers);
     }
-
-    public void validateAdminNumberIdForSignUp(
-        long adminNumberId,
-        List<AdminNumber> adminNumbers
-    ) {
-        if (adminNumberId == 0) {
-            return;
-        }
-
-        validate(adminNumberId, adminNumbers);
-    }
 }
