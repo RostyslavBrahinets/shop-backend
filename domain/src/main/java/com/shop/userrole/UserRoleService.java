@@ -34,7 +34,7 @@ public class UserRoleService {
     }
 
     public void saveRoleForUser(long userId, long roleId) {
-        userValidator.validate(userId, userService.findAll());
+        userValidator.validateNewUserId(userId, userService.findAll());
         roleValidator.validate(roleId);
         userRoleRepository.saveRoleForUser(userId, roleId);
     }
