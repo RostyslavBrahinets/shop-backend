@@ -22,6 +22,17 @@ public class UserRoleController {
         return userRoleService.findRoleForUser(id);
     }
 
+    @PostMapping
+    public UserRoleDto saveRoleForUser(
+        @RequestBody UserRoleDto userRoleDto
+    ) {
+        userRoleService.saveRoleForUser(
+            userRoleDto.userId(),
+            userRoleDto.roleId()
+        );
+        return userRoleDto;
+    }
+
     @PostMapping("/{id}")
     public String updateRoleForUser(
         @PathVariable long id,
