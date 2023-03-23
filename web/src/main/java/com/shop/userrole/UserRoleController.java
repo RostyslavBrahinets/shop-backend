@@ -1,7 +1,6 @@
 package com.shop.userrole;
 
 import com.shop.role.Role;
-import com.shop.role.RoleService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -9,14 +8,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserRoleController {
     public static final String USER_ROLE_URL = "/api/user-role";
     private final UserRoleService userRoleService;
-    private final RoleService roleService;
 
     public UserRoleController(
-        UserRoleService userRoleService,
-        RoleService roleService
+        UserRoleService userRoleService
     ) {
         this.userRoleService = userRoleService;
-        this.roleService = roleService;
     }
 
     @GetMapping("/{id}")
@@ -29,10 +25,9 @@ public class UserRoleController {
     @PostMapping("/{id}")
     public String updateRoleForUser(
         @PathVariable long id,
-        @RequestBody RoleDto roleDto
+        @RequestBody UserRoleDto userRoleDto
     ) {
-        Role role = roleService.findByName(roleDto.role());
-        userRoleService.updateRoleForUser(id, role.getId());
+        userRoleService.updateRoleForUser(id, userRoleDto.roleId());
         return "Role Successfully Changed";
     }
 }
