@@ -29,16 +29,7 @@ public class UserController {
     public User save(
         @RequestBody User user
     ) {
-        return userService.save(
-            User.of(
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getPhone(),
-                user.getPassword(),
-                user.getAdminNumber()
-            )
-        );
+        return userService.save(user);
     }
 
     @PostMapping("/{id}")
