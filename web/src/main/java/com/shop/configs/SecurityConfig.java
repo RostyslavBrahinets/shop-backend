@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .mvcMatchers(
                 "/sign-up", "/error", "/", "/categories/**", "/products/**",
+                "/api/users/**", "/api/user-role/**",
                 "/api/sign-up", "/api**", "/api/categories/**",
                 "/api/products/**", "/api/product-category/**", "/js/**", "/images/**"
             ).permitAll()
