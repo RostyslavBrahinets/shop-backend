@@ -51,7 +51,7 @@ public class AdminNumberValidator {
         String number,
         List<AdminNumber> adminNumbers
     ) {
-        if (number == null) {
+        if (number == null || number.isBlank()) {
             return;
         }
 
