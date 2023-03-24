@@ -58,7 +58,7 @@ public class UserValidator {
         }
 
         if (ids.contains(id)) {
-            throw new NotFoundException("Id of user is used");
+            throw new ValidationException("Id of user is used");
         }
     }
 
