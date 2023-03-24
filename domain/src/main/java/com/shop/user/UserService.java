@@ -1,6 +1,5 @@
 package com.shop.user;
 
-import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberService;
 import com.shop.adminnumber.AdminNumberValidator;
 import com.shop.interfaces.ServiceInterface;
@@ -63,8 +62,11 @@ public class UserService implements ServiceInterface<User> {
 
         user.setPassword(passwordEncoder.encode(String.copyValueOf(user.getPassword())).toCharArray());
 
-        List<AdminNumber> adminNumbers = adminNumberService.findAll();
-        adminNumberValidator.validateAdminNumberForSignUp(user.getAdminNumber(), adminNumbers);
+        adminNumberValidator.validateAdminNumberForSignUp(
+            user.getAdminNumber(),
+            adminNumberService.findAll()
+        );
+
         userRepository.save(user);
         return user;
     }
