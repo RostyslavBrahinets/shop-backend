@@ -45,7 +45,13 @@ public class CartService implements ServiceInterface<Cart> {
         cartValidator.validate(cart.getTotalCost());
         userValidator.validate(cart.getUserId(), userService.findAll());
         cartRepository.save(cart);
-        cart.setId(cartRepository.findAll().size() + 1);
+
+        if (cartRepository.findAll().size() > 0) {
+            cart.setId(cartRepository.findAll().get(cartRepository.findAll().size() - 1).getId());
+        } else {
+            cart.setId(1);
+        }
+
         return cart;
     }
 
