@@ -71,9 +71,6 @@ public class SignUpService {
         }
     }
 
-        return 1;
-    }
-
     private long findUserId() {
         List<User> users = userService.findAll();
         return users.get(users.size() - 1).getId();
