@@ -46,22 +46,6 @@ public class UserValidator {
         }
     }
 
-    public void validateNewUserId(long id, List<User> users) {
-        if (id < 1) {
-            throw new NotFoundException("Id of user is invalid");
-        }
-
-        List<Long> ids = new ArrayList<>();
-
-        for (User user : users) {
-            ids.add(user.getId());
-        }
-
-        if (ids.contains(id)) {
-            throw new ValidationException("Id of user is used");
-        }
-    }
-
     public void validateFullName(String firstName, String lastName) {
         if (firstName == null || firstName.isBlank()) {
             throw new ValidationException("First name is invalid");

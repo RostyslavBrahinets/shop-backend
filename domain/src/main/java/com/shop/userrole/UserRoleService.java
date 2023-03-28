@@ -1,9 +1,9 @@
 package com.shop.userrole;
 
 import com.shop.role.Role;
+import com.shop.role.RoleValidator;
 import com.shop.user.UserService;
 import com.shop.user.UserValidator;
-import com.shop.role.RoleValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -34,7 +34,7 @@ public class UserRoleService {
     }
 
     public void saveRoleForUser(long userId, long roleId) {
-        userValidator.validateNewUserId(userId, userService.findAll());
+        userValidator.validate(userId, userService.findAll());
         roleValidator.validate(roleId);
         userRoleRepository.saveRoleForUser(userId, roleId);
     }
