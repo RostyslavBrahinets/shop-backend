@@ -1,21 +1,14 @@
 package com.shop.signup;
 
-import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberService;
 import com.shop.cart.Cart;
 import com.shop.cart.CartService;
-import com.shop.stripe.StripePayment;
 import com.shop.user.User;
 import com.shop.user.UserService;
 import com.shop.userrole.UserRoleService;
-import com.shop.wallet.Wallet;
-import com.shop.wallet.WalletService;
-import com.stripe.exception.StripeException;
-import com.stripe.model.Customer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SignUpService {
@@ -24,25 +17,19 @@ public class SignUpService {
     private final AdminNumberService adminNumberService;
     private final UserRoleService userRoleService;
     private final CartService cartService;
-    private final WalletService walletService;
-    private final StripePayment stripePayment;
 
     public SignUpService(
         SignUpValidator signUpValidator,
         UserService userService,
         AdminNumberService adminNumberService,
         UserRoleService userRoleService,
-        CartService cartService,
-        WalletService walletService,
-        StripePayment stripePayment
+        CartService cartService
     ) {
         this.signUpValidator = signUpValidator;
         this.userService = userService;
         this.adminNumberService = adminNumberService;
         this.userRoleService = userRoleService;
         this.cartService = cartService;
-        this.walletService = walletService;
-        this.stripePayment = stripePayment;
     }
 
     public void signUp(
@@ -52,7 +39,7 @@ public class SignUpService {
         String phone,
         char[] password,
         String adminNumber
-    ) throws StripeException {
+    ) {
         boolean validData = signUpValidator.isValidData(
             firstName,
             lastName,
@@ -76,20 +63,13 @@ public class SignUpService {
                 )
             );
 
-            userRoleService.saveRoleForUser(findUserId(), 2);
-            cartService.save(Cart.of(0, findUserId()));
-            saveWalletForUser(findUserId());
-        }
-    }
+            userRoleService.saveRoleForUser(findUserId(), adminNumber.isBlank() ? 2 : 1);
 
-    private long findAdminNumberId(String adminNumber) {
-        List<AdminNumber> adminNumbers = adminNumberService.findAll();
-
-        for (AdminNumber number : adminNumbers) {
-            if (number.getNumber().equals(adminNumber)) {
-                return number.getId();
+            if (adminNumber.isBlank()) {
+                cartService.save(Cart.of(0, findUserId()));
             }
         }
+    }
 
         return 1;
     }
@@ -97,22 +77,5 @@ public class SignUpService {
     private long findUserId() {
         List<User> users = userService.findAll();
         return users.get(users.size() - 1).getId();
-    }
-
-    private void saveWalletForUser(long userId) throws StripeException {
-        Optional<Customer> customer = stripePayment
-            .saveCustomer(userService.findById(userId));
-        if (customer.isPresent()) {
-            Wallet wallet = new Wallet();
-            wallet.setNumber(customer.get().getId());
-            wallet.setAmountOfMoney(customer.get().getBalance());
-            walletService.save(
-                Wallet.of(
-                    wallet.getNumber(),
-                    wallet.getAmountOfMoney(),
-                    userId
-                )
-            );
-        }
     }
 }
