@@ -1,6 +1,5 @@
 package com.shop.signup;
 
-import com.stripe.exception.StripeException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +16,9 @@ public class SignUpController {
     }
 
     @PostMapping
-    public String signUp(
+    public SignUpDto signUp(
         @RequestBody SignUpDto signUpDto
-    ) throws StripeException {
+    ) {
         signUpService.signUp(
             signUpDto.firstName(),
             signUpDto.lastName(),
@@ -29,7 +28,7 @@ public class SignUpController {
             signUpDto.adminNumber()
         );
 
-        return "Successful Sign Up";
+        return signUpDto;
     }
 }
 
