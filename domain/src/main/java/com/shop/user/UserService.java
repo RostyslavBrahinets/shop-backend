@@ -81,10 +81,10 @@ public class UserService implements ServiceInterface<User> {
     }
 
     @Override
-    public User update(User user) {
+    public User update(long id, User user) {
         userValidator.validate(user.getId(), userRepository.findAll());
         userValidator.validateFullName(user.getFirstName(), user.getLastName());
-        userRepository.update(user);
+        userRepository.update(id, user);
         return user;
     }
 

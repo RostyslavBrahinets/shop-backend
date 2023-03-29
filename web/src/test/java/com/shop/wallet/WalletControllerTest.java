@@ -45,7 +45,7 @@ class WalletControllerTest {
             )
         );
 
-        when(walletService.update(Wallet.of("123", 100, 0).withId(1))).thenReturn(
+        when(walletService.update(1, Wallet.of("123", 100, 0))).thenReturn(
             new Wallet(1, "123", 100, 0)
         );
 

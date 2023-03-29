@@ -37,15 +37,12 @@ public class UserController {
         @PathVariable long id,
         @RequestBody UserDto user
     ) {
-        User updatedUser = new User();
-        updatedUser.setFirstName(user.firstName());
-        updatedUser.setLastName(user.lastName());
         return userService.update(
+            id,
             User.of(
-                    updatedUser.getFirstName(),
-                    updatedUser.getLastName()
-                )
-                .withId(id)
+                user.firstName(),
+                user.lastName()
+            )
         );
     }
 

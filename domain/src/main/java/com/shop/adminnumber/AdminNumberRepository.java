@@ -44,7 +44,7 @@ public class AdminNumberRepository implements RepositoryInterface<AdminNumber> {
     }
 
     @Override
-    public void update(AdminNumber adminNumber) {
+    public void update(long id, AdminNumber adminNumber) {
     }
 
     @Override

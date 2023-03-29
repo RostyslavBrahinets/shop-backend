@@ -44,12 +44,12 @@ public class WalletController {
 
             wallet.setAmountOfMoney(amountOfMoney);
             updatedWallet = walletService.update(
+                id,
                 Wallet.of(
-                        wallet.getNumber(),
-                        wallet.getAmountOfMoney(),
-                        wallet.getUserId()
-                    )
-                    .withId(wallet.getId())
+                    wallet.getNumber(),
+                    wallet.getAmountOfMoney(),
+                    wallet.getUserId()
+                )
             );
         }
 

@@ -56,10 +56,10 @@ public class CartService implements ServiceInterface<Cart> {
     }
 
     @Override
-    public Cart update(Cart cart) {
+    public Cart update(long id, Cart cart) {
         cartValidator.validate(cart.getId());
         cartValidator.validate(cart.getTotalCost());
-        cartRepository.update(cart);
+        cartRepository.update(id, cart);
         return cart;
     }
 

@@ -328,7 +328,7 @@ public class UserRepositoryTest {
                 )
             );
 
-        userRepository.update(User.of("Alex", "Smith").withId(1));
+        userRepository.update(1, User.of("Alex", "Smith"));
 
         var updatedUser = jdbcTemplate.queryForObject(
             "SELECT first_name FROM \"user\" WHERE id=:id",

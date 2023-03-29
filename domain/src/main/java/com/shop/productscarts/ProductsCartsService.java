@@ -74,7 +74,7 @@ public class ProductsCartsService {
 
         double newTotalCost = cart.getTotalCost();
         newTotalCost += product.getPrice();
-        cartService.update(Cart.of(newTotalCost, 0).withId(cartId));
+        cartService.update(cartId, Cart.of(newTotalCost, 0));
 
         return productId;
     }
@@ -89,7 +89,7 @@ public class ProductsCartsService {
 
         double newTotalCost = cart.getTotalCost();
         newTotalCost -= product.getPrice();
-        cartService.update(Cart.of(newTotalCost, 0).withId(cartId));
+        cartService.update(cartId, Cart.of(newTotalCost, 0));
     }
 
     public void deleteProductsFromCart(long cartId) {
@@ -114,10 +114,10 @@ public class ProductsCartsService {
         }
         long money = Long.parseLong(splitMoney[0] + splitMoney[1]) * -1;
 
-        walletService.update(Wallet.of(null, newAmountOfMoney, userId).withId(wallet.getId()));
+        walletService.update(wallet.getId(), Wallet.of(null, newAmountOfMoney, userId));
         stripePayment.updateCustomer(wallet.getNumber(), money);
 
-        cartService.update(Cart.of(0, 0).withId(cart.getId()));
+        cartService.update(cart.getId(), Cart.of(0, 0));
 
         deleteProductsFromCart(cart.getId());
     }

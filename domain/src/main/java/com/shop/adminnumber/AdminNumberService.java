@@ -40,7 +40,7 @@ public class AdminNumberService implements ServiceInterface<AdminNumber> {
     }
 
     @Override
-    public AdminNumber update(AdminNumber adminNumber) {
+    public AdminNumber update(long id, AdminNumber adminNumber) {
         return new AdminNumber();
     }
 

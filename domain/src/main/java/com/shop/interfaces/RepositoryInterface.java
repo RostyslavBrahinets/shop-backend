@@ -10,7 +10,7 @@ public interface RepositoryInterface<T> {
 
     void save(T object);
 
-    void update(T object);
+    void update(long id, T object);
 
     void delete(T object);
 }

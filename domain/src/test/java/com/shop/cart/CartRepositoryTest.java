@@ -244,7 +244,7 @@ public class CartRepositoryTest {
                 )
             );
 
-        cartRepository.update(Cart.of(100, 1).withId(1));
+        cartRepository.update(1, Cart.of(100, 1));
 
         var updatedCart = jdbcTemplate.queryForObject(
             "SELECT total_cost FROM cart WHERE id=:id",

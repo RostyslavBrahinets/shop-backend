@@ -50,10 +50,10 @@ public class WalletService implements ServiceInterface<Wallet> {
     }
 
     @Override
-    public Wallet update(Wallet wallet) {
-        walletValidator.validate(wallet.getId(), walletRepository.findAll());
+    public Wallet update(long id, Wallet wallet) {
+        walletValidator.validate(id, walletRepository.findAll());
         walletValidator.validateAmountOfMoney(wallet.getAmountOfMoney());
-        walletRepository.update(wallet);
+        walletRepository.update(id, wallet);
 
         Optional<Wallet> walletOptional = walletRepository.findById(wallet.getId());
         String number = "";

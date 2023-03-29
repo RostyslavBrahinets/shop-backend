@@ -40,9 +40,10 @@ public class CategoryService implements ServiceInterface<Category> {
     }
 
     @Override
-    public Category update(Category category) {
+    public Category update(long id, Category category) {
+        categoryValidator.validate(id, findAll());
         categoryValidator.validateCategory(category.getName());
-        categoryRepository.update(category);
+        categoryRepository.update(id, category);
         return category;
     }
 

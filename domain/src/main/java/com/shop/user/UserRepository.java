@@ -52,13 +52,13 @@ public class UserRepository implements RepositoryInterface<User> {
     }
 
     @Override
-    public void update(User user) {
+    public void update(long id, User user) {
         jdbcTemplate.update(
             "UPDATE \"user\" SET first_name=:first_name, last_name=:last_name WHERE id=:id",
             Map.ofEntries(
                 Map.entry("first_name", user.getFirstName()),
                 Map.entry("last_name", user.getLastName()),
-                Map.entry("id", user.getId())
+                Map.entry("id", id)
             )
         );
     }

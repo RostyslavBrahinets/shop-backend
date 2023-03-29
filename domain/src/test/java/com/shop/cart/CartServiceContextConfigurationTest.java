@@ -86,11 +86,11 @@ public class CartServiceContextConfigurationTest {
         long id = 1;
         double totalCost = 100;
 
-        cartService.update(Cart.of(totalCost, 0).withId(id));
+        cartService.update(id, Cart.of(totalCost, 0));
 
         verify(cartValidator, atLeast(1)).validate(id);
         verify(cartValidator, atLeast(1)).validate(totalCost);
-        verify(cartRepository).update(Cart.of(totalCost, 0).withId(id));
+        verify(cartRepository).update(1, Cart.of(totalCost, 0));
     }
 
     @Test

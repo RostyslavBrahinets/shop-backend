@@ -36,8 +36,7 @@ public class AdminNumberController {
         @PathVariable long id,
         @RequestBody AdminNumber adminNumber
     ) {
-        adminNumber.setId(id);
-        return adminNumberService.update(adminNumber);
+        return adminNumberService.update(id, adminNumber);
     }
 
     @DeleteMapping("/{number}")

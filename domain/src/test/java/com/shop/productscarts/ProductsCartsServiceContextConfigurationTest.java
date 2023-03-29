@@ -97,7 +97,7 @@ public class ProductsCartsServiceContextConfigurationTest {
         when(cartService.findById(cartId))
             .thenReturn(Cart.of(0, 0).withId(1));
 
-        cartService.update(Cart.of(100, 0).withId(cartId));
+        cartService.update(cartId, Cart.of(100, 0));
 
         productsCartsService.saveProductToCart(productId, cartId);
 
@@ -126,7 +126,7 @@ public class ProductsCartsServiceContextConfigurationTest {
         when(cartService.findById(cartId))
             .thenReturn(Cart.of(0, 0).withId(1));
 
-        cartService.update(Cart.of(100, 0).withId(cartId));
+        cartService.update(cartId, Cart.of(100, 0));
 
         productsCartsService.deleteProductFromCart(productId, cartId);
 
@@ -157,9 +157,9 @@ public class ProductsCartsServiceContextConfigurationTest {
         when(cartService.findByUser(User.of(null, null).withId(userId)))
             .thenReturn(Cart.of(0, 0).withId(1));
 
-        walletService.update(Wallet.of("123", 100, userId).withId(1));
+        walletService.update(1, Wallet.of("123", 100, userId));
         stripePayment.updateCustomer("123", 100);
-        cartService.update(Cart.of(0, 0).withId(1));
+        cartService.update(1, Cart.of(0, 0));
 
         productsCartsService.buy(userId);
 

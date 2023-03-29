@@ -50,12 +50,12 @@ public class WalletRepository implements RepositoryInterface<Wallet> {
     }
 
     @Override
-    public void update(Wallet wallet) {
+    public void update(long id, Wallet wallet) {
         jdbcTemplate.update(
             "UPDATE wallet SET amount_of_money=:amount_of_money WHERE id=:id",
             Map.ofEntries(
                 Map.entry("amount_of_money", wallet.getAmountOfMoney()),
-                Map.entry("id", wallet.getId())
+                Map.entry("id", id)
             )
         );
     }

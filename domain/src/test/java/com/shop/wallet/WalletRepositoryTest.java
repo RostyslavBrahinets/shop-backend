@@ -255,7 +255,7 @@ public class WalletRepositoryTest {
                 )
             );
 
-        walletRepository.update(Wallet.of("123", 100, 1).withId(1));
+        walletRepository.update(1, Wallet.of("123", 100, 1));
 
         var updatedWallet = jdbcTemplate.queryForObject(
             "SELECT amount_of_money FROM wallet WHERE id=:id",

@@ -81,11 +81,11 @@ public class UserServiceContextConfigurationTest {
         String firstName = "John";
         String lastName = "Smith";
 
-        userService.update(User.of(firstName, lastName).withId(id));
+        userService.update(id, User.of(firstName, lastName));
 
         verify(userValidator, atLeast(1)).validate(id, users);
         verify(userValidator, atLeast(1)).validateFullName(firstName, lastName);
-        verify(userRepository).update(User.of(firstName, lastName).withId(1));
+        verify(userRepository).update(id, User.of(firstName, lastName));
     }
 
     @Test

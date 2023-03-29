@@ -48,12 +48,12 @@ public class CartRepository implements RepositoryInterface<Cart> {
     }
 
     @Override
-    public void update(Cart cart) {
+    public void update(long id, Cart cart) {
         jdbcTemplate.update(
             "UPDATE cart SET total_cost=:total_cost WHERE id=:id",
             Map.ofEntries(
                 Map.entry("total_cost", cart.getTotalCost()),
-                Map.entry("id", cart.getId())
+                Map.entry("id", id)
             )
         );
     }

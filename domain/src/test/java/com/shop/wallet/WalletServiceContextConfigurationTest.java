@@ -93,11 +93,11 @@ public class WalletServiceContextConfigurationTest {
         long id = 1;
         double amountOfMoney = 100;
 
-        walletService.update(Wallet.of("", amountOfMoney, 0).withId(id));
+        walletService.update(id, Wallet.of("", amountOfMoney, 0));
 
         verify(walletValidator, atLeast(1)).validate(id, wallets);
         verify(walletValidator, atLeast(1)).validateAmountOfMoney(amountOfMoney);
-        verify(walletRepository).update(Wallet.of("", amountOfMoney, 0).withId(id));
+        verify(walletRepository).update(id, Wallet.of("", amountOfMoney, 0));
     }
 
     @Test
