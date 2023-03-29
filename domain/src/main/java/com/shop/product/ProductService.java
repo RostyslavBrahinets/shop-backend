@@ -54,8 +54,11 @@ public class ProductService implements ServiceInterface<Product> {
     }
 
     @Override
-    public Product update(Product product) {
-        return new Product();
+    public Product update(long id, Product product) {
+        productValidator.validate(id, findAll());
+        productValidator.validateUpdatedProduct(product);
+        productRepository.update(id, product);
+        return product;
     }
 
     @Override

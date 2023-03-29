@@ -52,7 +52,26 @@ public class ProductRepository implements RepositoryInterface<Product> {
     }
 
     @Override
-    public void update(Product product) {
+    public void update(long id, Product product) {
+        jdbcTemplate.update(
+            "UPDATE product SET "
+                + "name=:name, "
+                + "describe=:describe, "
+                + "price=:price, "
+                + "barcode=:name, "
+                + "in_stock=:in_stock, "
+                + "image=:image "
+                + "WHERE id=:id",
+            Map.ofEntries(
+                Map.entry("name", product.getName()),
+                Map.entry("describe", product.getDescribe()),
+                Map.entry("price", product.getPrice()),
+                Map.entry("barcode", product.getBarcode()),
+                Map.entry("in_stock", product.isInStock()),
+                Map.entry("image", product.getImage()),
+                Map.entry("id", id)
+            )
+        );
     }
 
     @Override
