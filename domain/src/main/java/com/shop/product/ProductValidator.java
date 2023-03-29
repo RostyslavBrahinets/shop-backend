@@ -2,7 +2,6 @@ package com.shop.product;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.product.Product;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,6 +9,19 @@ import java.util.List;
 
 @Component
 public class ProductValidator {
+    public void validate(
+        Product product,
+        List<Product> products
+    ) {
+        validate(
+            product.getName(),
+            product.getDescribe(),
+            product.getPrice(),
+            product.getBarcode(),
+            products
+        );
+    }
+
     public void validate(
         String name,
         String describe,
@@ -27,6 +39,18 @@ public class ProductValidator {
             throw new ValidationException("Barcode is invalid");
         } else if (invalidBarcode(barcode, products) == 2) {
             throw new ValidationException("Barcode already in use");
+        }
+    }
+
+    public void validateUpdatedProduct(
+        Product product
+    ) {
+        if (product.getName() == null || product.getName().isBlank()) {
+            throw new ValidationException("Name is invalid");
+        } else if (product.getDescribe() == null || product.getDescribe().isBlank()) {
+            throw new ValidationException("Describe is invalid");
+        } else if (product.getPrice() < 0) {
+            throw new ValidationException("Price is invalid");
         }
     }
 
