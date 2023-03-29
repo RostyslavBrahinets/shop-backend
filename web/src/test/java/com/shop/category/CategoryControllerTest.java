@@ -19,8 +19,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockBeans({
@@ -89,7 +89,7 @@ class CategoryControllerTest {
     @Test
     @DisplayName("Category deleted")
     void category_deleted() throws Exception {
-        mockMvc.perform(post(CATEGORIES_URL + "/name")
+        mockMvc.perform(delete(CATEGORIES_URL + "/name")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
