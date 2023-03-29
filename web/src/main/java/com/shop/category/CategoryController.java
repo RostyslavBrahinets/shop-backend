@@ -29,6 +29,14 @@ public class CategoryController {
         return categoryService.save(Category.of(category.getName()));
     }
 
+    @PutMapping("/{id}")
+    public Category update(
+        @PathVariable long id,
+        @RequestBody Category category
+    ) {
+        return categoryService.update(Category.of(category.getName()).withId(id));
+    }
+
     @DeleteMapping("/{name}")
     public String delete(@PathVariable String name) {
         categoryService.delete(Category.of(name));
