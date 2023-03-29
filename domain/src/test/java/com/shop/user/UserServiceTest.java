@@ -72,7 +72,7 @@ class UserServiceTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     "12345678"
                 ).withId(1)
             )
@@ -88,7 +88,7 @@ class UserServiceTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     "12345678"
                 )
             )
@@ -105,7 +105,7 @@ class UserServiceTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     "12345678"
                 ).withId(1)
             )
@@ -119,7 +119,7 @@ class UserServiceTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 "12345678"
             )
         );
@@ -135,7 +135,7 @@ class UserServiceTest {
                     "Smith",
                     "test@email.com",
                     "+380000000000",
-                    new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                     "12345678"
                 ).withId(1)
             )
@@ -150,7 +150,7 @@ class UserServiceTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                new char[] {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
                 "12345678"
             )
         );
