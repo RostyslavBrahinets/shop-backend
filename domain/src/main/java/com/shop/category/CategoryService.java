@@ -41,7 +41,9 @@ public class CategoryService implements ServiceInterface<Category> {
 
     @Override
     public Category update(Category category) {
-        return new Category();
+        categoryValidator.validateCategory(category.getName());
+        categoryRepository.update(category);
+        return category;
     }
 
     @Override

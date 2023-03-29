@@ -45,6 +45,13 @@ public class CategoryRepository implements RepositoryInterface<Category> {
 
     @Override
     public void update(Category category) {
+        jdbcTemplate.update(
+            "UPDATE category SET name=:name WHERE id=:id",
+            Map.ofEntries(
+                Map.entry("name", category.getName()),
+                Map.entry("id", category.getId())
+            )
+        );
     }
 
     @Override
