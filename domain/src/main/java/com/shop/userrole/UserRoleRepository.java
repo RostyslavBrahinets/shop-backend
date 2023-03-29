@@ -45,4 +45,11 @@ public class UserRoleRepository {
             )
         );
     }
+
+    public void deleteRoleForUser(long userId) {
+        jdbcTemplate.update(
+            "DELETE FROM user_role WHERE user_id=:user_id",
+            Map.ofEntries(Map.entry("user_id", userId))
+        );
+    }
 }
