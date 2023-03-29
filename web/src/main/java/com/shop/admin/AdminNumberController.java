@@ -31,7 +31,7 @@ public class AdminNumberController {
         return adminNumberService.save(adminNumber);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public AdminNumber update(
         @PathVariable long id,
         @RequestBody AdminNumber adminNumber
