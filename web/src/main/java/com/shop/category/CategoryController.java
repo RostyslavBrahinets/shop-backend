@@ -29,7 +29,7 @@ public class CategoryController {
         return categoryService.save(Category.of(category.getName()));
     }
 
-    @PostMapping("/{name}")
+    @DeleteMapping("/{name}")
     public String delete(@PathVariable String name) {
         categoryService.delete(Category.of(name));
         return "Category Successfully Deleted";
