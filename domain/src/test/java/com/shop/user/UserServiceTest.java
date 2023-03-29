@@ -2,6 +2,8 @@ package com.shop.user;
 
 import com.shop.adminnumber.AdminNumberService;
 import com.shop.adminnumber.AdminNumberValidator;
+import com.shop.cart.CartRepository;
+import com.shop.userrole.UserRoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,10 @@ class UserServiceTest {
     @Mock
     private AdminNumberService adminNumberService;
     @Mock
+    private CartRepository cartRepository;
+    @Mock
+    private UserRoleRepository userRoleRepository;
+    @Mock
     private PasswordEncoder passwordEncoder;
 
     private UserService userService;
@@ -40,6 +46,8 @@ class UserServiceTest {
             userValidator,
             adminNumberValidator,
             adminNumberService,
+            cartRepository,
+            userRoleRepository,
             passwordEncoder
         );
     }

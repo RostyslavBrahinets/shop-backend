@@ -3,6 +3,8 @@ package com.shop.user;
 import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberService;
 import com.shop.adminnumber.AdminNumberValidator;
+import com.shop.cart.CartRepository;
+import com.shop.userrole.UserRoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -119,6 +121,16 @@ public class UserServiceContextConfigurationTest {
         @Bean
         public AdminNumberService adminNumberService() {
             return mock(AdminNumberService.class);
+        }
+
+        @Bean
+        public CartRepository cartRepository() {
+            return mock(CartRepository.class);
+        }
+
+        @Bean
+        public UserRoleRepository userRoleRepository() {
+            return mock(UserRoleRepository.class);
         }
 
         @Bean
