@@ -1,13 +1,13 @@
 package com.shop.productscategory;
 
 import com.shop.category.Category;
-import com.shop.product.Product;
-import com.shop.productcategory.ProductCategoryRepository;
 import com.shop.category.CategoryService;
-import com.shop.productcategory.ProductCategoryService;
-import com.shop.product.ProductService;
 import com.shop.category.CategoryValidator;
+import com.shop.product.Product;
+import com.shop.product.ProductService;
 import com.shop.product.ProductValidator;
+import com.shop.productcategory.ProductCategoryRepository;
+import com.shop.productcategory.ProductCategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -85,7 +85,7 @@ public class ProductCategoryServiceContextConfigurationTest {
 
         productCategoryService.saveProductToCategory(barcode, categoryName);
 
-        verify(productValidator, atLeast(1)).validate(barcode, products);
+        verify(productValidator, atLeast(1)).validateBarcode(barcode, products);
         verify(categoryValidator, atLeast(1)).validate(categoryName, categories);
         verify(productCategoryRepository).saveProductToCategory(1, 1);
     }

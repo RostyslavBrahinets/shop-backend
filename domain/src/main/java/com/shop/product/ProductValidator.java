@@ -42,7 +42,7 @@ public class ProductValidator {
         }
     }
 
-    public void validate(String barcode, List<Product> products) {
+    public void validateBarcode(String barcode, List<Product> products) {
         if (barcode == null || barcode.isBlank()) {
             throw new ValidationException("Barcode is invalid");
         }

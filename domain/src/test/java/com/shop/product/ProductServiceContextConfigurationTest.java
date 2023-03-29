@@ -67,7 +67,7 @@ public class ProductServiceContextConfigurationTest {
 
         productService.findByBarcode(barcode);
 
-        verify(productValidator, atLeast(1)).validate(barcode, products);
+        verify(productValidator, atLeast(1)).validateBarcode(barcode, products);
         verify(productRepository, atLeast(1)).findByBarcode(barcode);
     }
 
@@ -132,7 +132,7 @@ public class ProductServiceContextConfigurationTest {
 
         productService.delete(Product.of(barcode));
 
-        verify(productValidator, atLeast(1)).validate(barcode, products);
+        verify(productValidator, atLeast(1)).validateBarcode(barcode, products);
         verify(productRepository, atLeast(1)).findByBarcode(barcode);
         verify(productCategoryRepository).findCategoryForProduct(productId);
         verify(productCategoryRepository).deleteProductFromCategory(productId, categoryId);

@@ -38,7 +38,7 @@ public class ProductCategoryService {
     }
 
     public void saveProductToCategory(String barcode, String nameOfCategory) {
-        productValidator.validate(barcode, productService.findAll());
+        productValidator.validateBarcode(barcode, productService.findAll());
         categoryValidator.validate(nameOfCategory, categoryService.findAll());
 
         Product product = productService.findByBarcode(barcode);

@@ -193,7 +193,7 @@ class ProductServiceTest {
 
         productService.delete(Product.of(barcode));
 
-        verify(productValidator, atLeast(1)).validate(barcode, List.of());
+        verify(productValidator, atLeast(1)).validateBarcode(barcode, List.of());
         verify(productRepository).findByBarcode(barcode);
         verify(productCategoryRepository).findCategoryForProduct(productId);
         verify(productCategoryRepository).deleteProductFromCategory(productId, categoryId);

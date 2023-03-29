@@ -60,7 +60,7 @@ public class ProductService implements ServiceInterface<Product> {
 
     @Override
     public void delete(Product product) {
-        productValidator.validate(product.getBarcode(), productRepository.findAll());
+        productValidator.validateBarcode(product.getBarcode(), productRepository.findAll());
 
         Optional<Product> productOptional = productRepository.findByBarcode(product.getBarcode());
 
@@ -80,7 +80,7 @@ public class ProductService implements ServiceInterface<Product> {
     }
 
     public Product findByBarcode(String barcode) {
-        productValidator.validate(barcode, productRepository.findAll());
+        productValidator.validateBarcode(barcode, productRepository.findAll());
         Optional<Product> product = productRepository.findByBarcode(barcode);
         return product.orElseGet(Product::new);
     }

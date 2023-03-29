@@ -2,9 +2,6 @@ package com.shop.product;
 
 import com.shop.exceptions.NotFoundException;
 import com.shop.exceptions.ValidationException;
-import com.shop.product.Product;
-import com.shop.product.ProductRepository;
-import com.shop.product.ProductValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -257,7 +254,7 @@ public class ProductValidatorTest {
         when(productRepository.findAll()).thenReturn(products);
 
         assertDoesNotThrow(
-            () -> productValidator.validate("123", products)
+            () -> productValidator.validateBarcode("123", products)
         );
     }
 
@@ -278,7 +275,7 @@ public class ProductValidatorTest {
 
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate(null, products)
+            () -> productValidator.validateBarcode(null, products)
         );
     }
 
@@ -299,7 +296,7 @@ public class ProductValidatorTest {
 
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate("", products)
+            () -> productValidator.validateBarcode("", products)
         );
     }
 
@@ -308,7 +305,7 @@ public class ProductValidatorTest {
     void throw_not_found_exception_because_barcode_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> productValidator.validate("123", List.of())
+            () -> productValidator.validateBarcode("123", List.of())
         );
     }
 }
