@@ -2,6 +2,8 @@ package com.shop.user;
 
 import com.shop.adminnumber.AdminNumberService;
 import com.shop.adminnumber.AdminNumberValidator;
+import com.shop.cart.Cart;
+import com.shop.cart.CartRepository;
 import com.shop.interfaces.ServiceInterface;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ public class UserService implements ServiceInterface<User> {
     private final UserValidator userValidator;
     private final AdminNumberValidator adminNumberValidator;
     private final AdminNumberService adminNumberService;
+    private final CartRepository cartRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UserService(
@@ -22,12 +25,14 @@ public class UserService implements ServiceInterface<User> {
         UserValidator userValidator,
         AdminNumberValidator adminNumberValidator,
         AdminNumberService adminNumberService,
+        CartRepository cartRepository,
         PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
         this.userValidator = userValidator;
         this.adminNumberValidator = adminNumberValidator;
         this.adminNumberService = adminNumberService;
+        this.cartRepository = cartRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -82,6 +87,8 @@ public class UserService implements ServiceInterface<User> {
     @Override
     public void delete(User user) {
         userValidator.validate(user.getId(), userRepository.findAll());
+        Optional<Cart> cartOptional = cartRepository.findByUser(user);
+        cartOptional.ifPresent(cartRepository::delete);
         userRepository.delete(user);
     }
 }
