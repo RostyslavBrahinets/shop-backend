@@ -68,7 +68,7 @@ public class ProductController {
         return newProduct;
     }
 
-    @PostMapping("/{barcode}")
+    @DeleteMapping("/{barcode}")
     public String delete(@PathVariable String barcode) {
         productService.delete(Product.of(barcode));
         return "Product Successfully Deleted";
