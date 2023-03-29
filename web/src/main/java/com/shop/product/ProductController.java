@@ -68,6 +68,14 @@ public class ProductController {
         return newProduct;
     }
 
+    @PutMapping("/{id}")
+    public Product update(
+        @PathVariable long id,
+        @RequestBody Product product
+    ) {
+        return productService.update(id, product);
+    }
+
     @DeleteMapping("/{barcode}")
     public String delete(@PathVariable String barcode) {
         productService.delete(Product.of(barcode));
