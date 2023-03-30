@@ -1,5 +1,6 @@
 package com.shop.category;
 
+import com.shop.productcategory.ProductCategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,8 @@ class CategoryServiceTest {
     private CategoryRepository categoryRepository;
     @Mock
     private CategoryValidator categoryValidator;
+    @Mock
+    private ProductCategoryRepository productCategoryRepository;
 
     private CategoryService categoryService;
 
@@ -28,7 +31,8 @@ class CategoryServiceTest {
 
         categoryService = new CategoryService(
             categoryRepository,
-            categoryValidator
+            categoryValidator,
+            productCategoryRepository
         );
     }
 

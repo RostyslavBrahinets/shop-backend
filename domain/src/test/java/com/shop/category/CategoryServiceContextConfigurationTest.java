@@ -1,5 +1,6 @@
 package com.shop.category;
 
+import com.shop.productcategory.ProductCategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -103,6 +104,11 @@ public class CategoryServiceContextConfigurationTest {
         @Bean
         public CategoryValidator categoryValidator() {
             return mock(CategoryValidator.class);
+        }
+
+        @Bean
+        public ProductCategoryRepository productCategoryRepository() {
+            return mock(ProductCategoryRepository.class);
         }
     }
 }
