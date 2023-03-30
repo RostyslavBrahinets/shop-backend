@@ -58,7 +58,7 @@ public class ProductRepository implements RepositoryInterface<Product> {
                 + "name=:name, "
                 + "describe=:describe, "
                 + "price=:price, "
-                + "barcode=:name, "
+                + "barcode=:barcode, "
                 + "in_stock=:in_stock, "
                 + "image=:image "
                 + "WHERE id=:id",
