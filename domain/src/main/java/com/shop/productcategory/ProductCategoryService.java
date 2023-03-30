@@ -49,4 +49,17 @@ public class ProductCategoryService {
             category.getId()
         );
     }
+
+    public void updateCategoryForProduct(String barcode, String nameOfCategory) {
+        productValidator.validateBarcode(barcode, productService.findAll());
+        categoryValidator.validate(nameOfCategory, categoryService.findAll());
+
+        Product product = productService.findByBarcode(barcode);
+        Category category = categoryService.findByName(nameOfCategory);
+
+        productCategoryRepository.updateCategoryForProduct(
+            product.getId(),
+            category.getId()
+        );
+    }
 }

@@ -29,4 +29,15 @@ public class ProductCategoryController {
             productCategoryDto.category()
         );
     }
+
+    @PutMapping
+    public ProductCategoryDto updateCategoryForProduct(
+        @RequestBody ProductCategoryDto productCategoryDto
+    ) {
+        productCategoryService.updateCategoryForProduct(
+            productCategoryDto.barcode(),
+            productCategoryDto.category()
+        );
+        return productCategoryDto;
+    }
 }

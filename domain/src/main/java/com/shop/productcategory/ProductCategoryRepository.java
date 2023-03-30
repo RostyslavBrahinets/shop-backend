@@ -48,6 +48,18 @@ public class ProductCategoryRepository {
         );
     }
 
+    public void updateCategoryForProduct(long productId, long categoryId) {
+        jdbcTemplate.update(
+            "UPDATE product_category SET "
+                + "category_id=:category_id "
+                + "WHERE product_id=:product_id",
+            Map.ofEntries(
+                Map.entry("category_id", categoryId),
+                Map.entry("product_id", productId)
+            )
+        );
+    }
+
     public void deleteProductFromCategory(long productId, long categoryId) {
         jdbcTemplate.update(
             "DELETE FROM product_category "
