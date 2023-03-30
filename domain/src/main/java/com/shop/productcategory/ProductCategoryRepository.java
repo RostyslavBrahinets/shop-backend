@@ -70,4 +70,14 @@ public class ProductCategoryRepository {
             )
         );
     }
+
+    public void deleteProductCategory(long categoryId) {
+        jdbcTemplate.update(
+            "DELETE FROM product_category "
+                + "WHERE category_id=:category_id",
+            Map.ofEntries(
+                Map.entry("category_id", categoryId)
+            )
+        );
+    }
 }
