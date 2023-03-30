@@ -21,13 +21,14 @@ public class ProductCategoryController {
     }
 
     @PostMapping
-    public void saveProductsToCategory(
+    public ProductCategoryDto saveProductsToCategory(
         @RequestBody ProductCategoryDto productCategoryDto
     ) {
         productCategoryService.saveProductToCategory(
             productCategoryDto.barcode(),
             productCategoryDto.category()
         );
+        return productCategoryDto;
     }
 
     @PutMapping
