@@ -1,6 +1,7 @@
 package com.shop.category;
 
 import com.shop.interfaces.ServiceInterface;
+import com.shop.productcategory.ProductCategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,13 +11,16 @@ import java.util.Optional;
 public class CategoryService implements ServiceInterface<Category> {
     private final CategoryRepository categoryRepository;
     private final CategoryValidator categoryValidator;
+    private final ProductCategoryRepository productCategoryRepository;
 
     public CategoryService(
         CategoryRepository categoryRepository,
-        CategoryValidator categoryValidator
+        CategoryValidator categoryValidator,
+        ProductCategoryRepository productCategoryRepository
     ) {
         this.categoryRepository = categoryRepository;
         this.categoryValidator = categoryValidator;
+        this.productCategoryRepository = productCategoryRepository;
     }
 
     @Override
@@ -50,6 +54,12 @@ public class CategoryService implements ServiceInterface<Category> {
     @Override
     public void delete(Category category) {
         categoryValidator.validate(category.getName(), categoryRepository.findAll());
+
+        Optional<Category> categoryOptional = categoryRepository.findByName(category.getName());
+        categoryOptional.ifPresent(
+            value -> productCategoryRepository.deleteProductCategory(value.getId())
+        );
+
         categoryRepository.delete(category);
     }
 
