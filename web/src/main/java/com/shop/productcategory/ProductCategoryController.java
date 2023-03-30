@@ -25,8 +25,8 @@ public class ProductCategoryController {
         @RequestBody ProductCategoryDto productCategoryDto
     ) {
         productCategoryService.saveProductToCategory(
-            productCategoryDto.barcode(),
-            productCategoryDto.category()
+            productCategoryDto.productBarcode(),
+            productCategoryDto.categoryName()
         );
         return productCategoryDto;
     }
@@ -36,8 +36,8 @@ public class ProductCategoryController {
         @RequestBody ProductCategoryDto productCategoryDto
     ) {
         productCategoryService.updateCategoryForProduct(
-            productCategoryDto.barcode(),
-            productCategoryDto.category()
+            productCategoryDto.productBarcode(),
+            productCategoryDto.categoryName()
         );
         return productCategoryDto;
     }

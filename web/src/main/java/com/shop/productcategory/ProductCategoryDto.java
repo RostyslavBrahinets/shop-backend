@@ -1,4 +1,4 @@
 package com.shop.productcategory;
 
-public record ProductCategoryDto(String barcode, String category) {
+public record ProductCategoryDto(String productBarcode, String categoryName) {
 }
