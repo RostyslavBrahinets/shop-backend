@@ -2,13 +2,14 @@ package com.shop.productcategory;
 
 import com.shop.category.Category;
 import com.shop.category.CategoryService;
+import com.shop.category.CategoryValidator;
 import com.shop.product.Product;
 import com.shop.product.ProductService;
-import com.shop.category.CategoryValidator;
 import com.shop.product.ProductValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductCategoryService {
@@ -60,6 +61,20 @@ public class ProductCategoryService {
         productCategoryRepository.updateCategoryForProduct(
             product.getId(),
             category.getId()
+        );
+    }
+
+    public void deleteProductFromCategory(String barcode) {
+        productValidator.validateBarcode(barcode, productService.findAll());
+
+        Product product = productService.findByBarcode(barcode);
+        Optional<Category> categoryOptional = productCategoryRepository.findCategoryForProduct(product.getId());
+
+        categoryOptional.ifPresent(
+            category -> productCategoryRepository.deleteProductFromCategory(
+                product.getId(),
+                category.getId()
+            )
         );
     }
 }

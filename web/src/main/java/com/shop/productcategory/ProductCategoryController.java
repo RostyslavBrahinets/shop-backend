@@ -40,4 +40,10 @@ public class ProductCategoryController {
         );
         return productCategoryDto;
     }
+
+    @DeleteMapping("/{barcode}")
+    public String deleteProductFromCategory(@PathVariable String barcode) {
+        productCategoryService.deleteProductFromCategory(barcode);
+        return "Product from Category Successfully Deleted";
+    }
 }
