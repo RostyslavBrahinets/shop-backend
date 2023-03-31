@@ -57,7 +57,7 @@ public class CartService implements ServiceInterface<Cart> {
 
     @Override
     public Cart update(long id, Cart cart) {
-        cartValidator.validate(cart.getId());
+        cartValidator.validate(id);
         cartValidator.validate(cart.getTotalCost());
         cartRepository.update(id, cart);
         return cart;
