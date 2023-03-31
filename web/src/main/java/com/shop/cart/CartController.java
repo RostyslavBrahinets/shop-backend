@@ -30,6 +30,14 @@ public class CartController {
         return cartService.save(cart);
     }
 
+    @PutMapping("/{id}")
+    public Cart update(
+        @PathVariable long id,
+        @RequestBody Cart cart
+    ) {
+        return cartService.update(id, cart);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable long id) {
