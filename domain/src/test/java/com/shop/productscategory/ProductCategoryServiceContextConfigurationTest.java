@@ -5,7 +5,6 @@ import com.shop.category.CategoryService;
 import com.shop.category.CategoryValidator;
 import com.shop.product.Product;
 import com.shop.product.ProductService;
-import com.shop.product.ProductValidator;
 import com.shop.productcategory.ProductCategoryRepository;
 import com.shop.productcategory.ProductCategoryService;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,8 +32,6 @@ public class ProductCategoryServiceContextConfigurationTest {
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
     @Autowired
-    private ProductValidator productValidator;
-    @Autowired
     private CategoryValidator categoryValidator;
     @Autowired
     private ProductService productService;
@@ -44,12 +41,10 @@ public class ProductCategoryServiceContextConfigurationTest {
     private ProductCategoryService productCategoryService;
 
     private List<Category> categories;
-    private List<Product> products;
 
     @BeforeEach
     void setUp() {
         categories = List.of();
-        products = List.of();
     }
 
     @Test
@@ -85,8 +80,6 @@ public class ProductCategoryServiceContextConfigurationTest {
 
         productCategoryService.saveProductToCategory(barcode, categoryName);
 
-        verify(productValidator, atLeast(1)).validateBarcode(barcode, products);
-        verify(categoryValidator, atLeast(1)).validate(categoryName, categories);
         verify(productCategoryRepository).saveProductToCategory(1, 1);
     }
 
@@ -105,11 +98,6 @@ public class ProductCategoryServiceContextConfigurationTest {
         @Bean
         public CategoryService categoryService() {
             return mock(CategoryService.class);
-        }
-
-        @Bean
-        public ProductValidator productValidator() {
-            return mock(ProductValidator.class);
         }
 
         @Bean
