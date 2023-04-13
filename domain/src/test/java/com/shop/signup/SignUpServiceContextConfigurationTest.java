@@ -4,10 +4,8 @@ import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberService;
 import com.shop.cart.CartService;
 import com.shop.user.User;
-import com.shop.stripe.StripePayment;
 import com.shop.user.UserService;
 import com.shop.userrole.UserRoleService;
-import com.stripe.exception.StripeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +35,7 @@ public class SignUpServiceContextConfigurationTest {
 
     @Test
     @DisplayName("Sign Up")
-    void signUp() throws StripeException {
+    void signUp() {
         String firstName = "John";
         String lastName = "Smith";
         String email = "test@email.com";
@@ -93,11 +91,6 @@ public class SignUpServiceContextConfigurationTest {
         @Bean
         public CartService cartService() {
             return mock(CartService.class);
-        }
-
-        @Bean
-        public StripePayment stripePayment() {
-            return mock(StripePayment.class);
         }
     }
 }
