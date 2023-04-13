@@ -7,7 +7,6 @@ import com.shop.user.User;
 import com.shop.stripe.StripePayment;
 import com.shop.user.UserService;
 import com.shop.userrole.UserRoleService;
-import com.shop.wallet.WalletService;
 import com.stripe.exception.StripeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -94,11 +93,6 @@ public class SignUpServiceContextConfigurationTest {
         @Bean
         public CartService cartService() {
             return mock(CartService.class);
-        }
-
-        @Bean
-        public WalletService walletService() {
-            return mock(WalletService.class);
         }
 
         @Bean
