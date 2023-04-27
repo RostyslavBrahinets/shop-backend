@@ -1,9 +1,8 @@
 package com.shop.main;
 
-import com.shop.main.MainController;
 import com.shop.product.Product;
-import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.product.ProductService;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,8 +99,11 @@ class MainControllerTest {
             )
         );
 
-        mockMvc.perform(get(MainController.MAIN_URL)
-                .with(anonymous()))
+        mockMvc.perform(
+                get(MainController.MAIN_URL)
+                    .with(anonymous())
+                    .with(user("username").roles("ANONYMOUS"))
+            )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray());
