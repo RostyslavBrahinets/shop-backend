@@ -2,16 +2,17 @@ package com.shop.configs;
 
 import com.shop.security.SignInPasswordAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
     private final PasswordEncoder passwordEncoder;
 
     public SecurityConfig(PasswordEncoder passwordEncoder) {
@@ -29,35 +30,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .passwordEncoder(passwordEncoder);
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-
-        http
-            .authorizeRequests()
-            .mvcMatchers(
-                "/sign-up", "/error", "/", "/categories/**", "/products/**",
-                "/api/users/**", "/api/user-role/**", "/api/admins-numbers/**", "/api/carts/**",
-                "/api/sign-up", "/api**", "/api/categories/**",
-                "/api/products/**", "/api/product-category/**",
-                "/js/**", "/images/**"
-            ).permitAll()
-            .mvcMatchers("/admin/**").hasRole("ADMIN")
-            .anyRequest().authenticated()
-            .and()
-            .formLogin()
-            .loginPage("/sign-in")
-            .usernameParameter("email")
-            .passwordParameter("password")
-            .defaultSuccessUrl("/", true)
-            .permitAll()
-            .and()
-            .logout()
-            .invalidateHttpSession(true)
-            .clearAuthentication(true)
-            .deleteCookies("JSESSIONID")
-            .logoutUrl("/sign-out")
-            .logoutSuccessUrl("/sign-in?sign-out")
-            .permitAll();
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http.csrf().disable()
+            .authorizeHttpRequests(
+                authz -> authz
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .requestMatchers(
+                        "/sign-up", "/error", "/", "/categories/**", "/products/**",
+                        "/api**", "/api/sign-up",
+                        "/api/users/**", "/api/user-role/**", "/api/admins-numbers/**",
+                        "/api/carts/**", "/api/categories/**",
+                        "/api/products/**", "/api/product-category/**",
+                        "/js/**", "/images/**"
+                    ).permitAll()
+                    .anyRequest().authenticated()
+            )
+            .build();
     }
 }
