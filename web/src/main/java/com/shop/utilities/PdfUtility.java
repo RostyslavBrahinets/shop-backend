@@ -5,10 +5,10 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import com.shop.report.ReportDto;
 import com.shop.product.Product;
+import com.shop.report.ReportDto;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.IOException;
 

@@ -1,10 +1,10 @@
 package com.shop.product;
 
 import com.shop.utilities.ImageUtility;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
