@@ -19,8 +19,11 @@ import java.math.BigDecimal;
 public class PaymentController {
     public static final String PAYMENT_URL = "/api/payment";
 
-    @Value("${stripe.secret.key}")
-    private String stripeSecretKey;
+    private final PaymentService paymentService;
+
+    public PaymentController(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
 
     @PostMapping
     public ResponseEntity<String> createCharge(
