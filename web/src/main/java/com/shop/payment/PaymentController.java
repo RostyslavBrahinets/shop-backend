@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @RestController
 @RequestMapping(PaymentController.PAYMENT_URL)
 public class PaymentController {
-    public static final String PAYMENT_URL = "/api/charge";
+    public static final String PAYMENT_URL = "/api/payment";
 
     @Value("${stripe.secret.key}")
     private String stripeSecretKey;
