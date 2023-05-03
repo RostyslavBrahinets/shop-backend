@@ -1,7 +1,8 @@
 package com.shop.payment;
 
 public record PaymentResponseDto(
-    String message
+    String message,
+    boolean isSuccessfully
 ) {
 }
 
