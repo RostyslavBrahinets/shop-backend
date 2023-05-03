@@ -1,7 +1,7 @@
 package com.shop.payment;
 
 public record PaymentRequestDto(
-    int amount,
+    int priceAmount,
     String cardNumber,
     String cardExpiry,
     String cardCvc

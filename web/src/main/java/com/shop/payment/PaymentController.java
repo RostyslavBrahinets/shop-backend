@@ -21,7 +21,7 @@ public class PaymentController {
     public PaymentResponseDto processPayment(@RequestBody PaymentRequestDto paymentRequestDto) {
         try {
             String paymentInfo = paymentService.payment(
-                paymentRequestDto.amount(),
+                paymentRequestDto.priceAmount(),
                 paymentRequestDto.cardNumber(),
                 paymentRequestDto.cardExpiry(),
                 paymentRequestDto.cardCvc()

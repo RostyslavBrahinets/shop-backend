@@ -24,7 +24,7 @@ public class PaymentService {
     }
 
     public String payment(
-        int amount,
+        int priceAmount,
         String cardNumber,
         String cardExpiry,
         String cardCvc
@@ -32,7 +32,7 @@ public class PaymentService {
         Stripe.apiKey = stripeSecretKey;
 
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-            .setAmount(amount * 100L)
+            .setAmount(priceAmount * 100L)
             .setCurrency("uah")
             .setPaymentMethod(createPaymentMethod(cardNumber, cardExpiry, cardCvc).getId())
             .setConfirm(true)
