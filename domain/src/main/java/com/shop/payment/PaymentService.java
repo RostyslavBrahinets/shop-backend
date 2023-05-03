@@ -2,7 +2,9 @@ package com.shop.payment;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
 import com.stripe.model.PaymentMethod;
+import com.stripe.param.PaymentIntentCreateParams;
 import com.stripe.param.PaymentMethodCreateParams;
 import com.stripe.param.PaymentMethodCreateParams.CardDetails;
 import com.stripe.param.PaymentMethodCreateParams.Type;
@@ -19,6 +21,26 @@ public class PaymentService {
         @Value("${stripe.secret.key}") String stripeSecretKey
     ) {
         this.stripeSecretKey = stripeSecretKey;
+    }
+
+    public String payment(
+        int amount,
+        String cardNumber,
+        String cardExpiry,
+        String cardCvc
+    ) throws StripeException {
+        Stripe.apiKey = stripeSecretKey;
+
+        PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
+            .setAmount(amount * 100L)
+            .setCurrency("uah")
+            .setPaymentMethod(createPaymentMethod(cardNumber, cardExpiry, cardCvc).getId())
+            .setConfirm(true)
+            .build();
+
+        PaymentIntent paymentIntent = PaymentIntent.create(params);
+
+        return "Payment processed successfully. Payment Intent ID: " + paymentIntent.getId();
     }
 
     private PaymentMethod createPaymentMethod(
