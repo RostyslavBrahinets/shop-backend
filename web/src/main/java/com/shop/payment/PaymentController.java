@@ -27,9 +27,9 @@ public class PaymentController {
                 paymentRequestDto.cardCvc()
             );
 
-            return new PaymentResponseDto(paymentInfo);
+            return new PaymentResponseDto(paymentInfo, true);
         } catch (StripeException e) {
-            return new PaymentResponseDto(e.getMessage());
+            return new PaymentResponseDto(e.getMessage(), false);
         }
     }
 }
