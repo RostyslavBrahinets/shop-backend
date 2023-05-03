@@ -42,6 +42,7 @@ public class SecurityConfig {
                         "/api/users/**", "/api/user-role/**", "/api/admins-numbers/**",
                         "/api/carts/**", "/api/categories/**",
                         "/api/products/**", "/api/product-category/**",
+                        "/api/payment",
                         "/js/**", "/images/**"
                     ).permitAll()
                     .anyRequest().authenticated()
