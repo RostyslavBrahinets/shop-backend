@@ -131,9 +131,9 @@ public class CartRepositoryTest {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("total_cost", "user_id")
+            .usingColumns("price_amount", "user_id")
             .execute(Map.ofEntries(
-                Map.entry("total_cost", 0),
+                Map.entry("price_amount", 0),
                 Map.entry("user_id", 1)
             ));
 
@@ -156,10 +156,10 @@ public class CartRepositoryTest {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("total_cost", "user_id")
+            .usingColumns("price_amount", "user_id")
             .execute(
                 Map.ofEntries(
-                    Map.entry("total_cost", 0),
+                    Map.entry("price_amount", 0),
                     Map.entry("user_id", 1)
                 )
             );
@@ -174,11 +174,11 @@ public class CartRepositoryTest {
     void find_all_carts() {
         var batchInsertParameters = SqlParameterSourceUtils.createBatch(
             Map.ofEntries(
-                Map.entry("total_cost", 0),
+                Map.entry("price_amount", 0),
                 Map.entry("user_id", 1)
             ),
             Map.ofEntries(
-                Map.entry("total_cost", 0),
+                Map.entry("price_amount", 0),
                 Map.entry("user_id", 2)
             )
         );
@@ -186,7 +186,7 @@ public class CartRepositoryTest {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("total_cost", "user_id")
+            .usingColumns("price_amount", "user_id")
             .executeBatch(batchInsertParameters);
 
         List<Cart> carts = cartRepository.findAll();
@@ -211,10 +211,10 @@ public class CartRepositoryTest {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("total_cost", "user_id")
+            .usingColumns("price_amount", "user_id")
             .execute(
                 Map.ofEntries(
-                    Map.entry("total_cost", 0),
+                    Map.entry("price_amount", 0),
                     Map.entry("user_id", 1)
                 )
             );
@@ -236,10 +236,10 @@ public class CartRepositoryTest {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
-            .usingColumns("total_cost", "user_id")
+            .usingColumns("price_amount", "user_id")
             .execute(
                 Map.ofEntries(
-                    Map.entry("total_cost", 0),
+                    Map.entry("price_amount", 0),
                     Map.entry("user_id", 1)
                 )
             );
@@ -247,7 +247,7 @@ public class CartRepositoryTest {
         cartRepository.update(1, Cart.of(100, 1));
 
         var updatedCart = jdbcTemplate.queryForObject(
-            "SELECT total_cost FROM cart WHERE id=:id",
+            "SELECT price_amount FROM cart WHERE id=:id",
             Map.ofEntries(Map.entry("id", 1)),
             Double.class
         );

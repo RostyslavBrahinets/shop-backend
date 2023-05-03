@@ -42,7 +42,7 @@ public class CartService implements ServiceInterface<Cart> {
 
     @Override
     public Cart save(Cart cart) {
-        cartValidator.validate(cart.getTotalCost());
+        cartValidator.validate(cart.getPriceAmount());
         userValidator.validate(cart.getUserId(), userService.findAll());
         cartRepository.save(cart);
 
@@ -58,7 +58,7 @@ public class CartService implements ServiceInterface<Cart> {
     @Override
     public Cart update(long id, Cart cart) {
         cartValidator.validate(id);
-        cartValidator.validate(cart.getTotalCost());
+        cartValidator.validate(cart.getPriceAmount());
         cartRepository.update(id, cart);
         return cart;
     }

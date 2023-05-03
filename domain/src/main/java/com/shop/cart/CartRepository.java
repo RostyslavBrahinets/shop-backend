@@ -39,9 +39,9 @@ public class CartRepository implements RepositoryInterface<Cart> {
     @Override
     public void save(Cart cart) {
         jdbcTemplate.update(
-            "INSERT INTO cart (total_cost, user_id) VALUES (:total_cost, :user_id)",
+            "INSERT INTO cart (price_amount, user_id) VALUES (:price_amount, :user_id)",
             Map.ofEntries(
-                Map.entry("total_cost", cart.getTotalCost()),
+                Map.entry("price_amount", cart.getPriceAmount()),
                 Map.entry("user_id", cart.getUserId())
             )
         );
@@ -50,9 +50,9 @@ public class CartRepository implements RepositoryInterface<Cart> {
     @Override
     public void update(long id, Cart cart) {
         jdbcTemplate.update(
-            "UPDATE cart SET total_cost=:total_cost WHERE id=:id",
+            "UPDATE cart SET price_amount=:price_amount WHERE id=:id",
             Map.ofEntries(
-                Map.entry("total_cost", cart.getTotalCost()),
+                Map.entry("price_amount", cart.getPriceAmount()),
                 Map.entry("id", id)
             )
         );

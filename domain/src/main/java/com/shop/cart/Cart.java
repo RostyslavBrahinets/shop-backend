@@ -13,7 +13,7 @@ public class Cart implements Serializable {
     private static final long serialVersionUID = 4L;
     private long id;
     private List<Product> products;
-    private double totalCost;
+    private double priceAmount;
     private long userId;
 
     public Cart() {
@@ -22,21 +22,21 @@ public class Cart implements Serializable {
 
     public Cart(
         long id,
-        double totalCost,
+        double priceAmount,
         long userId
     ) {
         this.id = id;
-        this.totalCost = totalCost;
+        this.priceAmount = priceAmount;
         this.products = new ArrayList<>();
         this.userId = userId;
     }
 
-    public static Cart of(double totalCost, long userId) {
-        return new Cart(0, totalCost, userId);
+    public static Cart of(double priceAmount, long userId) {
+        return new Cart(0, priceAmount, userId);
     }
 
     public Cart withId(long id) {
-        return new Cart(id, this.totalCost, this.userId);
+        return new Cart(id, this.priceAmount, this.userId);
     }
 
     public long getId() {
@@ -55,12 +55,12 @@ public class Cart implements Serializable {
         this.products = products;
     }
 
-    public double getTotalCost() {
-        return totalCost;
+    public double getPriceAmount() {
+        return priceAmount;
     }
 
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
+    public void setPriceAmount(double priceAmount) {
+        this.priceAmount = priceAmount;
     }
 
     public long getUserId() {
@@ -77,14 +77,14 @@ public class Cart implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Cart that = (Cart) o;
         return Objects.equals(id, that.id)
-            && Objects.equals(totalCost, that.totalCost)
+            && Objects.equals(priceAmount, that.priceAmount)
             && Objects.equals(products, that.products)
             && Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, products, totalCost, userId);
+        return Objects.hash(id, products, priceAmount, userId);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class Cart implements Serializable {
         return "Cart{"
             + "id=" + id
             + ", products=" + products
-            + ", totalCost=" + totalCost
+            + ", priceAmount=" + priceAmount
             + '}';
     }
 }

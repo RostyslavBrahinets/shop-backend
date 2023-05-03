@@ -37,15 +37,15 @@ public class CartTableSchemaTest {
     }
 
     @Test
-    @DisplayName("Failed to insert null total cost value")
-    void failed_to_insert_null_total_cost_value() {
+    @DisplayName("Failed to insert null price amount value")
+    void failed_to_insert_null_price_amount_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("total_cost", null);
+        params.addValue("price_amount", null);
         params.addValue("user_id", 1);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO cart(total_cost, user_id) VALUES (:total_cost, :user_id)",
+                "INSERT INTO cart(price_amount, user_id) VALUES (:price_amount, :user_id)",
                 params
             )
         )
@@ -56,12 +56,12 @@ public class CartTableSchemaTest {
     @DisplayName("Failed to insert null user id value")
     void failed_to_insert_null_user_id_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("total_cost", 0);
+        params.addValue("price_amount", 0);
         params.addValue("user_id", null);
 
         assertThatCode(
             () -> jdbcTemplate.update(
-                "INSERT INTO cart(total_cost, user_id) VALUES (:total_cost, :user_id)",
+                "INSERT INTO cart(price_amount, user_id) VALUES (:price_amount, :user_id)",
                 params
             )
         )

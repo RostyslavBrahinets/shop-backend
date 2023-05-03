@@ -10,9 +10,9 @@ import java.util.List;
 
 @Component
 public class CartValidator {
-    public void validate(double totalCost) {
-        if (totalCost < 0) {
-            throw new ValidationException("Total cost of products in cart is invalid");
+    public void validate(double priceAmount) {
+        if (priceAmount < 0) {
+            throw new ValidationException("Price amount of products in cart is invalid");
         }
     }
 
