@@ -50,9 +50,9 @@ public class AdminNumberService implements ServiceInterface<AdminNumber> {
         adminNumberRepository.delete(adminNumber);
     }
 
-    public AdminNumber findByNumber(AdminNumber adminNumber) {
-        adminNumberValidator.validate(adminNumber.getNumber(), adminNumberRepository.findAll());
-        Optional<AdminNumber> adminNumberOptional = adminNumberRepository.findByNumber(adminNumber.getNumber());
+    public AdminNumber findByNumber(String number) {
+        adminNumberValidator.validate(number, adminNumberRepository.findAll());
+        Optional<AdminNumber> adminNumberOptional = adminNumberRepository.findByNumber(number);
         return adminNumberOptional.orElseGet(AdminNumber::new);
     }
 }

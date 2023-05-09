@@ -85,7 +85,7 @@ class AdminNumberServiceTest {
             Optional.of(AdminNumber.of("12345678").withId(1))
         );
 
-        AdminNumber adminNumber = adminNumberService.findByNumber(AdminNumber.of("12345678"));
+        AdminNumber adminNumber = adminNumberService.findByNumber("12345678");
 
         assertThat(adminNumber).isEqualTo(new AdminNumber(1, "12345678"));
     }

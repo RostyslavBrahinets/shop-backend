@@ -60,7 +60,7 @@ public class AdminNumberServiceContextConfigurationTest {
     void get_number_of_admin_by_number() {
         String number = "12345678";
 
-        adminNumberService.findByNumber(AdminNumber.of(number));
+        adminNumberService.findByNumber(number);
 
         verify(adminNumberValidator, atLeast(1)).validate(number, adminNumbers);
         verify(adminNumberRepository).findByNumber(number);
