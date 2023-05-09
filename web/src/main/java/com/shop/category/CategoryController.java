@@ -38,8 +38,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{name}")
-    public String delete(@PathVariable String name) {
+    public void delete(@PathVariable String name) {
         categoryService.delete(Category.of(name));
-        return "Category Successfully Deleted";
     }
 }

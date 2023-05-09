@@ -40,8 +40,7 @@ public class AdminNumberController {
     }
 
     @DeleteMapping("/{number}")
-    public String delete(@PathVariable String number) {
+    public void delete(@PathVariable String number) {
         adminNumberService.delete(AdminNumber.of(number));
-        return "Admin Number Successfully Deleted";
     }
 }
