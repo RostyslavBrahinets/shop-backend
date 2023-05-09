@@ -5,6 +5,7 @@ import com.shop.category.CategoryService;
 import com.shop.category.CategoryValidator;
 import com.shop.product.Product;
 import com.shop.product.ProductService;
+import com.shop.product.ProductValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,17 +16,20 @@ public class ProductCategoryService {
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final ProductValidator productValidator;
     private final CategoryValidator categoryValidator;
 
     public ProductCategoryService(
         ProductCategoryRepository productCategoryRepository,
         ProductService productService,
         CategoryService categoryService,
+        ProductValidator productValidator,
         CategoryValidator categoryValidator
     ) {
         this.productCategoryRepository = productCategoryRepository;
         this.productService = productService;
         this.categoryService = categoryService;
+        this.productValidator = productValidator;
         this.categoryValidator = categoryValidator;
     }
 
@@ -49,6 +53,11 @@ public class ProductCategoryService {
     }
 
     public void deleteProductFromCategory(String barcode) {
+        productValidator.validateBarcode(
+            barcode,
+            productService.findAll()
+        );
+
         Optional<Category> categoryOptional = productCategoryRepository
             .findCategoryForProduct(
                 productService.findByBarcode(barcode).getId()
