@@ -58,16 +58,18 @@ public class ProductCategoryService {
             productService.findAll()
         );
 
+        productCategoryRepository.deleteProductFromCategory(
+            productService.findByBarcode(barcode).getId(),
+            getCategoryForProduct(barcode).getId()
+        );
+    }
+
+    private Category getCategoryForProduct(String barcode) {
         Optional<Category> categoryOptional = productCategoryRepository
             .findCategoryForProduct(
                 productService.findByBarcode(barcode).getId()
             );
 
-        categoryOptional.ifPresent(
-            category -> productCategoryRepository.deleteProductFromCategory(
-                productService.findByBarcode(barcode).getId(),
-                category.getId()
-            )
-        );
+        return categoryOptional.orElse(new Category());
     }
 }
