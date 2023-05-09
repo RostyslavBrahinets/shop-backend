@@ -64,6 +64,15 @@ public class ProductCategoryService {
         );
     }
 
+    public Category findCategoryForProduct(String barcode) {
+        productValidator.validateBarcode(
+            barcode,
+            productService.findAll()
+        );
+
+        return getCategoryForProduct(barcode);
+    }
+
     private Category getCategoryForProduct(String barcode) {
         Optional<Category> categoryOptional = productCategoryRepository
             .findCategoryForProduct(
