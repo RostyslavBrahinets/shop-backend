@@ -7,10 +7,9 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.shop.product.Product;
 import com.shop.report.ReportDto;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.awt.*;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 
 import static com.lowagie.text.Element.ALIGN_CENTER;
 
@@ -21,9 +20,11 @@ public class PdfUtility {
         this.report = report;
     }
 
-    public void export(HttpServletResponse response) throws DocumentException, IOException {
+    public ByteArrayOutputStream export() throws DocumentException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
         try (Document document = new Document(PageSize.A4)) {
-            PdfWriter.getInstance(document, response.getOutputStream());
+            PdfWriter.getInstance(document, outputStream);
 
             document.open();
 
@@ -42,6 +43,8 @@ public class PdfUtility {
 
             document.add(table);
         }
+
+        return outputStream;
     }
 
     private void writeTableHeader(PdfPTable table) {
