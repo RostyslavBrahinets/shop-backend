@@ -1,5 +1,6 @@
 package com.shop.productcategory;
 
+import com.shop.category.Category;
 import com.shop.product.Product;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,11 @@ public class ProductCategoryController {
     @GetMapping("/{id}")
     public List<Product> findAllProductsInCategory(@PathVariable long id) {
         return productCategoryService.findAllProductsInCategory(id);
+    }
+
+    @GetMapping("/category/{barcode}")
+    public Category findCategoryForProduct(@PathVariable String barcode) {
+        return productCategoryService.findCategoryForProduct(barcode);
     }
 
     @PostMapping
