@@ -1,13 +1,15 @@
 package com.shop.report;
 
 import com.shop.utilities.PdfUtility;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,17 +20,20 @@ public class ReportController {
     public static final String REPORT_URL = "/api/report";
 
     @PostMapping("/download")
-    public void downloadReport(
-        @RequestBody ReportDto report,
-        HttpServletResponse response
-    ) throws IOException {
-        response.setContentType("application/pdf");
+    public ResponseEntity<byte[]> downloadReport(@RequestBody ReportDto report) {
+        PdfUtility pdfUtility = new PdfUtility(report);
+        ByteArrayOutputStream reportContent = pdfUtility.export();
+
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=report_" + currentDateTime + ".pdf";
-        response.setHeader(headerKey, headerValue);
-        PdfUtility pdfUtility = new PdfUtility(report);
-        pdfUtility.export(response);
+        String filename = "report_" + currentDateTime + ".pdf";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", filename);
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(reportContent.toByteArray());
     }
 }
