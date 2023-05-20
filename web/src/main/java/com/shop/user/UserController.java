@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(UserController.USERS_URL)
 public class UserController {
     public static final String USERS_URL = "/api/v1/users";

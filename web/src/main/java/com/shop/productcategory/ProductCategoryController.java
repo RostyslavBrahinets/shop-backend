@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(ProductCategoryController.PRODUCT_CATEGORY_URL)
 public class ProductCategoryController {
     public static final String PRODUCT_CATEGORY_URL = "/api/v1/product-category";

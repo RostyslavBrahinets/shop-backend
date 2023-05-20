@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(CategoryController.CATEGORIES_URL)
 public class CategoryController {
     public static final String CATEGORIES_URL = "/api/v1/categories";

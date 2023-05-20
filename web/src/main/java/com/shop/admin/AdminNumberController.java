@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(AdminNumberController.ADMIN_NUMBERS_URL)
 public class AdminNumberController {
     public static final String ADMIN_NUMBERS_URL = "/api/v1/admins-numbers";

@@ -1,12 +1,10 @@
 package com.shop.payment;
 
 import com.stripe.exception.StripeException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping(PaymentController.PAYMENT_URL)
 public class PaymentController {
     public static final String PAYMENT_URL = "/api/v1/payment";

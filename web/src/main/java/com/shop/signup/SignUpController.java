@@ -1,11 +1,9 @@
 package com.shop.signup;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping(SignUpController.SIGN_UP_URL)
 public class SignUpController {
     public static final String SIGN_UP_URL = "/api/v1/sign-up";
