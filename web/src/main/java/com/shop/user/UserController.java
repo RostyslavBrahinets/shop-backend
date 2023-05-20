@@ -8,7 +8,7 @@ import java.util.List;
 @RestController
 @RequestMapping(UserController.USERS_URL)
 public class UserController {
-    public static final String USERS_URL = "/api/users";
+    public static final String USERS_URL = "/api/v1/users";
     private final UserService userService;
 
     public UserController(UserService userService) {

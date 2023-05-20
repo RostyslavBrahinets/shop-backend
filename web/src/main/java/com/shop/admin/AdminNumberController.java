@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping(AdminNumberController.ADMIN_NUMBERS_URL)
 public class AdminNumberController {
-    public static final String ADMIN_NUMBERS_URL = "/api/admins-numbers";
+    public static final String ADMIN_NUMBERS_URL = "/api/v1/admins-numbers";
     private final AdminNumberService adminNumberService;
 
     public AdminNumberController(AdminNumberService adminNumberService) {

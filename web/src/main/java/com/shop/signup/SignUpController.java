@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(SignUpController.SIGN_UP_URL)
 public class SignUpController {
-    public static final String SIGN_UP_URL = "/api/sign-up";
+    public static final String SIGN_UP_URL = "/api/v1/sign-up";
     private final SignUpService signUpService;
 
     public SignUpController(SignUpService signUpService) {

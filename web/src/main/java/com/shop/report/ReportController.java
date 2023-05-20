@@ -17,7 +17,7 @@ import java.util.Date;
 @RestController
 @RequestMapping(ReportController.REPORT_URL)
 public class ReportController {
-    public static final String REPORT_URL = "/api/report";
+    public static final String REPORT_URL = "/api/v1/report";
 
     @PostMapping("/download")
     public ResponseEntity<byte[]> downloadReport(@RequestBody ReportDto report) {

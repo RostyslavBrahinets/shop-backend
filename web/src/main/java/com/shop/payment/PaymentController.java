@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(PaymentController.PAYMENT_URL)
 public class PaymentController {
-    public static final String PAYMENT_URL = "/api/payment";
+    public static final String PAYMENT_URL = "/api/v1/payment";
 
     private final PaymentService paymentService;
 

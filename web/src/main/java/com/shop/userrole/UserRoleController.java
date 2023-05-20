@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(UserRoleController.USER_ROLE_URL)
 public class UserRoleController {
-    public static final String USER_ROLE_URL = "/api/user-role";
+    public static final String USER_ROLE_URL = "/api/v1/user-role";
     private final UserRoleService userRoleService;
 
     public UserRoleController(

@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ProductCategoryController.PRODUCT_CATEGORY_URL)
 public class ProductCategoryController {
-    public static final String PRODUCT_CATEGORY_URL = "/api/product-category";
+    public static final String PRODUCT_CATEGORY_URL = "/api/v1/product-category";
     private final ProductCategoryService productCategoryService;
 
     public ProductCategoryController(ProductCategoryService productCategoryService) {

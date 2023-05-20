@@ -8,7 +8,7 @@ import java.util.List;
 @RestController
 @RequestMapping(CartController.CARTS_URL)
 public class CartController {
-    public static final String CARTS_URL = "/api/carts";
+    public static final String CARTS_URL = "/api/v1/carts";
     private final CartService cartService;
 
     public CartController(CartService cartService) {
