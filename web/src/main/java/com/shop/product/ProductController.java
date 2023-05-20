@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-//@CrossOrigin
+@CrossOrigin
 @RequestMapping(ProductController.PRODUCTS_URL)
 public class ProductController {
     public static final String PRODUCTS_URL = "/api/v1/products";
