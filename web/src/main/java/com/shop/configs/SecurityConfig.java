@@ -59,15 +59,19 @@ public class SecurityConfig {
             .and()
             .authorizeHttpRequests(
                 authz -> authz
-                    .requestMatchers("/admin/**").hasRole("ADMIN")
                     .requestMatchers(
-                        "/sign-up", "/error", "/", "/categories/**", "/products/**",
-                        "/api**", "/api/sign-up",
-                        "/api/users/**", "/api/user-role/**", "/api/admins-numbers/**",
-                        "/api/carts/**", "/api/categories/**",
-                        "/api/products/**", "/api/product-category/**",
-                        "/api/payment", "/api/report/**",
-                        "/js/**", "/images/**"
+                        "/api/v1/carts/**",
+                        "/api/v1/payment/**",
+                        "/api/v1/report/**"
+                    ).hasRole("USER")
+                    .requestMatchers(
+                        "/api/v1/sign-up/**",
+                        "/api/v1/users/**",
+                        "/api/v1/user-role/**",
+                        "/api/v1/admins-numbers/**",
+                        "/api/v1/categories/**",
+                        "/api/v1/products/**",
+                        "/api/v1/product-category/**"
                     ).permitAll()
                     .anyRequest().authenticated()
             )
