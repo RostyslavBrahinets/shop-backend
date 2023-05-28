@@ -1,5 +1,5 @@
 INSERT INTO category (name)
-VALUES ('Books'),
-       ('Cars'),
-       ('Clothes'),
-       ('Electronics');
+VALUES ('Книги'),
+       ('Автомобілі'),
+       ('Одяг'),
+       ('Електроніка');
