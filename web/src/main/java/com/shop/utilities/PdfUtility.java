@@ -28,7 +28,7 @@ public class PdfUtility {
 
             document.open();
 
-            Paragraph p = new Paragraph("Report", getFont(32, true));
+            Paragraph p = new Paragraph("Звіт", getFont(32, true));
             p.setAlignment(ALIGN_CENTER);
 
             document.add(p);
@@ -52,10 +52,10 @@ public class PdfUtility {
         cell.setBorderColor(Color.WHITE);
         cell.setPadding(2);
 
-        cell.setPhrase(new Phrase("Name", getFont(18, true)));
+        cell.setPhrase(new Phrase("Назва", getFont(18, true)));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Price", getFont(18, true)));
+        cell.setPhrase(new Phrase("Ціна", getFont(18, true)));
         table.addCell(cell);
     }
 
@@ -72,7 +72,7 @@ public class PdfUtility {
             table.addCell(cell);
         }
 
-        cell.setPhrase(new Phrase("Amount Price", getFont(18, true)));
+        cell.setPhrase(new Phrase("Загальна ціна", getFont(18, true)));
         table.addCell(cell);
 
         cell.setPhrase(new Phrase(String.valueOf(report.priceAmount()), getFont(18, true)));
