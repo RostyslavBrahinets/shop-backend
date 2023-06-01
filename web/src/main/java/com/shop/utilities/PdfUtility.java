@@ -2,6 +2,7 @@ package com.shop.utilities;
 
 import com.lowagie.text.Font;
 import com.lowagie.text.*;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -15,6 +16,15 @@ import static com.lowagie.text.Element.ALIGN_CENTER;
 
 public class PdfUtility {
     private final ReportDto report;
+    private static BaseFont cyrillicBaseFont;
+
+    static {
+        try {
+            cyrillicBaseFont = BaseFont.createFont("fonts/arialuni.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public PdfUtility(ReportDto report) {
         this.report = report;
@@ -28,7 +38,7 @@ public class PdfUtility {
 
             document.open();
 
-            Paragraph p = new Paragraph("Звіт", getFont(32, true));
+            Paragraph p = new Paragraph("Report", getFont(32, true));
             p.setAlignment(ALIGN_CENTER);
 
             document.add(p);
@@ -52,10 +62,10 @@ public class PdfUtility {
         cell.setBorderColor(Color.WHITE);
         cell.setPadding(2);
 
-        cell.setPhrase(new Phrase("Назва", getFont(18, true)));
+        cell.setPhrase(new Phrase("Name", getFont(18, true)));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Ціна", getFont(18, true)));
+        cell.setPhrase(new Phrase("Price", getFont(18, true)));
         table.addCell(cell);
     }
 
@@ -72,7 +82,7 @@ public class PdfUtility {
             table.addCell(cell);
         }
 
-        cell.setPhrase(new Phrase("Загальна ціна", getFont(18, true)));
+        cell.setPhrase(new Phrase("Amount price", getFont(18, true)));
         table.addCell(cell);
 
         cell.setPhrase(new Phrase(String.valueOf(report.priceAmount()), getFont(18, true)));
@@ -80,9 +90,8 @@ public class PdfUtility {
     }
 
     private static Font getFont(int size, boolean isBold) {
-        String style = isBold ? FontFactory.HELVETICA_BOLD : FontFactory.HELVETICA;
-        Font font = FontFactory.getFont(style);
-        font.setSize(size);
+        int style = isBold ? Font.BOLD : Font.NORMAL;
+        Font font = new Font(cyrillicBaseFont, size, style);
         font.setColor(Color.BLACK);
         return font;
     }
