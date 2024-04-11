@@ -197,22 +197,14 @@ class ProductRepositoryTest {
     }
 
     @Test
-    @DisplayName("Find all products")
-    void find_all_products() {
+    @DisplayName("Update product")
+    void update_product() {
         var batchInsertParameters = SqlParameterSourceUtils.createBatch(
             Map.ofEntries(
                 Map.entry("name", "name"),
                 Map.entry("describe", "describe"),
                 Map.entry("price", 0),
                 Map.entry("barcode", "123"),
-                Map.entry("in_stock", true),
-                Map.entry("image", new byte[]{1, 1, 1})
-            ),
-            Map.ofEntries(
-                Map.entry("name", "name"),
-                Map.entry("describe", "describe"),
-                Map.entry("price", 0),
-                Map.entry("barcode", "456"),
                 Map.entry("in_stock", true),
                 Map.entry("image", new byte[]{1, 1, 1})
             )
@@ -224,30 +216,26 @@ class ProductRepositoryTest {
             .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
             .executeBatch(batchInsertParameters);
 
-        List<Product> products = productRepository.findAll();
-
-        assertThat(products).isEqualTo(
-            List.of(
-                Product.of(
-                        "name",
-                        "describe",
-                        0,
-                        "123",
-                        true,
-                        new byte[]{1, 1, 1}
-                    )
-                    .withId(1),
-                Product.of(
-                        "name",
-                        "describe",
-                        0,
-                        "456",
-                        true,
-                        new byte[]{1, 1, 1}
-                    )
-                    .withId(2)
+        Optional<Product> product = productRepository.update(1,
+            Product.of(
+                "name2",
+                "describe2",
+                100,
+                "456",
+                true,
+                new byte[]{1, 1, 1}
             )
         );
+
+        assertThat(product).get().isEqualTo(
+            Product.of(
+                "name2",
+                "describe2",
+                100,
+                "456",
+                true,
+                new byte[]{1, 1, 1}
+            ).withId(1));
     }
 
     @Test
