@@ -222,18 +222,10 @@ class UserRepositoryTest {
             Map.ofEntries(
                 Map.entry("first_name", "John"),
                 Map.entry("last_name", "Smith"),
-                Map.entry("email", "test1@email.com"),
-                Map.entry("phone", "+380000000001"),
+                Map.entry("email", "test@email.com"),
+                Map.entry("phone", "+380000000000"),
                 Map.entry("password", "password"),
                 Map.entry("admin_number", "12345678")
-            ),
-            Map.ofEntries(
-                Map.entry("first_name", "John"),
-                Map.entry("last_name", "Smith"),
-                Map.entry("email", "test2@email.com"),
-                Map.entry("phone", "+380000000002"),
-                Map.entry("password", "password"),
-                Map.entry("admin_number", "87654321")
             )
         );
 
@@ -250,28 +242,16 @@ class UserRepositoryTest {
             )
             .executeBatch(batchInsertParameters);
 
-        List<User> users = userRepository.findAll();
+        Optional<User> adminNumber = userRepository.update(1, User.of("Alex", "Smith"));
 
-        assertThat(users).isEqualTo(
-            List.of(
-                User.of(
-                    "John",
-                    "Smith",
-                    "test1@email.com",
-                    "+380000000001",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                ).withId(1),
-                User.of(
-                    "John",
-                    "Smith",
-                    "test2@email.com",
-                    "+380000000002",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "87654321"
-                ).withId(2)
-            )
-        );
+        assertThat(adminNumber).get().isEqualTo(User.of(
+            "Alex",
+            "Smith",
+            "test@email.com",
+            "+380000000000",
+            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+            "12345678"
+        ).withId(1));
     }
 
     @Test
