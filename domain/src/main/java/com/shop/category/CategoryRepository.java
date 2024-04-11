@@ -44,14 +44,16 @@ public class CategoryRepository implements RepositoryInterface<Category> {
     }
 
     @Override
-    public void update(long id, Category category) {
-        jdbcTemplate.update(
+    public Optional<Category> update(long id, Category category) {
+        int updatedCategoryId = jdbcTemplate.update(
             "UPDATE category SET name=:name WHERE id=:id",
             Map.ofEntries(
                 Map.entry("name", category.getName()),
                 Map.entry("id", id)
             )
         );
+
+        return findById(updatedCategoryId);
     }
 
     @Override
