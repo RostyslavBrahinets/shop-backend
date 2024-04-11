@@ -52,8 +52,8 @@ public class ProductRepository implements RepositoryInterface<Product> {
     }
 
     @Override
-    public void update(long id, Product product) {
-        jdbcTemplate.update(
+    public Optional<Product> update(long id, Product product) {
+        int updatedProductId = jdbcTemplate.update(
             "UPDATE product SET "
                 + "name=:name, "
                 + "describe=:describe, "
@@ -72,6 +72,8 @@ public class ProductRepository implements RepositoryInterface<Product> {
                 Map.entry("id", id)
             )
         );
+
+        return findById(updatedProductId);
     }
 
     @Override
