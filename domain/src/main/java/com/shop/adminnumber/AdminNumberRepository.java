@@ -44,7 +44,16 @@ public class AdminNumberRepository implements RepositoryInterface<AdminNumber> {
     }
 
     @Override
-    public void update(long id, AdminNumber adminNumber) {
+    public Optional<AdminNumber> update(long id, AdminNumber adminNumber) {
+        int updatedAdminNumberId = jdbcTemplate.update(
+            "UPDATE admin_number SET number=:number WHERE id=:id",
+            Map.ofEntries(
+                Map.entry("number", adminNumber.getNumber()),
+                Map.entry("id", id)
+            )
+        );
+
+        return findById(updatedAdminNumberId);
     }
 
     @Override
