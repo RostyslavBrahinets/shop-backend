@@ -55,24 +55,27 @@ public class CategoryRepositoryTest {
     }
 
     @Test
-    @DisplayName("Save category")
-    void save_category() {
-        categoryRepository.save(Category.of("name"));
+    @DisplayName("Find all categories")
+    void find_all_categories() {
+        var batchInsertParameters = SqlParameterSourceUtils.createBatch(
+            Map.ofEntries(Map.entry("name", "name1")),
+            Map.ofEntries(Map.entry("name", "name2"))
+        );
 
-        var categoriesCount = fetchCategoriesCount();
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("category")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name")
+            .executeBatch(batchInsertParameters);
 
-        assertThat(categoriesCount).isEqualTo(1);
-    }
+        List<Category> categories = categoryRepository.findAll();
 
-    @Test
-    @DisplayName("Save multiple categories")
-    void save_multiple_categories() {
-        categoryRepository.save(Category.of("name1"));
-        categoryRepository.save(Category.of("name2"));
-
-        var categoriesCount = fetchCategoriesCount();
-
-        assertThat(categoriesCount).isEqualTo(2);
+        assertThat(categories).isEqualTo(
+            List.of(
+                Category.of("name1").withId(1),
+                Category.of("name2").withId(2)
+            )
+        );
     }
 
     @Test
@@ -98,25 +101,24 @@ public class CategoryRepositoryTest {
     }
 
     @Test
-    @DisplayName("Category by name was not found")
-    void category_by_name_was_not_found() {
-        Optional<Category> category = categoryRepository.findByName("name");
+    @DisplayName("Save category")
+    void save_category() {
+        categoryRepository.save(Category.of("name"));
 
-        assertThat(category).isEmpty();
+        var categoriesCount = fetchCategoriesCount();
+
+        assertThat(categoriesCount).isEqualTo(1);
     }
 
     @Test
-    @DisplayName("Category by name was found")
-    void category_by_name_was_found() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("category")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("name")
-            .execute(Map.ofEntries(Map.entry("name", "name")));
+    @DisplayName("Save multiple categories")
+    void save_multiple_categories() {
+        categoryRepository.save(Category.of("name1"));
+        categoryRepository.save(Category.of("name2"));
 
-        Optional<Category> category = categoryRepository.findByName("name");
+        var categoriesCount = fetchCategoriesCount();
 
-        assertThat(category).get().isEqualTo(Category.of("name").withId(1));
+        assertThat(categoriesCount).isEqualTo(2);
     }
 
     @Test
@@ -150,8 +152,8 @@ public class CategoryRepositoryTest {
     }
 
     @Test
-    @DisplayName("Category deleted")
-    void category_deleted() {
+    @DisplayName("Delete category")
+    void delete_category() {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("category")
             .usingGeneratedKeyColumns("id")
@@ -167,5 +169,27 @@ public class CategoryRepositoryTest {
         var categoriesCount = fetchCategoriesCount();
 
         assertThat(categoriesCount).isZero();
+    }
+
+    @Test
+    @DisplayName("Category by name was not found")
+    void category_by_name_was_not_found() {
+        Optional<Category> category = categoryRepository.findByName("name");
+
+        assertThat(category).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Category by name was found")
+    void category_by_name_was_found() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("category")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name")
+            .execute(Map.ofEntries(Map.entry("name", "name")));
+
+        Optional<Category> category = categoryRepository.findByName("name");
+
+        assertThat(category).get().isEqualTo(Category.of("name").withId(1));
     }
 }

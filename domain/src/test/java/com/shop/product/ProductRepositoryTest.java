@@ -55,6 +55,100 @@ public class ProductRepositoryTest {
     }
 
     @Test
+    @DisplayName("Find all products")
+    void find_all_products() {
+        var batchInsertParameters = SqlParameterSourceUtils.createBatch(
+            Map.ofEntries(
+                Map.entry("name", "name"),
+                Map.entry("describe", "describe"),
+                Map.entry("price", 0),
+                Map.entry("barcode", "123"),
+                Map.entry("in_stock", true),
+                Map.entry("image", new byte[]{1, 1, 1})
+            ),
+            Map.ofEntries(
+                Map.entry("name", "name"),
+                Map.entry("describe", "describe"),
+                Map.entry("price", 0),
+                Map.entry("barcode", "456"),
+                Map.entry("in_stock", true),
+                Map.entry("image", new byte[]{1, 1, 1})
+            )
+        );
+
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("product")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
+            .executeBatch(batchInsertParameters);
+
+        List<Product> products = productRepository.findAll();
+
+        assertThat(products).isEqualTo(
+            List.of(
+                Product.of(
+                        "name",
+                        "describe",
+                        0,
+                        "123",
+                        true,
+                        new byte[]{1, 1, 1}
+                    )
+                    .withId(1),
+                Product.of(
+                        "name",
+                        "describe",
+                        0,
+                        "456",
+                        true,
+                        new byte[]{1, 1, 1}
+                    )
+                    .withId(2)
+            )
+        );
+    }
+
+    @Test
+    @DisplayName("Product by id was not found")
+    void product_by_id_was_not_found() {
+        Optional<Product> product = productRepository.findById(1);
+
+        assertThat(product).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Product by id was found")
+    void product_by_id_was_found() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("product")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("name", "name"),
+                    Map.entry("describe", "describe"),
+                    Map.entry("price", 0),
+                    Map.entry("barcode", "123"),
+                    Map.entry("in_stock", true),
+                    Map.entry("image", new byte[]{1, 1, 1})
+                )
+            );
+
+        Optional<Product> product = productRepository.findById(1);
+
+        assertThat(product).get().isEqualTo(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1));
+    }
+
+    @Test
     @DisplayName("Save product")
     void save_product() {
         productRepository.save(
@@ -100,86 +194,6 @@ public class ProductRepositoryTest {
         var productsCount = fetchProductsCount();
 
         assertThat(productsCount).isEqualTo(2);
-    }
-
-    @Test
-    @DisplayName("Product by id was not found")
-    void product_by_id_was_not_found() {
-        Optional<Product> product = productRepository.findById(1);
-
-        assertThat(product).isEmpty();
-    }
-
-    @Test
-    @DisplayName("Product by id was found")
-    void product_by_id_was_found() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("product")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("name", "name"),
-                    Map.entry("describe", "describe"),
-                    Map.entry("price", 0),
-                    Map.entry("barcode", "123"),
-                    Map.entry("in_stock", true),
-                    Map.entry("image", new byte[]{1, 1, 1})
-                )
-            );
-
-        Optional<Product> product = productRepository.findById(1);
-
-        assertThat(product).get().isEqualTo(
-            Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1));
-    }
-
-    @Test
-    @DisplayName("Product by barcode was not found")
-    void product_by_barcode_was_not_found() {
-        Optional<Product> product = productRepository.findByBarcode("123");
-
-        assertThat(product).isEmpty();
-    }
-
-    @Test
-    @DisplayName("Product by barcode was found")
-    void product_by_barcode_was_found() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("product")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("name", "name"),
-                    Map.entry("describe", "describe"),
-                    Map.entry("price", 0),
-                    Map.entry("barcode", "123"),
-                    Map.entry("in_stock", true),
-                    Map.entry("image", new byte[]{1, 1, 1})
-                )
-            );
-
-        Optional<Product> product = productRepository.findByBarcode("123");
-
-        assertThat(product).get().isEqualTo(
-            Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1));
     }
 
     @Test
@@ -243,8 +257,8 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    @DisplayName("Product deleted")
-    void product_deleted() {
+    @DisplayName("Delete product")
+    void delete_product() {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("product")
             .usingGeneratedKeyColumns("id")
@@ -269,6 +283,46 @@ public class ProductRepositoryTest {
         var productsCount = fetchProductsCount();
 
         assertThat(productsCount).isZero();
+    }
+
+    @Test
+    @DisplayName("Product by barcode was not found")
+    void product_by_barcode_was_not_found() {
+        Optional<Product> product = productRepository.findByBarcode("123");
+
+        assertThat(product).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Product by barcode was found")
+    void product_by_barcode_was_found() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("product")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
+            .execute(
+                Map.ofEntries(
+                    Map.entry("name", "name"),
+                    Map.entry("describe", "describe"),
+                    Map.entry("price", 0),
+                    Map.entry("barcode", "123"),
+                    Map.entry("in_stock", true),
+                    Map.entry("image", new byte[]{1, 1, 1})
+                )
+            );
+
+        Optional<Product> product = productRepository.findByBarcode("123");
+
+        assertThat(product).get().isEqualTo(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1));
     }
 
     @Test

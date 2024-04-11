@@ -97,24 +97,33 @@ public class CartRepositoryTest {
     }
 
     @Test
-    @DisplayName("Save cart")
-    void save_cart() {
-        cartRepository.save(Cart.of(0, 1));
+    @DisplayName("Find all carts")
+    void find_all_carts() {
+        var batchInsertParameters = SqlParameterSourceUtils.createBatch(
+            Map.ofEntries(
+                Map.entry("price_amount", 0),
+                Map.entry("user_id", 1)
+            ),
+            Map.ofEntries(
+                Map.entry("price_amount", 0),
+                Map.entry("user_id", 2)
+            )
+        );
 
-        var cartsCount = fetchCartsCount();
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("cart")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("price_amount", "user_id")
+            .executeBatch(batchInsertParameters);
 
-        assertThat(cartsCount).isEqualTo(1);
-    }
+        List<Cart> carts = cartRepository.findAll();
 
-    @Test
-    @DisplayName("Save multiple carts")
-    void save_multiple_carts() {
-        cartRepository.save(Cart.of(0, 1));
-        cartRepository.save(Cart.of(0, 2));
-
-        var cartsCount = fetchCartsCount();
-
-        assertThat(cartsCount).isEqualTo(2);
+        assertThat(carts).isEqualTo(
+            List.of(
+                Cart.of(0, 1).withId(1),
+                Cart.of(0, 2).withId(2)
+            )
+        );
     }
 
     @Test
@@ -143,30 +152,24 @@ public class CartRepositoryTest {
     }
 
     @Test
-    @DisplayName("Cart by user was not found")
-    void cart_by_user_was_not_found() {
-        Optional<Cart> cart = cartRepository.findByUser(User.of(null, null).withId(2));
+    @DisplayName("Save cart")
+    void save_cart() {
+        cartRepository.save(Cart.of(0, 1));
 
-        assertThat(cart).isEmpty();
+        var cartsCount = fetchCartsCount();
+
+        assertThat(cartsCount).isEqualTo(1);
     }
 
     @Test
-    @DisplayName("Cart by user was found")
-    void cart_by_user_was_found() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("cart")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("price_amount", "user_id")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("price_amount", 0),
-                    Map.entry("user_id", 1)
-                )
-            );
+    @DisplayName("Save multiple carts")
+    void save_multiple_carts() {
+        cartRepository.save(Cart.of(0, 1));
+        cartRepository.save(Cart.of(0, 2));
 
-        Optional<Cart> cart = cartRepository.findByUser(User.of(null, null).withId(1));
+        var cartsCount = fetchCartsCount();
 
-        assertThat(cart).get().isEqualTo(Cart.of(0, 1).withId(1));
+        assertThat(cartsCount).isEqualTo(2);
     }
 
     @Test
@@ -206,8 +209,8 @@ public class CartRepositoryTest {
     }
 
     @Test
-    @DisplayName("Cart deleted")
-    void cart_deleted() {
+    @DisplayName("Delete cart")
+    void delete_cart() {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
@@ -231,8 +234,16 @@ public class CartRepositoryTest {
     }
 
     @Test
-    @DisplayName("Cart updated")
-    void cart_updated() {
+    @DisplayName("Cart by user was not found")
+    void cart_by_user_was_not_found() {
+        Optional<Cart> cart = cartRepository.findByUser(User.of(null, null).withId(2));
+
+        assertThat(cart).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Cart by user was found")
+    void cart_by_user_was_found() {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
@@ -244,14 +255,8 @@ public class CartRepositoryTest {
                 )
             );
 
-        cartRepository.update(1, Cart.of(100, 1));
+        Optional<Cart> cart = cartRepository.findByUser(User.of(null, null).withId(1));
 
-        var updatedCart = jdbcTemplate.queryForObject(
-            "SELECT price_amount FROM cart WHERE id=:id",
-            Map.ofEntries(Map.entry("id", 1)),
-            Double.class
-        );
-
-        assertThat(updatedCart).isEqualTo(100);
+        assertThat(cart).get().isEqualTo(Cart.of(0, 1).withId(1));
     }
 }
