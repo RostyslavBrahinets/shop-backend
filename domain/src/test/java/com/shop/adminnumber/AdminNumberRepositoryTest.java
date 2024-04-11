@@ -122,11 +122,10 @@ class AdminNumberRepositoryTest {
     }
 
     @Test
-    @DisplayName("Find all numbers of admins")
-    void find_all_numbers_of_admins() {
+    @DisplayName("Update number of admin")
+    void update_number_of_admin() {
         var batchInsertParameters = SqlParameterSourceUtils.createBatch(
-            Map.ofEntries(Map.entry("number", "12345678")),
-            Map.ofEntries(Map.entry("number", "87654321"))
+            Map.ofEntries(Map.entry("number", "12345678"))
         );
 
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
@@ -135,14 +134,9 @@ class AdminNumberRepositoryTest {
             .usingColumns("number")
             .executeBatch(batchInsertParameters);
 
-        List<AdminNumber> adminNumbers = adminNumberRepository.findAll();
+        Optional<AdminNumber> adminNumber = adminNumberRepository.update(1, AdminNumber.of("87654321"));
 
-        assertThat(adminNumbers).isEqualTo(
-            List.of(
-                AdminNumber.of("12345678").withId(1),
-                AdminNumber.of("87654321").withId(2)
-            )
-        );
+        assertThat(adminNumber).get().isEqualTo(AdminNumber.of("87654321").withId(1));
     }
 
     @Test
