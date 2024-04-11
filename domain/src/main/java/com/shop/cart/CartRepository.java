@@ -48,14 +48,16 @@ public class CartRepository implements RepositoryInterface<Cart> {
     }
 
     @Override
-    public void update(long id, Cart cart) {
-        jdbcTemplate.update(
+    public Optional<Cart> update(long id, Cart cart) {
+        int updatedCartId = jdbcTemplate.update(
             "UPDATE cart SET price_amount=:price_amount WHERE id=:id",
             Map.ofEntries(
                 Map.entry("price_amount", cart.getPriceAmount()),
                 Map.entry("id", id)
             )
         );
+
+        return findById(updatedCartId);
     }
 
     @Override
