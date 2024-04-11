@@ -173,16 +173,12 @@ class CartRepositoryTest {
     }
 
     @Test
-    @DisplayName("Find all carts")
-    void find_all_carts() {
+    @DisplayName("Update cart")
+    void update_cart() {
         var batchInsertParameters = SqlParameterSourceUtils.createBatch(
             Map.ofEntries(
                 Map.entry("price_amount", 0),
                 Map.entry("user_id", 1)
-            ),
-            Map.ofEntries(
-                Map.entry("price_amount", 0),
-                Map.entry("user_id", 2)
             )
         );
 
@@ -192,14 +188,9 @@ class CartRepositoryTest {
             .usingColumns("price_amount", "user_id")
             .executeBatch(batchInsertParameters);
 
-        List<Cart> carts = cartRepository.findAll();
+        Optional<Cart> cart = cartRepository.update(1, Cart.of(100, 1));
 
-        assertThat(carts).isEqualTo(
-            List.of(
-                Cart.of(0, 1).withId(1),
-                Cart.of(0, 2).withId(2)
-            )
-        );
+        assertThat(cart).get().isEqualTo(Cart.of(100, 1).withId(1));
     }
 
     @Test
