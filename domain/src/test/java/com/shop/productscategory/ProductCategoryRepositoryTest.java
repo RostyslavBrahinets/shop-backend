@@ -1,9 +1,9 @@
 package com.shop.productscategory;
 
-import com.shop.configs.DatabaseConfig;
-import com.shop.productcategory.ProductCategoryRepository;
 import com.shop.category.Category;
+import com.shop.configs.DatabaseConfig;
 import com.shop.product.Product;
+import com.shop.productcategory.ProductCategoryRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
