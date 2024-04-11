@@ -122,11 +122,10 @@ class CategoryRepositoryTest {
     }
 
     @Test
-    @DisplayName("Find all categories")
-    void find_all_categories() {
+    @DisplayName("Update category")
+    void update_category() {
         var batchInsertParameters = SqlParameterSourceUtils.createBatch(
-            Map.ofEntries(Map.entry("name", "name1")),
-            Map.ofEntries(Map.entry("name", "name2"))
+            Map.ofEntries(Map.entry("name", "name1"))
         );
 
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
@@ -135,14 +134,9 @@ class CategoryRepositoryTest {
             .usingColumns("name")
             .executeBatch(batchInsertParameters);
 
-        List<Category> categories = categoryRepository.findAll();
+        Optional<Category> category = categoryRepository.update(1, Category.of("name2"));
 
-        assertThat(categories).isEqualTo(
-            List.of(
-                Category.of("name1").withId(1),
-                Category.of("name2").withId(2)
-            )
-        );
+        assertThat(category).get().isEqualTo(Category.of("name2").withId(1));
     }
 
     @Test
