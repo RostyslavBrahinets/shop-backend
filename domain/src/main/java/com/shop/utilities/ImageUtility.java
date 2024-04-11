@@ -10,14 +10,17 @@ public class ImageUtility {
     }
 
     public static byte[] imageToBytes(File file) throws IOException {
-        FileInputStream fis = new FileInputStream(file);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        byte[] buf = new byte[1024];
+        try (
+            FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream()
+        ) {
+            byte[] buf = new byte[1024];
 
-        for (int readNum; (readNum = fis.read(buf)) != -1; ) {
-            bos.write(buf, 0, readNum);
+            for (int readNum; (readNum = fis.read(buf)) != -1; ) {
+                bos.write(buf, 0, readNum);
+            }
+
+            return bos.toByteArray();
         }
-
-        return bos.toByteArray();
     }
 }
