@@ -28,7 +28,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     "classpath:db/migration/role/V20220505172953__Create_table_role.sql",
     "classpath:db/migration/role/V20220505173022__Insert_data_to_table_role.sql"
 })
-public class UserRoleRepositoryTest {
+class UserRoleRepositoryTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 

@@ -32,7 +32,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     "classpath:db/migration/product/V20220421162205__Create_table_product.sql",
     "classpath:db/migration/category/V20220421162204__Create_table_category.sql"
 })
-public class ProductCategoryRepositoryTest {
+class ProductCategoryRepositoryTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 

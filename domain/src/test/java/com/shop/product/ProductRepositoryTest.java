@@ -28,7 +28,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @Sql(scripts = {
     "classpath:db/migration/product/V20220421162205__Create_table_product.sql"
 })
-public class ProductRepositoryTest {
+class ProductRepositoryTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 

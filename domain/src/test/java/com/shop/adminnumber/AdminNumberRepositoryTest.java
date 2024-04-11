@@ -28,7 +28,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @Sql(scripts = {
     "classpath:db/migration/adminnumber/V20220421160504__Create_table_admin_number.sql"
 })
-public class AdminNumberRepositoryTest {
+class AdminNumberRepositoryTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 

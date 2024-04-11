@@ -34,7 +34,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     "classpath:db/migration/user/V20220421161642__Create_table_user.sql",
     "classpath:db/migration/cart/V20220421161946__Create_table_cart.sql"
 })
-public class CartRepositoryTest {
+class CartRepositoryTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 

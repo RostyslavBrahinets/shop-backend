@@ -28,7 +28,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @Sql(scripts = {
     "classpath:db/migration/category/V20220421162204__Create_table_category.sql"
 })
-public class CategoryRepositoryTest {
+class CategoryRepositoryTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
