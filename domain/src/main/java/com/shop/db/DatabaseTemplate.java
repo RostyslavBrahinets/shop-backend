@@ -5,6 +5,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class DatabaseTemplate {
+    private DatabaseTemplate() {
+    }
+
     private static final AnnotationConfigApplicationContext context =
         new AnnotationConfigApplicationContext(
             DatabaseConfig.class

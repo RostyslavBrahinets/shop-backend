@@ -6,6 +6,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class ImageUtility {
+    private ImageUtility() {
+    }
+
     public static byte[] imageToBytes(File file) throws IOException {
         FileInputStream fis = new FileInputStream(file);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
