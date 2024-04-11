@@ -52,8 +52,8 @@ public class UserRepository implements RepositoryInterface<User> {
     }
 
     @Override
-    public void update(long id, User user) {
-        jdbcTemplate.update(
+    public Optional<User> update(long id, User user) {
+        int updatedUserId = jdbcTemplate.update(
             "UPDATE \"user\" SET first_name=:first_name, last_name=:last_name WHERE id=:id",
             Map.ofEntries(
                 Map.entry("first_name", user.getFirstName()),
@@ -61,6 +61,8 @@ public class UserRepository implements RepositoryInterface<User> {
                 Map.entry("id", id)
             )
         );
+
+        return findById(updatedUserId);
     }
 
     @Override
