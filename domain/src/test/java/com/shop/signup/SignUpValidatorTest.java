@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SignUpValidatorTest {
+class SignUpValidatorTest {
     private SignUpValidator signUpValidator;
     private UserValidator userValidator;
     private AdminNumberValidator adminNumberValidator;
