@@ -32,8 +32,8 @@ class SignUpValidatorTest {
     }
 
     @Test
-    @DisplayName("Sign up data validated without exceptions")
-    void sign_up_data_validated_without_exceptions() {
+    @DisplayName("User data validated without exceptions")
+    void user_data_validated_without_exceptions() {
         assertDoesNotThrow(
             () -> userValidator.validate(
                 "John",
@@ -44,14 +44,22 @@ class SignUpValidatorTest {
                 List.of()
             )
         );
+    }
 
+    @Test
+    @DisplayName("Admin number validated without exceptions")
+    void admin_number_validated_without_exceptions() {
         assertDoesNotThrow(
             () -> adminNumberValidator.validate(
                 "12345678",
                 List.of(AdminNumber.of("12345678").withId(1))
             )
         );
+    }
 
+    @Test
+    @DisplayName("Sign up data validated without exceptions")
+    void sign_up_data_validated_without_exceptions() {
         assertTrue(
             () -> signUpValidator.isValidData(
                 "John",

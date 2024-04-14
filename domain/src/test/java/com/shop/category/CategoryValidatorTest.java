@@ -5,10 +5,14 @@ import com.shop.exceptions.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -136,6 +140,26 @@ class CategoryValidatorTest {
         assertThrows(
             ValidationException.class,
             () -> categoryValidator.validate("", categories)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("validationTestCases")
+    @DisplayName("Throw ValidationException for invalid name")
+    void throw_validation_exception_for_invalid_name(String name, List<Category> categories) {
+        assertThrows(ValidationException.class, () -> categoryValidator.validate(name, categories));
+    }
+
+    private static Stream<Arguments> validationTestCases() {
+        List<Category> categories = List.of(
+            Category.of(
+                "name"
+            ).withId(1)
+        );
+
+        return Stream.of(
+            Arguments.of(null, categories),
+            Arguments.of("", categories)
         );
     }
 }

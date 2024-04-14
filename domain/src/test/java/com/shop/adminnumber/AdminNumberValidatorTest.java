@@ -5,10 +5,14 @@ import com.shop.exceptions.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -109,63 +113,23 @@ class AdminNumberValidatorTest {
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because number is null")
-    void throw_validation_exception_because_number_is_null() {
-        List<AdminNumber> adminNumbers = List.of(
-            AdminNumber.of(
-                "12345678"
-            ).withId(1)
-        );
-
-        assertThrows(
-            ValidationException.class,
-            () -> adminNumberValidator.validate(null, adminNumbers)
-        );
+    @ParameterizedTest
+    @MethodSource("validationTestCases")
+    @DisplayName("Throw ValidationException for invalid number")
+    void throw_validation_exception_for_invalid_number(String number, List<AdminNumber> adminNumbers) {
+        assertThrows(ValidationException.class, () -> adminNumberValidator.validate(number, adminNumbers));
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because number is empty")
-    void throw_validation_exception_because_number_is_empty() {
+    private static Stream<Arguments> validationTestCases() {
         List<AdminNumber> adminNumbers = List.of(
-            AdminNumber.of(
-                "12345678"
-            ).withId(1)
+            AdminNumber.of("12345678").withId(1)
         );
 
-        assertThrows(
-            ValidationException.class,
-            () -> adminNumberValidator.validate("", adminNumbers)
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because number is short")
-    void throw_validation_exception_because_number_is_short() {
-        List<AdminNumber> adminNumbers = List.of(
-            AdminNumber.of(
-                "12345678"
-            ).withId(1)
-        );
-
-        assertThrows(
-            ValidationException.class,
-            () -> adminNumberValidator.validate("1234", adminNumbers)
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because number is long")
-    void throw_validation_exception_because_number_is_long() {
-        List<AdminNumber> adminNumbers = List.of(
-            AdminNumber.of(
-                "12345678"
-            ).withId(1)
-        );
-
-        assertThrows(
-            ValidationException.class,
-            () -> adminNumberValidator.validate("123456789", adminNumbers)
+        return Stream.of(
+            Arguments.of(null, adminNumbers),
+            Arguments.of("", adminNumbers),
+            Arguments.of("1234", adminNumbers),
+            Arguments.of("123456789", adminNumbers)
         );
     }
 }

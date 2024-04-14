@@ -5,11 +5,15 @@ import com.shop.exceptions.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -43,187 +47,14 @@ class UserValidatorTest {
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because first name of user is null")
-    void throw_validation_exception_because_first_name_of_user_is_null() {
+    @ParameterizedTest
+    @MethodSource("validationTestCases")
+    @DisplayName("Throw ValidationException for invalid first name of user")
+    void throw_validation_exception_for_invalid_first_name_of_user(String firstName, List<User> users) {
         assertThrows(
             ValidationException.class,
             () -> userValidator.validate(
-                null,
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
-            )
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because first name of user is empty")
-    void throw_validation_exception_because_first_name_of_user_is_empty() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
-            )
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because last name of user is null")
-    void throw_validation_exception_because_last_name_of_user_is_null() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
-                null,
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
-            )
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because last name of user is empty")
-    void throw_validation_exception_because_last_name_of_user_is_empty() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
-                "",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
-            )
-        );
-    }
-
-
-    @Test
-    @DisplayName("Throw ValidationException because email of user is null")
-    void throw_validation_exception_because_email_of_user_is_null() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
-                "Smith",
-                null,
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
-            )
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because email of user is empty")
-    void throw_validation_exception_because_email_of_user_is_empty() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
-                "Smith",
-                "",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
-            )
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because email of user starts with char '@'")
-    void throw_validation_exception_because_email_of_user_starts_with_char_at() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
-                "Smith",
-                "@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of())
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because email of user not contains char '@'")
-    void throw_validation_exception_because_email_of_user_not_contains_char_at() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
-                "Smith",
-                "test.email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
-            )
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because email of user not ends '.com'")
-    void throw_validation_exception_because_email_of_user_not_ends_dot_com() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
-                "Smith",
-                "test@email",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
-            )
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because email of user ends '@.com'")
-    void throw_validation_exception_because_email_of_user_ends_char_at_and_dot_com() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
-                "Smith",
-                "test@.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
-            )
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because email of user already in use")
-    void throw_validation_exception_because_email_of_user_already_in_use() {
-        List<User> users = List.of(
-            new User(
-                1,
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                "12345678"
-            )
-        );
-
-        when(userRepository.findAll()).thenReturn(users);
-
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
+                firstName,
                 "Smith",
                 "test@email.com",
                 "+380000000000",
@@ -233,73 +64,61 @@ class UserValidatorTest {
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because phone of user is null")
-    void throw_validation_exception_because_phone_of_user_is_null() {
+    @ParameterizedTest
+    @MethodSource("validationTestCases")
+    @DisplayName("Throw ValidationException for invalid last name of user")
+    void throw_validation_exception_for_invalid_last_name_of_user(String lastName, List<User> users) {
+        assertThrows(
+            ValidationException.class,
+            () -> userValidator.validate(
+                "John",
+                lastName,
+                "test@email.com",
+                "+380000000000",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                users
+            )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("validationEmailOfUserTestCases")
+    @DisplayName("Throw ValidationException for invalid email of user")
+    void throw_validation_exception_for_invalid_email_of_user(String email, List<User> users) {
+        assertThrows(
+            ValidationException.class,
+            () -> userValidator.validate(
+                "John",
+                "Smith",
+                email,
+                "+380000000000",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                users
+            )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("validationPhoneOfUserTestCases")
+    @DisplayName("Throw ValidationException for invalid phone of user")
+    void throw_validation_exception_for_invalid_phone_of_user(String phone, List<User> users) {
         assertThrows(
             ValidationException.class,
             () -> userValidator.validate(
                 "John",
                 "Smith",
                 "test@email.com",
-                null,
+                phone,
                 new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
+                users
             )
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because phone of user is empty")
-    void throw_validation_exception_because_phone_of_user_is_empty() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
-                "Smith",
-                "test@email.com",
-                "",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
-            )
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because phone of user not starts with '+'")
-    void throw_validation_exception_because_phone_of_user_not_starts_with_plus() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
-                "Smith",
-                "test@email.com",
-                "380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
-            )
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because length of phone of user less then expected")
-    void throw_validation_exception_because_phone_of_user_less_then_expected() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
-            )
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because password of user is null")
-    void throw_validation_exception_because_password_of_user_is_null() {
+    @ParameterizedTest
+    @MethodSource("validationTestCases")
+    @DisplayName("Throw ValidationException for invalid password of user")
+    void throw_validation_exception_for_invalid_password_of_user(String password, List<User> users) {
         assertThrows(
             ValidationException.class,
             () -> userValidator.validate(
@@ -307,24 +126,8 @@ class UserValidatorTest {
                 "Smith",
                 "test@email.com",
                 "+380000000000",
-                null,
-                List.of()
-            )
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because password of user is empty")
-    void throw_validation_exception_because_password_of_user_is_empty() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validate(
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{},
-                List.of()
+                password == null ? null : password.toCharArray(),
+                users
             )
         );
     }
@@ -351,18 +154,10 @@ class UserValidatorTest {
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because phone is null")
-    void throw_validation_exception_because_phone_is_null() {
-        User user = User.of(
-            "John",
-            "Smith",
-            "test@email.com",
-            null,
-            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            "12345678"
-        ).withId(1);
-
+    @ParameterizedTest
+    @MethodSource("validationPhoneTestCases")
+    @DisplayName("Throw ValidationException for invalid phone")
+    void throw_validation_exception_for_invalid_phone(String phone, User user, List<User> users) {
         when(userRepository.findById(1))
             .thenReturn(Optional.of(
                 user
@@ -370,91 +165,24 @@ class UserValidatorTest {
 
         assertThrows(
             ValidationException.class,
-            () -> userValidator.validatePhone(null, user, List.of())
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because phone is empty")
-    void throw_validation_exception_because_phone_is_empty() {
-        User user = User.of(
-            "John",
-            "Smith",
-            "test@email.com",
-            "",
-            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            "12345678"
-        ).withId(1);
-
-        when(userRepository.findById(1))
-            .thenReturn(Optional.of(
-                user
-            ));
-
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validatePhone("", user, List.of())
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because phone not starts with '+'")
-    void throw_validation_exception_because_phone_not_starts_with_plus() {
-        User user = User.of(
-            "John",
-            "Smith",
-            "test@email.com",
-            "380000000000",
-            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            "12345678"
-        ).withId(1);
-
-        when(userRepository.findById(1))
-            .thenReturn(Optional.of(
-                user
-            ));
-
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validatePhone("380000000000", user, List.of())
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because length of phone less then expected")
-    void throw_validation_exception_because_length_of_phone_less_then_expected() {
-        User user = User.of(
-            "John",
-            "Smith",
-            "test@email.com",
-            "+380",
-            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            "12345678"
-        ).withId(1);
-
-        when(userRepository.findById(1))
-            .thenReturn(Optional.of(
-                user
-            ));
-
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validatePhone("+380", user, List.of())
+            () -> userValidator.validatePhone(phone, user, users)
         );
     }
 
     @Test
     @DisplayName("Id of user validated without exceptions")
     void id_of_user_validated_without_exceptions() {
-        List<User> users = List.of(new User(
-            1,
-            "John",
-            "Smith",
-            "test@email.com",
-            "+380000000000",
-            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            "12345678"
-        ));
+        List<User> users = List.of(
+            User.of(
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    "12345678"
+                )
+                .withId(1)
+        );
 
         when(userRepository.findAll()).thenReturn(users);
 
@@ -486,57 +214,119 @@ class UserValidatorTest {
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because email is null")
-    void throw_validation_exception_because_email_is_null() {
+    @ParameterizedTest
+    @MethodSource("validationEmailTestCases")
+    @DisplayName("Throw ValidationException for invalid email")
+    void throw_validation_exception_for_invalid_email(String email) {
         assertThrows(
             ValidationException.class,
-            () -> userValidator.validateEmail(null)
+            () -> userValidator.validateEmail(email)
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because email is empty")
-    void throw_validation_exception_because_email_is_empty() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validateEmail("")
+    private static Stream<Arguments> validationTestCases() {
+        List<User> users = List.of(
+            User.of(
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    "12345678"
+                )
+                .withId(1)
+        );
+
+        return Stream.of(
+            Arguments.of(null, users),
+            Arguments.of("", users)
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because email starts with char '@'")
-    void throw_validation_exception_because_email_starts_with_char_at() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validateEmail("@email.com")
+    private static Stream<Arguments> validationEmailOfUserTestCases() {
+        List<User> users = List.of(
+            User.of(
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    "12345678"
+                )
+                .withId(1)
+        );
+
+        return Stream.of(
+            Arguments.of(null, users),
+            Arguments.of("", users),
+            Arguments.of("@email.com", users),
+            Arguments.of("test.email.com", users),
+            Arguments.of("test@email", users),
+            Arguments.of("test@.com", users),
+            Arguments.of("test@email.com", users)
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because email not contains char '@'")
-    void throw_validation_exception_because_email_not_contains_char_at() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validateEmail("test.email.com")
+    private static Stream<Arguments> validationPhoneOfUserTestCases() {
+        List<User> users = List.of(
+            User.of(
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    "12345678"
+                )
+                .withId(1)
+        );
+
+        return Stream.of(
+            Arguments.of(null, users),
+            Arguments.of("", users),
+            Arguments.of("380000000000", users),
+            Arguments.of("+380", users)
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because email not ends '.com'")
-    void throw_validation_exception_because_email_not_ends_dot_com() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validateEmail("test@email")
+    private static Stream<Arguments> validationPhoneTestCases() {
+        List<User> users = List.of(
+            User.of(
+                    "John",
+                    "Smith",
+                    "test@email.com",
+                    "+380000000000",
+                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                    "12345678"
+                )
+                .withId(1)
+        );
+
+        User user = User.of(
+                "John",
+                "Smith",
+                "test@email.com",
+                "+380000000000",
+                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                "12345678"
+            )
+            .withId(1);
+
+        return Stream.of(
+            Arguments.of(null, user, users),
+            Arguments.of("", user, users),
+            Arguments.of("380000000000", user, users),
+            Arguments.of("+380", user, users)
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because email ends '@.com'")
-    void throw_validation_exception_because_email_ends_char_at_and_dot_com() {
-        assertThrows(
-            ValidationException.class,
-            () -> userValidator.validateEmail("test@.com")
+    private static Stream<Arguments> validationEmailTestCases() {
+        return Stream.of(
+            Arguments.of((Object) null),
+            Arguments.of(""),
+            Arguments.of("@email.com"),
+            Arguments.of("test.email.com"),
+            Arguments.of("test@email"),
+            Arguments.of("test@.com")
         );
     }
 }

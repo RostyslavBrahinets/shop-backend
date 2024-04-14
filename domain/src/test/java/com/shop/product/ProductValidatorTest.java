@@ -5,10 +5,14 @@ import com.shop.exceptions.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,87 +39,23 @@ class ProductValidatorTest {
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because name of product is null")
-    void throw_validation_exception_because_name_of_product_is_null() {
-        List<Product> products = List.of(
-            Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1)
-        );
-
+    @ParameterizedTest
+    @MethodSource("validationTestCases")
+    @DisplayName("Throw ValidationException for invalid name of product")
+    void throw_validation_exception_for_invalid_name_of_product(String name, List<Product> products) {
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate(null, "describe", 0, "123", products)
+            () -> productValidator.validate(name, "describe", 0, "123", products)
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because name of product is empty")
-    void throw_validation_exception_because_name_of_product_is_empty() {
-        List<Product> products = List.of(
-            Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1)
-        );
-
+    @ParameterizedTest
+    @MethodSource("validationTestCases")
+    @DisplayName("Throw ValidationException for invalid describe of product")
+    void throw_validation_exception_for_invalid_describe_of_product(String describe, List<Product> products) {
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate("", "describe", 0, "123", products)
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because describe of product is null")
-    void throw_validation_exception_because_describe_of_product_is_null() {
-        List<Product> products = List.of(
-            Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1)
-        );
-
-        assertThrows(
-            ValidationException.class,
-            () -> productValidator.validate("name", null, 0, "123", products)
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because describe of product is empty")
-    void throw_validation_exception_because_describe_of_product_is_empty() {
-        List<Product> products = List.of(
-            Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1)
-        );
-
-        assertThrows(
-            ValidationException.class,
-            () -> productValidator.validate("name", "", 0, "123", products)
+            () -> productValidator.validate("name", describe, 0, "123", products)
         );
     }
 
@@ -140,45 +80,13 @@ class ProductValidatorTest {
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because barcode of product is null")
-    void throw_validation_exception_because_barcode_of_product_is_null() {
-        List<Product> products = List.of(
-            Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1)
-        );
-
+    @ParameterizedTest
+    @MethodSource("validationTestCases")
+    @DisplayName("Throw ValidationException for invalid barcode of product")
+    void throw_validation_exception_for_invalid_barcode_of_product(String barcode, List<Product> products) {
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validate("name", "describe", 0, null, products)
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because barcode of product is empty")
-    void throw_validation_exception_because_barcode_of_product_is_empty() {
-        List<Product> products = List.of(
-            Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1)
-        );
-
-        assertThrows(
-            ValidationException.class,
-            () -> productValidator.validate("name", "describe", 0, "", products)
+            () -> productValidator.validate("name", "describe", 0, barcode, products)
         );
     }
 
@@ -258,45 +166,13 @@ class ProductValidatorTest {
         );
     }
 
-    @Test
-    @DisplayName("Throw ValidationException because barcode is null")
-    void throw_validation_exception_because_barcode_is_null() {
-        List<Product> products = List.of(
-            Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1)
-        );
-
+    @ParameterizedTest
+    @MethodSource("validationTestCases")
+    @DisplayName("Throw ValidationException for invalid barcode")
+    void throw_validation_exception_for_invalid_barcode(String barcode, List<Product> products) {
         assertThrows(
             ValidationException.class,
-            () -> productValidator.validateBarcode(null, products)
-        );
-    }
-
-    @Test
-    @DisplayName("Throw ValidationException because barcode is empty")
-    void throw_validation_exception_because_barcode_is_empty() {
-        List<Product> products = List.of(
-            Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1)
-        );
-
-        assertThrows(
-            ValidationException.class,
-            () -> productValidator.validateBarcode("", products)
+            () -> productValidator.validateBarcode(barcode, products)
         );
     }
 
@@ -306,6 +182,25 @@ class ProductValidatorTest {
         assertThrows(
             NotFoundException.class,
             () -> productValidator.validateBarcode("123", List.of())
+        );
+    }
+
+    private static Stream<Arguments> validationTestCases() {
+        List<Product> products = List.of(
+            Product.of(
+                    "name",
+                    "describe",
+                    0,
+                    "123",
+                    true,
+                    new byte[]{1, 1, 1}
+                )
+                .withId(1)
+        );
+
+        return Stream.of(
+            Arguments.of(null, products),
+            Arguments.of("", products)
         );
     }
 }
