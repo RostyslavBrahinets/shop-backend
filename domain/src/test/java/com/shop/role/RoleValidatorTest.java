@@ -1,7 +1,6 @@
 package com.shop.role;
 
 import com.shop.exceptions.NotFoundException;
-import com.shop.role.RoleValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
