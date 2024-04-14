@@ -20,9 +20,9 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-        "classpath:db/migration/productcategory/V20220421162206__Create_table_product_category.sql"
+    "classpath:db/migration/productcategory/V20220421162206__Create_table_product_category.sql"
 })
-public class ProductCategoryTableSchemaTest {
+class ProductCategoryTableSchemaTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 

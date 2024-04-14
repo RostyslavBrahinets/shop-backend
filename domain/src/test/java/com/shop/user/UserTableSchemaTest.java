@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     "classpath:db/migration/adminnumber/V20220421160504__Create_table_admin_number.sql",
     "classpath:db/migration/user/V20220421161642__Create_table_user.sql"
 })
-public class UserTableSchemaTest {
+class UserTableSchemaTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 

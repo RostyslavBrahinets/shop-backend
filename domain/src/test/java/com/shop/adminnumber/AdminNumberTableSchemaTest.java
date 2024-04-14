@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @Sql(scripts = {
     "classpath:db/migration/adminnumber/V20220421160504__Create_table_admin_number.sql"
 })
-public class AdminNumberTableSchemaTest {
+class AdminNumberTableSchemaTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 

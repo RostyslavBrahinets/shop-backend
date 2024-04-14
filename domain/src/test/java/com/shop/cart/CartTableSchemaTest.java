@@ -20,11 +20,11 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-        "classpath:db/migration/adminnumber/V20220421160504__Create_table_admin_number.sql",
+    "classpath:db/migration/adminnumber/V20220421160504__Create_table_admin_number.sql",
     "classpath:db/migration/user/V20220421161642__Create_table_user.sql",
     "classpath:db/migration/cart/V20220421161946__Create_table_cart.sql"
 })
-public class CartTableSchemaTest {
+class CartTableSchemaTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 

@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @Sql(scripts = {
     "classpath:db/migration/role/V20220505172953__Create_table_role.sql"
 })
-public class RoleTableSchemaTest {
+class RoleTableSchemaTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
