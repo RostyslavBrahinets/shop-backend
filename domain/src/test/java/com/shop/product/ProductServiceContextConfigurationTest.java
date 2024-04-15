@@ -53,17 +53,6 @@ class ProductServiceContextConfigurationTest {
     }
 
     @Test
-    @DisplayName("Get product by barcode")
-    void get_product_by_barcode() {
-        productService.findByBarcode(getBarcode());
-
-        verify(productValidator, atLeast(1))
-            .validateBarcode(getBarcode(), getProducts());
-        verify(productRepository, atLeast(1))
-            .findByBarcode(getBarcode());
-    }
-
-    @Test
     @DisplayName("Save product")
     void save_product() {
         productService.save(getProductWithoutId());
@@ -100,6 +89,17 @@ class ProductServiceContextConfigurationTest {
             .deleteProductFromCategory(getProductId(), getCategoryId());
         verify(productRepository)
             .delete(Product.of(getBarcode()));
+    }
+
+    @Test
+    @DisplayName("Get product by barcode")
+    void get_product_by_barcode() {
+        productService.findByBarcode(getBarcode());
+
+        verify(productValidator, atLeast(1))
+            .validateBarcode(getBarcode(), getProducts());
+        verify(productRepository, atLeast(1))
+            .findByBarcode(getBarcode());
     }
 
     @Test

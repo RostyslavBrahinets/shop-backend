@@ -38,16 +38,6 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("Product was saved for with correct input")
-    void product_was_saved_with_correct_input() {
-        Product savedProduct = productService.save(getProductWithoutId());
-
-        verify(productRepository).save(getProductWithId());
-
-        assertThat(savedProduct).isEqualTo(getProductWithId());
-    }
-
-    @Test
     @DisplayName("Empty list of products is returned in case when no products in storage")
     void empty_list_of_products_is_returned_in_case_when_no_products_in_storage() {
         when(productRepository.findAll()).thenReturn(emptyList());
@@ -86,15 +76,13 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("Product was found by barcode")
-    void product_was_found_by_name() {
-        when(productRepository.findByBarcode(getBarcode())).thenReturn(
-            Optional.of(getProductWithId())
-        );
+    @DisplayName("Product was saved for with correct input")
+    void product_was_saved_with_correct_input() {
+        Product savedProduct = productService.save(getProductWithoutId());
 
-        Product product = productService.findByBarcode(getBarcode());
+        verify(productRepository).save(getProductWithId());
 
-        assertThat(product).isEqualTo(getProductWithId());
+        assertThat(savedProduct).isEqualTo(getProductWithId());
     }
 
     @Test
@@ -115,6 +103,18 @@ class ProductServiceTest {
         verify(productCategoryRepository).findCategoryForProduct(getProductId());
         verify(productCategoryRepository).deleteProductFromCategory(getProductId(), getCategoryId());
         verify(productRepository).delete(Product.of(getBarcode()));
+    }
+
+    @Test
+    @DisplayName("Product was found by barcode")
+    void product_was_found_by_name() {
+        when(productRepository.findByBarcode(getBarcode())).thenReturn(
+            Optional.of(getProductWithId())
+        );
+
+        Product product = productService.findByBarcode(getBarcode());
+
+        assertThat(product).isEqualTo(getProductWithId());
     }
 
     @Test
