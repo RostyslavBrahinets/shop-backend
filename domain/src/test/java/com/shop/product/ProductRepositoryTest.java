@@ -14,10 +14,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.shop.product.ProductParameter.*;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -58,22 +60,8 @@ class ProductRepositoryTest {
     @DisplayName("Find all products")
     void find_all_products() {
         var batchInsertParameters = SqlParameterSourceUtils.createBatch(
-            Map.ofEntries(
-                Map.entry("name", "name"),
-                Map.entry("describe", "describe"),
-                Map.entry("price", 0),
-                Map.entry("barcode", "123"),
-                Map.entry("in_stock", true),
-                Map.entry("image", new byte[]{1, 1, 1})
-            ),
-            Map.ofEntries(
-                Map.entry("name", "name"),
-                Map.entry("describe", "describe"),
-                Map.entry("price", 0),
-                Map.entry("barcode", "456"),
-                Map.entry("in_stock", true),
-                Map.entry("image", new byte[]{1, 1, 1})
-            )
+            getMapOfEntries(getBarcode()),
+            getMapOfEntries(getBarcode2())
         );
 
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
@@ -86,24 +74,8 @@ class ProductRepositoryTest {
 
         assertThat(products).isEqualTo(
             List.of(
-                Product.of(
-                        "name",
-                        "describe",
-                        0,
-                        "123",
-                        true,
-                        new byte[]{1, 1, 1}
-                    )
-                    .withId(1),
-                Product.of(
-                        "name",
-                        "describe",
-                        0,
-                        "456",
-                        true,
-                        new byte[]{1, 1, 1}
-                    )
-                    .withId(2)
+                getProductWithId(),
+                getProductWithId(getProductId2(), getBarcode2())
             )
         );
     }
@@ -111,7 +83,7 @@ class ProductRepositoryTest {
     @Test
     @DisplayName("Product by id was not found")
     void product_by_id_was_not_found() {
-        Optional<Product> product = productRepository.findById(1);
+        Optional<Product> product = productRepository.findById(getProductId());
 
         assertThat(product).isEmpty();
     }
@@ -119,77 +91,28 @@ class ProductRepositoryTest {
     @Test
     @DisplayName("Product by id was found")
     void product_by_id_was_found() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("product")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("name", "name"),
-                    Map.entry("describe", "describe"),
-                    Map.entry("price", 0),
-                    Map.entry("barcode", "123"),
-                    Map.entry("in_stock", true),
-                    Map.entry("image", new byte[]{1, 1, 1})
-                )
-            );
+        insertTestDataToDb();
 
-        Optional<Product> product = productRepository.findById(1);
+        Optional<Product> product = productRepository.findById(getProductId());
 
-        assertThat(product).get().isEqualTo(
-            Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1));
+        assertThat(product).get().isEqualTo(getProductWithId());
     }
 
     @Test
     @DisplayName("Save product")
     void save_product() {
-        productRepository.save(
-            Product.of(
-                "name",
-                "describe",
-                0,
-                "123",
-                true,
-                new byte[]{1, 1, 1}
-            )
-        );
+        productRepository.save(getProductWithoutId());
 
         var productsCount = fetchProductsCount();
 
-        assertThat(productsCount).isEqualTo(1);
+        assertThat(productsCount).isEqualTo(getProductId());
     }
 
     @Test
     @DisplayName("Save multiple products")
     void save_multiple_products() {
-        productRepository.save(
-            Product.of(
-                "name",
-                "describe",
-                0,
-                "123",
-                true,
-                new byte[]{1, 1, 1}
-            )
-        );
-        productRepository.save(
-            Product.of(
-                "name",
-                "describe",
-                0,
-                "456",
-                true,
-                new byte[]{1, 1, 1}
-            )
-        );
+        productRepository.save(getProductWithoutId());
+        productRepository.save(getProductWithoutId(getBarcode2()));
 
         var productsCount = fetchProductsCount();
 
@@ -199,74 +122,38 @@ class ProductRepositoryTest {
     @Test
     @DisplayName("Update product")
     void update_product() {
-        var batchInsertParameters = SqlParameterSourceUtils.createBatch(
-            Map.ofEntries(
-                Map.entry("name", "name"),
-                Map.entry("describe", "describe"),
-                Map.entry("price", 0),
-                Map.entry("barcode", "123"),
-                Map.entry("in_stock", true),
-                Map.entry("image", new byte[]{1, 1, 1})
-            )
-        );
+        insertTestDataToDb();
 
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("product")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
-            .executeBatch(batchInsertParameters);
-
-        Optional<Product> product = productRepository.update(1,
-            Product.of(
-                "name2",
-                "describe2",
-                100,
-                "456",
-                true,
-                new byte[]{1, 1, 1}
-            )
+        Optional<Product> product = productRepository.update(
+            getProductId(),
+            getProductWithoutId2()
         );
 
         assertThat(product).get().isEqualTo(
-            Product.of(
-                "name2",
-                "describe2",
-                100,
-                "456",
-                true,
-                new byte[]{1, 1, 1}
-            ).withId(1));
+            getProductWithId2()
+        );
     }
 
     @Test
     @DisplayName("Product not deleted in case when not exists")
     void product_not_deleted_in_case_when_not_exists() {
-        assertThatCode(() -> productRepository.delete(Product.of("123"))).doesNotThrowAnyException();
+        assertThatCode(
+            () -> productRepository.delete(
+                Product.of(getBarcode())
+            )
+        ).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("Delete product")
     void delete_product() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("product")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("name", "name"),
-                    Map.entry("describe", "describe"),
-                    Map.entry("price", 0),
-                    Map.entry("barcode", "123"),
-                    Map.entry("in_stock", true),
-                    Map.entry("image", new byte[]{1, 1, 1})
-                )
-            );
+        insertTestDataToDb();
 
         var productsCountBeforeDeletion = fetchProductsCount();
 
         assertThat(productsCountBeforeDeletion).isEqualTo(1);
 
-        productRepository.delete(Product.of("123"));
+        productRepository.delete(Product.of(getBarcode()));
 
         var productsCount = fetchProductsCount();
 
@@ -276,7 +163,7 @@ class ProductRepositoryTest {
     @Test
     @DisplayName("Product by barcode was not found")
     void product_by_barcode_was_not_found() {
-        Optional<Product> product = productRepository.findByBarcode("123");
+        Optional<Product> product = productRepository.findByBarcode(getBarcode());
 
         assertThat(product).isEmpty();
     }
@@ -284,61 +171,45 @@ class ProductRepositoryTest {
     @Test
     @DisplayName("Product by barcode was found")
     void product_by_barcode_was_found() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("product")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("name", "name"),
-                    Map.entry("describe", "describe"),
-                    Map.entry("price", 0),
-                    Map.entry("barcode", "123"),
-                    Map.entry("in_stock", true),
-                    Map.entry("image", new byte[]{1, 1, 1})
-                )
-            );
+        insertTestDataToDb();
 
-        Optional<Product> product = productRepository.findByBarcode("123");
+        Optional<Product> product = productRepository.findByBarcode(getBarcode());
 
-        assertThat(product).get().isEqualTo(
-            Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1));
+        assertThat(product).get().isEqualTo(getProductWithId());
     }
 
     @Test
     @DisplayName("Save image for product")
     void save_image_for_product() {
+        insertTestDataToDb();
+
+        productRepository.saveImageForProduct(getImage2(), getProductId());
+
+        var updatedBasket = jdbcTemplate.queryForObject(
+            "SELECT image FROM product WHERE id=:id",
+            Map.ofEntries(Map.entry("id", getProductId())),
+            byte[].class
+        );
+
+        assertThat(updatedBasket).isEqualTo(getImage2());
+    }
+
+    private void insertTestDataToDb() {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("product")
             .usingGeneratedKeyColumns("id")
             .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("name", "name"),
-                    Map.entry("describe", "describe"),
-                    Map.entry("price", 0),
-                    Map.entry("barcode", "123"),
-                    Map.entry("in_stock", true),
-                    Map.entry("image", new byte[]{1, 1, 1})
-                )
-            );
+            .execute(getMapOfEntries(getBarcode()));
+    }
 
-        productRepository.saveImageForProduct(new byte[]{127, 127, 127}, 1);
-
-        var updatedBasket = jdbcTemplate.queryForObject(
-            "SELECT image FROM product WHERE id=:id",
-            Map.ofEntries(Map.entry("id", 1)),
-            byte[].class
+    private static Map<String, Serializable> getMapOfEntries(String barcode) {
+        return Map.ofEntries(
+            Map.entry("name", getName()),
+            Map.entry("describe", getDescribe()),
+            Map.entry("price", getPrice()),
+            Map.entry("barcode", barcode),
+            Map.entry("in_stock", isInStock()),
+            Map.entry("image", getImage())
         );
-
-        assertThat(updatedBasket).isEqualTo(new byte[]{127, 127, 127});
     }
 }
