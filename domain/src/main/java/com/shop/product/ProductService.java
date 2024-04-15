@@ -104,11 +104,10 @@ public class ProductService implements ServiceInterface<Product> {
         int i = 0;
         while (i < count) {
             Optional<Product> product = productRepository.findById(getRandomIndex());
-            if (product.isPresent()) {
-                if (!products.contains(product.get())) {
-                    products.add(product.get());
-                    i++;
-                }
+            if (product.isPresent() && (!products.contains(product.get()))) {
+                products.add(product.get());
+                i++;
+
             }
         }
 
