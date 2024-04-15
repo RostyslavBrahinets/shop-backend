@@ -2,7 +2,6 @@ package com.shop.product;
 
 import com.shop.category.Category;
 import com.shop.productcategory.ProductCategoryRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,9 +11,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
 import java.util.Optional;
 
+import static com.shop.product.ProductParameter.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -24,7 +23,7 @@ import static org.mockito.Mockito.*;
         ProductServiceContextConfigurationTest.TestContextConfig.class
     }
 )
-public class ProductServiceContextConfigurationTest {
+class ProductServiceContextConfigurationTest {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -33,13 +32,6 @@ public class ProductServiceContextConfigurationTest {
     private ProductCategoryRepository productCategoryRepository;
     @Autowired
     private ProductService productService;
-
-    private List<Product> products;
-
-    @BeforeEach
-    void setUp() {
-        products = List.of();
-    }
 
     @Test
     @DisplayName("Get all products")
@@ -52,103 +44,73 @@ public class ProductServiceContextConfigurationTest {
     @Test
     @DisplayName("Get product by id")
     void get_product_by_id() {
-        long id = 1;
+        productService.findById(getProductId());
 
-        productService.findById(id);
-
-        verify(productValidator, atLeast(1)).validate(id, products);
-        verify(productRepository).findById(id);
+        verify(productValidator, atLeast(1))
+            .validate(getProductId(), getProducts());
+        verify(productRepository)
+            .findById(getProductId());
     }
 
     @Test
     @DisplayName("Get product by barcode")
     void get_product_by_barcode() {
-        String barcode = "123";
+        productService.findByBarcode(getBarcode());
 
-        productService.findByBarcode(barcode);
-
-        verify(productValidator, atLeast(1)).validateBarcode(barcode, products);
-        verify(productRepository, atLeast(1)).findByBarcode(barcode);
+        verify(productValidator, atLeast(1))
+            .validateBarcode(getBarcode(), getProducts());
+        verify(productRepository, atLeast(1))
+            .findByBarcode(getBarcode());
     }
 
     @Test
     @DisplayName("Save product")
     void save_product() {
-        String name = "name";
-        String describe = "describe";
-        double price = 0;
-        String barcode = "123";
-        boolean inStock = true;
-        byte[] image = {1, 1, 1};
-
-        productService.save(
-            Product.of(
-                name,
-                describe,
-                price,
-                barcode,
-                inStock,
-                image
-            )
-        );
+        productService.save(getProductWithoutId());
 
         verify(productValidator, atLeast(1))
-            .validate(name, describe, price, barcode, products);
-        verify(productRepository).save(
-            Product.of(
-                    name,
-                    describe,
-                    price,
-                    barcode,
-                    inStock,
-                    image
-                )
-                .withId(1)
-        );
+            .validate(
+                getName(),
+                getDescribe(),
+                getPrice(),
+                getBarcode(),
+                getProducts()
+            );
+        verify(productRepository).save(getProductWithId(getProductId(), getBarcode()));
     }
 
     @Test
     @DisplayName("Delete product")
     void delete_product() {
-        String barcode = "123";
-        long productId = 1L;
-        long categoryId = 1L;
+        when(productRepository.findByBarcode(getBarcode()))
+            .thenReturn(Optional.of(getProductWithId(getProductId(), getBarcode())));
 
-        when(productRepository.findByBarcode(barcode))
-            .thenReturn(Optional.of(
-                Product.of(
-                        "name",
-                        "describe",
-                        0,
-                        "123",
-                        true,
-                        new byte[]{1, 1, 1}
-                    )
-                    .withId(1)
-            ));
+        when(productCategoryRepository.findCategoryForProduct(getProductId()))
+            .thenReturn(Optional.of(Category.of(getName()).withId(getProductId())));
 
-        when(productCategoryRepository.findCategoryForProduct(productId))
-            .thenReturn(Optional.of(Category.of("name").withId(1)));
+        productService.delete(Product.of(getBarcode()));
 
-        productService.delete(Product.of(barcode));
-
-        verify(productValidator, atLeast(1)).validateBarcode(barcode, products);
-        verify(productRepository, atLeast(1)).findByBarcode(barcode);
-        verify(productCategoryRepository).findCategoryForProduct(productId);
-        verify(productCategoryRepository).deleteProductFromCategory(productId, categoryId);
-        verify(productRepository).delete(Product.of(barcode));
+        verify(productValidator, atLeast(1))
+            .validateBarcode(getBarcode(), getProducts());
+        verify(productRepository, atLeast(1))
+            .findByBarcode(getBarcode());
+        verify(productCategoryRepository)
+            .findCategoryForProduct(getProductId());
+        verify(productCategoryRepository)
+            .deleteProductFromCategory(getProductId(), getCategoryId());
+        verify(productRepository)
+            .delete(Product.of(getBarcode()));
     }
 
     @Test
     @DisplayName("Save image for product")
     void save_image_for_product() {
-        byte[] image = {1, 1, 1};
-        long id = 1;
+        productService.saveImageForProduct(getImage(), getProductId());
 
-        productService.saveImageForProduct(image, id);
-
-        verify(productValidator, atLeast(1)).validate(id, products);
-        verify(productRepository).saveImageForProduct(image, id);
+        verify(productValidator, atLeast(1))
+            .validate(getProductId(), getProducts());
+        verify(productRepository)
+            .saveImageForProduct(getImage(), getProductId());
     }
 
     @TestConfiguration
