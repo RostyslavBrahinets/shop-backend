@@ -24,7 +24,7 @@ class ProductValidatorTest {
 
     @Mock
     private ProductRepository productRepository;
-    private List<Product> products;
+    private static List<Product> products;
 
     @BeforeEach
     void setUp() {
@@ -183,8 +183,6 @@ class ProductValidatorTest {
     }
 
     private static Stream<Arguments> validationTestCases() {
-        List<Product> products = List.of(getProductWithId());
-
         return Stream.of(
             Arguments.of(null, products),
             Arguments.of("", products)
