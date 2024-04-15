@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.shop.adminnumber.AdminNumberParameter.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -23,19 +24,21 @@ class AdminNumberValidatorTest {
 
     @Mock
     private AdminNumberRepository adminNumberRepository;
+    private static List<AdminNumber> adminNumbers;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
         adminNumberValidator = new AdminNumberValidator();
+        adminNumbers = List.of(getAdminNumberWithId());
     }
 
     @Test
     @DisplayName("Number of admin validated without exceptions")
     void number_of_admin_validated_without_exceptions() {
         assertDoesNotThrow(
-            () -> adminNumberValidator.validateAdminNumber("12345678")
+            () -> adminNumberValidator.validateAdminNumber(getNumber())
         );
     }
 
@@ -60,19 +63,13 @@ class AdminNumberValidatorTest {
     @Test
     @DisplayName("Id of number of admin validated without exceptions")
     void id_of_number_of_admin_validated_without_exceptions() {
-        List<AdminNumber> adminNumbers = List.of(
-            AdminNumber.of(
-                "12345678"
-            ).withId(1)
-        );
-
         when(adminNumberRepository.findAll())
             .thenReturn(
-                List.of(new AdminNumber(1, "12345678"))
+                adminNumbers
             );
 
         assertDoesNotThrow(
-            () -> adminNumberValidator.validate(1, adminNumbers)
+            () -> adminNumberValidator.validate(getAdminNumberId(), adminNumbers)
         );
     }
 
@@ -81,26 +78,20 @@ class AdminNumberValidatorTest {
     void throw_not_found_exception_because_id_of_number_of_admin_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> adminNumberValidator.validate(1, List.of())
+            () -> adminNumberValidator.validate(getAdminNumberId(), getAdminNumbers())
         );
     }
 
     @Test
     @DisplayName("Number of number of admin validated without exceptions")
     void number_of_number_of_admin_validated_without_exceptions() {
-        List<AdminNumber> adminNumbers = List.of(
-            AdminNumber.of(
-                "12345678"
-            ).withId(1)
-        );
-
         when(adminNumberRepository.findAll())
             .thenReturn(
-                List.of(new AdminNumber(1, "12345678"))
+                adminNumbers
             );
 
         assertDoesNotThrow(
-            () -> adminNumberValidator.validate("12345678", adminNumbers)
+            () -> adminNumberValidator.validate(getNumber(), adminNumbers)
         );
     }
 
@@ -109,7 +100,7 @@ class AdminNumberValidatorTest {
     void throw_not_found_exception_because_number_of_admin_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> adminNumberValidator.validate("12345678", List.of())
+            () -> adminNumberValidator.validate(getNumber(), getAdminNumbers())
         );
     }
 
@@ -121,10 +112,6 @@ class AdminNumberValidatorTest {
     }
 
     private static Stream<Arguments> validationTestCases() {
-        List<AdminNumber> adminNumbers = List.of(
-            AdminNumber.of("12345678").withId(1)
-        );
-
         return Stream.of(
             Arguments.of(null, adminNumbers),
             Arguments.of("", adminNumbers),
