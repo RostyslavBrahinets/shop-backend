@@ -39,7 +39,7 @@ public class CategoryService implements ServiceInterface<Category> {
     public Category save(Category category) {
         categoryValidator.validateCategory(category.getName());
         categoryRepository.save(category);
-        category.setId(categoryRepository.findAll().size() + 1);
+        category.setId(categoryRepository.findAll().size() + 1L);
         return category;
     }
 

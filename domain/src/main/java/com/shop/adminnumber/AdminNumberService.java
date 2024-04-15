@@ -35,7 +35,7 @@ public class AdminNumberService implements ServiceInterface<AdminNumber> {
     public AdminNumber save(AdminNumber adminNumber) {
         adminNumberValidator.validateAdminNumber(adminNumber.getNumber());
         adminNumberRepository.save(AdminNumber.of(adminNumber.getNumber()));
-        adminNumber.setId(adminNumberRepository.findAll().size() + 1);
+        adminNumber.setId(adminNumberRepository.findAll().size() + 1L);
         return adminNumber;
     }
 

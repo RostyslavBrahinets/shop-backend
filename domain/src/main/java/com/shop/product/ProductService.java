@@ -49,7 +49,7 @@ public class ProductService implements ServiceInterface<Product> {
         );
 
         productRepository.save(product);
-        product.setId(productRepository.findAll().size() + 1);
+        product.setId(productRepository.findAll().size() + 1L);
         return product;
     }
 
@@ -127,7 +127,7 @@ public class ProductService implements ServiceInterface<Product> {
 
         long id = 0;
         while (!ids.contains(id)) {
-            id = random.nextInt((int) maxRandomId) + 1;
+            id = random.nextInt((int) maxRandomId) + 1L;
         }
 
         return id;
