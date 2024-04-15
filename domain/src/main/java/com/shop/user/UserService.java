@@ -52,12 +52,6 @@ public class UserService implements ServiceInterface<User> {
         return user.orElseGet(User::new);
     }
 
-    public User findByEmail(String email) {
-        userValidator.validateEmail(email);
-        Optional<User> user = userRepository.findByEmail(email);
-        return user.orElseGet(User::new);
-    }
-
     @Override
     public User save(User user) {
         userValidator.validate(
@@ -95,5 +89,11 @@ public class UserService implements ServiceInterface<User> {
         cartOptional.ifPresent(cartRepository::delete);
         userRoleRepository.deleteRoleForUser(user.getId());
         userRepository.delete(user);
+    }
+
+    public User findByEmail(String email) {
+        userValidator.validateEmail(email);
+        Optional<User> user = userRepository.findByEmail(email);
+        return user.orElseGet(User::new);
     }
 }
