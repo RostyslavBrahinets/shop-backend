@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
+import static com.shop.product.ProductParameter.*;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -39,40 +40,11 @@ class ProductServiceTest {
     @Test
     @DisplayName("Product was saved for with correct input")
     void product_was_saved_with_correct_input() {
-        Product savedProduct = productService.save(
-            Product.of(
-                "name",
-                "describe",
-                100,
-                "123",
-                true,
-                new byte[]{1, 1, 1}
-            )
-        );
+        Product savedProduct = productService.save(getProductWithoutId());
 
-        verify(productRepository).save(
-            Product.of(
-                    "name",
-                    "describe",
-                    100,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1)
-        );
+        verify(productRepository).save(getProductWithId());
 
-        assertThat(savedProduct).isEqualTo(
-            new Product(
-                1,
-                "name",
-                "describe",
-                100,
-                "123",
-                true,
-                new byte[]{1, 1, 1}
-            )
-        );
+        assertThat(savedProduct).isEqualTo(getProductWithId());
     }
 
     @Test
@@ -88,122 +60,67 @@ class ProductServiceTest {
     @Test
     @DisplayName("List of products is returned in case when products are exists in storage")
     void list_of_products_is_returned_in_case_when_products_are_exists_in_storage() {
-        when(productRepository.findAll()).thenReturn(
-            List.of(
-                Product.of(
-                    "name",
-                    "describe",
-                    100,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                ).withId(1)
-            )
-        );
+        when(productRepository.findAll())
+            .thenReturn(
+                List.of(getProductWithId())
+            );
 
         List<Product> products = productService.findAll();
 
-        assertThat(products).isEqualTo(List.of(new Product(
-            1,
-            "name",
-            "describe",
-            100,
-            "123",
-            true,
-            new byte[]{1, 1, 1})
-        ));
+        assertThat(products).isEqualTo(
+            List.of(getProductWithId())
+        );
     }
 
     @Test
     @DisplayName("Product was found by id")
     void product_was_found_by_id() {
-        when(productRepository.findById(1)).thenReturn(
-            Optional.of(Product.of(
-                "name",
-                "describe",
-                100,
-                "123",
-                true,
-                new byte[]{1, 1, 1}
-            ).withId(1))
-        );
+        when(productRepository.findById(getProductId()))
+            .thenReturn(
+                Optional.of(getProductWithId())
+            );
 
-        Product product = productService.findById(1);
+        Product product = productService.findById(getProductId());
 
-        assertThat(product).isEqualTo(new Product(
-            1,
-            "name",
-            "describe",
-            100,
-            "123",
-            true,
-            new byte[]{1, 1, 1})
-        );
+        assertThat(product).isEqualTo(getProductWithId());
     }
 
     @Test
     @DisplayName("Product was found by barcode")
     void product_was_found_by_name() {
-        when(productRepository.findByBarcode("123")).thenReturn(
-            Optional.of(Product.of(
-                "name",
-                "describe",
-                100,
-                "123",
-                true,
-                new byte[]{1, 1, 1}
-            ).withId(1))
+        when(productRepository.findByBarcode(getBarcode())).thenReturn(
+            Optional.of(getProductWithId())
         );
 
-        Product product = productService.findByBarcode("123");
+        Product product = productService.findByBarcode(getBarcode());
 
-        assertThat(product).isEqualTo(new Product(
-            1,
-            "name",
-            "describe",
-            100,
-            "123",
-            true,
-            new byte[]{1, 1, 1})
-        );
+        assertThat(product).isEqualTo(getProductWithId());
     }
 
     @Test
     @DisplayName("Product was deleted")
     void product_was_deleted() {
-        String barcode = "123";
-        long productId = 1L;
-        long categoryId = 1L;
+        when(productRepository.findByBarcode(getBarcode()))
+            .thenReturn(Optional.of(getProductWithId()));
 
-        when(productRepository.findByBarcode(barcode))
-            .thenReturn(Optional.of(
-                Product.of(
-                        "name",
-                        "describe",
-                        0,
-                        "123",
-                        true,
-                        new byte[]{1, 1, 1}
-                    )
-                    .withId(1)
-            ));
+        when(productCategoryRepository.findCategoryForProduct(getProductId()))
+            .thenReturn(
+                Optional.of(Category.of(getName()).withId(getCategoryId()))
+            );
 
-        when(productCategoryRepository.findCategoryForProduct(productId))
-            .thenReturn(Optional.of(Category.of("name").withId(1)));
+        productService.delete(Product.of(getBarcode()));
 
-        productService.delete(Product.of(barcode));
-
-        verify(productValidator, atLeast(1)).validateBarcode(barcode, List.of());
-        verify(productRepository).findByBarcode(barcode);
-        verify(productCategoryRepository).findCategoryForProduct(productId);
-        verify(productCategoryRepository).deleteProductFromCategory(productId, categoryId);
-        verify(productRepository).delete(Product.of(barcode));
+        verify(productValidator, atLeast(1)).validateBarcode(getBarcode(), List.of());
+        verify(productRepository).findByBarcode(getBarcode());
+        verify(productCategoryRepository).findCategoryForProduct(getProductId());
+        verify(productCategoryRepository).deleteProductFromCategory(getProductId(), getCategoryId());
+        verify(productRepository).delete(Product.of(getBarcode()));
     }
 
     @Test
     @DisplayName("Image for product was saved")
     void image_for_product_was_saved_with_correct_input() {
-        productService.saveImageForProduct(new byte[]{1, 1, 1}, 1);
-        verify(productRepository).saveImageForProduct(new byte[]{1, 1, 1}, 1);
+        productService.saveImageForProduct(getImage(), getProductId());
+        verify(productRepository).saveImageForProduct(getImage(), getProductId());
     }
 }
