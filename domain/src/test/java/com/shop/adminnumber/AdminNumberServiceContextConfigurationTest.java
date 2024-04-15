@@ -1,6 +1,5 @@
 package com.shop.adminnumber;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,8 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
-
+import static com.shop.adminnumber.AdminNumberParameter.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -21,20 +19,13 @@ import static org.mockito.Mockito.*;
         AdminNumberServiceContextConfigurationTest.TestContextConfig.class
     }
 )
-public class AdminNumberServiceContextConfigurationTest {
+class AdminNumberServiceContextConfigurationTest {
     @Autowired
     private AdminNumberRepository adminNumberRepository;
     @Autowired
     private AdminNumberValidator adminNumberValidator;
     @Autowired
     private AdminNumberService adminNumberService;
-
-    private List<AdminNumber> adminNumbers;
-
-    @BeforeEach
-    void setUp() {
-        adminNumbers = List.of();
-    }
 
     @Test
     @DisplayName("Get all numbers of admins")
@@ -47,45 +38,37 @@ public class AdminNumberServiceContextConfigurationTest {
     @Test
     @DisplayName("Get number of admin by id")
     void get_number_of_admin_by_id() {
-        long id = 1;
+        adminNumberService.findById(getAdminNumberId());
 
-        adminNumberService.findById(id);
-
-        verify(adminNumberValidator, atLeast(1)).validate(id, adminNumbers);
-        verify(adminNumberRepository).findById(id);
-    }
-
-    @Test
-    @DisplayName("Get number of admin by number")
-    void get_number_of_admin_by_number() {
-        String number = "12345678";
-
-        adminNumberService.findByNumber(number);
-
-        verify(adminNumberValidator, atLeast(1)).validate(number, adminNumbers);
-        verify(adminNumberRepository).findByNumber(number);
+        verify(adminNumberValidator, atLeast(1)).validate(getAdminNumberId(), getAdminNumbers());
+        verify(adminNumberRepository).findById(getAdminNumberId());
     }
 
     @Test
     @DisplayName("Save number of admin")
     void save_number_of_admin() {
-        String number = "12345678";
+        adminNumberService.save((getAdminNumberWithoutId()));
 
-        adminNumberService.save(AdminNumber.of(number));
-
-        verify(adminNumberValidator, atLeast(1)).validateAdminNumber(number);
-        verify(adminNumberRepository).save(AdminNumber.of(number));
+        verify(adminNumberValidator, atLeast(1)).validateAdminNumber(getNumber());
+        verify(adminNumberRepository).save(getAdminNumberWithoutId());
     }
 
     @Test
     @DisplayName("Delete number of admin by number")
     void delete_number_of_admin_by_number() {
-        String number = "12345678";
+        adminNumberService.delete((getAdminNumberWithoutId()));
 
-        adminNumberService.delete(AdminNumber.of(number));
+        verify(adminNumberValidator, atLeast(1)).validate(getNumber(), getAdminNumbers());
+        verify(adminNumberRepository).delete((getAdminNumberWithoutId()));
+    }
 
-        verify(adminNumberValidator, atLeast(1)).validate(number, adminNumbers);
-        verify(adminNumberRepository).delete(AdminNumber.of(number));
+    @Test
+    @DisplayName("Get number of admin by number")
+    void get_number_of_admin_by_number() {
+        adminNumberService.findByNumber(getNumber());
+
+        verify(adminNumberValidator, atLeast(1)).validate(getNumber(), getAdminNumbers());
+        verify(adminNumberRepository).findByNumber(getNumber());
     }
 
     @TestConfiguration
