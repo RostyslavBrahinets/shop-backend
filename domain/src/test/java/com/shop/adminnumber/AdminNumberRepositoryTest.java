@@ -14,10 +14,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.shop.adminnumber.AdminNumberParameter.*;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -58,8 +60,8 @@ class AdminNumberRepositoryTest {
     @DisplayName("Find all numbers of admins")
     void find_all_numbers_of_admins() {
         var batchInsertParameters = SqlParameterSourceUtils.createBatch(
-            Map.ofEntries(Map.entry("number", "12345678")),
-            Map.ofEntries(Map.entry("number", "87654321"))
+            getMapOfEntries(getNumber()),
+            getMapOfEntries(getNumber2())
         );
 
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
@@ -72,8 +74,8 @@ class AdminNumberRepositoryTest {
 
         assertThat(adminNumbers).isEqualTo(
             List.of(
-                AdminNumber.of("12345678").withId(1),
-                AdminNumber.of("87654321").withId(2)
+                getAdminNumberWithId(),
+                getAdminNumberWithId2()
             )
         );
     }
@@ -81,7 +83,7 @@ class AdminNumberRepositoryTest {
     @Test
     @DisplayName("Number of admin by id was not found")
     void number_of_admin_by_id_was_not_found() {
-        Optional<AdminNumber> adminNumber = adminNumberRepository.findById(1);
+        Optional<AdminNumber> adminNumber = adminNumberRepository.findById(getAdminNumberId());
 
         assertThat(adminNumber).isEmpty();
     }
@@ -89,21 +91,17 @@ class AdminNumberRepositoryTest {
     @Test
     @DisplayName("Number of admin by id was found")
     void number_of_admin_by_id_was_found() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("admin_number")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("number")
-            .execute(Map.ofEntries(Map.entry("number", "12345678")));
+        insertTestDataToDb();
 
-        Optional<AdminNumber> adminNumber = adminNumberRepository.findById(1);
+        Optional<AdminNumber> adminNumber = adminNumberRepository.findById(getAdminNumberId());
 
-        assertThat(adminNumber).get().isEqualTo(AdminNumber.of("12345678").withId(1));
+        assertThat(adminNumber).get().isEqualTo(getAdminNumberWithId());
     }
 
     @Test
     @DisplayName("Save number of admin")
     void save_number_of_admin() {
-        adminNumberRepository.save(AdminNumber.of("12345678"));
+        adminNumberRepository.save(getAdminNumberWithoutId());
 
         var adminNumbersCount = fetchCategoriesCount();
 
@@ -113,8 +111,8 @@ class AdminNumberRepositoryTest {
     @Test
     @DisplayName("Save multiple numbers of admins")
     void save_multiple_numbers_of_admins() {
-        adminNumberRepository.save(AdminNumber.of("12345678"));
-        adminNumberRepository.save(AdminNumber.of("87654321"));
+        adminNumberRepository.save(getAdminNumberWithoutId());
+        adminNumberRepository.save(getAdminNumberWithoutId2());
 
         var adminNumbersCount = fetchCategoriesCount();
 
@@ -124,41 +122,29 @@ class AdminNumberRepositoryTest {
     @Test
     @DisplayName("Update number of admin")
     void update_number_of_admin() {
-        var batchInsertParameters = SqlParameterSourceUtils.createBatch(
-            Map.ofEntries(Map.entry("number", "12345678"))
-        );
+        insertTestDataToDb();
 
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("admin_number")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("number")
-            .executeBatch(batchInsertParameters);
+        Optional<AdminNumber> adminNumber = adminNumberRepository.update(getAdminNumberId(), getAdminNumberWithoutId2());
 
-        Optional<AdminNumber> adminNumber = adminNumberRepository.update(1, AdminNumber.of("87654321"));
-
-        assertThat(adminNumber).get().isEqualTo(AdminNumber.of("87654321").withId(1));
+        assertThat(adminNumber).get().isEqualTo(getAdminNumberWithId2(getAdminNumberId()));
     }
 
     @Test
     @DisplayName("Number of admin not deleted in case when not exists")
     void number_of_admin_not_deleted_in_case_when_not_exists() {
-        assertThatCode(() -> adminNumberRepository.delete(AdminNumber.of("12345678"))).doesNotThrowAnyException();
+        assertThatCode(() -> adminNumberRepository.delete(getAdminNumberWithoutId())).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("Delete number of admin")
     void delete_number_of_admin() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("admin_number")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("number")
-            .execute(Map.ofEntries(Map.entry("number", "12345678")));
+        insertTestDataToDb();
 
         var adminNumbersCountBeforeDeletion = fetchCategoriesCount();
 
         assertThat(adminNumbersCountBeforeDeletion).isEqualTo(1);
 
-        adminNumberRepository.delete(AdminNumber.of("12345678"));
+        adminNumberRepository.delete(getAdminNumberWithoutId());
 
         var adminNumbersCount = fetchCategoriesCount();
 
@@ -168,7 +154,7 @@ class AdminNumberRepositoryTest {
     @Test
     @DisplayName("Number of admin by number was not found")
     void number_of_admin_by_number_was_not_found() {
-        Optional<AdminNumber> adminNumber = adminNumberRepository.findByNumber("12345678");
+        Optional<AdminNumber> adminNumber = adminNumberRepository.findByNumber(getNumber());
 
         assertThat(adminNumber).isEmpty();
     }
@@ -176,14 +162,22 @@ class AdminNumberRepositoryTest {
     @Test
     @DisplayName("Number of admin by number was found")
     void number_of_admin_by_number_was_found() {
+        insertTestDataToDb();
+
+        Optional<AdminNumber> adminNumber = adminNumberRepository.findByNumber(getNumber());
+
+        assertThat(adminNumber).get().isEqualTo(getAdminNumberWithId());
+    }
+
+    private void insertTestDataToDb() {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("admin_number")
             .usingGeneratedKeyColumns("id")
             .usingColumns("number")
-            .execute(Map.ofEntries(Map.entry("number", "12345678")));
+            .execute(Map.ofEntries(Map.entry("number", getNumber())));
+    }
 
-        Optional<AdminNumber> adminNumber = adminNumberRepository.findByNumber("12345678");
-
-        assertThat(adminNumber).get().isEqualTo(AdminNumber.of("12345678").withId(1));
+    private static Map<String, Serializable> getMapOfEntries(String number) {
+        return Map.ofEntries(Map.entry("number", number));
     }
 }
