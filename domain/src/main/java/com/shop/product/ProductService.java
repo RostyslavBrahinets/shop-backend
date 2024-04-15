@@ -15,6 +15,7 @@ public class ProductService implements ServiceInterface<Product> {
     private final ProductRepository productRepository;
     private final ProductValidator productValidator;
     private final ProductCategoryRepository productCategoryRepository;
+    private final Random random;
 
     public ProductService(
         ProductRepository productRepository,
@@ -24,6 +25,7 @@ public class ProductService implements ServiceInterface<Product> {
         this.productRepository = productRepository;
         this.productValidator = productValidator;
         this.productCategoryRepository = productCategoryRepository;
+        this.random = new Random();
     }
 
     @Override
@@ -115,7 +117,6 @@ public class ProductService implements ServiceInterface<Product> {
     }
 
     private long getRandomIndex() {
-        Random random = new Random();
         List<Product> products = findAll();
         long maxRandomId = products.get(products.size() - 1).getId();
 
