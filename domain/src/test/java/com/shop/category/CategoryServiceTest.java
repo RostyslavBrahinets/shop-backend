@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
+import static com.shop.category.CategoryParameter.*;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -37,16 +38,6 @@ class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("Category was saved for with correct input")
-    void category_was_saved_with_correct_input() {
-        Category savedCategory = categoryService.save(Category.of("name"));
-
-        verify(categoryRepository).save(Category.of("name").withId(1));
-
-        assertThat(savedCategory).isEqualTo(new Category(1, "name"));
-    }
-
-    @Test
     @DisplayName("Empty list of categories is returned in case when no categories in storage")
     void empty_list_of_categories_is_returned_in_case_when_no_categories_in_storage() {
         when(categoryRepository.findAll()).thenReturn(emptyList());
@@ -60,44 +51,52 @@ class CategoryServiceTest {
     @DisplayName("List of categories is returned in case when categories are exists in storage")
     void list_of_categories_is_returned_in_case_when_categories_are_exists_in_storage() {
         when(categoryRepository.findAll()).thenReturn(
-            List.of(
-                Category.of("name").withId(1)
-            )
+            List.of(getCategoryWithId())
         );
 
         List<Category> categories = categoryService.findAll();
 
-        assertThat(categories).isEqualTo(List.of(new Category(1, "name")));
+        assertThat(categories).isEqualTo(List.of(getCategoryWithId()));
     }
 
     @Test
     @DisplayName("Category was found by id")
     void category_was_found_by_id() {
         when(categoryRepository.findById(1)).thenReturn(
-            Optional.of(Category.of("name").withId(1))
+            Optional.of(getCategoryWithId())
         );
 
-        Category category = categoryService.findById(1);
+        Category category = categoryService.findById(getCategoryId());
 
-        assertThat(category).isEqualTo(new Category(1, "name"));
+        assertThat(category).isEqualTo(getCategoryWithId());
     }
 
     @Test
-    @DisplayName("Category was found by user")
-    void category_was_found_by_user() {
-        when(categoryRepository.findByName("name")).thenReturn(
-            Optional.of(Category.of("name").withId(1))
-        );
+    @DisplayName("Category was saved for with correct input")
+    void category_was_saved_with_correct_input() {
+        Category savedCategory = categoryService.save(getCategoryWithoutId());
 
-        Category category = categoryService.findByName("name");
+        verify(categoryRepository).save(getCategoryWithId());
 
-        assertThat(category).isEqualTo(new Category(1, "name"));
+        assertThat(savedCategory).isEqualTo(getCategoryWithId());
     }
 
     @Test
     @DisplayName("Category was deleted")
     void category_was_deleted() {
-        categoryService.delete(Category.of("name"));
-        verify(categoryRepository).delete(Category.of("name"));
+        categoryService.delete(getCategoryWithoutId());
+        verify(categoryRepository).delete(getCategoryWithoutId());
+    }
+
+    @Test
+    @DisplayName("Category was found by user")
+    void category_was_found_by_user() {
+        when(categoryRepository.findByName(getName())).thenReturn(
+            Optional.of(getCategoryWithId())
+        );
+
+        Category category = categoryService.findByName(getName());
+
+        assertThat(category).isEqualTo(getCategoryWithId());
     }
 }
