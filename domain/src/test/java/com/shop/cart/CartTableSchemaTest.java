@@ -13,6 +13,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import static com.shop.cart.CartParameter.getPriceAmount;
+import static com.shop.user.UserParameter.getUserId;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 @JdbcTest
@@ -41,7 +43,7 @@ class CartTableSchemaTest {
     void failed_to_insert_null_price_amount_value() {
         var params = new MapSqlParameterSource();
         params.addValue("price_amount", null);
-        params.addValue("user_id", 1);
+        params.addValue("user_id", getUserId());
 
         assertThatCode(
             () -> jdbcTemplate.update(
@@ -56,7 +58,7 @@ class CartTableSchemaTest {
     @DisplayName("Failed to insert null user id value")
     void failed_to_insert_null_user_id_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("price_amount", 0);
+        params.addValue("price_amount", getPriceAmount());
         params.addValue("user_id", null);
 
         assertThatCode(
