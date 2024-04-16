@@ -72,7 +72,7 @@ class AdminNumberServiceTest {
     void number_of_admin_was_saved_with_correct_input() {
         AdminNumber savedAdminNumber = adminNumberService.save(getAdminNumberWithoutId());
 
-        verify(adminNumberRepository).save(getAdminNumberWithoutId());
+        verify(adminNumberRepository).save(getAdminNumberWithId());
 
         assertThat(savedAdminNumber).isEqualTo(getAdminNumberWithId());
     }
