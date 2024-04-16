@@ -50,7 +50,7 @@ class AdminNumberServiceContextConfigurationTest {
         adminNumberService.save((getAdminNumberWithoutId()));
 
         verify(adminNumberValidator, atLeast(1)).validateAdminNumber(getNumber());
-        verify(adminNumberRepository).save(getAdminNumberWithoutId());
+        verify(adminNumberRepository).save(getAdminNumberWithId());
     }
 
     @Test
