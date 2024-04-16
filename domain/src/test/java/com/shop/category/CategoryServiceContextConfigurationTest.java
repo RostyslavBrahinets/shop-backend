@@ -1,7 +1,6 @@
 package com.shop.category;
 
 import com.shop.productcategory.ProductCategoryRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,8 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
-
+import static com.shop.category.CategoryParameter.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -22,20 +20,13 @@ import static org.mockito.Mockito.*;
         CategoryServiceContextConfigurationTest.TestContextConfig.class
     }
 )
-public class CategoryServiceContextConfigurationTest {
+class CategoryServiceContextConfigurationTest {
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
     private CategoryValidator categoryValidator;
     @Autowired
     private CategoryService categoryService;
-
-    private List<Category> categories;
-
-    @BeforeEach
-    void setUp() {
-        categories = List.of();
-    }
 
     @Test
     @DisplayName("Get all categories")
@@ -48,45 +39,37 @@ public class CategoryServiceContextConfigurationTest {
     @Test
     @DisplayName("Get category by id")
     void get_category_by_id() {
-        long id = 1;
+        categoryService.findById(getCategoryId());
 
-        categoryService.findById(id);
-
-        verify(categoryValidator, atLeast(1)).validate(id, categories);
-        verify(categoryRepository).findById(id);
+        verify(categoryValidator, atLeast(1)).validate(getCategoryId(), getCategories());
+        verify(categoryRepository).findById(getCategoryId());
     }
 
     @Test
     @DisplayName("Get category by name")
     void get_category_by_name() {
-        String name = "name";
+        categoryService.findByName(getName());
 
-        categoryService.findByName(name);
-
-        verify(categoryValidator, atLeast(1)).validate(name, categories);
-        verify(categoryRepository).findByName(name);
+        verify(categoryValidator, atLeast(1)).validate(getName(), getCategories());
+        verify(categoryRepository).findByName(getName());
     }
 
     @Test
     @DisplayName("Save category")
     void save_category() {
-        String name = "name";
+        categoryService.save(getCategoryWithoutId());
 
-        categoryService.save(Category.of(name));
-
-        verify(categoryValidator, atLeast(1)).validateCategory(name);
-        verify(categoryRepository).save(Category.of(name).withId(1));
+        verify(categoryValidator, atLeast(1)).validateCategory(getName());
+        verify(categoryRepository).save(getCategoryWithId());
     }
 
     @Test
     @DisplayName("Delete category by name")
     void delete_category_by_name() {
-        String name = "name";
+        categoryService.delete(getCategoryWithoutId());
 
-        categoryService.delete(Category.of(name));
-
-        verify(categoryValidator, atLeast(1)).validate(name, categories);
-        verify(categoryRepository).delete(Category.of(name));
+        verify(categoryValidator, atLeast(1)).validate(getName(), getCategories());
+        verify(categoryRepository).delete(getCategoryWithoutId());
     }
 
     @TestConfiguration
