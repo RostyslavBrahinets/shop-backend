@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
+import static com.shop.cart.CartParameter.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -31,7 +32,7 @@ class CartValidatorTest {
     @DisplayName("Total cost products in cart validated without exceptions")
     void total_cost_products_in_cart_validated_without_exceptions() {
         assertDoesNotThrow(
-            () -> cartValidator.validate(0.0)
+            () -> cartValidator.validate(getPriceAmount())
         );
     }
 
@@ -49,11 +50,11 @@ class CartValidatorTest {
     void id_of_cart_validated_without_exceptions() {
         when(cartRepository.findAll())
             .thenReturn(
-                List.of(new Cart(1, 0, 0))
+                List.of(getCartWithId())
             );
 
         assertDoesNotThrow(
-            () -> cartValidator.validate(1)
+            () -> cartValidator.validate(getPriceAmount())
         );
     }
 
@@ -62,7 +63,7 @@ class CartValidatorTest {
     void throw_not_found_exception_because_id_of_cart_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> cartValidator.validate(1, List.of())
+            () -> cartValidator.validate(getCartId(), getCarts())
         );
     }
 }
