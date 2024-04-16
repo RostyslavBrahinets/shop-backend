@@ -12,8 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
-
+import static com.shop.cart.CartParameter.*;
+import static com.shop.user.UserParameter.getUserId;
+import static com.shop.user.UserParameter.getUsers;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.*;
         CartServiceContextConfigurationTest.TestContextConfig.class
     }
 )
-public class CartServiceContextConfigurationTest {
+class CartServiceContextConfigurationTest {
     @Autowired
     private CartRepository cartRepository;
     @Autowired
@@ -46,62 +47,48 @@ public class CartServiceContextConfigurationTest {
     @Test
     @DisplayName("Get cart by id")
     void get_cart_by_id() {
-        long id = 1;
+        cartService.findById(getCartId());
 
-        cartService.findById(id);
-
-        verify(cartValidator, atLeast(1)).validate(id);
-        verify(cartRepository).findById(id);
+        verify(cartValidator, atLeast(1)).validate(getCartId());
+        verify(cartRepository).findById(getCartId());
     }
 
     @Test
     @DisplayName("Get cart by user")
     void get_cart_by_user() {
-        long userId = 1;
-        List<User> users = userService.findAll();
+        cartService.findByUser(User.of(null, null).withId(getUserId()));
 
-        cartService.findByUser(User.of(null, null).withId(userId));
-
-        verify(userValidator, atLeast(1)).validate(userId, users);
-        verify(cartRepository).findByUser(User.of(null, null).withId(userId));
+        verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
+        verify(cartRepository).findByUser(User.of(null, null).withId(getUserId()));
     }
 
     @Test
     @DisplayName("Save cart")
     void save_cart() {
-        long userId = 1;
-        double totalCost = 0;
-        List<User> users = userService.findAll();
+        cartService.save(getCartWithoutId());
 
-        cartService.save(Cart.of(totalCost, userId));
-
-        verify(cartValidator, atLeast(1)).validate(totalCost);
-        verify(userValidator, atLeast(1)).validate(userId, users);
-        verify(cartRepository).save(Cart.of(totalCost, userId).withId(1));
+        verify(cartValidator, atLeast(1)).validate(getPriceAmount());
+        verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
+        verify(cartRepository).save(getCartWithId());
     }
 
     @Test
     @DisplayName("Update cart")
     void update_cart() {
-        long id = 1;
-        double totalCost = 100;
+        cartService.update(getCartId(), getCartWithoutId(getPriceAmount2()));
 
-        cartService.update(id, Cart.of(totalCost, 0));
-
-        verify(cartValidator, atLeast(1)).validate(id);
-        verify(cartValidator, atLeast(1)).validate(totalCost);
-        verify(cartRepository).update(1, Cart.of(totalCost, 0));
+        verify(cartValidator, atLeast(1)).validate(getCartId());
+        verify(cartValidator, atLeast(1)).validate(getPriceAmount2());
+        verify(cartRepository).update(getCartId(), getCartWithoutId(getPriceAmount2()));
     }
 
     @Test
     @DisplayName("Delete cart")
     void delete_cart() {
-        long id = 1;
+        cartService.delete(getCartWithId());
 
-        cartService.delete(Cart.of(0, 0).withId(id));
-
-        verify(cartValidator, atLeast(1)).validate(id);
-        verify(cartRepository).delete(Cart.of(0, 0).withId(id));
+        verify(cartValidator, atLeast(1)).validate(getCartId());
+        verify(cartRepository).delete(getCartWithId());
     }
 
     @TestConfiguration
