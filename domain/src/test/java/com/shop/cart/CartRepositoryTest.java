@@ -1,9 +1,7 @@
 package com.shop.cart;
 
-import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberRepository;
 import com.shop.configs.DatabaseConfig;
-import com.shop.user.User;
 import com.shop.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,10 +16,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.shop.adminnumber.AdminNumberParameter.getAdminNumberWithoutId;
+import static com.shop.cart.CartParameter.*;
+import static com.shop.user.UserParameter.*;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -43,40 +45,11 @@ class CartRepositoryTest {
     @BeforeEach
     void setUp() {
         AdminNumberRepository adminNumberRepository = new AdminNumberRepository(jdbcTemplate);
-        adminNumberRepository.save(AdminNumber.of("0"));
+        adminNumberRepository.save(getAdminNumberWithoutId());
 
         UserRepository userRepository = new UserRepository(jdbcTemplate);
-
-        String firstName = "John";
-        String lastName = "Smith";
-        String email1 = "test1@email.com";
-        String phone1 = "+380000000001";
-        String email2 = "test2@email.com";
-        String phone2 = "+380000000002";
-        char[] password = {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        String adminNumber = "12345678";
-
-        userRepository.save(
-            User.of(
-                firstName,
-                lastName,
-                email1,
-                phone1,
-                password,
-                adminNumber
-            )
-        );
-
-        userRepository.save(
-            User.of(
-                firstName,
-                lastName,
-                email2,
-                phone2,
-                password,
-                adminNumber
-            )
-        );
+        userRepository.save(getUserWithoutId());
+        userRepository.save(getUserWithoutId(getEmail2(), getPhone2()));
 
         cartRepository = new CartRepository(jdbcTemplate);
     }
@@ -100,14 +73,8 @@ class CartRepositoryTest {
     @DisplayName("Find all carts")
     void find_all_carts() {
         var batchInsertParameters = SqlParameterSourceUtils.createBatch(
-            Map.ofEntries(
-                Map.entry("price_amount", 0),
-                Map.entry("user_id", 1)
-            ),
-            Map.ofEntries(
-                Map.entry("price_amount", 0),
-                Map.entry("user_id", 2)
-            )
+            getMapOfEntries(getPriceAmount(), getUserId()),
+            getMapOfEntries(getPriceAmount(), getUserId2())
         );
 
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
@@ -120,8 +87,8 @@ class CartRepositoryTest {
 
         assertThat(carts).isEqualTo(
             List.of(
-                Cart.of(0, 1).withId(1),
-                Cart.of(0, 2).withId(2)
+                getCartWithId(),
+                getCartWithId2(getUserId2())
             )
         );
     }
@@ -129,7 +96,7 @@ class CartRepositoryTest {
     @Test
     @DisplayName("Cart by id was not found")
     void cart_by_id_was_not_found() {
-        Optional<Cart> cart = cartRepository.findById(1);
+        Optional<Cart> cart = cartRepository.findById(getCartId());
 
         assertThat(cart).isEmpty();
     }
@@ -137,24 +104,17 @@ class CartRepositoryTest {
     @Test
     @DisplayName("Cart by id was found")
     void cart_by_id_was_found() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("cart")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("price_amount", "user_id")
-            .execute(Map.ofEntries(
-                Map.entry("price_amount", 0),
-                Map.entry("user_id", 1)
-            ));
+        insertTestDataToDb();
 
-        Optional<Cart> cart = cartRepository.findById(1);
+        Optional<Cart> cart = cartRepository.findById(getCartId());
 
-        assertThat(cart).get().isEqualTo(Cart.of(0, 1).withId(1));
+        assertThat(cart).get().isEqualTo(getCartWithId());
     }
 
     @Test
     @DisplayName("Save cart")
     void save_cart() {
-        cartRepository.save(Cart.of(0, 1));
+        cartRepository.save(getCartWithoutId());
 
         var cartsCount = fetchCartsCount();
 
@@ -164,8 +124,8 @@ class CartRepositoryTest {
     @Test
     @DisplayName("Save multiple carts")
     void save_multiple_carts() {
-        cartRepository.save(Cart.of(0, 1));
-        cartRepository.save(Cart.of(0, 2));
+        cartRepository.save(getCartWithoutId());
+        cartRepository.save(getCartWithoutId(getUserId2()));
 
         var cartsCount = fetchCartsCount();
 
@@ -175,49 +135,29 @@ class CartRepositoryTest {
     @Test
     @DisplayName("Update cart")
     void update_cart() {
-        var batchInsertParameters = SqlParameterSourceUtils.createBatch(
-            Map.ofEntries(
-                Map.entry("price_amount", 0),
-                Map.entry("user_id", 1)
-            )
-        );
+        insertTestDataToDb();
 
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("cart")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("price_amount", "user_id")
-            .executeBatch(batchInsertParameters);
+        Optional<Cart> cart = cartRepository.update(getCartId(), getCartWithId(getPriceAmount2()));
 
-        Optional<Cart> cart = cartRepository.update(1, Cart.of(100, 1));
-
-        assertThat(cart).get().isEqualTo(Cart.of(100, 1).withId(1));
+        assertThat(cart).get().isEqualTo(getCartWithId(getPriceAmount2()));
     }
 
     @Test
     @DisplayName("Cart not deleted in case when not exists")
     void cart_not_deleted_in_case_when_not_exists() {
-        assertThatCode(() -> cartRepository.delete(Cart.of(0, 0).withId(1))).doesNotThrowAnyException();
+        assertThatCode(() -> cartRepository.delete(getCartWithoutId())).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("Delete cart")
     void delete_cart() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("cart")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("price_amount", "user_id")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("price_amount", 0),
-                    Map.entry("user_id", 1)
-                )
-            );
+        insertTestDataToDb();
 
         var cartsCountBeforeDeletion = fetchCartsCount();
 
         assertThat(cartsCountBeforeDeletion).isEqualTo(1);
 
-        cartRepository.delete(Cart.of(0, 1).withId(1));
+        cartRepository.delete(getCartWithId());
 
         var cartsCount = fetchCartsCount();
 
@@ -227,7 +167,7 @@ class CartRepositoryTest {
     @Test
     @DisplayName("Cart by user was not found")
     void cart_by_user_was_not_found() {
-        Optional<Cart> cart = cartRepository.findByUser(User.of(null, null).withId(2));
+        Optional<Cart> cart = cartRepository.findByUser(getUserWithId(getUserId()));
 
         assertThat(cart).isEmpty();
     }
@@ -235,19 +175,25 @@ class CartRepositoryTest {
     @Test
     @DisplayName("Cart by user was found")
     void cart_by_user_was_found() {
+        insertTestDataToDb();
+
+        Optional<Cart> cart = cartRepository.findByUser(getUserWithId());
+
+        assertThat(cart).get().isEqualTo(getCartWithId());
+    }
+
+    private void insertTestDataToDb() {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("cart")
             .usingGeneratedKeyColumns("id")
             .usingColumns("price_amount", "user_id")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("price_amount", 0),
-                    Map.entry("user_id", 1)
-                )
-            );
+            .execute(getMapOfEntries(getPriceAmount(), getUserId()));
+    }
 
-        Optional<Cart> cart = cartRepository.findByUser(User.of(null, null).withId(1));
-
-        assertThat(cart).get().isEqualTo(Cart.of(0, 1).withId(1));
+    private static Map<String, Serializable> getMapOfEntries(double priceAmount, long userId) {
+        return Map.ofEntries(
+            Map.entry("price_amount", priceAmount),
+            Map.entry("user_id", userId)
+        );
     }
 }
