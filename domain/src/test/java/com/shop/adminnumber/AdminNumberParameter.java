@@ -15,7 +15,7 @@ public class AdminNumberParameter {
         return getAdminNumberWithoutId2().withId(id);
     }
 
-    static AdminNumber getAdminNumberWithoutId() {
+    public static AdminNumber getAdminNumberWithoutId() {
         return AdminNumber.of(getNumber());
     }
 
@@ -31,7 +31,7 @@ public class AdminNumberParameter {
         return 2L;
     }
 
-    static String getNumber() {
+    public static String getNumber() {
         return "12345678";
     }
 
