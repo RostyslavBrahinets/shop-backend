@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.shop.SqlMigrationClasspath.ADMIN_NUMBER;
 import static com.shop.adminnumber.AdminNumberParameter.*;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -28,7 +29,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/adminnumber/V20220421160504__Create_table_admin_number.sql"
+    ADMIN_NUMBER
 })
 class AdminNumberRepositoryTest {
     @Autowired

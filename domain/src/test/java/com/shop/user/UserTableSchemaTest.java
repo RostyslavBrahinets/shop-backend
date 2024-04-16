@@ -13,6 +13,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import static com.shop.SqlMigrationClasspath.ADMIN_NUMBER;
+import static com.shop.SqlMigrationClasspath.USER;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 @JdbcTest
@@ -20,8 +22,8 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/adminnumber/V20220421160504__Create_table_admin_number.sql",
-    "classpath:db/migration/user/V20220421161642__Create_table_user.sql"
+    ADMIN_NUMBER,
+    USER
 })
 class UserTableSchemaTest {
     @Autowired

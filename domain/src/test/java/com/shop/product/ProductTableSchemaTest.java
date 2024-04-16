@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import static com.shop.SqlMigrationClasspath.PRODUCT;
 import static com.shop.product.ProductParameter.*;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/product/V20220421162205__Create_table_product.sql"
+    PRODUCT
 })
 class ProductTableSchemaTest {
     @Autowired

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.shop.SqlMigrationClasspath.*;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -28,8 +29,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/adminnumber/V20220421160504__Create_table_admin_number.sql",
-    "classpath:db/migration/user/V20220421161642__Create_table_user.sql"
+    ADMIN_NUMBER,
+    USER
 })
 class UserRepositoryTest {
     @Autowired

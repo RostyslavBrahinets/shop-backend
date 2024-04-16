@@ -17,6 +17,7 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.shop.SqlMigrationClasspath.*;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @JdbcTest
@@ -24,9 +25,9 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/userrole/V20220505173244__Create_table_user_role.sql",
-    "classpath:db/migration/role/V20220505172953__Create_table_role.sql",
-    "classpath:db/migration/role/V20220505173022__Insert_data_to_table_role.sql"
+    USER_ROLE,
+    ROLE,
+    INSERT_ROLE
 })
 class UserRoleRepositoryTest {
     @Autowired

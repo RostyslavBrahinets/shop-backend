@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.shop.SqlMigrationClasspath.PRODUCT;
 import static com.shop.product.ProductParameter.*;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -28,7 +29,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/product/V20220421162205__Create_table_product.sql"
+    PRODUCT
 })
 class ProductRepositoryTest {
     @Autowired

@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import static com.shop.SqlMigrationClasspath.ROLE;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 @JdbcTest
@@ -20,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/role/V20220505172953__Create_table_role.sql"
+    ROLE
 })
 class RoleTableSchemaTest {
     @Autowired

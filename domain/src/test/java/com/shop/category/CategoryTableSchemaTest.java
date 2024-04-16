@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import static com.shop.SqlMigrationClasspath.CATEGORY;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 @JdbcTest
@@ -20,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/category/V20220421162204__Create_table_category.sql"
+    CATEGORY
 })
 class CategoryTableSchemaTest {
     @Autowired

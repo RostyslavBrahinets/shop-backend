@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import static com.shop.SqlMigrationClasspath.*;
 import static com.shop.cart.CartParameter.getPriceAmount;
 import static com.shop.user.UserParameter.getUserId;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -22,9 +23,9 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/adminnumber/V20220421160504__Create_table_admin_number.sql",
-    "classpath:db/migration/user/V20220421161642__Create_table_user.sql",
-    "classpath:db/migration/cart/V20220421161946__Create_table_cart.sql"
+    ADMIN_NUMBER,
+    USER,
+    CART
 })
 class CartTableSchemaTest {
     @Autowired
