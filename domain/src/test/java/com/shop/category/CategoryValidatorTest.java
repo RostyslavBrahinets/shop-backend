@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.shop.category.CategoryParameter.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -24,18 +25,21 @@ class CategoryValidatorTest {
     @Mock
     private CategoryRepository categoryRepository;
 
+    private static List<Category> categories;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
         categoryValidator = new CategoryValidator();
+        categories = List.of(getCategoryWithId());
     }
 
     @Test
     @DisplayName("Category validated without exceptions")
     void category_validated_without_exceptions() {
         assertDoesNotThrow(
-            () -> categoryValidator.validateCategory("name")
+            () -> categoryValidator.validateCategory(getName())
         );
     }
 
@@ -60,19 +64,13 @@ class CategoryValidatorTest {
     @Test
     @DisplayName("Id of category validated without exceptions")
     void id_of_category_validated_without_exceptions() {
-        List<Category> categories = List.of(
-            Category.of(
-                "name"
-            ).withId(1)
-        );
-
         when(categoryRepository.findAll())
             .thenReturn(
-                List.of(new Category(1, "name"))
+                List.of(getCategoryWithId())
             );
 
         assertDoesNotThrow(
-            () -> categoryValidator.validate(1, categories)
+            () -> categoryValidator.validate(getCategoryId(), categories)
         );
     }
 
@@ -81,26 +79,20 @@ class CategoryValidatorTest {
     void throw_not_found_exception_because_id_of_category_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> categoryValidator.validate(1, List.of())
+            () -> categoryValidator.validate(getCategoryId(), getCategories())
         );
     }
 
     @Test
     @DisplayName("Name of category validated without exceptions")
     void name_of_category_validated_without_exceptions() {
-        List<Category> categories = List.of(
-            Category.of(
-                "name"
-            ).withId(1)
-        );
-
         when(categoryRepository.findAll())
             .thenReturn(
-                List.of(new Category(1, "name"))
+                List.of(getCategoryWithId())
             );
 
         assertDoesNotThrow(
-            () -> categoryValidator.validate("name", categories)
+            () -> categoryValidator.validate(getName(), categories)
         );
     }
 
@@ -109,19 +101,13 @@ class CategoryValidatorTest {
     void throw_not_found_exception_because_name_of_category_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> categoryValidator.validate("name", List.of())
+            () -> categoryValidator.validate(getName(), getCategories())
         );
     }
 
     @Test
     @DisplayName("Throw ValidationException because name is null")
     void throw_validation_exception_because_name_is_null() {
-        List<Category> categories = List.of(
-            Category.of(
-                "name"
-            ).withId(1)
-        );
-
         assertThrows(
             ValidationException.class,
             () -> categoryValidator.validate(null, categories)
@@ -131,12 +117,6 @@ class CategoryValidatorTest {
     @Test
     @DisplayName("Throw ValidationException because name is empty")
     void throw_validation_exception_because_name_is_empty() {
-        List<Category> categories = List.of(
-            Category.of(
-                "name"
-            ).withId(1)
-        );
-
         assertThrows(
             ValidationException.class,
             () -> categoryValidator.validate("", categories)
@@ -151,12 +131,6 @@ class CategoryValidatorTest {
     }
 
     private static Stream<Arguments> validationTestCases() {
-        List<Category> categories = List.of(
-            Category.of(
-                "name"
-            ).withId(1)
-        );
-
         return Stream.of(
             Arguments.of(null, categories),
             Arguments.of("", categories)
