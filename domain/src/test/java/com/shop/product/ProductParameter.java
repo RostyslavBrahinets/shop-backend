@@ -3,7 +3,7 @@ package com.shop.product;
 import java.util.List;
 
 public class ProductParameter {
-    static Product getProductWithId() {
+    public static Product getProductWithId() {
         return getProductWithId(getProductId(), getBarcode());
     }
 
@@ -41,19 +41,19 @@ public class ProductParameter {
         );
     }
 
-    static long getCategoryId() {
+    public static long getCategoryId() {
         return 1L;
     }
 
-    static long getProductId() {
+    public static long getProductId() {
         return 1L;
     }
 
-    static long getProductId2() {
+    public static long getProductId2() {
         return 2L;
     }
 
-    static String getName() {
+    public static String getName() {
         return "name";
     }
 
@@ -61,7 +61,7 @@ public class ProductParameter {
         return "name2";
     }
 
-    static String getDescribe() {
+    public static String getDescribe() {
         return "describe";
     }
 
@@ -69,7 +69,7 @@ public class ProductParameter {
         return "describe2";
     }
 
-    static double getPrice() {
+    public static double getPrice() {
         return 0;
     }
 
@@ -77,7 +77,7 @@ public class ProductParameter {
         return 100;
     }
 
-    static String getBarcode() {
+    public static String getBarcode() {
         return "123";
     }
 
@@ -85,7 +85,7 @@ public class ProductParameter {
         return "456";
     }
 
-    static boolean isInStock() {
+    public static boolean isInStock() {
         return true;
     }
 
@@ -93,7 +93,7 @@ public class ProductParameter {
         return false;
     }
 
-    static byte[] getImage() {
+    public static byte[] getImage() {
         return new byte[]{1, 1, 1};
     }
 

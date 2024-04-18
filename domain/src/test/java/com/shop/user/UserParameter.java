@@ -43,15 +43,15 @@ public class UserParameter {
         return 2L;
     }
 
-    static String getFirstName() {
+    public static String getFirstName() {
         return "John";
     }
 
-    static String getLastName() {
+    public static String getLastName() {
         return "Smith";
     }
 
-    static String getEmail() {
+    public static String getEmail() {
         return "test@email.com";
     }
 
@@ -59,7 +59,7 @@ public class UserParameter {
         return "test2@email.com";
     }
 
-    static String getPhone() {
+    public static String getPhone() {
         return "+380000000000";
     }
 
@@ -67,7 +67,7 @@ public class UserParameter {
         return "+380000000002";
     }
 
-    static char[] getPassword() {
+    public static char[] getPassword() {
         return new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
     }
 

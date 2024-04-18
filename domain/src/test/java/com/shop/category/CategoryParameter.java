@@ -3,7 +3,7 @@ package com.shop.category;
 import java.util.List;
 
 public class CategoryParameter {
-    static Category getCategoryWithId() {
+    public static Category getCategoryWithId() {
         return getCategoryWithoutId().withId(getCategoryId());
     }
 
@@ -27,7 +27,7 @@ public class CategoryParameter {
         return 2L;
     }
 
-    static String getName() {
+    public static String getName() {
         return "name";
     }
 
@@ -35,7 +35,7 @@ public class CategoryParameter {
         return "name2";
     }
 
-    static List<Category> getCategories() {
+    public static List<Category> getCategories() {
         return List.of();
     }
 }

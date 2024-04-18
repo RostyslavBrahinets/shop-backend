@@ -3,7 +3,7 @@ package com.shop.adminnumber;
 import java.util.List;
 
 public class AdminNumberParameter {
-    static AdminNumber getAdminNumberWithId() {
+    public static AdminNumber getAdminNumberWithId() {
         return getAdminNumberWithoutId().withId(getAdminNumberId());
     }
 
@@ -19,7 +19,7 @@ public class AdminNumberParameter {
         return AdminNumber.of(getNumber());
     }
 
-    static AdminNumber getAdminNumberWithoutId2() {
+    public static AdminNumber getAdminNumberWithoutId2() {
         return AdminNumber.of(getNumber2());
     }
 
@@ -35,7 +35,7 @@ public class AdminNumberParameter {
         return "12345678";
     }
 
-    static String getNumber2() {
+    public static String getNumber2() {
         return "87654321";
     }
 
