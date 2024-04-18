@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static com.shop.role.RoleParameter.getRoleId;
+import static com.shop.user.UserParameter.getUserId;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -21,7 +23,7 @@ import static org.mockito.Mockito.*;
         UserRoleServiceContextConfigurationTest.TestContextConfig.class
     }
 )
-public class UserRoleServiceContextConfigurationTest {
+class UserRoleServiceContextConfigurationTest {
     @Autowired
     private UserRoleRepository userRoleRepository;
     @Autowired
@@ -36,38 +38,30 @@ public class UserRoleServiceContextConfigurationTest {
     @Test
     @DisplayName("Get role by user")
     void get_role_by_user() {
-        long userId = 1;
+        userRoleService.findRoleForUser(getUserId());
 
-        userRoleService.findRoleForUser(userId);
-
-        verify(userValidator, atLeast(1)).validate(userId, userService.findAll());
-        verify(userRoleRepository).findRoleForUser(userId);
+        verify(userValidator, atLeast(1)).validate(getUserId(), userService.findAll());
+        verify(userRoleRepository).findRoleForUser(getUserId());
     }
 
     @Test
     @DisplayName("Save role for user")
     void save_role_for_user() {
-        long userId = 1;
-        long roleId = 1;
+        userRoleService.saveRoleForUser(getUserId(), getRoleId());
 
-        userRoleService.saveRoleForUser(userId, roleId);
-
-        verify(userValidator, atLeast(1)).validate(userId, userService.findAll());
-        verify(roleValidator, atLeast(1)).validate(roleId);
-        verify(userRoleRepository).saveRoleForUser(userId, roleId);
+        verify(userValidator, atLeast(1)).validate(getUserId(), userService.findAll());
+        verify(roleValidator, atLeast(1)).validate(getRoleId());
+        verify(userRoleRepository).saveRoleForUser(getUserId(), getRoleId());
     }
 
     @Test
     @DisplayName("Update role for user")
     void update_role_for_user() {
-        long userId = 1;
-        long roleId = 1;
+        userRoleService.updateRoleForUser(getUserId(), getRoleId());
 
-        userRoleService.updateRoleForUser(userId, roleId);
-
-        verify(userValidator, atLeast(1)).validate(userId, userService.findAll());
-        verify(roleValidator, atLeast(1)).validate(roleId);
-        verify(userRoleRepository).updateRoleForUser(userId, roleId);
+        verify(userValidator, atLeast(1)).validate(getUserId(), userService.findAll());
+        verify(roleValidator, atLeast(1)).validate(getRoleId());
+        verify(userRoleRepository).updateRoleForUser(getUserId(), getRoleId());
     }
 
     @TestConfiguration
