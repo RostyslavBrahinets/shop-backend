@@ -1,8 +1,10 @@
 package com.shop.productscategory;
 
 import com.shop.category.Category;
+import com.shop.category.CategoryParameter;
 import com.shop.configs.DatabaseConfig;
 import com.shop.product.Product;
+import com.shop.product.ProductParameter;
 import com.shop.productcategory.ProductCategoryRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +23,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.shop.SqlMigrationClasspath.*;
+import static com.shop.category.CategoryParameter.getCategoryWithId;
+import static com.shop.product.ProductParameter.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -64,95 +68,29 @@ class ProductCategoryRepositoryTest {
     @Test
     @DisplayName("All products from category was found")
     void all_products_from_category_was_found() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("product")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("name", "name"),
-                    Map.entry("describe", "describe"),
-                    Map.entry("price", 0),
-                    Map.entry("barcode", "123"),
-                    Map.entry("in_stock", true),
-                    Map.entry("image", new byte[]{1, 1, 1})
-                )
-            );
-
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("category")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("name")
-            .execute(Map.ofEntries(Map.entry("name", "name")));
-
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("product_category")
-            .usingColumns("product_id", "category_id")
-            .execute(Map.ofEntries(
-                Map.entry("product_id", 1),
-                Map.entry("category_id", 1)
-            ));
+        insertTestDataToDb();
 
         List<Product> products = productCategoryRepository.findAllProductsInCategory(1);
 
         assertThat(products).isEqualTo(
-            List.of(
-                Product.of(
-                        "name",
-                        "describe",
-                        0,
-                        "123",
-                        true,
-                        new byte[]{1, 1, 1}
-                    )
-                    .withId(1)
-            )
+            List.of(getProductWithId())
         );
     }
 
     @Test
     @DisplayName("Category for product was found")
     void category_for_product_was_found() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("product")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("name", "name"),
-                    Map.entry("describe", "describe"),
-                    Map.entry("price", 0),
-                    Map.entry("barcode", "123"),
-                    Map.entry("in_stock", true),
-                    Map.entry("image", new byte[]{1, 1, 1})
-                )
-            );
+        insertTestDataToDb();
 
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("category")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns("name")
-            .execute(Map.ofEntries(Map.entry("name", "name")));
+        Optional<Category> category = productCategoryRepository.findCategoryForProduct(getProductId());
 
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("product_category")
-            .usingColumns("product_id", "category_id")
-            .execute(Map.ofEntries(
-                Map.entry("product_id", 1),
-                Map.entry("category_id", 1)
-            ));
-
-        Optional<Category> category = productCategoryRepository.findCategoryForProduct(1);
-
-        assertThat(category).get().isEqualTo(
-            Category.of("name").withId(1)
-        );
+        assertThat(category).get().isEqualTo(getCategoryWithId());
     }
 
     @Test
     @DisplayName("Save product to category")
     void save_product_to_category() {
-        productCategoryRepository.saveProductToCategory(1, 1);
+        productCategoryRepository.saveProductToCategory(getProductId(), getCategoryId());
 
         var productCategoryCount = fetchProductCategoryCount();
 
@@ -162,8 +100,8 @@ class ProductCategoryRepositoryTest {
     @Test
     @DisplayName("Save multiple products to category")
     void save_multiple_products_to_category() {
-        productCategoryRepository.saveProductToCategory(1, 1);
-        productCategoryRepository.saveProductToCategory(2, 1);
+        productCategoryRepository.saveProductToCategory(getProductId(), getCategoryId());
+        productCategoryRepository.saveProductToCategory(getProductId2(), getCategoryId());
 
         var productCategoryCount = fetchProductCategoryCount();
 
@@ -173,16 +111,38 @@ class ProductCategoryRepositoryTest {
     @Test
     @DisplayName("Delete product from category")
     void delete_product_from_category() {
-        productCategoryRepository.saveProductToCategory(1, 1);
+        productCategoryRepository.saveProductToCategory(getProductId(), getCategoryId());
 
         var productCategoryCount = fetchProductCategoryCount();
 
         assertThat(productCategoryCount).isEqualTo(1);
 
-        productCategoryRepository.deleteProductFromCategory(1, 1);
+        productCategoryRepository.deleteProductFromCategory(getProductId(), getCategoryId());
 
         productCategoryCount = fetchProductCategoryCount();
 
-        assertThat(productCategoryCount).isEqualTo(0);
+        assertThat(productCategoryCount).isZero();
+    }
+
+    private void insertTestDataToDb() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("product")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
+            .execute(ProductParameter.getMapOfEntries(getBarcode()));
+
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("category")
+            .usingGeneratedKeyColumns("id")
+            .usingColumns("name")
+            .execute(CategoryParameter.getMapOfEntries(CategoryParameter.getName()));
+
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("product_category")
+            .usingColumns("product_id", "category_id")
+            .execute(Map.ofEntries(
+                Map.entry("product_id", 1),
+                Map.entry("category_id", 1)
+            ));
     }
 }
