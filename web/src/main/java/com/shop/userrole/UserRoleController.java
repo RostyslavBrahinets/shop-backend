@@ -23,7 +23,7 @@ public class UserRoleController {
         return userRoleService.findRoleForUser(id);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public UserRoleDto saveRoleForUser(
         @RequestBody UserRoleDto userRoleDto
     ) {

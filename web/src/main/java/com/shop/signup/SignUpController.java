@@ -13,7 +13,7 @@ public class SignUpController {
         this.signUpService = signUpService;
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public SignUpDto signUp(
         @RequestBody SignUpDto signUpDto
     ) {

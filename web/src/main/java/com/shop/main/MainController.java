@@ -20,7 +20,7 @@ public class MainController {
         this.productService = productService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<Product> index() {
         return productService.findRandomProducts(10);
     }

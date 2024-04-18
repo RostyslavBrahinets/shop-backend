@@ -17,7 +17,7 @@ public class AdminNumberController {
         this.adminNumberService = adminNumberService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<AdminNumber> findAll() {
         return adminNumberService.findAll();
     }
@@ -27,7 +27,7 @@ public class AdminNumberController {
         return adminNumberService.findById(id);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public AdminNumber save(@RequestBody AdminNumber adminNumber) {
         return adminNumberService.save(adminNumber);
     }

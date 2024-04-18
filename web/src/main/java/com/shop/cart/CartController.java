@@ -16,7 +16,7 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<Cart> findAll() {
         return cartService.findAll();
     }
@@ -26,7 +26,7 @@ public class CartController {
         return cartService.findById(id);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public Cart save(@RequestBody Cart cart) {
         return cartService.save(cart);
     }

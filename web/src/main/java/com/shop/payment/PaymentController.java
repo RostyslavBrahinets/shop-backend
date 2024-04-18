@@ -15,7 +15,7 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public PaymentResponseDto processPayment(@RequestBody PaymentRequestDto paymentRequestDto) {
         try {
             String paymentInfo = paymentService.payment(
