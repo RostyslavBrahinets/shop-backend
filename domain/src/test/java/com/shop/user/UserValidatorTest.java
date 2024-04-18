@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static com.shop.user.UserParameter.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -24,12 +25,14 @@ class UserValidatorTest {
 
     @Mock
     private UserRepository userRepository;
+    private static List<User> users;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
         userValidator = new UserValidator();
+        users = List.of(getUserWithId());
     }
 
     @Test
@@ -37,12 +40,12 @@ class UserValidatorTest {
     void user_validated_without_exceptions() {
         assertDoesNotThrow(
             () -> userValidator.validate(
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
+                getFirstName(),
+                getLastName(),
+                getEmail(),
+                getPhone(),
+                getPassword(),
+                getUsers()
             )
         );
     }
@@ -55,10 +58,10 @@ class UserValidatorTest {
             ValidationException.class,
             () -> userValidator.validate(
                 firstName,
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                getLastName(),
+                getEmail(),
+                getPhone(),
+                getPassword(),
                 users
             )
         );
@@ -71,11 +74,11 @@ class UserValidatorTest {
         assertThrows(
             ValidationException.class,
             () -> userValidator.validate(
-                "John",
+                getFirstName(),
                 lastName,
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                getEmail(),
+                getPhone(),
+                getPassword(),
                 users
             )
         );
@@ -88,11 +91,11 @@ class UserValidatorTest {
         assertThrows(
             ValidationException.class,
             () -> userValidator.validate(
-                "John",
-                "Smith",
+                getFirstName(),
+                getLastName(),
                 email,
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                getPhone(),
+                getPassword(),
                 users
             )
         );
@@ -105,11 +108,11 @@ class UserValidatorTest {
         assertThrows(
             ValidationException.class,
             () -> userValidator.validate(
-                "John",
-                "Smith",
-                "test@email.com",
+                getFirstName(),
+                getLastName(),
+                getEmail(),
                 phone,
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
+                getPassword(),
                 users
             )
         );
@@ -122,11 +125,11 @@ class UserValidatorTest {
         assertThrows(
             ValidationException.class,
             () -> userValidator.validate(
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                password == null ? null : password.toCharArray(),
+                getFirstName(),
+                getLastName(),
+                getEmail(),
+                getPhone(),
+                password != null ? password.toCharArray() : null,
                 users
             )
         );
@@ -135,22 +138,11 @@ class UserValidatorTest {
     @Test
     @DisplayName("Phone validated without exceptions")
     void phone_validated_without_exceptions() {
-        User user = User.of(
-            "John",
-            "Smith",
-            "test@email.com",
-            "+380000000000",
-            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            "12345678"
-        ).withId(1);
-
         when(userRepository.findById(1))
-            .thenReturn(Optional.of(
-                user
-            ));
+            .thenReturn(Optional.of(getUserWithId()));
 
         assertDoesNotThrow(
-            () -> userValidator.validatePhone("+380000000000", user, List.of())
+            () -> userValidator.validatePhone(getPhone(), getUserWithId(), getUsers())
         );
     }
 
@@ -158,10 +150,8 @@ class UserValidatorTest {
     @MethodSource("validationPhoneTestCases")
     @DisplayName("Throw ValidationException for invalid phone")
     void throw_validation_exception_for_invalid_phone(String phone, User user, List<User> users) {
-        when(userRepository.findById(1))
-            .thenReturn(Optional.of(
-                user
-            ));
+        when(userRepository.findById(getUserId()))
+            .thenReturn(Optional.of(user));
 
         assertThrows(
             ValidationException.class,
@@ -172,21 +162,9 @@ class UserValidatorTest {
     @Test
     @DisplayName("Id of user validated without exceptions")
     void id_of_user_validated_without_exceptions() {
-        List<User> users = List.of(
-            User.of(
-                    "John",
-                    "Smith",
-                    "test@email.com",
-                    "+380000000000",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                )
-                .withId(1)
-        );
-
         when(userRepository.findAll()).thenReturn(users);
 
-        assertDoesNotThrow(() -> userValidator.validate(1, users));
+        assertDoesNotThrow(() -> userValidator.validate(getUserId(), users));
     }
 
     @Test
@@ -194,7 +172,7 @@ class UserValidatorTest {
     void throw_not_found_exception_because_id_of_user_not_found() {
         assertThrows(
             NotFoundException.class,
-            () -> userValidator.validate(1, List.of())
+            () -> userValidator.validate(getUserId(), getUsers())
         );
     }
 
@@ -202,7 +180,7 @@ class UserValidatorTest {
     @DisplayName("Email of user validated without exceptions")
     void email_of_user_validated_without_exceptions() {
         assertDoesNotThrow(
-            () -> userValidator.validateEmail("test@email.com")
+            () -> userValidator.validateEmail(getEmail())
         );
     }
 
@@ -225,18 +203,6 @@ class UserValidatorTest {
     }
 
     private static Stream<Arguments> validationTestCases() {
-        List<User> users = List.of(
-            User.of(
-                    "John",
-                    "Smith",
-                    "test@email.com",
-                    "+380000000000",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                )
-                .withId(1)
-        );
-
         return Stream.of(
             Arguments.of(null, users),
             Arguments.of("", users)
@@ -244,18 +210,6 @@ class UserValidatorTest {
     }
 
     private static Stream<Arguments> validationEmailOfUserTestCases() {
-        List<User> users = List.of(
-            User.of(
-                    "John",
-                    "Smith",
-                    "test@email.com",
-                    "+380000000000",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                )
-                .withId(1)
-        );
-
         return Stream.of(
             Arguments.of(null, users),
             Arguments.of("", users),
@@ -268,18 +222,6 @@ class UserValidatorTest {
     }
 
     private static Stream<Arguments> validationPhoneOfUserTestCases() {
-        List<User> users = List.of(
-            User.of(
-                    "John",
-                    "Smith",
-                    "test@email.com",
-                    "+380000000000",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                )
-                .withId(1)
-        );
-
         return Stream.of(
             Arguments.of(null, users),
             Arguments.of("", users),
@@ -289,33 +231,11 @@ class UserValidatorTest {
     }
 
     private static Stream<Arguments> validationPhoneTestCases() {
-        List<User> users = List.of(
-            User.of(
-                    "John",
-                    "Smith",
-                    "test@email.com",
-                    "+380000000000",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                )
-                .withId(1)
-        );
-
-        User user = User.of(
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                "12345678"
-            )
-            .withId(1);
-
         return Stream.of(
-            Arguments.of(null, user, users),
-            Arguments.of("", user, users),
-            Arguments.of("380000000000", user, users),
-            Arguments.of("+380", user, users)
+            Arguments.of(null, getUserWithId(), users),
+            Arguments.of("", getUserWithId(), users),
+            Arguments.of("380000000000", getUserWithId(), users),
+            Arguments.of("+380", getUserWithId(), users)
         );
     }
 
