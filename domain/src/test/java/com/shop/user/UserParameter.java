@@ -1,8 +1,11 @@
 package com.shop.user;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import static com.shop.adminnumber.AdminNumberParameter.getNumber;
+import static com.shop.adminnumber.AdminNumberParameter.getNumber2;
 
 public class UserParameter {
     public static User getUserWithId() {
@@ -11,6 +14,14 @@ public class UserParameter {
 
     public static User getUserWithId(long id) {
         return getUserWithoutId().withId(id);
+    }
+
+    public static User getUserWithId2() {
+        return getUserWithoutId2().withId(getUserId2());
+    }
+
+    public static User getUpdatedUserWithId() {
+        return getUpdatedUserWithoutId().withId(getUserId());
     }
 
     public static User getUserWithoutId() {
@@ -35,6 +46,28 @@ public class UserParameter {
         );
     }
 
+    public static User getUserWithoutId2() {
+        return User.of(
+            getFirstName(),
+            getLastName(),
+            getEmail2(),
+            getPhone2(),
+            getPassword(),
+            getNumber2()
+        );
+    }
+
+    public static User getUpdatedUserWithoutId() {
+        return User.of(
+            getFirstName2(),
+            getLastName2(),
+            getEmail(),
+            getPhone(),
+            getPassword(),
+            getNumber()
+        );
+    }
+
     public static long getUserId() {
         return 1L;
     }
@@ -47,8 +80,16 @@ public class UserParameter {
         return "John";
     }
 
+    public static String getFirstName2() {
+        return "Alex";
+    }
+
     public static String getLastName() {
         return "Smith";
+    }
+
+    public static String getLastName2() {
+        return "Simons";
     }
 
     public static String getEmail() {
@@ -73,5 +114,20 @@ public class UserParameter {
 
     public static List<User> getUsers() {
         return List.of();
+    }
+
+    public static Map<String, Serializable> getMapOfEntries(
+        String email,
+        String phone,
+        String adminNumber
+    ) {
+        return Map.ofEntries(
+            Map.entry("first_name", getFirstName()),
+            Map.entry("last_name", getLastName()),
+            Map.entry("email", email),
+            Map.entry("phone", phone),
+            Map.entry("password", String.valueOf(getPassword())),
+            Map.entry("admin_number", adminNumber)
+        );
     }
 }
