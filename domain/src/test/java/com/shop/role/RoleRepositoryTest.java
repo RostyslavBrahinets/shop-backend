@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.shop.SqlMigrationClasspath.ROLE;
+import static com.shop.role.RoleParameter.getName;
+import static com.shop.role.RoleParameter.getRoleWithId;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @JdbcTest
@@ -48,7 +50,7 @@ class RoleRepositoryTest {
     @Test
     @DisplayName("Role by name was not found")
     void role_by_name_was_not_found() {
-        Optional<Role> role = roleRepository.findByName("name");
+        Optional<Role> role = roleRepository.findByName(getName());
 
         assertThat(role).isEmpty();
     }
@@ -60,10 +62,10 @@ class RoleRepositoryTest {
             .withTableName("role")
             .usingGeneratedKeyColumns("id")
             .usingColumns("name")
-            .execute(Map.ofEntries(Map.entry("name", "name")));
+            .execute(Map.ofEntries(Map.entry("name", getName())));
 
-        Optional<Role> role = roleRepository.findByName("name");
+        Optional<Role> role = roleRepository.findByName(getName());
 
-        assertThat(role).get().isEqualTo(Role.of("name").withId(1));
+        assertThat(role).get().isEqualTo(getRoleWithId());
     }
 }
