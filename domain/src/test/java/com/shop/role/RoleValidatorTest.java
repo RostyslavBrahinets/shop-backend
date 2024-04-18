@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.shop.role.RoleParameter.getRoleId;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -20,7 +21,7 @@ class RoleValidatorTest {
     @DisplayName("Id of role validated without exceptions")
     void id_of_role_validated_without_exceptions() {
         assertDoesNotThrow(
-            () -> roleValidator.validate(1)
+            () -> roleValidator.validate(getRoleId())
         );
     }
 
