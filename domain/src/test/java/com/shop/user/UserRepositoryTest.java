@@ -1,6 +1,5 @@
 package com.shop.user;
 
-import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberRepository;
 import com.shop.configs.DatabaseConfig;
 import org.junit.jupiter.api.AfterEach;
@@ -17,10 +16,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import static com.shop.SqlMigrationClasspath.*;
+import static com.shop.SqlMigrationClasspath.ADMIN_NUMBER;
+import static com.shop.SqlMigrationClasspath.USER;
+import static com.shop.adminnumber.AdminNumberParameter.*;
+import static com.shop.user.UserParameter.*;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -43,8 +44,8 @@ class UserRepositoryTest {
         userRepository = new UserRepository(jdbcTemplate);
 
         AdminNumberRepository adminNumberRepository = new AdminNumberRepository(jdbcTemplate);
-        adminNumberRepository.save(AdminNumber.of("12345678"));
-        adminNumberRepository.save(AdminNumber.of("87654321"));
+        adminNumberRepository.save(getAdminNumberWithoutId());
+        adminNumberRepository.save(getAdminNumberWithoutId2());
     }
 
     @AfterEach
@@ -66,22 +67,8 @@ class UserRepositoryTest {
     @DisplayName("Find all users")
     void find_all_users() {
         var batchInsertParameters = SqlParameterSourceUtils.createBatch(
-            Map.ofEntries(
-                Map.entry("first_name", "John"),
-                Map.entry("last_name", "Smith"),
-                Map.entry("email", "test1@email.com"),
-                Map.entry("phone", "+380000000001"),
-                Map.entry("password", "password"),
-                Map.entry("admin_number", "12345678")
-            ),
-            Map.ofEntries(
-                Map.entry("first_name", "John"),
-                Map.entry("last_name", "Smith"),
-                Map.entry("email", "test2@email.com"),
-                Map.entry("phone", "+380000000002"),
-                Map.entry("password", "password"),
-                Map.entry("admin_number", "87654321")
-            )
+            getMapOfEntries(getEmail(), getPhone(), getNumber()),
+            getMapOfEntries(getEmail2(), getPhone2(), getNumber2())
         );
 
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
@@ -101,22 +88,8 @@ class UserRepositoryTest {
 
         assertThat(users).isEqualTo(
             List.of(
-                User.of(
-                    "John",
-                    "Smith",
-                    "test1@email.com",
-                    "+380000000001",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                ).withId(1),
-                User.of(
-                    "John",
-                    "Smith",
-                    "test2@email.com",
-                    "+380000000002",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "87654321"
-                ).withId(2)
+                getUserWithId(),
+                getUserWithId2()
             )
         );
     }
@@ -124,7 +97,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("User by id was not found")
     void user_by_id_was_not_found() {
-        Optional<User> user = userRepository.findById(1);
+        Optional<User> user = userRepository.findById(getUserId());
 
         assertThat(user).isEmpty();
     }
@@ -132,54 +105,17 @@ class UserRepositoryTest {
     @Test
     @DisplayName("User by id was found")
     void user_by_id_was_found() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("\"user\"")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns(
-                "first_name",
-                "last_name",
-                "email",
-                "phone",
-                "password",
-                "admin_number"
-            )
-            .execute(
-                Map.ofEntries(
-                    Map.entry("first_name", "John"),
-                    Map.entry("last_name", "Smith"),
-                    Map.entry("email", "test@email.com"),
-                    Map.entry("phone", "+380000000000"),
-                    Map.entry("password", "password"),
-                    Map.entry("admin_number", "12345678")
-                )
-            );
+        insertTestDataToDb();
 
-        Optional<User> user = userRepository.findById(1);
+        Optional<User> user = userRepository.findById(getUserId());
 
-        assertThat(user).get().isEqualTo(
-            User.of(
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                "12345678"
-            ).withId(1));
+        assertThat(user).get().isEqualTo(getUserWithId());
     }
 
     @Test
     @DisplayName("Save user")
     void save_user() {
-        userRepository.save(
-            User.of(
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                "12345678"
-            )
-        );
+        userRepository.save(getUserWithoutId());
 
         var usersCount = fetchUsersCount();
 
@@ -189,27 +125,8 @@ class UserRepositoryTest {
     @Test
     @DisplayName("Save multiple users")
     void save_multiple_users() {
-        userRepository.save(
-            User.of(
-                "John",
-                "Smith",
-                "test1@email.com",
-                "+380000000001",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                "12345678"
-            )
-        );
-
-        userRepository.save(
-            User.of(
-                "John",
-                "Smith",
-                "test2@email.com",
-                "+380000000002",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                "87654321"
-            )
-        );
+        userRepository.save(getUserWithoutId());
+        userRepository.save(getUserWithoutId2());
 
         var usersCount = fetchUsersCount();
 
@@ -219,78 +136,29 @@ class UserRepositoryTest {
     @Test
     @DisplayName("Update user")
     void update_user() {
-        var batchInsertParameters = SqlParameterSourceUtils.createBatch(
-            Map.ofEntries(
-                Map.entry("first_name", "John"),
-                Map.entry("last_name", "Smith"),
-                Map.entry("email", "test@email.com"),
-                Map.entry("phone", "+380000000000"),
-                Map.entry("password", "password"),
-                Map.entry("admin_number", "12345678")
-            )
-        );
+        insertTestDataToDb();
 
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("\"user\"")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns(
-                "first_name",
-                "last_name",
-                "email",
-                "phone",
-                "password",
-                "admin_number"
-            )
-            .executeBatch(batchInsertParameters);
+        Optional<User> adminNumber = userRepository.update(getUserId(), getUpdatedUserWithoutId());
 
-        Optional<User> adminNumber = userRepository.update(1, User.of("Alex", "Smith"));
-
-        assertThat(adminNumber).get().isEqualTo(User.of(
-            "Alex",
-            "Smith",
-            "test@email.com",
-            "+380000000000",
-            new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-            "12345678"
-        ).withId(1));
+        assertThat(adminNumber).get().isEqualTo(getUpdatedUserWithId());
     }
 
     @Test
     @DisplayName("User not deleted in case when not exists")
     void user_not_deleted_in_case_when_not_exists() {
-        assertThatCode(() -> userRepository.delete(User.of(null, null).withId(1))).doesNotThrowAnyException();
+        assertThatCode(() -> userRepository.delete(getUserWithId())).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("Delete user")
     void delete_user() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("\"user\"")
-            .usingGeneratedKeyColumns("id")
-            .usingColumns(
-                "first_name",
-                "last_name",
-                "email",
-                "phone",
-                "password",
-                "admin_number"
-            )
-            .execute(
-                Map.ofEntries(
-                    Map.entry("first_name", "John"),
-                    Map.entry("last_name", "Smith"),
-                    Map.entry("email", "test@email.com"),
-                    Map.entry("phone", "+380000000000"),
-                    Map.entry("password", "password"),
-                    Map.entry("admin_number", "12345678")
-                )
-            );
+        insertTestDataToDb();
 
         var usersCountBeforeDeletion = fetchUsersCount();
 
         assertThat(usersCountBeforeDeletion).isEqualTo(1);
 
-        userRepository.delete(User.of(null, null).withId(1));
+        userRepository.delete(getUserWithId());
 
         var usersCount = fetchUsersCount();
 
@@ -300,7 +168,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("User by email was not found")
     void user_by_email_was_not_found() {
-        Optional<User> user = userRepository.findByEmail("test@email.com");
+        Optional<User> user = userRepository.findByEmail(getEmail());
 
         assertThat(user).isEmpty();
     }
@@ -308,6 +176,14 @@ class UserRepositoryTest {
     @Test
     @DisplayName("User by email was found")
     void user_by_email_was_found() {
+        insertTestDataToDb();
+
+        Optional<User> user = userRepository.findByEmail(getEmail());
+
+        assertThat(user).get().isEqualTo(getUserWithId());
+    }
+
+    private void insertTestDataToDb() {
         new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
             .withTableName("\"user\"")
             .usingGeneratedKeyColumns("id")
@@ -319,27 +195,6 @@ class UserRepositoryTest {
                 "password",
                 "admin_number"
             )
-            .execute(
-                Map.ofEntries(
-                    Map.entry("first_name", "John"),
-                    Map.entry("last_name", "Smith"),
-                    Map.entry("email", "test@email.com"),
-                    Map.entry("phone", "+380000000000"),
-                    Map.entry("password", "password"),
-                    Map.entry("admin_number", "12345678")
-                )
-            );
-
-        Optional<User> user = userRepository.findByEmail("test@email.com");
-
-        assertThat(user).get().isEqualTo(
-            User.of(
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                "12345678"
-            ).withId(1));
+            .execute(getMapOfEntries(getEmail(), getPhone(), getNumber()));
     }
 }
