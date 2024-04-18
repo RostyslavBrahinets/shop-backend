@@ -1,6 +1,5 @@
 package com.shop.signup;
 
-import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberValidator;
 import com.shop.user.UserValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +9,9 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
+import static com.shop.adminnumber.AdminNumberParameter.getAdminNumberWithId;
+import static com.shop.adminnumber.AdminNumberParameter.getNumber;
+import static com.shop.user.UserParameter.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -36,12 +38,12 @@ class SignUpValidatorTest {
     void user_data_validated_without_exceptions() {
         assertDoesNotThrow(
             () -> userValidator.validate(
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                List.of()
+                getFirstName(),
+                getLastName(),
+                getEmail(),
+                getPhone(),
+                getPassword(),
+                getUsers()
             )
         );
     }
@@ -51,8 +53,8 @@ class SignUpValidatorTest {
     void admin_number_validated_without_exceptions() {
         assertDoesNotThrow(
             () -> adminNumberValidator.validate(
-                "12345678",
-                List.of(AdminNumber.of("12345678").withId(1))
+                getNumber(),
+                List.of(getAdminNumberWithId())
             )
         );
     }
@@ -62,14 +64,14 @@ class SignUpValidatorTest {
     void sign_up_data_validated_without_exceptions() {
         assertTrue(
             () -> signUpValidator.isValidData(
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                "12345678",
-                List.of(),
-                List.of(AdminNumber.of("12345678").withId(1))
+                getFirstName(),
+                getLastName(),
+                getEmail(),
+                getPhone(),
+                getPassword(),
+                getNumber(),
+                getUsers(),
+                List.of(getAdminNumberWithId())
             )
         );
     }
