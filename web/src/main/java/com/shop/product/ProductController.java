@@ -23,7 +23,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping("/")
     public List<Product> findAll() {
         return productService.findAll();
     }
@@ -33,7 +33,7 @@ public class ProductController {
         return productService.findById(id);
     }
 
-    @PostMapping
+    @PostMapping("/")
     public Product save(@RequestBody Product product) throws IOException {
         if (product.getImage().length > 0) {
             return productService.save(

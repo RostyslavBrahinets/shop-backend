@@ -27,7 +27,7 @@ public class ProductCategoryController {
         return productCategoryService.findCategoryForProduct(barcode);
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ProductCategoryDto saveProductsToCategory(
         @RequestBody ProductCategoryDto productCategoryDto
     ) {
@@ -38,7 +38,7 @@ public class ProductCategoryController {
         return productCategoryDto;
     }
 
-    @PutMapping
+    @PutMapping("/")
     public ProductCategoryDto updateCategoryForProduct(
         @RequestBody ProductCategoryDto productCategoryDto
     ) {

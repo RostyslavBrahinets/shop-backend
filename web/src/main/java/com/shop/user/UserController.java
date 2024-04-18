@@ -16,7 +16,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/")
     public List<User> findAll() {
         return userService.findAll();
     }
@@ -26,7 +26,7 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @PostMapping
+    @PostMapping("/")
     public User save(
         @RequestBody User user
     ) {

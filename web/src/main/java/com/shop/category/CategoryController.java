@@ -15,7 +15,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping
+    @GetMapping("/")
     public List<Category> findAll() {
         return categoryService.findAll();
     }
@@ -25,7 +25,7 @@ public class CategoryController {
         return categoryService.findById(id);
     }
 
-    @PostMapping
+    @PostMapping("/")
     public Category save(@RequestBody Category category) {
         return categoryService.save(Category.of(category.getName()));
     }
