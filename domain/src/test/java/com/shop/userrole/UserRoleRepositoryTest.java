@@ -14,10 +14,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Optional;
 
 import static com.shop.SqlMigrationClasspath.*;
+import static com.shop.role.RoleParameter.*;
+import static com.shop.user.UserParameter.getUserId;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @JdbcTest
@@ -58,7 +61,7 @@ class UserRoleRepositoryTest {
     @Test
     @DisplayName("Save role for user")
     void save_role_for_user() {
-        userRoleRepository.saveRoleForUser(1, 1);
+        userRoleRepository.saveRoleForUser(getUserId(), getRoleId());
 
         var userRoleCount = fetchUserRoleCount();
 
@@ -68,7 +71,7 @@ class UserRoleRepositoryTest {
     @Test
     @DisplayName("Role for user was not found")
     void role_for_user_was_not_found() {
-        Optional<Role> role = userRoleRepository.findRoleForUser(1);
+        Optional<Role> role = userRoleRepository.findRoleForUser(getUserId());
 
         assertThat(role).isEmpty();
     }
@@ -76,43 +79,41 @@ class UserRoleRepositoryTest {
     @Test
     @DisplayName("Role for user was found")
     void role_for_user_was_found() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("user_role")
-            .usingColumns("user_id", "role_id")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("user_id", 1),
-                    Map.entry("role_id", 1)
-                )
-            );
+        insertTestDataToDb();
 
-        Optional<Role> role = userRoleRepository.findRoleForUser(1);
+        Optional<Role> role = userRoleRepository.findRoleForUser(getUserId());
 
-        assertThat(role).get().isEqualTo(Role.of("ROLE_ADMIN").withId(1));
+        assertThat(role).get().isEqualTo(getRoleWithId("ROLE_ADMIN"));
     }
 
     @Test
     @DisplayName("Role for user updated")
     void role_for_user_updated() {
-        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
-            .withTableName("user_role")
-            .usingColumns("user_id", "role_id")
-            .execute(
-                Map.ofEntries(
-                    Map.entry("user_id", 1),
-                    Map.entry("role_id", 1)
-                )
-            );
+        insertTestDataToDb();
 
-        userRoleRepository.updateRoleForUser(1, 2);
+        userRoleRepository.updateRoleForUser(getUserId(), getRoleId2());
 
         var updatedBasket = jdbcTemplate.queryForObject(
             "SELECT role_id FROM user_role WHERE user_id=:user_id",
-            Map.ofEntries(Map.entry("user_id", 1)),
+            Map.ofEntries(Map.entry("user_id", getUserId())),
             Integer.class
         );
 
         assertThat(updatedBasket).isEqualTo(2);
+    }
+
+    private static Map<String, Serializable> getMapOfEntries() {
+        return Map.ofEntries(
+            Map.entry("user_id", getUserId()),
+            Map.entry("role_id", getRoleId())
+        );
+    }
+
+    private void insertTestDataToDb() {
+        new SimpleJdbcInsert(jdbcTemplate.getJdbcTemplate())
+            .withTableName("user_role")
+            .usingColumns("user_id", "role_id")
+            .execute(getMapOfEntries());
     }
 }
 
