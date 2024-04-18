@@ -1,14 +1,12 @@
 package com.shop.productscategory;
 
-import com.shop.category.Category;
+import com.shop.category.CategoryParameter;
 import com.shop.category.CategoryService;
 import com.shop.category.CategoryValidator;
-import com.shop.product.Product;
 import com.shop.product.ProductService;
 import com.shop.product.ProductValidator;
 import com.shop.productcategory.ProductCategoryRepository;
 import com.shop.productcategory.ProductCategoryService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,8 +16,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
-
+import static com.shop.category.CategoryParameter.getCategories;
+import static com.shop.category.CategoryParameter.getCategoryWithId;
+import static com.shop.product.ProductParameter.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -29,7 +28,7 @@ import static org.mockito.Mockito.*;
         ProductCategoryServiceContextConfigurationTest.TestContextConfig.class
     }
 )
-public class ProductCategoryServiceContextConfigurationTest {
+class ProductCategoryServiceContextConfigurationTest {
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
     @Autowired
@@ -41,47 +40,27 @@ public class ProductCategoryServiceContextConfigurationTest {
     @Autowired
     private ProductCategoryService productCategoryService;
 
-    private List<Category> categories;
-
-    @BeforeEach
-    void setUp() {
-        categories = List.of();
-    }
-
     @Test
     @DisplayName("Get all products in category")
     void get_all_products_in_category() {
-        long categoryId = 1;
+        productCategoryService.findAllProductsInCategory(getCategoryId());
 
-        productCategoryService.findAllProductsInCategory(categoryId);
-
-        verify(categoryValidator, atLeast(1)).validate(categoryId, categories);
-        verify(productCategoryRepository).findAllProductsInCategory(categoryId);
+        verify(categoryValidator, atLeast(1)).validate(getCategoryId(), getCategories());
+        verify(productCategoryRepository).findAllProductsInCategory(getCategoryId());
     }
 
     @Test
     @DisplayName("Save product to category")
     void save_product_to_category() {
-        String barcode = "123";
-        String categoryName = "name";
+        when(productService.findByBarcode(getBarcode()))
+            .thenReturn(getProductWithId());
 
-        when(productService.findByBarcode(barcode))
-            .thenReturn(Product.of(
-                    "name",
-                    "describe",
-                    0,
-                    barcode,
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-                .withId(1));
+        when(categoryService.findByName(CategoryParameter.getName()))
+            .thenReturn(getCategoryWithId());
 
-        when(categoryService.findByName(categoryName))
-            .thenReturn(Category.of(categoryName).withId(1));
+        productCategoryService.saveProductToCategory(getBarcode(), CategoryParameter.getName());
 
-        productCategoryService.saveProductToCategory(barcode, categoryName);
-
-        verify(productCategoryRepository).saveProductToCategory(1, 1);
+        verify(productCategoryRepository).saveProductToCategory(getProductId(), getCategoryId());
     }
 
     @TestConfiguration
