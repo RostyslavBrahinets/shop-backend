@@ -1,8 +1,5 @@
 package com.shop.role;
 
-import com.shop.role.Role;
-import com.shop.role.RoleRepository;
-import com.shop.role.RoleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +8,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
+import static com.shop.role.RoleParameter.getName;
+import static com.shop.role.RoleParameter.getRoleWithId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -33,11 +32,11 @@ class RoleServiceTest {
     @DisplayName("Role was found by name")
     void role_was_found_by_name() {
         when(roleRepository.findByName("name")).thenReturn(
-            Optional.of(Role.of("name").withId(1))
+            Optional.of(getRoleWithId())
         );
 
-        Role role = roleService.findByName("name");
+        Role role = roleService.findByName(getName());
 
-        assertThat(role).isEqualTo(new Role(1, "name"));
+        assertThat(role).isEqualTo(getRoleWithId());
     }
 }
