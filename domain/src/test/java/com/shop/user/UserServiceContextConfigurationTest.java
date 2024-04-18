@@ -1,6 +1,5 @@
 package com.shop.user;
 
-import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberService;
 import com.shop.adminnumber.AdminNumberValidator;
 import com.shop.cart.CartRepository;
@@ -16,8 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
-
+import static com.shop.adminnumber.AdminNumberParameter.getAdminNumberWithoutId;
+import static com.shop.user.UserParameter.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -27,7 +26,7 @@ import static org.mockito.Mockito.*;
         UserServiceContextConfigurationTest.TestContextConfig.class
     }
 )
-public class UserServiceContextConfigurationTest {
+class UserServiceContextConfigurationTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -37,13 +36,9 @@ public class UserServiceContextConfigurationTest {
     @Autowired
     private UserService userService;
 
-    private List<User> users;
-
     @BeforeEach
     void setUp() {
-        users = List.of();
-
-        adminNumberService.save(AdminNumber.of("12345678"));
+        adminNumberService.save(getAdminNumberWithoutId());
     }
 
     @Test
@@ -57,48 +52,38 @@ public class UserServiceContextConfigurationTest {
     @Test
     @DisplayName("Get user by id")
     void get_user_by_id() {
-        long id = 1;
+        userService.findById(getUserId());
 
-        userService.findById(id);
-
-        verify(userValidator, atLeast(1)).validate(id, users);
-        verify(userRepository).findById(id);
+        verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
+        verify(userRepository).findById(getUserId());
     }
 
     @Test
     @DisplayName("Get user by email")
     void get_user_by_email() {
-        String email = "test@email.com";
+        userService.findByEmail(getEmail());
 
-        userService.findByEmail(email);
-
-        verify(userValidator, atLeast(1)).validateEmail(email);
-        verify(userRepository).findByEmail(email);
+        verify(userValidator, atLeast(1)).validateEmail(getEmail());
+        verify(userRepository).findByEmail(getEmail());
     }
 
     @Test
     @DisplayName("Update user")
     void update_user() {
-        long id = 1;
-        String firstName = "John";
-        String lastName = "Smith";
+        userService.update(getUserId(), getUserWithoutId());
 
-        userService.update(id, User.of(firstName, lastName));
-
-        verify(userValidator, atLeast(1)).validate(id, users);
-        verify(userValidator, atLeast(1)).validateFullName(firstName, lastName);
-        verify(userRepository).update(id, User.of(firstName, lastName));
+        verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
+        verify(userValidator, atLeast(1)).validateFullName(getFirstName(), getLastName());
+        verify(userRepository).update(getUserId(), getUserWithoutId());
     }
 
     @Test
     @DisplayName("Delete user")
     void delete_user() {
-        long id = 1;
+        userService.delete(getUserWithId());
 
-        userService.delete(User.of(null, null).withId(id));
-
-        verify(userValidator, atLeast(1)).validate(id, users);
-        verify(userRepository).delete(User.of(null, null).withId(1));
+        verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
+        verify(userRepository).delete(getUserWithId());
     }
 
     @TestConfiguration
