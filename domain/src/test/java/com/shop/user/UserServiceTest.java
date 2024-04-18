@@ -90,6 +90,13 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("User was deleted")
+    void user_was_deleted() {
+        userService.delete(getUserWithId());
+        verify(userRepository).delete(getUserWithId());
+    }
+
+    @Test
     @DisplayName("User was found by email")
     void user_was_found_by_email() {
         when(userRepository.findByEmail(getEmail())).thenReturn(
@@ -99,12 +106,5 @@ class UserServiceTest {
         User user = userService.findByEmail(getEmail());
 
         assertThat(user).isEqualTo(getUserWithId());
-    }
-
-    @Test
-    @DisplayName("User was deleted")
-    void user_was_deleted() {
-        userService.delete(getUserWithId());
-        verify(userRepository).delete(getUserWithId());
     }
 }
