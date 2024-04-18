@@ -23,7 +23,7 @@ import javax.sql.DataSource;
     ApplicationStarterTest.TestContextConfig.class,
     ImageDatabaseUtility.class
 })
-public class ApplicationStarterTest {
+class ApplicationStarterTest {
     @Test
     void contextLoads() {
         Assertions.assertDoesNotThrow(() -> {
