@@ -36,28 +36,10 @@ public class ProductController {
     @PostMapping("/")
     public Product save(@RequestBody Product product) throws IOException {
         if (product.getImage().length > 0) {
-            return productService.save(
-                Product.of(
-                    product.getName(),
-                    product.getDescribe(),
-                    product.getPrice(),
-                    product.getBarcode(),
-                    product.isInStock(),
-                    product.getImage()
-                )
-            );
+            return productService.save(getNewProduct(product));
         }
 
-        product = productService.save(
-            Product.of(
-                product.getName(),
-                product.getDescribe(),
-                product.getPrice(),
-                product.getBarcode(),
-                product.isInStock(),
-                product.getImage()
-            )
-        );
+        product = productService.save(getNewProduct(product));
 
         Product newProduct = productService.findByBarcode(product.getBarcode());
         String imagePath = Objects.requireNonNull(getClass().getClassLoader().getResource(
@@ -90,5 +72,16 @@ public class ProductController {
         Product product = productService.findById(id);
         InputStream is = new ByteArrayInputStream(product.getImage());
         IOUtils.copy(is, response.getOutputStream());
+    }
+
+    private static Product getNewProduct(Product product) {
+        return Product.of(
+            product.getName(),
+            product.getDescribe(),
+            product.getPrice(),
+            product.getBarcode(),
+            product.isInStock(),
+            product.getImage()
+        );
     }
 }
