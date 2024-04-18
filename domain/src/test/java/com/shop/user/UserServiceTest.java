@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 import java.util.Optional;
 
+import static com.shop.user.UserParameter.*;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -66,100 +67,44 @@ class UserServiceTest {
     @DisplayName("List of users is returned in case when users are exists in storage")
     void list_of_users_is_returned_in_case_when_users_are_exists_in_storage() {
         when(userRepository.findAll()).thenReturn(
-            List.of(
-                User.of(
-                    "John",
-                    "Smith",
-                    "test@email.com",
-                    "+380000000000",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                ).withId(1)
-            )
+            List.of(getUserWithId())
         );
 
         List<User> users = userService.findAll();
 
         assertThat(users).isEqualTo(
-            List.of(
-                new User(
-                    1,
-                    "John",
-                    "Smith",
-                    "test@email.com",
-                    "+380000000000",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                )
-            )
+            List.of(getUserWithId())
         );
     }
 
     @Test
     @DisplayName("User was found by id")
     void user_was_found_by_id() {
-        when(userRepository.findById(1)).thenReturn(
-            Optional.of(
-                User.of(
-                    "John",
-                    "Smith",
-                    "test@email.com",
-                    "+380000000000",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                ).withId(1)
-            )
+        when(userRepository.findById(getUserId())).thenReturn(
+            Optional.of(getUserWithId())
         );
 
-        User user = userService.findById(1);
+        User user = userService.findById(getUserId());
 
-        assertThat(user).isEqualTo(
-            new User(1,
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                "12345678"
-            )
-        );
+        assertThat(user).isEqualTo(getUserWithId());
     }
 
     @Test
     @DisplayName("User was found by email")
     void user_was_found_by_email() {
-        when(userRepository.findByEmail("test@gmail.com")).thenReturn(
-            Optional.of(
-                User.of(
-                    "John",
-                    "Smith",
-                    "test@email.com",
-                    "+380000000000",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                ).withId(1)
-            )
+        when(userRepository.findByEmail(getEmail())).thenReturn(
+            Optional.of(getUserWithId())
         );
 
-        User user = userService.findByEmail("test@gmail.com");
+        User user = userService.findByEmail(getEmail());
 
-        assertThat(user).isEqualTo(
-            new User(
-                1,
-                "John",
-                "Smith",
-                "test@email.com",
-                "+380000000000",
-                new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                "12345678"
-            )
-        );
+        assertThat(user).isEqualTo(getUserWithId());
     }
 
     @Test
     @DisplayName("User was deleted")
     void user_was_deleted() {
-        userService.delete(User.of(null, null).withId(1));
-        verify(userRepository).delete(User.of(null, null).withId(1));
+        userService.delete(getUserWithId());
+        verify(userRepository).delete(getUserWithId());
     }
 }
