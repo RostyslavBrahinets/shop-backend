@@ -1,6 +1,8 @@
 package com.shop.product;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class ProductParameter {
     public static Product getProductWithId() {
@@ -103,5 +105,16 @@ public class ProductParameter {
 
     static List<Product> getProducts() {
         return List.of();
+    }
+
+    public static Map<String, Serializable> getMapOfEntries(String barcode) {
+        return Map.ofEntries(
+            Map.entry("name", getName()),
+            Map.entry("describe", getDescribe()),
+            Map.entry("price", getPrice()),
+            Map.entry("barcode", barcode),
+            Map.entry("in_stock", isInStock()),
+            Map.entry("image", getImage())
+        );
     }
 }

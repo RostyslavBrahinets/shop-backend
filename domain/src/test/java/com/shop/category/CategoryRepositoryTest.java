@@ -14,9 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static com.shop.SqlMigrationClasspath.CATEGORY;
@@ -176,11 +174,5 @@ class CategoryRepositoryTest {
             .usingGeneratedKeyColumns("id")
             .usingColumns("name")
             .execute(getMapOfEntries(getName()));
-    }
-
-    private static Map<String, Serializable> getMapOfEntries(String name) {
-        return Map.ofEntries(
-            Map.entry("name", name)
-        );
     }
 }

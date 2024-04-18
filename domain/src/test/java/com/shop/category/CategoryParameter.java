@@ -1,6 +1,8 @@
 package com.shop.category;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class CategoryParameter {
     public static Category getCategoryWithId() {
@@ -37,5 +39,11 @@ public class CategoryParameter {
 
     public static List<Category> getCategories() {
         return List.of();
+    }
+
+    public static Map<String, Serializable> getMapOfEntries(String name) {
+        return Map.ofEntries(
+            Map.entry("name", name)
+        );
     }
 }

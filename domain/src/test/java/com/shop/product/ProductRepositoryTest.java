@@ -14,7 +14,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -201,16 +200,5 @@ class ProductRepositoryTest {
             .usingGeneratedKeyColumns("id")
             .usingColumns("name", "describe", "price", "barcode", "in_stock", "image")
             .execute(getMapOfEntries(getBarcode()));
-    }
-
-    private static Map<String, Serializable> getMapOfEntries(String barcode) {
-        return Map.ofEntries(
-            Map.entry("name", getName()),
-            Map.entry("describe", getDescribe()),
-            Map.entry("price", getPrice()),
-            Map.entry("barcode", barcode),
-            Map.entry("in_stock", isInStock()),
-            Map.entry("image", getImage())
-        );
     }
 }
