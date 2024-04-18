@@ -13,6 +13,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import static com.shop.SqlMigrationClasspath.USER_ROLE;
+import static com.shop.role.RoleParameter.getRoleId;
+import static com.shop.user.UserParameter.getUserId;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 @JdbcTest
@@ -20,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
     DatabaseConfig.class
 })
 @Sql(scripts = {
-    "classpath:db/migration/userrole/V20220505173244__Create_table_user_role.sql"
+    USER_ROLE
 })
 class UserRoleTableSchemaTest {
     @Autowired
@@ -39,7 +42,7 @@ class UserRoleTableSchemaTest {
     void failed_to_insert_null_user_id_value() {
         var params = new MapSqlParameterSource();
         params.addValue("user_id", null);
-        params.addValue("role_id", 1);
+        params.addValue("role_id", getRoleId());
 
         assertThatCode(
             () -> jdbcTemplate.update(
@@ -55,7 +58,7 @@ class UserRoleTableSchemaTest {
     @DisplayName("Failed to insert null role id value")
     void failed_to_insert_null_role_id_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("user_id", 1);
+        params.addValue("user_id", getUserId());
         params.addValue("role_id", null);
 
         assertThatCode(
