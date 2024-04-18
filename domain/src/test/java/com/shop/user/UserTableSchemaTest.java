@@ -15,6 +15,8 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 import static com.shop.SqlMigrationClasspath.ADMIN_NUMBER;
 import static com.shop.SqlMigrationClasspath.USER;
+import static com.shop.adminnumber.AdminNumberParameter.getNumber;
+import static com.shop.user.UserParameter.*;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 @JdbcTest
@@ -41,12 +43,7 @@ class UserTableSchemaTest {
     @DisplayName("Failed to insert null first name value")
     void failed_to_insert_null_first_name_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("first_name", null);
-        params.addValue("last_name", "Smith");
-        params.addValue("email", "test@email.com");
-        params.addValue("phone", "+380000000000");
-        params.addValue("password", "password");
-        params.addValue("admin_number", "12345678");
+        setParams(params, null, getLastName(), getEmail(), getPhone(), getPassword(), getNumber());
 
         assertThatCode(
             () -> jdbcTemplate.update(
@@ -62,12 +59,7 @@ class UserTableSchemaTest {
     @DisplayName("Failed to insert null last name value")
     void failed_to_insert_null_last_name_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("first_name", "John");
-        params.addValue("last_name", null);
-        params.addValue("email", "test@email.com");
-        params.addValue("phone", "+380000000000");
-        params.addValue("password", "password");
-        params.addValue("admin_number", "12345678");
+        setParams(params, getFirstName(), null, getEmail(), getPhone(), getPassword(), getNumber());
 
         assertThatCode(
             () -> jdbcTemplate.update(
@@ -83,12 +75,7 @@ class UserTableSchemaTest {
     @DisplayName("Failed to insert null email value")
     void failed_to_insert_null_email_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("first_name", "John");
-        params.addValue("last_name", "Smith");
-        params.addValue("email", null);
-        params.addValue("phone", "+380000000000");
-        params.addValue("password", "password");
-        params.addValue("admin_number", "12345678");
+        setParams(params, getFirstName(), getLastName(), null, getPhone(), getPassword(), getNumber());
 
         assertThatCode(
             () -> jdbcTemplate.update(
@@ -104,12 +91,7 @@ class UserTableSchemaTest {
     @DisplayName("Failed to insert null phone value")
     void failed_to_insert_null_phone_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("first_name", "John");
-        params.addValue("last_name", "Smith");
-        params.addValue("email", "test@email.com");
-        params.addValue("phone", null);
-        params.addValue("password", "password");
-        params.addValue("admin_number", "12345678");
+        setParams(params, getFirstName(), getLastName(), getEmail(), null, getPassword(), getNumber());
 
         assertThatCode(
             () -> jdbcTemplate.update(
@@ -125,12 +107,7 @@ class UserTableSchemaTest {
     @DisplayName("Failed to insert null password value")
     void failed_to_insert_null_password_value() {
         var params = new MapSqlParameterSource();
-        params.addValue("first_name", "John");
-        params.addValue("last_name", "Smith");
-        params.addValue("email", "test@email.com");
-        params.addValue("phone", "+380000000000");
-        params.addValue("password", null);
-        params.addValue("admin_number", "12345678");
+        setParams(params, getFirstName(), getLastName(), getEmail(), getPhone(), null, getNumber());
 
         assertThatCode(
             () -> jdbcTemplate.update(
@@ -140,5 +117,22 @@ class UserTableSchemaTest {
             )
         )
             .isInstanceOf(DataIntegrityViolationException.class);
+    }
+
+    private static void setParams(
+        MapSqlParameterSource params,
+        String firstName,
+        String lastName,
+        String email,
+        String phone,
+        char[] password,
+        String adminNumber
+    ) {
+        params.addValue("first_name", firstName);
+        params.addValue("last_name", lastName);
+        params.addValue("email", email);
+        params.addValue("phone", phone);
+        params.addValue("password", password != null ? String.valueOf(password) : null);
+        params.addValue("admin_number", adminNumber);
     }
 }
