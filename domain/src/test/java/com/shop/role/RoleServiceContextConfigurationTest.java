@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static com.shop.role.RoleParameter.getName;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.verify;
         RoleServiceContextConfigurationTest.TestContextConfig.class
     }
 )
-public class RoleServiceContextConfigurationTest {
+class RoleServiceContextConfigurationTest {
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
@@ -28,11 +29,9 @@ public class RoleServiceContextConfigurationTest {
     @Test
     @DisplayName("Get role by name")
     void get_basket_by_name() {
-        String name = "name";
+        roleService.findByName(getName());
 
-        roleService.findByName(name);
-
-        verify(roleRepository).findByName(name);
+        verify(roleRepository).findByName(getName());
     }
 
     @TestConfiguration
