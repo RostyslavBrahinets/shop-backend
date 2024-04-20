@@ -1,7 +1,5 @@
-package com.shop.admin;
+package com.shop.adminnumber;
 
-import com.shop.adminnumber.AdminNumber;
-import com.shop.adminnumber.AdminNumberService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.shop.user;
+package com.shop.adminnumber;
 
 public class AdminNumberParameter {
     public static String getNumber() {

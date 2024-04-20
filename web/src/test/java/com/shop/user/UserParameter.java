@@ -1,6 +1,6 @@
 package com.shop.user;
 
-import static com.shop.user.AdminNumberParameter.getNumber;
+import static com.shop.adminnumber.AdminNumberParameter.getNumber;
 
 public class UserParameter {
     public static User getUserWithId() {
