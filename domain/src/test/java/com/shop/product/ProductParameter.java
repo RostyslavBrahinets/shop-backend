@@ -43,10 +43,6 @@ public class ProductParameter {
         );
     }
 
-    public static long getCategoryId() {
-        return 1L;
-    }
-
     public static long getProductId() {
         return 1L;
     }
