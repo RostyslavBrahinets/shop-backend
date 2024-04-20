@@ -1,9 +1,8 @@
 package com.shop.userrole;
 
 import com.shop.exceptions.NotFoundException;
-import com.shop.role.Role;
-import com.shop.security.SignInPasswordAuthenticationProvider;
 import com.shop.role.RoleService;
+import com.shop.security.SignInPasswordAuthenticationProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.shop.user.RoleParameter.getRoleWithId;
+import static com.shop.user.UserParameter.getUserId;
 import static com.shop.userrole.UserRoleController.USER_ROLE_URL;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -51,7 +52,7 @@ class UserRoleControllerTest {
         when(userRoleService.findRoleForUser(anyInt()))
             .thenThrow(NotFoundException.class);
 
-        mockMvc.perform(get(USER_ROLE_URL + "/1")
+        mockMvc.perform(get(USER_ROLE_URL + String.format("/%d", getUserId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
@@ -60,10 +61,10 @@ class UserRoleControllerTest {
     @Test
     @DisplayName("Role for user found")
     void role_for_user_found() throws Exception {
-        when(userRoleService.findRoleForUser(1))
-            .thenReturn(new Role(1, "name"));
+        when(userRoleService.findRoleForUser(getUserId()))
+            .thenReturn(getRoleWithId());
 
-        mockMvc.perform(get(USER_ROLE_URL + "/1")
+        mockMvc.perform(get(USER_ROLE_URL + String.format("/%d", getUserId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
