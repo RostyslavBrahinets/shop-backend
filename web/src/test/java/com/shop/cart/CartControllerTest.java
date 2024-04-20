@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static com.shop.cart.CartController.CARTS_URL;
+import static com.shop.cart.CartParameter.getCartId;
+import static com.shop.cart.CartParameter.getCartWithId;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -41,7 +43,7 @@ class CartControllerTest {
     void all_carts_request() throws Exception {
         when(cartService.findAll()).thenReturn(
             List.of(
-                new Cart(1, 0, 1)
+                getCartWithId()
             )
         );
 
@@ -68,7 +70,7 @@ class CartControllerTest {
         when(cartService.findById(anyInt()))
             .thenThrow(NotFoundException.class);
 
-        mockMvc.perform(get(CARTS_URL + "/1")
+        mockMvc.perform(get(CARTS_URL + String.format("/%d", getCartId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
@@ -77,10 +79,10 @@ class CartControllerTest {
     @Test
     @DisplayName("Cart found")
     void cart_found() throws Exception {
-        when(cartService.findById(1))
-            .thenReturn(new Cart(1, 0, 1));
+        when(cartService.findById(getCartId()))
+            .thenReturn(getCartWithId());
 
-        mockMvc.perform(get(CARTS_URL + "/1")
+        mockMvc.perform(get(CARTS_URL + String.format("/%d", getCartId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
@@ -98,7 +100,7 @@ class CartControllerTest {
     @Test
     @DisplayName("Cart deleted")
     void cart_deleted() throws Exception {
-        mockMvc.perform(delete(CARTS_URL + "/1")
+        mockMvc.perform(delete(CARTS_URL + String.format("/%d", getCartId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().is2xxSuccessful());
