@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static com.shop.user.UserController.USERS_URL;
+import static com.shop.user.UserParameter.getUserId;
+import static com.shop.user.UserParameter.getUserWithId;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -41,15 +43,7 @@ class UserControllerTest {
     void all_users_request() throws Exception {
         when(userService.findAll()).thenReturn(
             List.of(
-                new User(
-                    1,
-                    "John",
-                    "Smith",
-                    "test@email.com",
-                    "+380000000000",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                )
+                getUserWithId()
             )
         );
 
@@ -76,7 +70,7 @@ class UserControllerTest {
         when(userService.findById(anyInt()))
             .thenThrow(NotFoundException.class);
 
-        mockMvc.perform(get(USERS_URL + "/1")
+        mockMvc.perform(get(USERS_URL + String.format("/%d", getUserId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
@@ -85,20 +79,10 @@ class UserControllerTest {
     @Test
     @DisplayName("User found")
     void user_found() throws Exception {
-        when(userService.findById(1))
-            .thenReturn(
-                new User(
-                    1,
-                    "John",
-                    "Smith",
-                    "test@email.com",
-                    "+380000000000",
-                    new char[]{'p', 'a', 's', 's', 'w', 'o', 'r', 'd'},
-                    "12345678"
-                )
-            );
+        when(userService.findById(getUserId()))
+            .thenReturn(getUserWithId());
 
-        mockMvc.perform(get(USERS_URL + "/1")
+        mockMvc.perform(get(USERS_URL + String.format("/%d", getUserId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
@@ -116,7 +100,7 @@ class UserControllerTest {
     @Test
     @DisplayName("User deleted")
     void user_deleted() throws Exception {
-        mockMvc.perform(delete(USERS_URL + "/1")
+        mockMvc.perform(delete(USERS_URL + String.format("/%d", getUserId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().is2xxSuccessful());
