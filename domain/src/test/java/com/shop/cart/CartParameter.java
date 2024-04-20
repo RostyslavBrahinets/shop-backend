@@ -9,6 +9,10 @@ public class CartParameter {
         return getCartWithoutId().withId(getCartId());
     }
 
+    static Cart getCartWithId2(double priceAmount) {
+        return getCartWithoutId(priceAmount).withId(getCartId());
+    }
+
     static Cart getCartWithId2(long userId) {
         return getCartWithoutId(userId).withId(getCartId2());
     }
