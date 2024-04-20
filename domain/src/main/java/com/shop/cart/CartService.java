@@ -2,7 +2,7 @@ package com.shop.cart;
 
 import com.shop.interfaces.ServiceInterface;
 import com.shop.user.User;
-import com.shop.user.UserService;
+import com.shop.user.UserRepository;
 import com.shop.user.UserValidator;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +13,18 @@ import java.util.Optional;
 public class CartService implements ServiceInterface<Cart> {
     private final CartRepository cartRepository;
     private final CartValidator cartValidator;
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final UserValidator userValidator;
 
     public CartService(
         CartRepository cartRepository,
         CartValidator cartValidator,
-        UserService userService,
+        UserRepository userRepository,
         UserValidator userValidator
     ) {
         this.cartRepository = cartRepository;
         this.cartValidator = cartValidator;
-        this.userService = userService;
+        this.userRepository = userRepository;
         this.userValidator = userValidator;
     }
 
@@ -43,7 +43,7 @@ public class CartService implements ServiceInterface<Cart> {
     @Override
     public Cart save(Cart cart) {
         cartValidator.validate(cart.getPriceAmount());
-        userValidator.validate(cart.getUserId(), userService.findAll());
+        userValidator.validate(cart.getUserId(), userRepository.findAll());
         cartRepository.save(cart);
         cart.setId(cartRepository.findAll().size() + 1L);
         return cart;
@@ -64,7 +64,7 @@ public class CartService implements ServiceInterface<Cart> {
     }
 
     public Cart findByUser(User user) {
-        userValidator.validate(user.getId(), userService.findAll());
+        userValidator.validate(user.getId(), userRepository.findAll());
         Optional<Cart> cart = cartRepository.findByUser(user);
         return cart.orElseGet(Cart::new);
     }
