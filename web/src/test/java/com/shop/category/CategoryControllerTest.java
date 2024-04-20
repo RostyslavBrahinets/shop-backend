@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.shop.category.CategoryController.CATEGORIES_URL;
+import static com.shop.category.CategoryParameter.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -41,7 +42,7 @@ class CategoryControllerTest {
     void all_categories_request() throws Exception {
         when(categoryService.findAll()).thenReturn(
             List.of(
-                new Category(1, "name")
+                getCategoryWithId()
             )
         );
 
@@ -68,7 +69,7 @@ class CategoryControllerTest {
         when(categoryService.findById(anyInt()))
             .thenThrow(NoSuchElementException.class);
 
-        mockMvc.perform(get(CATEGORIES_URL + "/1")
+        mockMvc.perform(get(CATEGORIES_URL + String.format("/%d", getCategoryId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
@@ -77,10 +78,10 @@ class CategoryControllerTest {
     @Test
     @DisplayName("Category found")
     void category_found() throws Exception {
-        when(categoryService.findById(1))
-            .thenReturn(new Category(1, "name"));
+        when(categoryService.findById(getCategoryId()))
+            .thenReturn(getCategoryWithId());
 
-        mockMvc.perform(get(CATEGORIES_URL + "/1")
+        mockMvc.perform(get(CATEGORIES_URL + String.format("/%d", getCategoryId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
@@ -89,7 +90,7 @@ class CategoryControllerTest {
     @Test
     @DisplayName("Category deleted")
     void category_deleted() throws Exception {
-        mockMvc.perform(delete(CATEGORIES_URL + "/name")
+        mockMvc.perform(delete(CATEGORIES_URL + String.format("/%s", getName()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
