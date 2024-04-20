@@ -14,7 +14,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import static com.shop.SqlMigrationClasspath.PRODUCT_CATEGORY;
-import static com.shop.product.ProductParameter.getCategoryId;
+import static com.shop.category.CategoryParameter.getCategoryId;
 import static com.shop.product.ProductParameter.getProductId;
 import static org.assertj.core.api.Assertions.assertThatCode;
 

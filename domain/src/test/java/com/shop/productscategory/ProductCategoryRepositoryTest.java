@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.shop.SqlMigrationClasspath.*;
+import static com.shop.category.CategoryParameter.getCategoryId;
 import static com.shop.category.CategoryParameter.getCategoryWithId;
 import static com.shop.product.ProductParameter.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

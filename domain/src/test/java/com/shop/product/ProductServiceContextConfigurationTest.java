@@ -13,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
+import static com.shop.category.CategoryParameter.getCategoryId;
 import static com.shop.product.ProductParameter.*;
 import static org.mockito.Mockito.*;
 

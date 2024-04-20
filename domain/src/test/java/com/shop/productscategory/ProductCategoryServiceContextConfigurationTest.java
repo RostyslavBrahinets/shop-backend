@@ -16,8 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static com.shop.category.CategoryParameter.getCategories;
-import static com.shop.category.CategoryParameter.getCategoryWithId;
+import static com.shop.category.CategoryParameter.*;
 import static com.shop.product.ProductParameter.*;
 import static org.mockito.Mockito.*;
 
