@@ -41,7 +41,11 @@ public class AdminNumberService implements ServiceInterface<AdminNumber> {
 
     @Override
     public AdminNumber update(long id, AdminNumber adminNumber) {
-        return new AdminNumber();
+        adminNumberValidator.validate(id, adminNumberRepository.findAll());
+        adminNumberValidator.validateAdminNumber(adminNumber.getNumber());
+        adminNumberRepository.update(id, adminNumber);
+        adminNumber.setId(id);
+        return adminNumber;
     }
 
     @Override
