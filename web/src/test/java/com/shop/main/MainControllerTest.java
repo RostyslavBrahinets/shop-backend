@@ -1,6 +1,5 @@
 package com.shop.main;
 
-import com.shop.product.Product;
 import com.shop.product.ProductService;
 import com.shop.security.SignInPasswordAuthenticationProvider;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static com.shop.product.ProductParameter.getProductWithId;
+import static com.shop.user.UserParameter.getEmail;
+import static com.shop.user.UserParameter.getPassword;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -36,19 +38,12 @@ class MainControllerTest {
     @Test
     @DisplayName("Random products request for admin")
     void random_products_request_for_admin() throws Exception {
-        when(productService.findRandomProducts(1)).thenReturn(
-            List.of(
-                new Product(
-                    1,
-                    "name",
-                    "describe",
-                    100,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
+        when(productService.findRandomProducts(1))
+            .thenReturn(
+                List.of(
+                    getProductWithId()
                 )
-            )
-        );
+            );
 
         mockMvc.perform(get(MainController.MAIN_URL)
                 .with(user("admin").password("admin").roles("ADMIN"))
@@ -61,22 +56,15 @@ class MainControllerTest {
     @Test
     @DisplayName("Random products request for user")
     void random_products_request_for_user() throws Exception {
-        when(productService.findRandomProducts(1)).thenReturn(
-            List.of(
-                new Product(
-                    1,
-                    "name",
-                    "describe",
-                    100,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
+        when(productService.findRandomProducts(1))
+            .thenReturn(
+                List.of(
+                    getProductWithId()
                 )
-            )
-        );
+            );
 
         mockMvc.perform(get(MainController.MAIN_URL)
-                .with(user("user@email.com").password("password").roles("USER")))
+                .with(user(getEmail()).password(String.valueOf(getPassword())).roles("USER")))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$").isArray());
@@ -85,19 +73,12 @@ class MainControllerTest {
     @Test
     @DisplayName("Random products request for guest")
     void random_products_request_for_guest() throws Exception {
-        when(productService.findRandomProducts(1)).thenReturn(
-            List.of(
-                new Product(
-                    1,
-                    "name",
-                    "describe",
-                    100,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
+        when(productService.findRandomProducts(1))
+            .thenReturn(
+                List.of(
+                    getProductWithId()
                 )
-            )
-        );
+            );
 
         mockMvc.perform(
                 get(MainController.MAIN_URL)
