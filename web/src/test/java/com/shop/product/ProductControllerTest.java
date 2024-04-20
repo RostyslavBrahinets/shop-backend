@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static com.shop.product.ProductController.PRODUCTS_URL;
+import static com.shop.product.ProductParameter.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -41,14 +42,7 @@ class ProductControllerTest {
     void all_products_request() throws Exception {
         when(productService.findAll()).thenReturn(
             List.of(
-                new Product(
-                    1,
-                    "name",
-                    "describe",
-                    100,
-                    "123",
-                    true, new byte[]{1, 1, 1}
-                )
+                getProductWithId()
             )
         );
 
@@ -75,7 +69,7 @@ class ProductControllerTest {
         when(productService.findById(anyInt()))
             .thenThrow(NotFoundException.class);
 
-        mockMvc.perform(get(PRODUCTS_URL + "/1")
+        mockMvc.perform(get(PRODUCTS_URL + String.format("/%d", getProductId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
@@ -84,20 +78,10 @@ class ProductControllerTest {
     @Test
     @DisplayName("Product found")
     void product_found() throws Exception {
-        when(productService.findById(1))
-            .thenReturn(
-                new Product(
-                    1,
-                    "name",
-                    "describe",
-                    100,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-            );
+        when(productService.findById(getProductId()))
+            .thenReturn(getProductWithId());
 
-        mockMvc.perform(get(PRODUCTS_URL + "/1")
+        mockMvc.perform(get(PRODUCTS_URL + String.format("/%d", getProductId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
@@ -106,7 +90,7 @@ class ProductControllerTest {
     @Test
     @DisplayName("Product deleted")
     void product_deleted() throws Exception {
-        mockMvc.perform(delete(PRODUCTS_URL + "/123")
+        mockMvc.perform(delete(PRODUCTS_URL + String.format("/%s", getBarcode()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
@@ -124,20 +108,10 @@ class ProductControllerTest {
     @Test
     @DisplayName("Image for product found")
     void image_for_product_found() throws Exception {
-        when(productService.findById(1))
-            .thenReturn(
-                new Product(
-                    1,
-                    "name",
-                    "describe",
-                    100,
-                    "123",
-                    true,
-                    new byte[]{1, 1, 1}
-                )
-            );
+        when(productService.findById(getProductId()))
+            .thenReturn(getProductWithId());
 
-        mockMvc.perform(get(PRODUCTS_URL + "/image/1")
+        mockMvc.perform(get(PRODUCTS_URL + String.format("/image/%d", getProductId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
             .andExpect(status().isOk());
