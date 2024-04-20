@@ -21,7 +21,7 @@ public class CategoryParameter {
         return Category.of(name);
     }
 
-    static long getCategoryId() {
+    public static long getCategoryId() {
         return 1L;
     }
 
