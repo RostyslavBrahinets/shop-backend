@@ -53,7 +53,9 @@ public class CartService implements ServiceInterface<Cart> {
     public Cart update(long id, Cart cart) {
         cartValidator.validate(id);
         cartValidator.validate(cart.getPriceAmount());
+        userValidator.validate(cart.getUserId(), userRepository.findAll());
         cartRepository.update(id, cart);
+        cart.setId(id);
         return cart;
     }
 
