@@ -1,7 +1,7 @@
 package com.shop.cart;
 
 import com.shop.user.User;
-import com.shop.user.UserService;
+import com.shop.user.UserRepository;
 import com.shop.user.UserValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class CartServiceContextConfigurationTest {
     @Autowired
     private CartValidator cartValidator;
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
     @Autowired
     private UserValidator userValidator;
     @Autowired
@@ -54,22 +54,15 @@ class CartServiceContextConfigurationTest {
     }
 
     @Test
-    @DisplayName("Get cart by user")
-    void get_cart_by_user() {
-        cartService.findByUser(User.of(null, null).withId(getUserId()));
-
-        verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
-        verify(cartRepository).findByUser(User.of(null, null).withId(getUserId()));
-    }
-
-    @Test
     @DisplayName("Save cart")
     void save_cart() {
         cartService.save(getCartWithoutId());
 
         verify(cartValidator, atLeast(1)).validate(getPriceAmount());
+        verify(userRepository, atLeast(1)).findAll();
         verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
         verify(cartRepository).save(getCartWithId());
+        verify(cartRepository).findAll();
     }
 
     @Test
@@ -79,7 +72,9 @@ class CartServiceContextConfigurationTest {
 
         verify(cartValidator, atLeast(1)).validate(getCartId());
         verify(cartValidator, atLeast(1)).validate(getPriceAmount2());
-        verify(cartRepository).update(getCartId(), getCartWithoutId(getPriceAmount2()));
+        verify(userRepository, atLeast(1)).findAll();
+        verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
+        verify(cartRepository).update(getCartId(), getCartWithId2(getPriceAmount2()));
     }
 
     @Test
@@ -89,6 +84,15 @@ class CartServiceContextConfigurationTest {
 
         verify(cartValidator, atLeast(1)).validate(getCartId());
         verify(cartRepository).delete(getCartWithId());
+    }
+
+    @Test
+    @DisplayName("Get cart by user")
+    void get_cart_by_user() {
+        cartService.findByUser(User.of(null, null).withId(getUserId()));
+
+        verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
+        verify(cartRepository).findByUser(User.of(null, null).withId(getUserId()));
     }
 
     @TestConfiguration
@@ -109,8 +113,8 @@ class CartServiceContextConfigurationTest {
         }
 
         @Bean
-        public UserService userService() {
-            return mock(UserService.class);
+        public UserRepository userRepository() {
+            return mock(UserRepository.class);
         }
 
         @Bean
