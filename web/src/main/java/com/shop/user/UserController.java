@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User findById(@PathVariable int id) {
+    public User findById(@PathVariable long id) {
         return userService.findById(id);
     }
 
@@ -49,7 +49,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
+    public void delete(@PathVariable long id) {
         userService.delete(User.of(null, null).withId(id));
     }
 }
