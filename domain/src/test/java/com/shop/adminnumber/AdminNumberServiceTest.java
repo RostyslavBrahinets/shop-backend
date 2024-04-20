@@ -40,6 +40,8 @@ class AdminNumberServiceTest {
 
         List<AdminNumber> adminNumbers = adminNumberService.findAll();
 
+        verify(adminNumberRepository).findAll();
+
         assertThat(adminNumbers).isEmpty();
     }
 
@@ -51,6 +53,8 @@ class AdminNumberServiceTest {
         );
 
         List<AdminNumber> adminNumbers = adminNumberService.findAll();
+
+        verify(adminNumberRepository).findAll();
 
         assertThat(adminNumbers).isEqualTo(List.of(getAdminNumberWithId()));
     }
@@ -64,6 +68,10 @@ class AdminNumberServiceTest {
 
         AdminNumber adminNumber = adminNumberService.findById(getAdminNumberId());
 
+        verify(adminNumberRepository).findAll();
+        verify(adminNumberValidator).validate(getAdminNumberId(), getAdminNumbers());
+        verify(adminNumberRepository).findById(getAdminNumberId());
+
         assertThat(adminNumber).isEqualTo(getAdminNumberWithId());
     }
 
@@ -72,16 +80,40 @@ class AdminNumberServiceTest {
     void number_of_admin_was_saved_with_correct_input() {
         AdminNumber savedAdminNumber = adminNumberService.save(getAdminNumberWithoutId());
 
+        verify(adminNumberValidator).validateAdminNumber(getNumber());
         verify(adminNumberRepository).save(getAdminNumberWithId());
+        verify(adminNumberRepository).findAll();
 
         assertThat(savedAdminNumber).isEqualTo(getAdminNumberWithId());
     }
+
+    @Test
+    @DisplayName("Number of admin was updated with correct input")
+    void number_of_admin_was_updated_with_correct_input() {
+        AdminNumber updatedAdminNumber = adminNumberService.update(
+            getAdminNumberId(),
+            getAdminNumberWithId2(getAdminNumberId())
+        );
+
+        verify(adminNumberRepository).findAll();
+        verify(adminNumberValidator).validate(getAdminNumberId(), getAdminNumbers());
+        verify(adminNumberValidator).validateAdminNumber(getNumber2());
+        verify(adminNumberRepository).update(
+            getAdminNumberId(),
+            getAdminNumberWithId2(getAdminNumberId())
+        );
+
+        assertThat(updatedAdminNumber).isEqualTo(getAdminNumberWithId2(getAdminNumberId()));
+    }
+
 
     @Test
     @DisplayName("Number of admin was deleted")
     void number_of_admin_was_deleted() {
         adminNumberService.delete(getAdminNumberWithoutId());
 
+        verify(adminNumberRepository).findAll();
+        verify(adminNumberValidator).validate(getNumber(), getAdminNumbers());
         verify(adminNumberRepository).delete(getAdminNumberWithoutId());
     }
 
@@ -94,6 +126,10 @@ class AdminNumberServiceTest {
             );
 
         AdminNumber adminNumber = adminNumberService.findByNumber(getNumber());
+
+        verify(adminNumberRepository).findAll();
+        verify(adminNumberValidator).validate(getNumber(), getAdminNumbers());
+        verify(adminNumberRepository).findByNumber(getNumber());
 
         assertThat(adminNumber).isEqualTo(getAdminNumberWithId());
     }

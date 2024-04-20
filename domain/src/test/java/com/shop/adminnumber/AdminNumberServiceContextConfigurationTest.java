@@ -40,6 +40,7 @@ class AdminNumberServiceContextConfigurationTest {
     void get_number_of_admin_by_id() {
         adminNumberService.findById(getAdminNumberId());
 
+        verify(adminNumberRepository, atLeast(1)).findAll();
         verify(adminNumberValidator, atLeast(1)).validate(getAdminNumberId(), getAdminNumbers());
         verify(adminNumberRepository).findById(getAdminNumberId());
     }
@@ -47,10 +48,22 @@ class AdminNumberServiceContextConfigurationTest {
     @Test
     @DisplayName("Save number of admin")
     void save_number_of_admin() {
-        adminNumberService.save((getAdminNumberWithoutId()));
+        adminNumberService.save(getAdminNumberWithoutId());
 
         verify(adminNumberValidator, atLeast(1)).validateAdminNumber(getNumber());
         verify(adminNumberRepository).save(getAdminNumberWithId());
+        verify(adminNumberRepository, atLeast(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("Update number of admin")
+    void update_number_of_admin() {
+        adminNumberService.update(getAdminNumberId(), getAdminNumberWithoutId2());
+
+        verify(adminNumberRepository, atLeast(1)).findAll();
+        verify(adminNumberValidator, atLeast(1)).validate(getAdminNumberId(), getAdminNumbers());
+        verify(adminNumberValidator, atLeast(1)).validateAdminNumber(getNumber2());
+        verify(adminNumberRepository).update(getAdminNumberId(), getAdminNumberWithId2(getAdminNumberId()));
     }
 
     @Test
@@ -58,6 +71,7 @@ class AdminNumberServiceContextConfigurationTest {
     void delete_number_of_admin_by_number() {
         adminNumberService.delete((getAdminNumberWithoutId()));
 
+        verify(adminNumberRepository, atLeast(1)).findAll();
         verify(adminNumberValidator, atLeast(1)).validate(getNumber(), getAdminNumbers());
         verify(adminNumberRepository).delete((getAdminNumberWithoutId()));
     }
@@ -67,6 +81,7 @@ class AdminNumberServiceContextConfigurationTest {
     void get_number_of_admin_by_number() {
         adminNumberService.findByNumber(getNumber());
 
+        verify(adminNumberRepository, atLeast(1)).findAll();
         verify(adminNumberValidator, atLeast(1)).validate(getNumber(), getAdminNumbers());
         verify(adminNumberRepository).findByNumber(getNumber());
     }
