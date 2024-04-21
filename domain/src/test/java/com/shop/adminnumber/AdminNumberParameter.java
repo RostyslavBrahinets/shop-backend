@@ -39,7 +39,7 @@ public class AdminNumberParameter {
         return "87654321";
     }
 
-    static List<AdminNumber> getAdminNumbers() {
+    public static List<AdminNumber> getAdminNumbers() {
         return List.of();
     }
 }

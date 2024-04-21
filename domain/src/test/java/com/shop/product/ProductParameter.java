@@ -99,7 +99,7 @@ public class ProductParameter {
         return new byte[]{127, 127, 127};
     }
 
-    static List<Product> getProducts() {
+    public static List<Product> getProducts() {
         return List.of();
     }
 

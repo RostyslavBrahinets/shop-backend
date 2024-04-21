@@ -5,7 +5,7 @@ import java.util.List;
 import static com.shop.user.UserParameter.getUserId;
 
 public class CartParameter {
-    static Cart getCartWithId() {
+    public static Cart getCartWithId() {
         return getCartWithoutId().withId(getCartId());
     }
 

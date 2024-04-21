@@ -9,7 +9,7 @@ public class CategoryParameter {
         return getCategoryWithoutId().withId(getCategoryId());
     }
 
-    static Category getCategoryWithId(long id, String name) {
+    public static Category getCategoryWithId(long id, String name) {
         return getCategoryWithoutId(name).withId(id);
     }
 
@@ -33,7 +33,7 @@ public class CategoryParameter {
         return "name";
     }
 
-    static String getName2() {
+    public static String getName2() {
         return "name2";
     }
 
