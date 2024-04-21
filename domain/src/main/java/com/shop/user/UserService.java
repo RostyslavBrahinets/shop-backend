@@ -79,6 +79,7 @@ public class UserService implements ServiceInterface<User> {
         userValidator.validate(id, userRepository.findAll());
         userValidator.validateFullName(user.getFirstName(), user.getLastName());
         userRepository.update(id, user);
+        user.setId(id);
         return user;
     }
 

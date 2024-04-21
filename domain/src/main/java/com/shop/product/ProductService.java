@@ -60,6 +60,7 @@ public class ProductService implements ServiceInterface<Product> {
         productValidator.validate(id, findAll());
         productValidator.validateUpdatedProduct(product);
         productRepository.update(id, product);
+        product.setId(id);
         return product;
     }
 
@@ -109,7 +110,6 @@ public class ProductService implements ServiceInterface<Product> {
             if (product.isPresent() && (!products.contains(product.get()))) {
                 products.add(product.get());
                 i++;
-
             }
         }
 

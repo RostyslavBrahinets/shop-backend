@@ -48,6 +48,7 @@ public class CategoryService implements ServiceInterface<Category> {
         categoryValidator.validate(id, findAll());
         categoryValidator.validateCategory(category.getName());
         categoryRepository.update(id, category);
+        category.setId(id);
         return category;
     }
 
