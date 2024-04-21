@@ -1,6 +1,6 @@
 package com.shop.user;
 
-import com.shop.adminnumber.AdminNumberService;
+import com.shop.adminnumber.AdminNumberRepository;
 import com.shop.adminnumber.AdminNumberValidator;
 import com.shop.cart.Cart;
 import com.shop.cart.CartRepository;
@@ -17,7 +17,7 @@ public class UserService implements ServiceInterface<User> {
     private final UserRepository userRepository;
     private final UserValidator userValidator;
     private final AdminNumberValidator adminNumberValidator;
-    private final AdminNumberService adminNumberService;
+    private final AdminNumberRepository adminNumberRepository;
     private final CartRepository cartRepository;
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -26,7 +26,7 @@ public class UserService implements ServiceInterface<User> {
         UserRepository userRepository,
         UserValidator userValidator,
         AdminNumberValidator adminNumberValidator,
-        AdminNumberService adminNumberService,
+        AdminNumberRepository adminNumberRepository,
         CartRepository cartRepository,
         UserRoleRepository userRoleRepository,
         PasswordEncoder passwordEncoder
@@ -34,7 +34,7 @@ public class UserService implements ServiceInterface<User> {
         this.userRepository = userRepository;
         this.userValidator = userValidator;
         this.adminNumberValidator = adminNumberValidator;
-        this.adminNumberService = adminNumberService;
+        this.adminNumberRepository = adminNumberRepository;
         this.cartRepository = cartRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -67,7 +67,7 @@ public class UserService implements ServiceInterface<User> {
 
         adminNumberValidator.validateAdminNumberForSignUp(
             user.getAdminNumber(),
-            adminNumberService.findAll()
+            adminNumberRepository.findAll()
         );
 
         userRepository.save(user);
