@@ -45,6 +45,8 @@ class ProductServiceTest {
 
         List<Product> products = productService.findAll();
 
+        verify(productRepository).findAll();
+
         assertThat(products).isEmpty();
     }
 
@@ -57,6 +59,8 @@ class ProductServiceTest {
             );
 
         List<Product> products = productService.findAll();
+
+        verify(productRepository).findAll();
 
         assertThat(products).isEqualTo(
             List.of(getProductWithId())
@@ -73,6 +77,10 @@ class ProductServiceTest {
 
         Product product = productService.findById(getProductId());
 
+        verify(productRepository).findAll();
+        verify(productValidator).validate(getProductId(), getProducts());
+        verify(productRepository).findById(getProductId());
+
         assertThat(product).isEqualTo(getProductWithId());
     }
 
@@ -81,9 +89,37 @@ class ProductServiceTest {
     void product_was_saved_with_correct_input() {
         Product savedProduct = productService.save(getProductWithoutId());
 
+        verify(productRepository, atLeast(1)).findAll();
+        verify(productValidator).validate(
+            getName(),
+            getDescribe(),
+            getPrice(),
+            getBarcode(),
+            getProducts()
+        );
         verify(productRepository).save(getProductWithId());
+        verify(productRepository, atLeast(1)).findAll();
 
         assertThat(savedProduct).isEqualTo(getProductWithId());
+    }
+
+    @Test
+    @DisplayName("Product was updated for with correct input")
+    void product_was_updated_with_correct_input() {
+        Product updatedProduct = productService.update(
+            getProductId(),
+            getProductWithoutId2()
+        );
+
+        verify(productRepository, atLeast(1)).findAll();
+        verify(productValidator).validate(getProductId(), getProducts());
+        verify(productValidator).validateUpdatedProduct(getProductWithId2());
+        verify(productRepository).update(
+            getProductId(),
+            getProductWithId2()
+        );
+
+        assertThat(updatedProduct).isEqualTo(getProductWithId2());
     }
 
     @Test
@@ -97,13 +133,14 @@ class ProductServiceTest {
                 Optional.of(Category.of(getName()).withId(getCategoryId()))
             );
 
-        productService.delete(Product.of(getBarcode()));
+        productService.delete(getProductWithoutId());
 
-        verify(productValidator, atLeast(1)).validateBarcode(getBarcode(), List.of());
+        verify(productRepository).findAll();
+        verify(productValidator, atLeast(1)).validateBarcode(getBarcode(), getProducts());
         verify(productRepository).findByBarcode(getBarcode());
         verify(productCategoryRepository).findCategoryForProduct(getProductId());
         verify(productCategoryRepository).deleteProductFromCategory(getProductId(), getCategoryId());
-        verify(productRepository).delete(Product.of(getBarcode()));
+        verify(productRepository).delete(getProductWithoutId());
     }
 
     @Test
@@ -115,6 +152,10 @@ class ProductServiceTest {
 
         Product product = productService.findByBarcode(getBarcode());
 
+        verify(productRepository).findAll();
+        verify(productValidator, atLeast(1)).validateBarcode(getBarcode(), getProducts());
+        verify(productRepository).findByBarcode(getBarcode());
+
         assertThat(product).isEqualTo(getProductWithId());
     }
 
@@ -122,6 +163,11 @@ class ProductServiceTest {
     @DisplayName("Image for product was saved")
     void image_for_product_was_saved_with_correct_input() {
         productService.saveImageForProduct(getImage(), getProductId());
+
+        verify(productRepository).findAll();
+        verify(productValidator).validate(getProductId(), getProducts());
         verify(productRepository).saveImageForProduct(getImage(), getProductId());
     }
+
+
 }
