@@ -1,9 +1,7 @@
 package com.shop.signup;
 
-import com.shop.adminnumber.AdminNumber;
 import com.shop.adminnumber.AdminNumberService;
 import com.shop.cart.CartService;
-import com.shop.user.User;
 import com.shop.user.UserService;
 import com.shop.userrole.UserRoleService;
 import org.junit.jupiter.api.DisplayName;
@@ -17,8 +15,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static com.shop.adminnumber.AdminNumberParameter.getAdminNumbers;
+import static com.shop.adminnumber.AdminNumberParameter.getNumber;
+import static com.shop.user.UserParameter.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
@@ -27,43 +27,44 @@ import static org.mockito.Mockito.verify;
         SignUpServiceContextConfigurationTest.TestContextConfig.class
     }
 )
-public class SignUpServiceContextConfigurationTest {
+class SignUpServiceContextConfigurationTest {
     @Autowired
     private SignUpService signUpService;
     @Autowired
     private SignUpValidator signUpValidator;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AdminNumberService adminNumberService;
 
     @Test
     @DisplayName("Sign Up")
     void signUp() {
-        String firstName = "John";
-        String lastName = "Smith";
-        String email = "test@email.com";
-        String phone = "+380000000000";
-        char[] password = {'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        String adminNumber = "12345678";
-        List<User> users = List.of();
-        List<AdminNumber> adminNumbers = List.of();
+        when(userService.findAll())
+            .thenReturn(List.of(getUserWithId()));
 
         signUpService.signUp(
-            firstName,
-            lastName,
-            email,
-            phone,
-            password,
-            adminNumber
+            getFirstName(),
+            getLastName(),
+            getEmail(),
+            getPhone(),
+            getPassword(),
+            getNumber()
         );
 
+        verify(userService, atLeast(1)).findAll();
+        verify(adminNumberService).findAll();
         verify(signUpValidator).isValidData(
-            firstName,
-            lastName,
-            email,
-            phone,
-            password,
-            adminNumber,
-            users,
-            adminNumbers
+            getFirstName(),
+            getLastName(),
+            getEmail(),
+            getPhone(),
+            getPassword(),
+            getNumber(),
+            List.of(getUserWithId()),
+            getAdminNumbers()
         );
+        verify(userService, atLeast(1)).findAll();
     }
 
     @TestConfiguration
