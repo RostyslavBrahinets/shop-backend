@@ -71,6 +71,7 @@ public class UserService implements ServiceInterface<User> {
         );
 
         userRepository.save(user);
+        user.setId(userRepository.findAll().size() + 1L);
         return user;
     }
 
