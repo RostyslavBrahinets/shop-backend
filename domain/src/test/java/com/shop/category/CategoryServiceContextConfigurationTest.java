@@ -41,8 +41,41 @@ class CategoryServiceContextConfigurationTest {
     void get_category_by_id() {
         categoryService.findById(getCategoryId());
 
+        verify(categoryRepository, atLeast(1)).findAll();
         verify(categoryValidator, atLeast(1)).validate(getCategoryId(), getCategories());
         verify(categoryRepository).findById(getCategoryId());
+    }
+
+    @Test
+    @DisplayName("Save category")
+    void save_category() {
+        categoryService.save(getCategoryWithoutId());
+
+        verify(categoryValidator, atLeast(1)).validateCategory(getName());
+        verify(categoryRepository).save(getCategoryWithId());
+        verify(categoryRepository, atLeast(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("Update category")
+    void update_category() {
+        categoryService.update(getCategoryId(), getCategoryWithoutId(getName2()));
+
+        verify(categoryRepository, atLeast(1)).findAll();
+        verify(categoryValidator, atLeast(1)).validate(getCategoryId(), getCategories());
+        verify(categoryValidator, atLeast(1)).validateCategory(getName2());
+        verify(categoryRepository).update(getCategoryId(), getCategoryWithId(getCategoryId(), getName2()));
+    }
+
+    @Test
+    @DisplayName("Delete category by name")
+    void delete_category_by_name() {
+        categoryService.delete(getCategoryWithoutId());
+
+        verify(categoryRepository, atLeast(1)).findAll();
+        verify(categoryValidator, atLeast(1)).validate(getName(), getCategories());
+        verify(categoryRepository, atLeast(1)).findByName(getName());
+        verify(categoryRepository).delete(getCategoryWithoutId());
     }
 
     @Test
@@ -54,26 +87,9 @@ class CategoryServiceContextConfigurationTest {
         verify(categoryRepository).findByName(getName());
     }
 
-    @Test
-    @DisplayName("Save category")
-    void save_category() {
-        categoryService.save(getCategoryWithoutId());
-
-        verify(categoryValidator, atLeast(1)).validateCategory(getName());
-        verify(categoryRepository).save(getCategoryWithId());
-    }
-
-    @Test
-    @DisplayName("Delete category by name")
-    void delete_category_by_name() {
-        categoryService.delete(getCategoryWithoutId());
-
-        verify(categoryValidator, atLeast(1)).validate(getName(), getCategories());
-        verify(categoryRepository).delete(getCategoryWithoutId());
-    }
-
     @TestConfiguration
     static class TestContextConfig {
+
         @Bean
         public Category category() {
             return mock(Category.class);

@@ -44,6 +44,8 @@ class CategoryServiceTest {
 
         List<Category> categories = categoryService.findAll();
 
+        verify(categoryRepository).findAll();
+
         assertThat(categories).isEmpty();
     }
 
@@ -56,17 +58,24 @@ class CategoryServiceTest {
 
         List<Category> categories = categoryService.findAll();
 
+        verify(categoryRepository).findAll();
+
         assertThat(categories).isEqualTo(List.of(getCategoryWithId()));
     }
 
     @Test
     @DisplayName("Category was found by id")
     void category_was_found_by_id() {
-        when(categoryRepository.findById(1)).thenReturn(
-            Optional.of(getCategoryWithId())
-        );
+        when(categoryRepository.findById(getCategoryId()))
+            .thenReturn(
+                Optional.of(getCategoryWithId())
+            );
 
         Category category = categoryService.findById(getCategoryId());
+
+        verify(categoryRepository).findAll();
+        verify(categoryValidator).validate(getCategoryId(), getCategories());
+        verify(categoryRepository).findById(getCategoryId());
 
         assertThat(category).isEqualTo(getCategoryWithId());
     }
@@ -76,15 +85,40 @@ class CategoryServiceTest {
     void category_was_saved_with_correct_input() {
         Category savedCategory = categoryService.save(getCategoryWithoutId());
 
+        verify(categoryValidator).validateCategory(getName());
         verify(categoryRepository).save(getCategoryWithId());
+        verify(categoryRepository).findAll();
 
         assertThat(savedCategory).isEqualTo(getCategoryWithId());
+    }
+
+    @Test
+    @DisplayName("Category was updated for with correct input")
+    void category_was_updated_with_correct_input() {
+        Category updatedCategory = categoryService.update(
+            getCategoryId(),
+            getCategoryWithoutId(getName2())
+        );
+
+        verify(categoryRepository).findAll();
+        verify(categoryValidator).validate(getCategoryId(), getCategories());
+        verify(categoryValidator).validateCategory(getName2());
+        verify(categoryRepository).update(
+            getCategoryId(),
+            getCategoryWithId(getCategoryId(), getName2())
+        );
+
+        assertThat(updatedCategory).isEqualTo(getCategoryWithId(getCategoryId(), getName2()));
     }
 
     @Test
     @DisplayName("Category was deleted")
     void category_was_deleted() {
         categoryService.delete(getCategoryWithoutId());
+
+        verify(categoryRepository).findAll();
+        verify(categoryValidator).validate(getName(), getCategories());
+        verify(categoryRepository).findByName(getName());
         verify(categoryRepository).delete(getCategoryWithoutId());
     }
 
@@ -96,6 +130,10 @@ class CategoryServiceTest {
         );
 
         Category category = categoryService.findByName(getName());
+
+        verify(categoryRepository).findAll();
+        verify(categoryValidator).validate(getName(), getCategories());
+        verify(categoryRepository).findByName(getName());
 
         assertThat(category).isEqualTo(getCategoryWithId());
     }
