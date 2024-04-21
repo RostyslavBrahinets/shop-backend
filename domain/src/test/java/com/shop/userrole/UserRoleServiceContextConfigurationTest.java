@@ -40,6 +40,7 @@ class UserRoleServiceContextConfigurationTest {
     void get_role_by_user() {
         userRoleService.findRoleForUser(getUserId());
 
+        verify(userService, atLeast(1)).findAll();
         verify(userValidator, atLeast(1)).validate(getUserId(), userService.findAll());
         verify(userRoleRepository).findRoleForUser(getUserId());
     }
@@ -49,6 +50,7 @@ class UserRoleServiceContextConfigurationTest {
     void save_role_for_user() {
         userRoleService.saveRoleForUser(getUserId(), getRoleId());
 
+        verify(userService, atLeast(1)).findAll();
         verify(userValidator, atLeast(1)).validate(getUserId(), userService.findAll());
         verify(roleValidator, atLeast(1)).validate(getRoleId());
         verify(userRoleRepository).saveRoleForUser(getUserId(), getRoleId());
@@ -59,6 +61,7 @@ class UserRoleServiceContextConfigurationTest {
     void update_role_for_user() {
         userRoleService.updateRoleForUser(getUserId(), getRoleId());
 
+        verify(userService, atLeast(1)).findAll();
         verify(userValidator, atLeast(1)).validate(getUserId(), userService.findAll());
         verify(roleValidator, atLeast(1)).validate(getRoleId());
         verify(userRoleRepository).updateRoleForUser(getUserId(), getRoleId());
