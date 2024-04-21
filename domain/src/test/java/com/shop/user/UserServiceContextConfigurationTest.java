@@ -1,6 +1,6 @@
 package com.shop.user;
 
-import com.shop.adminnumber.AdminNumberService;
+import com.shop.adminnumber.AdminNumberRepository;
 import com.shop.adminnumber.AdminNumberValidator;
 import com.shop.cart.CartRepository;
 import com.shop.userrole.UserRoleRepository;
@@ -32,13 +32,13 @@ class UserServiceContextConfigurationTest {
     @Autowired
     private UserValidator userValidator;
     @Autowired
-    private AdminNumberService adminNumberService;
+    private AdminNumberRepository adminNumberRepository;
     @Autowired
     private UserService userService;
 
     @BeforeEach
     void setUp() {
-        adminNumberService.save(getAdminNumberWithoutId());
+        adminNumberRepository.save(getAdminNumberWithoutId());
     }
 
     @Test
@@ -54,8 +54,30 @@ class UserServiceContextConfigurationTest {
     void get_user_by_id() {
         userService.findById(getUserId());
 
+        verify(userRepository, atLeast(1)).findAll();
         verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
         verify(userRepository).findById(getUserId());
+    }
+
+    @Test
+    @DisplayName("Update user")
+    void update_user() {
+        userService.update(getUserId(), getUserWithoutId());
+
+        verify(userRepository, atLeast(1)).findAll();
+        verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
+        verify(userValidator, atLeast(1)).validateFullName(getFirstName(), getLastName());
+        verify(userRepository).update(getUserId(), getUserWithId());
+    }
+
+    @Test
+    @DisplayName("Delete user")
+    void delete_user() {
+        userService.delete(getUserWithId());
+
+        verify(userRepository, atLeast(1)).findAll();
+        verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
+        verify(userRepository).delete(getUserWithId());
     }
 
     @Test
@@ -65,25 +87,6 @@ class UserServiceContextConfigurationTest {
 
         verify(userValidator, atLeast(1)).validateEmail(getEmail());
         verify(userRepository).findByEmail(getEmail());
-    }
-
-    @Test
-    @DisplayName("Update user")
-    void update_user() {
-        userService.update(getUserId(), getUserWithoutId());
-
-        verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
-        verify(userValidator, atLeast(1)).validateFullName(getFirstName(), getLastName());
-        verify(userRepository).update(getUserId(), getUserWithoutId());
-    }
-
-    @Test
-    @DisplayName("Delete user")
-    void delete_user() {
-        userService.delete(getUserWithId());
-
-        verify(userValidator, atLeast(1)).validate(getUserId(), getUsers());
-        verify(userRepository).delete(getUserWithId());
     }
 
     @TestConfiguration
@@ -104,8 +107,8 @@ class UserServiceContextConfigurationTest {
         }
 
         @Bean
-        public AdminNumberService adminNumberService() {
-            return mock(AdminNumberService.class);
+        public AdminNumberRepository adminNumberRepository() {
+            return mock(AdminNumberRepository.class);
         }
 
         @Bean
