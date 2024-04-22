@@ -34,7 +34,7 @@ public class UserRoleController {
         return userRoleDto;
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public String updateRoleForUser(
         @PathVariable long id,
         @RequestBody UserRoleDto userRoleDto
