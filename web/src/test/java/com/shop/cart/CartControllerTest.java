@@ -8,21 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockBeans;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
 import static com.shop.cart.CartController.CARTS_URL;
-import static com.shop.cart.CartParameter.getCartId;
-import static com.shop.cart.CartParameter.getCartWithId;
+import static com.shop.cart.CartParameter.*;
+import static com.shop.user.UserController.USERS_URL;
+import static com.shop.user.UserParameter.*;
+import static com.shop.utilities.JsonUtility.getJsonBody;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockBeans({
@@ -67,13 +70,13 @@ class CartControllerTest {
     @Test
     @DisplayName("Cart not found")
     void cart_not_found() throws Exception {
-        when(cartService.findById(anyInt()))
+        when(cartService.findById(getCartId()))
             .thenThrow(NotFoundException.class);
 
         mockMvc.perform(get(CARTS_URL + String.format("/%d", getCartId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
-            .andExpect(status().isOk());
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -85,6 +88,34 @@ class CartControllerTest {
         mockMvc.perform(get(CARTS_URL + String.format("/%d", getCartId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Cart saved")
+    void cart_saved() throws Exception {
+        when(cartService.save(getCartWithoutId()))
+            .thenReturn(getCartWithId());
+
+        mockMvc.perform(post(CARTS_URL)
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJsonBody(getCartWithoutId())))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Cart updated")
+    void cart_updated() throws Exception {
+        when(cartService.update(getCartId(), getCartWithoutId2()))
+            .thenReturn(getCartWithId2());
+
+        mockMvc.perform(put(CARTS_URL + String.format("/%s", getCartId()))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJsonBody(getCartWithoutId2())))
             .andExpect(status().isOk());
     }
 
