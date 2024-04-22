@@ -8,21 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockBeans;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
 import static com.shop.user.UserController.USERS_URL;
-import static com.shop.user.UserParameter.getUserId;
-import static com.shop.user.UserParameter.getUserWithId;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static com.shop.user.UserParameter.*;
+import static com.shop.utilities.JsonUtility.getJsonBody;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockBeans({
@@ -67,13 +66,13 @@ class UserControllerTest {
     @Test
     @DisplayName("User not found")
     void user_not_found() throws Exception {
-        when(userService.findById(anyInt()))
+        when(userService.findById(getUserId()))
             .thenThrow(NotFoundException.class);
 
         mockMvc.perform(get(USERS_URL + String.format("/%d", getUserId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
-            .andExpect(status().isOk());
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -85,6 +84,34 @@ class UserControllerTest {
         mockMvc.perform(get(USERS_URL + String.format("/%d", getUserId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("User saved")
+    void user_saved() throws Exception {
+        when(userService.save(getUserWithoutId()))
+            .thenReturn(getUserWithId());
+
+        mockMvc.perform(post(USERS_URL)
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJsonBody(getUserWithoutId())))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("User updated")
+    void user_updated() throws Exception {
+        when(userService.update(getUserId(), getUserWithoutId2()))
+            .thenReturn(getUserWithId2());
+
+        mockMvc.perform(put(USERS_URL + String.format("/%s", getUserId()))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJsonBody(getUserWithoutId2())))
             .andExpect(status().isOk());
     }
 
