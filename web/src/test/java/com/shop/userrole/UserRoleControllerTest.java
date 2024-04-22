@@ -9,18 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockBeans;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.shop.user.RoleParameter.getRoleWithId;
 import static com.shop.user.UserParameter.getUserId;
 import static com.shop.userrole.UserRoleController.USER_ROLE_URL;
+import static com.shop.userrole.UserRoleParameter.getUserRole;
+import static com.shop.utilities.JsonUtility.getJsonBody;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @MockBeans({
@@ -71,20 +73,35 @@ class UserRoleControllerTest {
     }
 
     @Test
+    @DisplayName("Role for user saved")
+    void role_for_user_saved() throws Exception {
+        mockMvc.perform(post(USER_ROLE_URL)
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJsonBody(getUserRole())))
+            .andExpect(status().isOk());
+    }
+
+    @Test
     @DisplayName("Role for user update failed for incorrect id")
     void role_for_user_update_failed_for_incorrect_id() throws Exception {
-        mockMvc.perform(post(USER_ROLE_URL + "/id")
+        mockMvc.perform(put(USER_ROLE_URL + "/id")
                 .with(user("admin").password("admin").roles("ADMIN"))
-                .with(csrf()))
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJsonBody(getUserRole())))
             .andExpect(status().isBadRequest());
     }
 
     @Test
-    @DisplayName("User update failed for incorrect id")
-    void user_update_failed_for_incorrect_id() throws Exception {
-        mockMvc.perform(post(USER_ROLE_URL + "/id")
+    @DisplayName("Role for user updated")
+    void role_for_user_updated() throws Exception {
+        mockMvc.perform(put(USER_ROLE_URL + String.format("/%d", getUserId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
-                .with(csrf()))
-            .andExpect(status().isBadRequest());
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJsonBody(getUserRole())))
+            .andExpect(status().isOk());
     }
 }
