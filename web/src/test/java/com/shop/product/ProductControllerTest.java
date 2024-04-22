@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockBeans;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -15,13 +16,12 @@ import java.util.List;
 
 import static com.shop.product.ProductController.PRODUCTS_URL;
 import static com.shop.product.ProductParameter.*;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static com.shop.utilities.JsonUtility.getJsonBody;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockBeans({
@@ -66,13 +66,13 @@ class ProductControllerTest {
     @Test
     @DisplayName("Product not found")
     void product_not_found() throws Exception {
-        when(productService.findById(anyInt()))
+        when(productService.findById(getProductId()))
             .thenThrow(NotFoundException.class);
 
         mockMvc.perform(get(PRODUCTS_URL + String.format("/%d", getProductId()))
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
-            .andExpect(status().isOk());
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -88,6 +88,37 @@ class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Product saved")
+    void product_saved() throws Exception {
+        when(productService.save(getProductWithoutId()))
+            .thenReturn(getProductWithId());
+
+        when(productService.findByBarcode(getBarcode()))
+            .thenReturn(getProductWithId());
+
+        mockMvc.perform(post(PRODUCTS_URL)
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJsonBody(getProductWithoutId())))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Product updated")
+    void product_updated() throws Exception {
+        when(productService.update(getProductId(), getProductWithoutId2()))
+            .thenReturn(getProductWithId2());
+
+        mockMvc.perform(put(PRODUCTS_URL + String.format("/%s", getProductId()))
+                .with(user("admin").password("admin").roles("ADMIN"))
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJsonBody(getProductWithoutId2())))
+            .andExpect(status().isOk());
+    }
+
+    @Test
     @DisplayName("Product deleted")
     void product_deleted() throws Exception {
         mockMvc.perform(delete(PRODUCTS_URL + String.format("/%s", getBarcode()))
@@ -99,6 +130,9 @@ class ProductControllerTest {
     @Test
     @DisplayName("Image for product not found because of incorrect id")
     void image_for_product_not_found_because_of_incorrect_id() throws Exception {
+        when(productService.findById(getProductId()))
+            .thenThrow(NotFoundException.class);
+
         mockMvc.perform(get(PRODUCTS_URL + "/image/id")
                 .with(user("admin").password("admin").roles("ADMIN"))
                 .with(csrf()))
