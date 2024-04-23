@@ -1,7 +1,5 @@
 # API for web application [Shop](https://github.com/rbrahinets/shop-frontend)
 
-Build Restful CRUD API for a blog using Spring Boot, Mysql, JPA and Hibernate.
-
 ## Explore Rest APIs
 
 The app defines following CRUD APIs.
@@ -184,7 +182,11 @@ The app defines following CRUD APIs.
     "price": 0,
     "barcode": "barcode",
     "in_stock": true,
-    "image": [1, 1, 1]
+    "image": [
+        1,
+        1,
+        1
+    ]
 }
 ```
 
@@ -197,7 +199,11 @@ The app defines following CRUD APIs.
     "price": 0,
     "barcode": "barcode",
     "in_stock": true,
-    "image": [1, 1, 1]
+    "image": [
+        1,
+        1,
+        1
+    ]
 }
 ```
 
