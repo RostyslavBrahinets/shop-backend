@@ -37,8 +37,20 @@ public class UserParameter {
         return 1L;
     }
 
+    public static String getFirstName() {
+        return "John";
+    }
+
+    public static String getLastName() {
+        return "Smith";
+    }
+
     public static String getEmail() {
         return "test@email.com";
+    }
+
+    public static String getPhone() {
+        return "+380000000000";
     }
 
     public static char[] getPassword() {
