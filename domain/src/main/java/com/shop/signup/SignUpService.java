@@ -7,6 +7,7 @@ import com.shop.user.User;
 import com.shop.user.UserService;
 import com.shop.userrole.UserRoleService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class SignUpService {
         this.cartService = cartService;
     }
 
+    @Transactional
     public void signUp(
         String firstName,
         String lastName,

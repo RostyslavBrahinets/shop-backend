@@ -8,6 +8,7 @@ import com.shop.interfaces.ServiceInterface;
 import com.shop.userrole.UserRoleRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +54,7 @@ public class UserService implements ServiceInterface<User> {
     }
 
     @Override
+    @Transactional
     public User save(User user) {
         userValidator.validate(
             user.getFirstName(),
@@ -76,6 +78,7 @@ public class UserService implements ServiceInterface<User> {
     }
 
     @Override
+    @Transactional
     public User update(long id, User user) {
         userValidator.validate(id, userRepository.findAll());
         userValidator.validateFullName(user.getFirstName(), user.getLastName());
@@ -85,6 +88,7 @@ public class UserService implements ServiceInterface<User> {
     }
 
     @Override
+    @Transactional
     public void delete(User user) {
         userValidator.validate(user.getId(), userRepository.findAll());
         Optional<Cart> cartOptional = cartRepository.findByUser(user);

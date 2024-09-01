@@ -3,6 +3,7 @@ package com.shop.category;
 import com.shop.interfaces.ServiceInterface;
 import com.shop.productcategory.ProductCategoryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,7 @@ public class CategoryService implements ServiceInterface<Category> {
     }
 
     @Override
+    @Transactional
     public Category save(Category category) {
         categoryValidator.validateCategory(category.getName());
         categoryRepository.save(category);
@@ -44,6 +46,7 @@ public class CategoryService implements ServiceInterface<Category> {
     }
 
     @Override
+    @Transactional
     public Category update(long id, Category category) {
         categoryValidator.validate(id, findAll());
         categoryValidator.validateCategory(category.getName());
@@ -53,6 +56,7 @@ public class CategoryService implements ServiceInterface<Category> {
     }
 
     @Override
+    @Transactional
     public void delete(Category category) {
         categoryValidator.validate(category.getName(), categoryRepository.findAll());
 

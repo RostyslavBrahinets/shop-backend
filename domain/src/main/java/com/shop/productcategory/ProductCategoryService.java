@@ -7,6 +7,7 @@ import com.shop.product.Product;
 import com.shop.product.ProductService;
 import com.shop.product.ProductValidator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,7 @@ public class ProductCategoryService {
         return productCategoryRepository.findAllProductsInCategory(categoryId);
     }
 
+    @Transactional
     public void saveProductToCategory(String barcode, String nameOfCategory) {
         productCategoryRepository.saveProductToCategory(
             productService.findByBarcode(barcode).getId(),
@@ -45,6 +47,7 @@ public class ProductCategoryService {
         );
     }
 
+    @Transactional
     public void updateCategoryForProduct(String barcode, String nameOfCategory) {
         productCategoryRepository.updateCategoryForProduct(
             productService.findByBarcode(barcode).getId(),
@@ -52,6 +55,7 @@ public class ProductCategoryService {
         );
     }
 
+    @Transactional
     public void deleteProductFromCategory(String barcode) {
         productValidator.validateBarcode(
             barcode,

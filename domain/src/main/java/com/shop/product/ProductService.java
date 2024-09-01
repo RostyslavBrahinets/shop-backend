@@ -4,6 +4,7 @@ import com.shop.category.Category;
 import com.shop.interfaces.ServiceInterface;
 import com.shop.productcategory.ProductCategoryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class ProductService implements ServiceInterface<Product> {
     }
 
     @Override
+    @Transactional
     public Product save(Product product) {
         productValidator.validate(
             product.getName(),
@@ -56,6 +58,7 @@ public class ProductService implements ServiceInterface<Product> {
     }
 
     @Override
+    @Transactional
     public Product update(long id, Product product) {
         productValidator.validate(id, findAll());
         productValidator.validateUpdatedProduct(product);
@@ -65,6 +68,7 @@ public class ProductService implements ServiceInterface<Product> {
     }
 
     @Override
+    @Transactional
     public void delete(Product product) {
         productValidator.validateBarcode(product.getBarcode(), productRepository.findAll());
 
@@ -91,6 +95,7 @@ public class ProductService implements ServiceInterface<Product> {
         return product.orElseGet(Product::new);
     }
 
+    @Transactional
     public void saveImageForProduct(byte[] image, long id) {
         productValidator.validate(id, productRepository.findAll());
         productRepository.saveImageForProduct(image, id);

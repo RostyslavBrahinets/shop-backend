@@ -5,6 +5,7 @@ import com.shop.user.User;
 import com.shop.user.UserRepository;
 import com.shop.user.UserValidator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,7 @@ public class CartService implements ServiceInterface<Cart> {
     }
 
     @Override
+    @Transactional
     public Cart save(Cart cart) {
         cartValidator.validate(cart.getPriceAmount());
         userValidator.validate(cart.getUserId(), userRepository.findAll());
@@ -50,6 +52,7 @@ public class CartService implements ServiceInterface<Cart> {
     }
 
     @Override
+    @Transactional
     public Cart update(long id, Cart cart) {
         cartValidator.validate(id);
         cartValidator.validate(cart.getPriceAmount());
@@ -60,6 +63,7 @@ public class CartService implements ServiceInterface<Cart> {
     }
 
     @Override
+    @Transactional
     public void delete(Cart cart) {
         cartValidator.validate(cart.getId());
         cartRepository.delete(cart);

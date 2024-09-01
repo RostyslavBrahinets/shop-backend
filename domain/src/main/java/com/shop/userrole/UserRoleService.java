@@ -5,6 +5,7 @@ import com.shop.role.RoleValidator;
 import com.shop.user.UserService;
 import com.shop.user.UserValidator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -33,12 +34,14 @@ public class UserRoleService {
         return role.orElseGet(Role::new);
     }
 
+    @Transactional
     public void saveRoleForUser(long userId, long roleId) {
         userValidator.validate(userId, userService.findAll());
         roleValidator.validate(roleId);
         userRoleRepository.saveRoleForUser(userId, roleId);
     }
 
+    @Transactional
     public void updateRoleForUser(long userId, long roleId) {
         userValidator.validate(userId, userService.findAll());
         roleValidator.validate(roleId);
