@@ -102,4 +102,12 @@ public class ProductRepository implements RepositoryInterface<Product> {
             )
         );
     }
+
+    public List<Product> findAllByNameLike(String filter) {
+        return jdbcTemplate.query(
+            "SELECT * FROM product p WHERE p.name ILIKE :filter",
+            Map.ofEntries(Map.entry("filter", filter)),
+            new BeanPropertyRowMapper<>(Product.class)
+        );
+    }
 }

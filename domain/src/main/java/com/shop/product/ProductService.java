@@ -121,6 +121,10 @@ public class ProductService implements ServiceInterface<Product> {
         return products;
     }
 
+    public List<Product> findAllByNameLike(String filter) {
+        return productRepository.findAllByNameLike(filter);
+    }
+
     private long getRandomIndex() {
         List<Product> products = findAll();
         long maxRandomId = products.get(products.size() - 1).getId();

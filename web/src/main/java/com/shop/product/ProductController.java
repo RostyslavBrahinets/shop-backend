@@ -24,7 +24,13 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public List<Product> findAll() {
+    public List<Product> findAll(
+        @RequestParam(name = "filter", required = false) String filter
+    ) {
+        if (filter != null && !filter.isBlank()) {
+            return productService.findAllByNameLike("%" + filter + "%");
+        }
+
         return productService.findAll();
     }
 
