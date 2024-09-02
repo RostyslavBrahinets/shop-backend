@@ -16,7 +16,13 @@ public class CategoryController {
     }
 
     @GetMapping("")
-    public List<Category> findAll() {
+    public List<Category> findAll(
+        @RequestParam(name = "filter", required = false) String filter
+    ) {
+        if (filter != null && !filter.isBlank()) {
+            return categoryService.findAllByNameLike("%" + filter + "%");
+        }
+
         return categoryService.findAll();
     }
 

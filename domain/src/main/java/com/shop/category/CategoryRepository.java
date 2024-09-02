@@ -1,6 +1,7 @@
 package com.shop.category;
 
 import com.shop.interfaces.RepositoryInterface;
+import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -71,5 +72,13 @@ public class CategoryRepository implements RepositoryInterface<Category> {
                 new BeanPropertyRowMapper<>(Category.class)
             )
             .stream().findAny();
+    }
+
+    public List<Category> findAllByNameLike(String filter) {
+        return jdbcTemplate.query(
+            "SELECT * FROM category c WHERE c.name ILIKE :filter",
+            Map.ofEntries(Map.entry("filter", filter)),
+            new BeanPropertyRowMapper<>(Category.class)
+        );
     }
 }

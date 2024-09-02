@@ -73,4 +73,8 @@ public class CategoryService implements ServiceInterface<Category> {
         Optional<Category> category = categoryRepository.findByName(name);
         return category.orElseGet(Category::new);
     }
+
+    public List<Category> findAllByNameLike(String filter) {
+        return categoryRepository.findAllByNameLike(filter);
+    }
 }
